@@ -125,6 +125,17 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EnumExtensions.cs" />
+    <Compile Include="Models\FileSpecification.cs" />
+    <Compile Include="Models\FileSpecificationDetail.cs" />
+    <Compile Include="Models\FileSpecificationState.cs" />
+    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportDocument.cs" />
+    <Compile Include="Models\ReportLevel.cs" />
+    <Compile Include="Models\ReportState.cs" />
+    <Compile Include="Models\WorkItem.cs" />
+    <Compile Include="Models\WorkItemAction.cs" />
+    <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -166,7 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
