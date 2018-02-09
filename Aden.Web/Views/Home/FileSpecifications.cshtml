@@ -1,31 +1,69 @@
-﻿@{
+﻿@model IEnumerable<FileSpecification>
+@{
     ViewBag.Title = "Home Page";
 }
-
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<h3>File Specifications</h3>
 
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="col-md-12">
+        <table class="table table-responsive table-condensed table-bordered table-striped">
+            <thead>
+                <tr>
+                    <td></td>
+                    <td>Number</td>
+                    <td>File Name</td>
+                    <td>Version</td>
+                    <td>Data Group</td>
+                    <td>SEA</td>
+                    <td>LEA</td>
+                    <td>SCH</td>
+                    <td>Due</td>
+                    <td>Data Year</td>
+                    <td>State</td>
+                    <td>Completed</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var spec in Model)
+                    {
+                    <tr>
+                        <td>
+                            <a class="btn btn-default btn-sm" data-history href="/workitemhistory/@spec.DataYear/@spec.Id">
+                                <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
+                            </a>
+                        </td>
+                        <td>@spec.FileNumber</td>
+                        <td>@spec.FileName</td>
+                        <td>@spec.Version</td>
+                        <td>data group</td>
+                        <td>@Html.YesNo(spec.IsSEA)</td>
+                        <td>@Html.YesNo(spec.IsLEA)</td>
+                        <td>@Html.YesNo(spec.IsSEA)</td>
+                        <td>@string.Format("{0:d}", spec.DueDate)</td>
+                        <td>@string.Format("{0:d}", spec.DataYear)</td>
+                        <td>@spec.ReportState.GetDisplayName()</td>
+                        <td>
+                            @if (spec.Reports.Any())
+                                {
+                                @spec.Reports.OrderBy(x => x.SubmittedDate).SingleOrDefault().SubmittedDate
+                                }
+                        </td>
+                        <td>
+                            @if (!spec.Reports.Any())
+                                {
+                                <button class="btn btn-default" data-start="" data-filespec-id="@spec.Id">Start</button>
+                                <button class="btn btn-default" data-waiver="" data-filespec-id="@spec.Id">Waiver</button>
+                                }
+                            @if (spec.Reports.Any())
+                                {
+                                <a class="btn btn-default btn-sm" href="reports/@spec.FileNumber">Reports</a>
+                                <a class="btn btn-default btn-sm" data-reset href="api/report/reset/@spec.FileNumber">Reset</a>
+                                }
+                        </td>
+                    </tr>
+                    }
+            </tbody>
+        </table>
     </div>
 </div>
