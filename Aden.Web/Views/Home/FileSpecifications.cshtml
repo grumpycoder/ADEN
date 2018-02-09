@@ -2,31 +2,35 @@
 @{
     ViewBag.Title = "File Specifications";
 }
-<h3>File Specifications</h3>
 
-<div class="row">
-    <div class="col-md-12">
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <span class="panel-title">
+            <span class="panel-heading">File Specifications</span>
+        </span>
+    </div>
+    <div class="panel-body">
         <table class="table table-responsive table-condensed table-bordered table-striped">
             <thead>
-            <tr>
-                <td></td>
-                <td>Number</td>
-                <td>File Name</td>
-                <td>Version</td>
-                <td>Data Group</td>
-                <td>SEA</td>
-                <td>LEA</td>
-                <td>SCH</td>
-                <td>Due</td>
-                <td>Data Year</td>
-                <td>State</td>
-                <td>Completed</td>
-                <td></td>
-            </tr>
+                <tr>
+                    <td></td>
+                    <td>Number</td>
+                    <td>File Name</td>
+                    <td>Version</td>
+                    <td>Data Group</td>
+                    <td>SEA</td>
+                    <td>LEA</td>
+                    <td>SCH</td>
+                    <td>Due</td>
+                    <td>Data Year</td>
+                    <td>State</td>
+                    <td>Completed</td>
+                    <td></td>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var spec in Model)
-            {
+                @foreach (var spec in Model)
+                {
                 <tr>
                     <td>
                         <a class="btn btn-default btn-sm" data-history data-title="Work History" href="/workitemhistory/@spec.DataYear/@spec.Id">
@@ -45,29 +49,30 @@
                     <td>@spec.ReportState.GetDisplayName()</td>
                     <td>
                         @if (spec.Reports.Any())
-                        {
+                            {
                             @spec.Reports.OrderBy(x => x.SubmittedDate).SingleOrDefault().SubmittedDate
-                        }
+                            }
                     </td>
                     <td>
                         @if (!spec.Reports.Any())
-                        {
+                            {
                             <button class="btn btn-default btn-sm" data-start data-filespec-id="@spec.Id">Start</button>
                             <button class="btn btn-default btn-sm" data-waiver data-filespec-id="@spec.Id">Waiver</button>
-                        }
+                            }
                         @if (spec.Reports.Any())
-                        {
+                            {
                             <a class="btn btn-default btn-sm" href="reports/@spec.FileNumber">Reports</a>
-                                @*<a class="btn btn-default btn-sm" data-reset href="api/report/reset/@spec.FileNumber">Reset</a>*@
-                        }
+                            @*<a class="btn btn-default btn-sm" data-reset href="api/report/reset/@spec.FileNumber">Reset</a>*@
+                            }
                     </td>
                 </tr>
-            }
+                }
             </tbody>
         </table>
     </div>
 </div>
-     
+
+
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
@@ -85,7 +90,7 @@
         </div>
     </div>
 </div>
-                           
+
 @section scripts
 {
     <script type="text/javascript">
