@@ -1,5 +1,6 @@
 ﻿using ADEN.Web.Core;
 using ADEN.Web.Data;
+using ADEN.Web.ViewModels;
 using System.Web.Mvc;
 
 namespace Aden.Web.Controllers
@@ -7,6 +8,7 @@ namespace Aden.Web.Controllers
     public class HomeController : Controller
     {
         private readonly UnitOfWork uow;
+        private string UserName = "mlawrence@alsde.edu";
 
         public HomeController()
         {
@@ -26,5 +28,16 @@ namespace Aden.Web.Controllers
             return View(reports);
         }
 
+        public ActionResult Assignments(string username)
+        {
+            UserName = username;
+            var vm = new AssigmentsViewModel();
+            var workitems = uow.WorkItems.GetActiveByUser(UserName);
+            var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
+            vm.WorkItems = workitems;
+            vm.CompletedWorkItems = completedWorkItems;
+
+            return View(vm);
+        }
     }
 }

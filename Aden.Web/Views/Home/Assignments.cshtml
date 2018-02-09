@@ -1,0 +1,245 @@
+﻿@model ADEN.Web.ViewModels.AssigmentsViewModel
+@{
+    ViewBag.Title = "My Assignments";
+}
+
+<h3>My Assignments</h3>
+<div class="row">
+    <div class="col-md-12">
+
+        <form action="/assignments/mine" method="get">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    @Html.DropDownListFor(m => m.Username,
+                        new List<SelectListItem>()
+                        {
+                            new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                            new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                            new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                        }, new { @class = "form-control" })
+
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Change</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="panel panel-primary">
+
+    <div class="panel-heading">
+        <span class="panel-title">
+            My Assignments
+        </span>
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Report</td>
+                    <td>Data Year</td>
+                    <td>Assigned</td>
+                    <td>Due</td>
+                    <td>Action</td>
+                    <td>State</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var assignment in Model.WorkItems)
+                {
+                    <tr>
+                        <td>@assignment.Report.FileSpecification</td>
+                        <td>@assignment.Report.DataYear</td>
+                        <td>@assignment.AssignedDate</td>
+                        <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
+                        <td>@assignment.WorkItemAction.GetDisplayName()</td>
+                        <td>@assignment.WorkItemState.GetDisplayName()</td>
+                        <td>
+                            <button class="btn btn-default" data-report-id="@assignment.ReportId" data-workitem-id="@assignment.Id" data-workitem-action="@assignment.WorkItemAction" disabled="@assignment.WorkItemState.Equals(WorkItemState.Completed)">@assignment.WorkItemAction</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="panel panel-info" hidden="@(!Model.CompletedWorkItems.Any(x => x.CanCancel))">
+
+    <div class="panel-heading">
+        <span class="panel-title">
+            Retrievable Actions
+        </span>
+    </div>
+    <div class="panel-body">
+        <h4>Undoable</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Report</td>
+                    <td>Assigned</td>
+                    <td>Due</td>
+                    <td>Action</td>
+                    <td>State</td>
+                    <td>Completed</td>
+                    <td></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var assignment in Model.CompletedWorkItems.OrderBy(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction).Where(x => x.CanCancel == true))
+                {
+                    <tr>
+                        <td>@assignment.Report.FileSpecification</td>
+                        <td>@assignment.AssignedDate</td>
+                        <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
+                        <td>@assignment.WorkItemAction.GetDisplayName()</td>
+                        <td>@assignment.WorkItemState.GetDisplayName()</td>
+                        <td>@assignment.CompletedDate</td>
+                        <td>
+                            @if (assignment.CanCancel)
+                            {
+                                <button class="btn btn-default" data-cancel-workitem="@assignment.Id" data-cancel-workitem-id="@assignment.Id">Cancel @assignment.WorkItemAction.GetDisplayName()</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="panel panel-default" hidden="@(!Model.CompletedWorkItems.Any())">
+
+    <div class="panel-heading">
+        <span class="panel-title">
+            Completed Actions
+        </span>
+    </div>
+    <div class="panel-body">
+        <h4>Completed</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>Report</td>
+                    <td>Assigned</td>
+                    <td>Due</td>
+                    <td>Action</td>
+                    <td>State</td>
+                    <td>Completed</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var assignment in Model.CompletedWorkItems.OrderByDescending(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction))
+                {
+                    <tr>
+                        <td>@assignment.Report.FileSpecification</td>
+                        <td>@assignment.AssignedDate</td>
+                        <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
+                        <td>@assignment.WorkItemAction.GetDisplayName()</td>
+                        <td>@assignment.WorkItemState.GetDisplayName()</td>
+                        <td>@assignment.CompletedDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            console.log('ready');
+
+            $('button[data-workitem-id]').click(function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data('workitem-id');
+                var reportId = btn.data('report-id');
+                var action = btn.data('workitem-action');
+                console.log('workitem-id', btn.data('workitem-id'));
+                console.log('workitem-action', btn.data('workitem-action'));
+
+                $.ajax({
+                    url: '/api/wi/complete/' + id,
+                    type: 'POST',
+                    success: function (data) {
+                        //play with data
+                        console.log('data', data);
+                    },
+                    error: function (err) {
+                        console.log('err', err);
+                    }
+                });
+            });
+
+
+            $('button[data-cancel-workitem]').click(function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data('cancel-workitem-id');
+                console.log('id', id);
+                $.ajax({
+                    url: '/api/wi/undo/' + id,
+                    type: 'POST',
+                    success: function (data) {
+                        //play with data
+                        console.log('data', data);
+                    },
+                    error: function (err) {
+                        console.log('err', err);
+                    }
+                });
+
+            });
+
+            function loadDocuments(id) {
+                var url = '/documentlist/' + id;
+                $('#.modal-body').load(url,
+                    function () {
+                        $('#myModal2').modal({ show: true });
+                    });
+
+                //$('a[data-history]').on('click', function (e) {
+                //    e.preventDefault();
+                //    var url = $(this).attr('href');
+                //    console.log(url);
+                //    $('.modal-body').load(url,
+                //        function () {
+                //            $('#myModal').modal({ show: true });
+                //        });
+                //});
+            }
+        })
+
+    </script>
+}

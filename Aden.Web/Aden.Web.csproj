@@ -163,6 +163,7 @@
     <Compile Include="Models\WorkItemAction.cs" />
     <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AssigmentsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -199,10 +200,10 @@
     <Content Include="Views\Home\FileSpecifications.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Reports.cshtml" />
+    <Content Include="Views\Home\Assignments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
