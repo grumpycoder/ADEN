@@ -20,5 +20,11 @@ namespace Aden.Web.Controllers
             return View(specs);
         }
 
+        public ActionResult Reports(string id)
+        {
+            var reports = uow.Reports.GetByFileSpecificationNumber(id);
+            return View(reports);
+        }
+
     }
 }

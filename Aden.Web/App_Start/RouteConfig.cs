@@ -12,6 +12,12 @@ namespace Aden.Web
             routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
 
             routes.MapRoute(
+                name: "ReportActions",
+                url: "reports/{id}",
+                defaults: new { controller = "Home", action = "Reports", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "FileSpecifications", id = UrlParameter.Optional }
