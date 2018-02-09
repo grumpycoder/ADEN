@@ -29,7 +29,7 @@
             {
                 <tr>
                     <td>
-                        <a class="btn btn-default btn-sm" data-history href="/workitemhistory/@spec.DataYear/@spec.Id">
+                        <a class="btn btn-default btn-sm" data-history data-title="Work History" href="/workitemhistory/@spec.DataYear/@spec.Id">
                             <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
                         </a>
                     </td>
@@ -52,8 +52,8 @@
                     <td>
                         @if (!spec.Reports.Any())
                         {
-                            <button class="btn btn-default btn-sm" data-start="" data-filespec-id="@spec.Id">Start</button>
-                            <button class="btn btn-default btn-sm" data-waiver="" data-filespec-id="@spec.Id">Waiver</button>
+                            <button class="btn btn-default btn-sm" data-start data-filespec-id="@spec.Id">Start</button>
+                            <button class="btn btn-default btn-sm" data-waiver data-filespec-id="@spec.Id">Waiver</button>
                         }
                         @if (spec.Reports.Any())
                         {
@@ -96,16 +96,13 @@
                 e.preventDefault();
                 console.log('start');
                 var btn = $(this);
-
                 var id = btn.data('filespec-id');
-                console.log('id', btn.data());
                 $.ajax({
-                    url: '/api/report/create/' + id,
+                    url: '/api/reports/create/' + id,
                     type: 'POST',
                     success: function (data) {
                         //play with data
                         console.log('data', data);
-                        $('#gridContainer').dxDataGrid('instance').refresh();
                     },
                     error: function (err) {
                         console.log('err', err);
@@ -113,18 +110,17 @@
                 });
             });
 
-            $(document).on('click', '[data-waive]', function (e) {
+            $(document).on('click', '[data-waiver]', function (e) {
                 e.preventDefault();
                 var btn = $(this);
                 var id = btn.data('filespec-id');
                 console.log('file spec', id);
                 $.ajax({
-                    url: '/api/report/waiver/' + id,
+                    url: '/api/reports/waiver/' + id,
                     type: 'POST',
                     success: function (data) {
                         //play with data
                         console.log('data', data);
-                        $('#gridContainer').dxDataGrid('instance').refresh();
                     },
                     error: function (err) {
                         console.log('err', err);
@@ -135,7 +131,8 @@
             $(document).on('click', '[data-history]', function (e) {
                 e.preventDefault();
                 var url = $(this).attr('href');
-                console.log(url);
+                var title = $(this).data('title');
+                $('.modal-title').html(title);
                 $('.modal-body').load(url,
                     function () {
                         $('#myModal').modal({ show: true });

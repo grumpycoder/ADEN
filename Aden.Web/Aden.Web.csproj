@@ -135,6 +135,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\WorkItemController.cs" />
     <Compile Include="Core\DocumentRepository.cs" />
     <Compile Include="Core\FileSpecificationRepository.cs" />
