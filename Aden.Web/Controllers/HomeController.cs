@@ -4,7 +4,7 @@ namespace Aden.Web.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult FileSpecifications()
         {
             return View();
         }
