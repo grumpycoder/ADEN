@@ -39,5 +39,12 @@ namespace Aden.Web.Controllers
 
             return View(vm);
         }
+
+        public ActionResult WorkItemHistory(int datayear, int id)
+        {
+            var workItems = uow.WorkItems.GetHistoryByFileSpecification(id, datayear);
+            return PartialView("_WorkItemHistory", workItems);
+        }
+
     }
 }

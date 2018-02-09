@@ -1,0 +1,29 @@
+﻿@model IEnumerable<WorkItem>
+
+@if (!Model.Any())
+{
+    <h3>No work history</h3>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <tr>
+            <td>Action</td>
+            <td>Assign Date</td>
+            <td>Completed Date</td>
+            <td>Assigned User</td>
+            <td>State</td>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>@item.WorkItemAction.GetDisplayName()</td>
+                <td>@item.AssignedDate</td>
+                <td>@item.CompletedDate</td>
+                <td>@item.AssignedUser</td>
+                <td>@item.WorkItemState.GetDisplayName()</td>
+            </tr>
+        }
+    </table>
+}

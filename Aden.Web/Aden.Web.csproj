@@ -135,6 +135,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\WorkItemController.cs" />
     <Compile Include="Core\DocumentRepository.cs" />
     <Compile Include="Core\FileSpecificationRepository.cs" />
     <Compile Include="Core\OperationResult.cs" />
@@ -201,6 +202,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Reports.cshtml" />
     <Content Include="Views\Home\Assignments.cshtml" />
+    <Content Include="Views\Home\_WorkItemHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

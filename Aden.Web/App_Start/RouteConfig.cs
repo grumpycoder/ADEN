@@ -24,6 +24,12 @@ namespace Aden.Web
             );
 
             routes.MapRoute(
+                name: "WorkItemHistoryActions",
+                url: "workitemhistory/{datayear}/{id}",
+                defaults: new { controller = "Home", action = "WorkItemHistory", id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "FileSpecifications", id = UrlParameter.Optional }

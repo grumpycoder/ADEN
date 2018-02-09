@@ -67,12 +67,83 @@
         </table>
     </div>
 </div>
-                                
+     
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Report History</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+                           
 @section scripts
 {
     <script type="text/javascript">
         $(function() {
             console.log('ready');
+
+            $(document).on('click', '[data-start]', function (e) {
+                e.preventDefault();
+                console.log('start');
+                var btn = $(this);
+
+                var id = btn.data('filespec-id');
+                console.log('id', btn.data());
+                $.ajax({
+                    url: '/api/report/create/' + id,
+                    type: 'POST',
+                    success: function (data) {
+                        //play with data
+                        console.log('data', data);
+                        $('#gridContainer').dxDataGrid('instance').refresh();
+                    },
+                    error: function (err) {
+                        console.log('err', err);
+                    }
+                });
+            });
+
+            $(document).on('click', '[data-waive]', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data('filespec-id');
+                console.log('file spec', id);
+                $.ajax({
+                    url: '/api/report/waiver/' + id,
+                    type: 'POST',
+                    success: function (data) {
+                        //play with data
+                        console.log('data', data);
+                        $('#gridContainer').dxDataGrid('instance').refresh();
+                    },
+                    error: function (err) {
+                        console.log('err', err);
+                    }
+                });
+            });
+
+            $(document).on('click', '[data-history]', function (e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                console.log(url);
+                $('.modal-body').load(url,
+                    function () {
+                        $('#myModal').modal({ show: true });
+                    });
+            });
+
+            $('[data-toggle="tooltip"]').tooltip();
+
         });
     </script>
 }
