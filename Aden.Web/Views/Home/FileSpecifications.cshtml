@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<FileSpecification>
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "File Specifications";
 }
 <h3>File Specifications</h3>
 
@@ -8,62 +8,71 @@
     <div class="col-md-12">
         <table class="table table-responsive table-condensed table-bordered table-striped">
             <thead>
-                <tr>
-                    <td></td>
-                    <td>Number</td>
-                    <td>File Name</td>
-                    <td>Version</td>
-                    <td>Data Group</td>
-                    <td>SEA</td>
-                    <td>LEA</td>
-                    <td>SCH</td>
-                    <td>Due</td>
-                    <td>Data Year</td>
-                    <td>State</td>
-                    <td>Completed</td>
-                    <td></td>
-                </tr>
+            <tr>
+                <td></td>
+                <td>Number</td>
+                <td>File Name</td>
+                <td>Version</td>
+                <td>Data Group</td>
+                <td>SEA</td>
+                <td>LEA</td>
+                <td>SCH</td>
+                <td>Due</td>
+                <td>Data Year</td>
+                <td>State</td>
+                <td>Completed</td>
+                <td></td>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var spec in Model)
-                    {
-                    <tr>
-                        <td>
-                            <a class="btn btn-default btn-sm" data-history href="/workitemhistory/@spec.DataYear/@spec.Id">
-                                <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
-                            </a>
-                        </td>
-                        <td>@spec.FileNumber</td>
-                        <td>@spec.FileName</td>
-                        <td>@spec.Version</td>
-                        <td>data group</td>
-                        <td>@Html.YesNo(spec.IsSEA)</td>
-                        <td>@Html.YesNo(spec.IsLEA)</td>
-                        <td>@Html.YesNo(spec.IsSEA)</td>
-                        <td>@string.Format("{0:d}", spec.DueDate)</td>
-                        <td>@string.Format("{0:d}", spec.DataYear)</td>
-                        <td>@spec.ReportState.GetDisplayName()</td>
-                        <td>
-                            @if (spec.Reports.Any())
-                                {
-                                @spec.Reports.OrderBy(x => x.SubmittedDate).SingleOrDefault().SubmittedDate
-                                }
-                        </td>
-                        <td>
-                            @if (!spec.Reports.Any())
-                                {
-                                <button class="btn btn-default" data-start="" data-filespec-id="@spec.Id">Start</button>
-                                <button class="btn btn-default" data-waiver="" data-filespec-id="@spec.Id">Waiver</button>
-                                }
-                            @if (spec.Reports.Any())
-                                {
-                                <a class="btn btn-default btn-sm" href="reports/@spec.FileNumber">Reports</a>
-                                <a class="btn btn-default btn-sm" data-reset href="api/report/reset/@spec.FileNumber">Reset</a>
-                                }
-                        </td>
-                    </tr>
-                    }
+            @foreach (var spec in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-default btn-sm" data-history href="/workitemhistory/@spec.DataYear/@spec.Id">
+                            <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
+                        </a>
+                    </td>
+                    <td>@spec.FileNumber</td>
+                    <td>@spec.FileName</td>
+                    <td>@spec.Version</td>
+                    <td>data group</td>
+                    <td>@Html.YesNo(spec.IsSEA)</td>
+                    <td>@Html.YesNo(spec.IsLEA)</td>
+                    <td>@Html.YesNo(spec.IsSEA)</td>
+                    <td>@string.Format("{0:d}", spec.DueDate)</td>
+                    <td>@string.Format("{0:d}", spec.DataYear)</td>
+                    <td>@spec.ReportState.GetDisplayName()</td>
+                    <td>
+                        @if (spec.Reports.Any())
+                        {
+                            @spec.Reports.OrderBy(x => x.SubmittedDate).SingleOrDefault().SubmittedDate
+                        }
+                    </td>
+                    <td>
+                        @if (!spec.Reports.Any())
+                        {
+                            <button class="btn btn-default btn-sm" data-start="" data-filespec-id="@spec.Id">Start</button>
+                            <button class="btn btn-default btn-sm" data-waiver="" data-filespec-id="@spec.Id">Waiver</button>
+                        }
+                        @if (spec.Reports.Any())
+                        {
+                            <a class="btn btn-default btn-sm" href="reports/@spec.FileNumber">Reports</a>
+                                @*<a class="btn btn-default btn-sm" data-reset href="api/report/reset/@spec.FileNumber">Reset</a>*@
+                        }
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
 </div>
+                                
+@section scripts
+{
+    <script type="text/javascript">
+        $(function() {
+            console.log('ready');
+        });
+    </script>
+}
