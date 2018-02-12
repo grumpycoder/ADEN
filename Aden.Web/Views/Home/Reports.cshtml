@@ -3,20 +3,61 @@
     ViewBag.Title = "Reports";
 }
 
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h1 class="panel-title">Reports</h1>
+    </div>
+    <input type="hidden" value="@ViewContext.RouteData.Values["id"]" id="filespec" />
+    <div class="panel-body">
+        @*               data-url="/api/reports/search"*@
+        <table id="grid"
+               data-toggle="table"
+               data-pagination=" true"
+               data-page-size="5"
+               data-page-list="[5,10,25,50]"
+               data-pagination-first-text="First"
+               data-pagination-pre-text="Previous"
+               data-pagination-next-text="Next"
+               data-pagination-last-text="Last"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-show-pagination-switch="true"
+               data-side-pagination="server"
+               data-show-export="true"
+               data-minimum-count-columns="2"
+               data-search="true"
+               data-search-on-enter-key="true"
+               data-undefined-text=""
+               data-filter-show-clear="true"
+               data-filter-control="true">
+            <thead>
+                <tr>
+                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
+                    <th data-field="fileSpecification.fileName" data-searchable="true" data-filter-control="input">File Name</th>
+                    <th data-field="fileSpecification.fileNumber" data-filter-control="input">FileNumber</th>
+                    <th data-field="fileSpecification.dataYear" data-filter-control="input">Data Year</th>
+                    <th data-field="reportState" data-filter-control="input">Data Year</th>
+                    <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
 
-    <div class="row">
-        <div class="col-md-12 col-lg-12">
+<div class="row">
+    <div class="col-md-12 col-lg-12">
 
 
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <span class="panel-heading">
-                        Reports
-                    </span>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-responsive table-condensed table-bordered table-striped">
-                        <thead>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <span class="panel-heading">
+                    Reports
+                </span>
+            </div>
+            <div class="panel-body">
+                <table class="table table-responsive table-condensed table-bordered table-striped">
+                    <thead>
                         <tr>
                             <td></td>
                             <td>File Name</td>
@@ -25,62 +66,62 @@
                             <td>State</td>
                             <td></td>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         @foreach (var report in Model)
                         {
-                            <tr>
-                                <td>
-                                    <a class="btn btn-default btn-sm" data-history data-title="Work History" href="/workitemhistory/@report.DataYear/@report.FileSpecificationId">
-                                        <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
-                                    </a>
-                                </td>
-                                <td>@report.FileSpecification.FileName</td>
-                                <td>@report.FileSpecification.FileNumber</td>
-                                <td>@report.DataYear</td>
-                                <td>@report.ReportState.GetDisplayName()</td>
-                                <td>
-                                    <a class="collapsed" data-toggle="collapse" href=@string.Format("#collapseListGroup{0}", @report.Id) aria-expanded="false" aria-controls=@string.Format("collapseListGroup{0}", @report.Id)>
-                                        <i class="glyphicon glyphicon-chevron-down"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="5">
-                                    <div class="container">
-                                        <div class="row">
+                        <tr>
+                            <td>
+                                <a class="btn btn-default btn-sm" data-history data-title="Work History" href="/workitemhistory/@report.DataYear/@report.FileSpecificationId">
+                                    <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
+                                </a>
+                            </td>
+                            <td>@report.FileSpecification.FileName</td>
+                            <td>@report.FileSpecification.FileNumber</td>
+                            <td>@report.DataYear</td>
+                            <td>@report.ReportState.GetDisplayName()</td>
+                            <td>
+                                <a class="collapsed" data-toggle="collapse" href=@string.Format("#collapseListGroup{0}", @report.Id) aria-expanded="false" aria-controls=@string.Format("collapseListGroup{0}", @report.Id)>
+                                    <i class="glyphicon glyphicon-chevron-down"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">
+                                <div class="container">
+                                    <div class="row">
 
-                                            <div class="pull-right">
+                                        <div class="pull-right">
 
-                                                <div class="col-md-12">
+                                            <div class="col-md-12">
 
-                                                    <div class="panel-collapse collapse" id=@string.Format("collapseListGroup{0}", @report.Id) role="tabpanel" aria-labelledby="collapseListGroupHeading1">
-                                                        <ul class="list-group list-group-horizontal">
-                                                            @foreach (var doc in report.Documents.OrderByDescending(r => r.Version))
+                                                <div class="panel-collapse collapse" id=@string.Format("collapseListGroup{0}", @report.Id) role="tabpanel" aria-labelledby="collapseListGroupHeading1">
+                                                    <ul class="list-group list-group-horizontal">
+                                                        @foreach (var doc in report.Documents.OrderByDescending(r => r.Version))
                                                             {
-                                                                <li class="list-group-item">
-                                                                    <a href="/reportdocument/@doc.Id" data-doc-id="@doc.Id" data-doc-title="@doc.Filename">
-                                                                        <i class="glyphicon glyphicon-file"></i>
-                                                                        @string.Format("{0} v-{1}", @doc.ReportLevel, @doc.Version)
-                                                                    </a>
-                                                                </li>
+                                                            <li class="list-group-item">
+                                                                <a href="/reportdocument/@doc.Id" data-doc-id="@doc.Id" data-doc-title="@doc.Filename">
+                                                                    <i class="glyphicon glyphicon-file"></i>
+                                                                    @string.Format("{0} v-{1}", @doc.ReportLevel, @doc.Version)
+                                                                </a>
+                                                            </li>
                                                             }
-                                                        </ul>
-                                                    </div>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         }
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
-
         </div>
+
     </div>
+</div>
 
 
 <!-- Modal -->
@@ -104,33 +145,94 @@
 @section scripts
 {
     <script>
-        $(function () {
+
+        function historyFormatter(value, row, index, field) {
+            var id = value;
+            var dataYear = row.dataYear;
+            console.log('id', id);
+            console.log('dataYear', dataYear);
+            var lnk = '<a href=/workitemhistory/' +
+                dataYear +
+                '/' +
+                id +
+                ' data-history data-title="Work History" data-toggle="tooltip" data-placement="left">' +
+                '<i class="fa fa-history"></i></a>';
+            return lnk;
+        }
+
+        function actionsFormatter(value, row, index, field) {
+            var lnk = '';
+            if (row.reportState !== 1) {
+                lnk += '<a class="btn btn-default btn-sm" href="reports/' + row.fileNumber + '">Reports</a>';
+            } else {
+                lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' +
+                    value +
+                    '">Start</button>';
+                lnk += '<button class="btn btn-default btn-sm" data-waiver data-filespec-id="' +
+                    value +
+                    '">Waiver</button>';
+            }
+            return lnk;
+        }
+
+        $(function() {
             console.log('ready');
+
+            var $table = $('#grid');
+
+            var filespec = $('#filespec').val();
+            var options = $table.bootstrapTable('getOptions');
+
+            if (filespec !== '') {
+                console.log('filespec', filespec);
+                options.url = '/api/reports/' + filespec;
+                options.filterControl = false;
+                options.showRefresh = false;
+                options.showToggle = false;
+                options.showColumns = false;
+                options.showPaginationSwitch = false;
+                options.search = false;
+                options.sidePagination = 'client';
+                $table.bootstrapTable('destroy').bootstrapTable({}, options);
+
+                $table.bootstrapTable('refreshOptions', options);
+                $table.bootstrapTable('refresh');
+            } else {
+                options.sidePagination = 'server';
+                options.url = '/api/reports/search';
+                $table.bootstrapTable('destroy').bootstrapTable({}, options);
+                $table.bootstrapTable('refreshOptions', options);
+                $table.bootstrapTable('refresh');
+            }
+
 
             $('[data-toggle="tooltip"]').tooltip();
 
-            $(document).on('click', '[data-history]', function (e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                console.log(url);
-                var title = $(this).data('title');
-                $('.modal-title').html(title);
-                $('.modal-body').load(url,
-                    function () {
-                        $('#myModal').modal({ show: true });
-                    });
-            });
+            $(document).on('click',
+                '[data-history]',
+                function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr('href');
+                    console.log(url);
+                    var title = $(this).data('title');
+                    $('.modal-title').html(title);
+                    $('.modal-body').load(url,
+                        function() {
+                            $('#myModal').modal({ show: true });
+                        });
+                });
 
-            $('a[data-doc-id]').on('click', function (e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                var title = $(this).data('doc-title');
-                $('.modal-title').html(title);
-                $('.modal-body').load(url,
-                    function () {
-                        $('#myModal').modal({ show: true });
-                    });
-            });
+            $('a[data-doc-id]').on('click',
+                function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr('href');
+                    var title = $(this).data('doc-title');
+                    $('.modal-title').html(title);
+                    $('.modal-body').load(url,
+                        function() {
+                            $('#myModal').modal({ show: true });
+                        });
+                });
 
         })
     </script>

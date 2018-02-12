@@ -1,6 +1,7 @@
 ﻿using ADEN.Web.Core;
 using ADEN.Web.Data;
 using ADEN.Web.Models;
+using System.Linq;
 using System.Web.Http;
 
 namespace Aden.Web.Controllers
@@ -17,9 +18,24 @@ namespace Aden.Web.Controllers
         }
 
         [HttpGet]
-        public object Get(string id)
+        public object Get(string id = null)
         {
             return Ok(uow.Reports.GetByFileSpecificationNumber(id));
+
+        }
+
+        [HttpGet, Route("search")]
+        public object Search(string search = null, string order = "asc", int offset = 0, int limit = 10)
+        {
+            var reports = uow.Reports.GetByFileSpecificationNumberPaged(search, order, offset, limit);
+            var totalRows = uow.FileSpecifications.GetAllWithReportsPaged(search);
+
+            var s = new
+            {
+                Total = totalRows.Count(),
+                Rows = reports
+            };
+            return Ok(s);
         }
 
         [HttpPost, Route("create/{id}")]
