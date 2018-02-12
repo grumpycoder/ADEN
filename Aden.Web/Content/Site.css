@@ -1,13 +1,13 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 60px;
     padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
-.body-content {
+/*.body-content {
     padding-left: 15px;
     padding-right: 15px;
-}
+}*/
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
@@ -17,11 +17,11 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
+/*input,
 select,
 textarea {
     max-width: 280px;
-}
+}*/
 
 .list-group-horizontal .list-group-item {
     display: inline-block;
@@ -39,7 +39,23 @@ textarea {
     border-bottom-left-radius: 4px;
 }
 
-.list-group-horizontal .list-group-item:last-child {
-    border-top-right-radius: 4px;
-    border-bottom-left-radius: 0;
-    border-right-width: 1px;
+    .list-group-horizontal .list-group-item:last-child {
+        border-top-right-radius: 4px;
+        border-bottom-left-radius: 0;
+        border-right-width: 1px;
+    }
+
+.panel-right {
+    border: 0.05em solid lightgray;
+    border-radius: 0.25em 0.25em;
+    margin-top: -0.4em;
+    padding: 0.3em;
+    font-size: 0.9em;
+    float: right;
+}
+
+.panel-title a,
+.panel-title a:active,
+.panel-title a:visited {
+    text-decoration: none;
+}

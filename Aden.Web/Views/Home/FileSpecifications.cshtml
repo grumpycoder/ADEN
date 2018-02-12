@@ -3,71 +3,53 @@
     ViewBag.Title = "File Specifications";
 }
 
+
 <div class="panel panel-primary">
     <div class="panel-heading">
-        <span class="panel-title">
-            <span class="panel-heading">File Specifications</span>
-        </span>
+        <h1 class="panel-title">
+            File Specifications
+            <a href="#" class="panel-right">
+                <i class="fa fa-cloud-download"></i>&nbsp;Update
+            </a>
+        </h1>
     </div>
     <div class="panel-body">
-        <table class="table table-responsive table-condensed table-bordered table-striped">
+
+        <table id="grid"
+               data-url="/api/filespecifications"
+               data-toggle="table"
+               data-pagination="true"
+               data-page-size="5"
+               data-page-list="[5,10,25,50]"
+               data-pagination-first-text="First"
+               data-pagination-pre-text="Previous"
+               data-pagination-next-text="Next"
+               data-pagination-last-text="Last"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-side-pagination="server"
+               data-show-export="true"
+               data-minimum-count-columns="2"
+               data-show-pagination-switch="true"
+               data-search="true"
+               data-search-on-enter-key="true"
+               data-undefined-text=""
+               data-filter-show-clear="true"
+               data-filter-control="true">
             <thead>
                 <tr>
-                    <td></td>
-                    <td>Number</td>
-                    <td>File Name</td>
-                    <td>Version</td>
-                    <td>Data Group</td>
-                    <td>SEA</td>
-                    <td>LEA</td>
-                    <td>SCH</td>
-                    <td>Due</td>
-                    <td>Data Year</td>
-                    <td>State</td>
-                    <td>Completed</td>
-                    <td></td>
+                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
+                    <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
+                    <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
+                    <th data-field="isSEA" data-formatter="checkboxFormatter" data-align="center">SEA</th>
+                    <th data-field="isLEA" data-formatter="checkboxFormatter" data-align="center">LEA</th>
+                    <th data-field="isSCH" data-formatter="checkboxFormatter" data-align="center">SCH</th>
+                    <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
+                    <th data-field="dataYear" data-filter-control="input">Data Year</th>
+                    <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var spec in Model)
-                {
-                <tr>
-                    <td>
-                        <a class="btn btn-default btn-sm" data-history data-title="Work History" href="/workitemhistory/@spec.DataYear/@spec.Id">
-                            <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
-                        </a>
-                    </td>
-                    <td>@spec.FileNumber</td>
-                    <td>@spec.FileName</td>
-                    <td>@spec.Version</td>
-                    <td>data group</td>
-                    <td>@Html.YesNo(spec.IsSEA)</td>
-                    <td>@Html.YesNo(spec.IsLEA)</td>
-                    <td>@Html.YesNo(spec.IsSEA)</td>
-                    <td>@string.Format("{0:d}", spec.DueDate)</td>
-                    <td>@string.Format("{0:d}", spec.DataYear)</td>
-                    <td>@spec.ReportState.GetDisplayName()</td>
-                    <td>
-                        @if (spec.Reports.Any())
-                            {
-                            @spec.Reports.OrderBy(x => x.SubmittedDate).SingleOrDefault().SubmittedDate
-                            }
-                    </td>
-                    <td>
-                        @if (!spec.Reports.Any())
-                            {
-                            <button class="btn btn-default btn-sm" data-start data-filespec-id="@spec.Id">Start</button>
-                            <button class="btn btn-default btn-sm" data-waiver data-filespec-id="@spec.Id">Waiver</button>
-                            }
-                        @if (spec.Reports.Any())
-                            {
-                            <a class="btn btn-default btn-sm" href="reports/@spec.FileNumber">Reports</a>
-                            @*<a class="btn btn-default btn-sm" data-reset href="api/report/reset/@spec.FileNumber">Reset</a>*@
-                            }
-                    </td>
-                </tr>
-                }
-            </tbody>
         </table>
     </div>
 </div>
@@ -92,59 +74,141 @@
 </div>
 
 @section scripts
-{
+    {
     <script type="text/javascript">
-        $(function() {
+
+        function checkboxFormatter(value, row, index, field) {
+            if (value === true) {
+                return '<div class="text-center"><i class="fa fa-check-circle"></i></div>';
+            }
+        }
+
+        function dateFormatter(value, row, index, field) {
+            return moment(value).format('MM/DD/YYYY');
+        }
+
+        function actionsFormatter(value, row, index, field) {
+            var lnk = '';
+            if (row.reportState !== 1) {
+                lnk += '<a class="btn btn-default btn-sm" href="reports/' + row.fileNumber + '">Reports</a>';
+            } else {
+                lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' + value + '">Start</button>';
+                lnk += '<button class="btn btn-default btn-sm" data-waiver data-filespec-id="' + value + '">Waiver</button>';
+            }
+            return lnk;
+        }
+
+        function historyFormatter(value, row, index, field) {
+            var id = value;
+            var dataYear = row.dataYear;
+            console.log('id', id);
+            console.log('dataYear', dataYear);
+            var lnk = '<a href=/workitemhistory/' +
+                dataYear +
+                '/' +
+                id +
+                ' data-history data-title="Work History" data-toggle="tooltip" data-placement="left">' +
+                '<i class="fa fa-history"></i></a>';
+            return lnk;
+        }
+
+        $(function () {
             console.log('ready');
 
-            $(document).on('click', '[data-start]', function (e) {
-                e.preventDefault();
-                console.log('start');
-                var btn = $(this);
-                var id = btn.data('filespec-id');
-                $.ajax({
-                    url: '/api/reports/create/' + id,
-                    type: 'POST',
-                    success: function (data) {
-                        //play with data
-                        console.log('data', data);
-                    },
-                    error: function (err) {
-                        console.log('err', err);
-                    }
-                });
-            });
+            var $table = $('#grid');
 
-            $(document).on('click', '[data-waiver]', function (e) {
-                e.preventDefault();
-                var btn = $(this);
-                var id = btn.data('filespec-id');
-                console.log('file spec', id);
-                $.ajax({
-                    url: '/api/reports/waiver/' + id,
-                    type: 'POST',
-                    success: function (data) {
-                        //play with data
-                        console.log('data', data);
-                    },
-                    error: function (err) {
-                        console.log('err', err);
-                    }
-                });
-            });
+            //var filespecifications;
+            //$.ajax({
+            //    url: '/api/filespecifications',
+            //    type: 'GET',
+            //    success: function (data) {
+            //        //play with data
+            //        filespecifications = data;
+            //        console.log('data', data);
+            //        console.log('file specs', filespecifications);
+            //        $table.bootstrapTable({ data: data });
+            //    },
+            //    error: function (err) {
+            //        console.log('err', err);
+            //    }
+            //});
 
-            $(document).on('click', '[data-history]', function (e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                var title = $(this).data('title');
-                $('.modal-title').html(title);
-                $('.modal-body').load(url,
-                    function () {
-                        $('#myModal').modal({ show: true });
+            $('input').keyup(debounce(function () {
+                var $this = $(this);
+                //alert( $this.val() );
+                console.log('val', $this.val());
+            },
+                500));
+
+            $(document).on('click',
+                '[data-start]',
+                function (e) {
+                    e.preventDefault();
+                    console.log('start');
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    $.ajax({
+                        url: '/api/reports/create/' + id,
+                        type: 'POST',
+                        success: function (data) {
+                            //play with data
+                            console.log('data', data);
+                            $table.bootstrapTable('refresh');
+
+                        },
+                        error: function (err) {
+                            console.log('err', err);
+                        }
                     });
-            });
+                });
+
+            $(document).on('click',
+                '[data-waiver]',
+                function (e) {
+                    e.preventDefault();
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    console.log('file spec', id);
+                    $.ajax({
+                        url: '/api/reports/waiver/' + id,
+                        type: 'POST',
+                        success: function (data) {
+                            //play with data
+                            console.log('data', data);
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function (err) {
+                            console.log('err', err);
+                        }
+                    });
+                });
+
+            $(document).on('click',
+                '[data-history]',
+                function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr('href');
+                    var title = $(this).data('title');
+                    $('.modal-title').html(title);
+                    $('.modal-body').load(url,
+                        function () {
+                            $('#myModal').modal({ show: true });
+                        });
+                });
 
             $('[data-toggle="tooltip"]').tooltip();
+
+            function debounce(fn, delay) {
+                var timer = null;
+                return function () {
+                    var context = this, args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function () {
+                        fn.apply(context, args);
+                    },
+                        delay);
+                };
+            }
 
         });
     </script>

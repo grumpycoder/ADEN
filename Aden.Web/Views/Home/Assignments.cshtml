@@ -3,157 +3,163 @@
     ViewBag.Title = "My Assignments";
 }
 
-<h3>My Assignments</h3>
 <div class="row">
     <div class="col-md-12">
 
-        <form action="/assignments/mine" method="get">
-            <div class="col-lg-6">
-                <div class="input-group">
-                    @Html.DropDownListFor(m => m.Username,
-                        new List<SelectListItem>()
-                        {
-                            new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
-                            new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
-                            new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
-                        }, new { @class = "form-control" })
 
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">Change</button>
-                    </span>
-                </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
+        <div class="pull-right">
 
 
-        </form>
-
-    </div>
-
-</div>
-
-<div class="panel panel-primary">
-
-    <div class="panel-heading">
-        <span class="panel-title">
-            My Assignments
-        </span>
-    </div>
-    <div class="panel-body">
-        <table class="table">
-            <thead>
-                <tr>
-                    <td>Report</td>
-                    <td>Data Year</td>
-                    <td>Assigned</td>
-                    <td>Due</td>
-                    <td>Action</td>
-                    <td>State</td>
-                    <td></td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var assignment in Model.WorkItems)
-                {
-                    <tr>
-                        <td>@assignment.Report.FileSpecification</td>
-                        <td>@assignment.Report.DataYear</td>
-                        <td>@assignment.AssignedDate</td>
-                        <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
-                        <td>@assignment.WorkItemAction.GetDisplayName()</td>
-                        <td>@assignment.WorkItemState.GetDisplayName()</td>
-                        <td>
-                            <button class="btn btn-default" data-report-id="@assignment.ReportId" data-workitem-id="@assignment.Id" data-workitem-action="@assignment.WorkItemAction" disabled="@assignment.WorkItemState.Equals(WorkItemState.Completed)">@assignment.WorkItemAction</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
-<div class="panel panel-info" hidden="@(!Model.CompletedWorkItems.Any(x => x.CanCancel))">
-
-    <div class="panel-heading">
-        <span class="panel-title">
-            Retrievable Actions
-        </span>
-    </div>
-    <div class="panel-body">
-        <h4>Undoable</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <td>Report</td>
-                    <td>Assigned</td>
-                    <td>Due</td>
-                    <td>Action</td>
-                    <td>State</td>
-                    <td>Completed</td>
-                    <td></td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var assignment in Model.CompletedWorkItems.OrderBy(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction).Where(x => x.CanCancel == true))
-                {
-                    <tr>
-                        <td>@assignment.Report.FileSpecification</td>
-                        <td>@assignment.AssignedDate</td>
-                        <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
-                        <td>@assignment.WorkItemAction.GetDisplayName()</td>
-                        <td>@assignment.WorkItemState.GetDisplayName()</td>
-                        <td>@assignment.CompletedDate</td>
-                        <td>
-                            @if (assignment.CanCancel)
+            <form action="/assignments/mine" method="get" role="form">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        @Html.DropDownListFor(m => m.Username,
+                            new List<SelectListItem>()
                             {
-                                <button class="btn btn-default" data-cancel-workitem="@assignment.Id" data-cancel-workitem-id="@assignment.Id">Cancel @assignment.WorkItemAction.GetDisplayName()</button>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                                new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                                new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                            }, new { @class = "form-control" })
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Change</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </form>
+        </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-12">
+        
 
-<div class="panel panel-default" hidden="@(!Model.CompletedWorkItems.Any())">
+        <div class="panel panel-primary">
 
-    <div class="panel-heading">
-        <span class="panel-title">
-            Completed Actions
-        </span>
-    </div>
-    <div class="panel-body">
-        <h4>Completed</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <td>Report</td>
-                    <td>Assigned</td>
-                    <td>Due</td>
-                    <td>Action</td>
-                    <td>State</td>
-                    <td>Completed</td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var assignment in Model.CompletedWorkItems.OrderByDescending(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction))
-                {
+            <div class="panel-heading">
+                My Assignments
+
+
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
                     <tr>
-                        <td>@assignment.Report.FileSpecification</td>
-                        <td>@assignment.AssignedDate</td>
-                        <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
-                        <td>@assignment.WorkItemAction.GetDisplayName()</td>
-                        <td>@assignment.WorkItemState.GetDisplayName()</td>
-                        <td>@assignment.CompletedDate</td>
+                        <td>Report</td>
+                        <td>Data Year</td>
+                        <td>Assigned</td>
+                        <td>Due</td>
+                        <td>Action</td>
+                        <td>State</td>
+                        <td></td>
                     </tr>
-                }
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                    @foreach (var assignment in Model.WorkItems)
+                    {
+                        <tr>
+                            <td>@assignment.Report.FileSpecification</td>
+                            <td>@assignment.Report.DataYear</td>
+                            <td>@assignment.AssignedDate</td>
+                            <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
+                            <td>@assignment.WorkItemAction.GetDisplayName()</td>
+                            <td>@assignment.WorkItemState.GetDisplayName()</td>
+                            <td>
+                                <button class="btn btn-default" data-report-id="@assignment.ReportId" data-workitem-id="@assignment.Id" data-workitem-action="@assignment.WorkItemAction" disabled="@assignment.WorkItemState.Equals(WorkItemState.Completed)">@assignment.WorkItemAction</button>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="panel panel-info" hidden="@(!Model.CompletedWorkItems.Any(x => x.CanCancel))">
+
+            <div class="panel-heading">
+                <span class="panel-title">
+                    Retrievable Actions
+                </span>
+            </div>
+            <div class="panel-body">
+                <h4>Undoable</h4>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>Report</td>
+                        <td>Assigned</td>
+                        <td>Due</td>
+                        <td>Action</td>
+                        <td>State</td>
+                        <td>Completed</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var assignment in Model.CompletedWorkItems.OrderBy(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction).Where(x => x.CanCancel == true))
+                    {
+                        <tr>
+                            <td>@assignment.Report.FileSpecification</td>
+                            <td>@assignment.AssignedDate</td>
+                            <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
+                            <td>@assignment.WorkItemAction.GetDisplayName()</td>
+                            <td>@assignment.WorkItemState.GetDisplayName()</td>
+                            <td>@assignment.CompletedDate</td>
+                            <td>
+                                @if (assignment.CanCancel)
+                                {
+                                    <button class="btn btn-default" data-cancel-workitem="@assignment.Id" data-cancel-workitem-id="@assignment.Id">Cancel @assignment.WorkItemAction.GetDisplayName()</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="panel panel-default" hidden="@(!Model.CompletedWorkItems.Any())">
+
+            <div class="panel-heading">
+                <span class="panel-title">
+                    Completed Actions
+                </span>
+            </div>
+            <div class="panel-body">
+                <h4>Completed</h4>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td>Report</td>
+                        <td>Assigned</td>
+                        <td>Due</td>
+                        <td>Action</td>
+                        <td>State</td>
+                        <td>Completed</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var assignment in Model.CompletedWorkItems.OrderByDescending(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction))
+                    {
+                        <tr>
+                            <td>@assignment.Report.FileSpecification</td>
+                            <td>@assignment.AssignedDate</td>
+                            <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
+                            <td>@assignment.WorkItemAction.GetDisplayName()</td>
+                            <td>@assignment.WorkItemState.GetDisplayName()</td>
+                            <td>@assignment.CompletedDate</td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
