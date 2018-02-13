@@ -54,5 +54,14 @@ namespace Aden.Web.Controllers
             var document = uow.Documents.GetById(id);
             return PartialView(document);
         }
+
+        public FileResult Download(int id)
+        {
+            var document = uow.Documents.GetById(id);
+            //byte[] byteArray = Convert.FromBase64String(document.File);
+            return File(document.File, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
+        }
+
+
     }
 }

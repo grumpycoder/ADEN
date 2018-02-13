@@ -35,12 +35,11 @@
                data-filter-control="true">
             <thead>
                 <tr>
-                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
                     <th data-field="fileSpecification.fileName" data-searchable="true" data-filter-control="input">File Name</th>
                     <th data-field="fileSpecification.fileNumber" data-filter-control="input">FileNumber</th>
                     <th data-field="fileSpecification.dataYear" data-filter-control="input">Data Year</th>
-                    <th data-field="reportState" data-filter-control="input">Data Year</th>
-                    <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
+                    <th data-field="reportState" data-filter-control="input">State</th>
+                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
                 </tr>
             </thead>
         </table>
@@ -59,6 +58,24 @@
                 ...
             </div>
             <div class="modal-footer">
+                <a class="btn btn-primary" download="file.csv" href="/download/1079">Download</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="historyModalLabel">Document</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -72,11 +89,8 @@
         function historyFormatter(value, row, index, field) {
             var id = row.fileSpecificationId;
             var dataYear = row.dataYear;
-            var lnk = '<a href=/workitemhistory/' +
-                dataYear +
-                '/' +
-                id +
-                ' data-history data-title="Work History" data-toggle="tooltip" data-placement="left">' +
+            var lnk = '<a href="/workitemhistory/' + dataYear + '/' + id + '" data-target="#historyModal" data-toggle="historymodal" ' +
+                'data-url=/workitemhistory/' + dataYear + '/' + id + ' data-history="true" data-title="Work History" data-placement="left">' +
                 '<i class="fa fa-history"></i></a>';
             return lnk;
         }
@@ -98,36 +112,20 @@
 
         function detailFormatter(index, row) {
             var html = [];
-            row.documents.forEach(function(doc) {
-                console.log('doc', doc);
+            html.push('<ul class="list-inline">');
+            row.documents.forEach(function (doc) {
                 html.push(
-                    '<a href="/document/' + doc.id + '" data-doc-id="' + doc.id + '" data-doc-title="' + doc.filename + '">' + 
-                    '<i class="glyphicon glyphicon-file"></i>' + doc.filename + '</a>');
+                    '<li>' +
+                    '<a href="#myModal" data-target="#myModal" data-doc-id="' + doc.id + '" data-doc-title="' + doc.filename + '" data-toggle="modal" data-url="/document/' + doc.id + '">' +
+                    '<i class="glyphicon glyphicon-file"></i>' + doc.filename + '</a>' +
+                    '</li>');
             });
+            html.push('</ul>');
             return html.join('');
         }
 
-        $(function() {
+        $(function () {
             console.log('ready');
-
-            $('#myModal').on('show.bs.modal',
-                function (e) {
-                    console.log('modal show', e.relatedTarget);
-                });
-
-            $(document).on('click',
-                'a[data-doc-id]',
-                function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr('href');
-                    var title = $(this).data('doc-title');
-
-                    $('.modal-title').html(title);
-                    $('.modal-body').load(url,
-                        function () {
-                            $('#myModal').modal({ show: true });
-                        });
-                });
 
             var $table = $('#grid');
 
@@ -156,21 +154,49 @@
                 $table.bootstrapTable('refresh');
             }
 
-
-            $('[data-toggle="tooltip"]').tooltip();
-
             $(document).on('click',
                 '[data-history]',
-                function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr('href');
-                    var title = $(this).data('title');
-                    $('.modal-title').html(title);
-                    $('.modal-body').load(url,
-                        function() {
-                            $('#myModal').modal({ show: true });
-                        });
+                function (e) {
+                    var $currentTarget = $(e.currentTarget);
+                    var targetModal = $currentTarget.data('target');
+
+                    var remoteContent = $currentTarget.data('url');
+                    var title = $currentTarget.data('doc-title');
+
+                    var modal = $(targetModal);
+                    var modalBody = $(targetModal + ' .modal-body');
+                    var modalTitle = $(targetModal + ' .modal-title');
+                    modalTitle.html(title);
+
+                    modal.on('show.bs.modal', function () {
+                        modalBody.load(remoteContent);
+                    }).modal();
+                    return false;
                 });
+
+            $(document).on('click', '[data-toggle="modal"]', function (e) {
+                var $currentTarget = $(e.currentTarget);
+                var targetModal = $currentTarget.data('target');
+
+                var remoteContent = $currentTarget.data('url'); 
+                var title = $currentTarget.data('doc-title');
+
+                var modal = $(targetModal);
+                var modalBody = $(targetModal + ' .modal-body');
+                var modalTitle = $(targetModal + ' .modal-title');
+
+                var id = $currentTarget.data('doc-id');
+
+                modalTitle.html(title);
+
+                modal.on('show.bs.modal', function () {
+                    var lnk = $(this).find('a[download]');
+                    lnk.attr('href', '/download/' + id);
+                    modalBody.load(remoteContent);
+                }).modal();
+                return false;
+            });
+
 
 
         });
