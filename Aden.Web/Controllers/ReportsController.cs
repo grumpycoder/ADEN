@@ -17,12 +17,20 @@ namespace Aden.Web.Controllers
             uow = new UnitOfWork(context);
         }
 
-        [HttpGet]
-        public object Get(string id = null)
+        [HttpGet, Route("{filespecificationId}")]
+        public object Get(string filespecificationId = null)
         {
-            return Ok(uow.Reports.GetByFileSpecificationNumber(id));
+            return Ok(uow.Reports.GetByFileSpecificationNumber(filespecificationId));
 
         }
+
+        [HttpGet, Route("{filespecificationId}/{datayear}")]
+        public object Get(string filespecificationId, int datayear)
+        {
+            return Ok(uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear));
+
+        }
+
 
         [HttpGet, Route("search")]
         public object Search(string search = null, string order = "asc", int offset = 0, int limit = 10)

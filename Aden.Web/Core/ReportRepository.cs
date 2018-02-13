@@ -15,10 +15,18 @@ namespace ADEN.Web.Core
             _context = context;
         }
 
-        public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber = null)
+        public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber, int datayear)
         {
             return _context.Reports.Include(f => f.FileSpecification).Include(r => r.Documents)
-                .Where(f => (f.FileSpecification.FileNumber == fileNumber && f.FileSpecification.DataYear == f.DataYear) || string.IsNullOrEmpty(fileNumber)).ToList();
+                .Where(f => (f.FileSpecification.FileNumber == fileNumber && f.FileSpecification.DataYear == datayear) || string.IsNullOrEmpty(fileNumber)).ToList();
+        }
+
+
+        public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber)
+        {
+
+            return _context.Reports.Include(f => f.FileSpecification).Include(r => r.Documents)
+                .Where(f => (f.FileSpecification.FileNumber == fileNumber) || string.IsNullOrEmpty(fileNumber)).ToList();
         }
 
         public IEnumerable<Report> GetByFileSpecificationNumberPaged(string search, string order, int offset, int limit)

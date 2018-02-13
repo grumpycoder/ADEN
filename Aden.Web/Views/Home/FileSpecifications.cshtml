@@ -90,7 +90,7 @@
         function actionsFormatter(value, row, index, field) {
             var lnk = '';
             if (row.reportState !== 1) {
-                lnk += '<a class="btn btn-default btn-sm" href="reports/' + row.fileNumber + '">Reports</a>';
+                lnk += '<a class="btn btn-default btn-sm" href="reports/' + row.fileNumber + '/' + row.dataYear + '">Reports</a>';
             } else {
                 lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' + value + '">Start</button>';
                 lnk += '<button class="btn btn-default btn-sm" data-waiver data-filespec-id="' + value + '">Waiver</button>';

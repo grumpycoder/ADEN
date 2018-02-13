@@ -8,9 +8,11 @@
         <h1 class="panel-title">Reports</h1>
     </div>
     <input type="hidden" value="@ViewContext.RouteData.Values["id"]" id="filespec" />
+    <input type="hidden" value="@ViewContext.RouteData.Values["datayear"]" id="datayear" />
     <div class="panel-body">
-        @*               data-url="/api/reports/search"*@
         <table id="grid"
+               data-detail-view="true"
+               data-detail-formatter="detailFormatter"
                data-toggle="table"
                data-pagination=" true"
                data-page-size="5"
@@ -45,88 +47,9 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12 col-lg-12">
-
-
-        <div class="panel panel-success">
-            <div class="panel-heading">
-                <span class="panel-heading">
-                    Reports
-                </span>
-            </div>
-            <div class="panel-body">
-                <table class="table table-responsive table-condensed table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <td></td>
-                            <td>File Name</td>
-                            <td>File Number</td>
-                            <td>Data Year</td>
-                            <td>State</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var report in Model)
-                        {
-                        <tr>
-                            <td>
-                                <a class="btn btn-default btn-sm" data-history data-title="Work History" href="/workitemhistory/@report.DataYear/@report.FileSpecificationId">
-                                    <i class="glyphicon glyphicon-time" data-toggle="tooltip" data-placement="left" title="History"></i>
-                                </a>
-                            </td>
-                            <td>@report.FileSpecification.FileName</td>
-                            <td>@report.FileSpecification.FileNumber</td>
-                            <td>@report.DataYear</td>
-                            <td>@report.ReportState.GetDisplayName()</td>
-                            <td>
-                                <a class="collapsed" data-toggle="collapse" href=@string.Format("#collapseListGroup{0}", @report.Id) aria-expanded="false" aria-controls=@string.Format("collapseListGroup{0}", @report.Id)>
-                                    <i class="glyphicon glyphicon-chevron-down"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="5">
-                                <div class="container">
-                                    <div class="row">
-
-                                        <div class="pull-right">
-
-                                            <div class="col-md-12">
-
-                                                <div class="panel-collapse collapse" id=@string.Format("collapseListGroup{0}", @report.Id) role="tabpanel" aria-labelledby="collapseListGroupHeading1">
-                                                    <ul class="list-group list-group-horizontal">
-                                                        @foreach (var doc in report.Documents.OrderByDescending(r => r.Version))
-                                                            {
-                                                            <li class="list-group-item">
-                                                                <a href="/reportdocument/@doc.Id" data-doc-id="@doc.Id" data-doc-title="@doc.Filename">
-                                                                    <i class="glyphicon glyphicon-file"></i>
-                                                                    @string.Format("{0} v-{1}", @doc.ReportLevel, @doc.Version)
-                                                                </a>
-                                                            </li>
-                                                            }
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -147,10 +70,8 @@
     <script>
 
         function historyFormatter(value, row, index, field) {
-            var id = value;
+            var id = row.fileSpecificationId;
             var dataYear = row.dataYear;
-            console.log('id', id);
-            console.log('dataYear', dataYear);
             var lnk = '<a href=/workitemhistory/' +
                 dataYear +
                 '/' +
@@ -175,17 +96,47 @@
             return lnk;
         }
 
+        function detailFormatter(index, row) {
+            var html = [];
+            row.documents.forEach(function(doc) {
+                console.log('doc', doc);
+                html.push(
+                    '<a href="/document/' + doc.id + '" data-doc-id="' + doc.id + '" data-doc-title="' + doc.filename + '">' + 
+                    '<i class="glyphicon glyphicon-file"></i>' + doc.filename + '</a>');
+            });
+            return html.join('');
+        }
+
         $(function() {
             console.log('ready');
+
+            $('#myModal').on('show.bs.modal',
+                function (e) {
+                    console.log('modal show', e.relatedTarget);
+                });
+
+            $(document).on('click',
+                'a[data-doc-id]',
+                function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr('href');
+                    var title = $(this).data('doc-title');
+
+                    $('.modal-title').html(title);
+                    $('.modal-body').load(url,
+                        function () {
+                            $('#myModal').modal({ show: true });
+                        });
+                });
 
             var $table = $('#grid');
 
             var filespec = $('#filespec').val();
+            var datayear = $('#datayear').val();
             var options = $table.bootstrapTable('getOptions');
 
             if (filespec !== '') {
-                console.log('filespec', filespec);
-                options.url = '/api/reports/' + filespec;
+                options.url = '/api/reports/' + filespec + '/' + datayear;
                 options.filterControl = false;
                 options.showRefresh = false;
                 options.showToggle = false;
@@ -213,7 +164,6 @@
                 function(e) {
                     e.preventDefault();
                     var url = $(this).attr('href');
-                    console.log(url);
                     var title = $(this).data('title');
                     $('.modal-title').html(title);
                     $('.modal-body').load(url,
@@ -222,18 +172,7 @@
                         });
                 });
 
-            $('a[data-doc-id]').on('click',
-                function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr('href');
-                    var title = $(this).data('doc-title');
-                    $('.modal-title').html(title);
-                    $('.modal-body').load(url,
-                        function() {
-                            $('#myModal').modal({ show: true });
-                        });
-                });
 
-        })
+        });
     </script>
 }

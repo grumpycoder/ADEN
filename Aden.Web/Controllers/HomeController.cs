@@ -18,13 +18,16 @@ namespace Aden.Web.Controllers
 
         public ActionResult FileSpecifications()
         {
-            var specs = uow.FileSpecifications.GetAllWithReports();
-            return View(specs);
+            //TODO: Not needed if webapi populating in view
+            //var specs = uow.FileSpecifications.GetAllWithReports();
+            //return View(specs);
+            return View();
         }
 
-        public ActionResult Reports(string id)
+        public ActionResult Reports(string id = null, int datayear = 0)
         {
-            var reports = uow.Reports.GetByFileSpecificationNumber(id);
+            //TODO: Not needed if webapi populating in view
+            var reports = uow.Reports.GetByFileSpecificationNumber(id, datayear);
             return View(reports);
         }
 
@@ -46,5 +49,10 @@ namespace Aden.Web.Controllers
             return PartialView("_WorkItemHistory", workItems);
         }
 
+        public ActionResult Document(int id)
+        {
+            var document = uow.Documents.GetById(id);
+            return PartialView(document);
+        }
     }
 }
