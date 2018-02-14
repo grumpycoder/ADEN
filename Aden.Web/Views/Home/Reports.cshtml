@@ -90,7 +90,7 @@
             var id = row.fileSpecificationId;
             var dataYear = row.dataYear;
             var lnk = '<a href="/workitemhistory/' + dataYear + '/' + id + '" data-target="#historyModal" data-toggle="historymodal" ' +
-                'data-url=/workitemhistory/' + dataYear + '/' + id + ' data-history="true" data-title="Work History" data-placement="left">' +
+                'data-url=/workitemhistory/' + dataYear + '/' + id + ' data-history data-title="Work History" data-placement="left">' +
                 '<i class="fa fa-history"></i></a>';
             return lnk;
         }
@@ -161,7 +161,7 @@
                     var targetModal = $currentTarget.data('target');
 
                     var remoteContent = $currentTarget.data('url');
-                    var title = $currentTarget.data('doc-title');
+                    var title = $currentTarget.data('title');
 
                     var modal = $(targetModal);
                     var modalBody = $(targetModal + ' .modal-body');

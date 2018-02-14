@@ -18,17 +18,12 @@ namespace Aden.Web.Controllers
 
         public ActionResult FileSpecifications()
         {
-            //TODO: Not needed if webapi populating in view
-            //var specs = uow.FileSpecifications.GetAllWithReports();
-            //return View(specs);
             return View();
         }
 
         public ActionResult Reports(string id = null, int datayear = 0)
         {
-            //TODO: Not needed if webapi populating in view
-            var reports = uow.Reports.GetByFileSpecificationNumber(id, datayear);
-            return View(reports);
+            return View();
         }
 
         public ActionResult Assignments(string username)
@@ -58,7 +53,6 @@ namespace Aden.Web.Controllers
         public FileResult Download(int id)
         {
             var document = uow.Documents.GetById(id);
-            //byte[] byteArray = Convert.FromBase64String(document.File);
             return File(document.File, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
         }
 
