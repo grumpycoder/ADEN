@@ -81,6 +81,11 @@ namespace ADEN.Web.Models
                     Report.SubmittedUser = AssignedUser;
                     Report.ReportState = Report.FileSpecification.ReportState = ReportState.Complete;
                     break;
+                case WorkItemAction.SubmitWithError:
+                    Report.SubmittedDate = DateTime.Now;
+                    Report.SubmittedUser = AssignedUser;
+                    Report.ReportState = Report.FileSpecification.ReportState = ReportState.CompleteWithError;
+                    break;
             }
         }
 
@@ -131,6 +136,11 @@ namespace ADEN.Web.Models
             {
                 return default(T);
             }
+        }
+
+        public void SetAction(WorkItemAction action)
+        {
+            WorkItemAction = action;
         }
     }
 }

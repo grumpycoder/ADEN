@@ -41,7 +41,7 @@
                data-undefined-text="">
             <thead>
                 <tr>
-                    <th data-field="fileName">File Name</th>
+                    <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
                     <th data-field="fileNumber">File Number</th>
                     <th data-field="dataYear">Data Year</th>
                     <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
@@ -74,7 +74,7 @@
                data-response-handler="retrieveAssignmentresponseHandler">
             <thead>
                 <tr>
-                    <th data-field="fileName">File Name</th>
+                    <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
                     <th data-field="fileNumber">File Number</th>
                     <th data-field="dataYear">Data Year</th>
                     <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
@@ -106,7 +106,7 @@
                data-undefined-text="">
             <thead>
                 <tr>
-                    <th data-field="fileName">File Name</th>
+                    <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
                     <th data-field="fileNumber">File Number</th>
                     <th data-field="dataYear">Data Year</th>
                     <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
@@ -141,6 +141,12 @@
 {
     <script type="text/javascript">
 
+        function fileNameFormatter(value, row, index, field) {
+            var lnk = '<a href="reports/' + row.fileNumber + '/' + row.dataYear + '">' + row.fileName + '</a>';
+            return lnk;
+        }
+
+
         function retrieveAssignmentresponseHandler(res) {
             var wi = res.filter(function (item, idx) { return item.canCancel === true; });
             return wi;
@@ -157,7 +163,7 @@
         function actionsFormatter(value, row) {
             console.log('row', row);
             var lnk =
-                '<button class="btn btn-default btn-grid" data-report-id="' +
+                '<button class="btn btn-primary btn-grid" data-report-id="' +
                 row.reportId +
                 '" data-workitem-id="' +
                 row.id +
@@ -165,8 +171,17 @@
                 row.action +
                 '">' +
                 row.action +
-                '</button>';
-            lnk += '<a class="btn btn-default btn-grid" href="reports/' + row.fileNumber + '/' + row.dataYear + '">Reports</a>&nbsp;';
+                '</button>&nbsp;';
+            if (row.action === 'Submit') {
+                lnk +=
+                    '<button class="btn btn-danger btn-grid" data-report-id="' +
+                    row.reportId +
+                    '" data-workitem-error-id="' +
+                    row.id +
+                    '" data-workitem-action="' +
+                    row.action +
+                    '">Submit With Errors</button>';
+            }
             return lnk;
         }
 
@@ -178,10 +193,6 @@
             console.log('ready');
 
             function refreshGrids() {
-                //$('#gridWorkItems').bootstrapTable('refresh', { url: '/api/wi/currentassignments/' + username + '/'});
-                //$('#gridUndoWorkItems').bootstrapTable('refresh', { url: '/api/wi/completedassignments/' + username + '/' });;
-                //$('#gridCompletedWorkItems').bootstrapTable('refresh', { url: '/api/wi/completedassignments/' + username + '/' });;
-
                 $('#gridWorkItems').bootstrapTable('refresh');
                 $('#gridUndoWorkItems').bootstrapTable('refresh');
                 $('#gridCompletedWorkItems').bootstrapTable('refresh');
@@ -205,6 +216,24 @@
                     });
                 });
 
+            $(document).on('click',
+                'button[data-workitem-error-id]',
+                function (e) {
+                    e.preventDefault();
+                    var btn = $(this);
+                    var id = btn.data('workitem-error-id');
+                    $.ajax({
+                        url: '/api/wi/completewitherror/' + id,
+                        type: 'POST',
+                        success: function (data) {
+                            console.log('data', data);
+                            refreshGrids();
+                        },
+                        error: function (err) {
+                            console.log('err', err);
+                        }
+                    });
+                });
 
             $(document).on('click',
                 'button[data-cancel-workitem]',

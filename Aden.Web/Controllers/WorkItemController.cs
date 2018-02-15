@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 using ADEN.Web.Core;
 using ADEN.Web.Data;
-using ADEN.Web.Helpers;
 using ADEN.Web.Models;
 using ADEN.Web.ViewModels;
 using AutoMapper;
@@ -27,7 +23,7 @@ namespace ADEN.Web.Controllers
         [HttpGet, Route("{username}")]
         public object Get(string username)
         {
-       
+
             var workitems = uow.WorkItems.GetActiveByUser(username);
             var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
             var retrievableWorkItems = uow.WorkItems.GetCompletedByUser(username);
@@ -72,7 +68,6 @@ namespace ADEN.Web.Controllers
             var wi = uow.WorkItems.GetById(id);
             if (wi == null) return NotFound();
 
-
             if (wi.WorkItemAction == WorkItemAction.Generate)
             {
                 var result = uow.GenerateDocuments(wi.ReportId ?? 0);
@@ -89,10 +84,22 @@ namespace ADEN.Web.Controllers
             return Ok();
         }
 
+        [HttpPost, Route("completewitherror/{id}")]
+        public object CompleteWithError(int id)
+        {
+            var wi = uow.WorkItems.GetById(id);
+            if (wi == null) return NotFound();
+
+            wi.SetAction(WorkItemAction.SubmitWithError); 
+
+            wi.Complete();
+            uow.Complete();
+            return Ok("complete with error");
+        }
+
         [HttpPost, Route("undo/{id}")]
         public object Undo(int id)
         {
-
             var wi = uow.WorkItems.GetByIdWithDetails(id);
             if (wi == null) return NotFound();
 
@@ -105,41 +112,6 @@ namespace ADEN.Web.Controllers
 
             return Ok(id);
         }
-
-        [HttpPost, Route("generate/{workItemId}")]
-        public object Generate(int workItemId)
-        {
-            try
-            {
-                var wi = uow.WorkItems.GetById(workItemId);
-                var action = wi.Report.FileSpecification.ReportAction;
-
-                var dataTable = new DataTable();
-                var ctx = AdenContext.Create();
-                using (var connection = new SqlConnection(ctx.Database.Connection.ConnectionString))
-                {
-                    using (var cmd = new SqlCommand(action, connection))
-                    {
-                        var adapter =
-                            new SqlDataAdapter(cmd) { SelectCommand = { CommandType = CommandType.StoredProcedure } };
-                        adapter.Fill(dataTable);
-                    }
-                }
-                var file = dataTable.ToCSVBytes();
-                wi.Report.CreateDocument(file, ReportLevel.SCH);
-
-                wi.Complete();
-
-                uow.Complete();
-
-                return Ok(file);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
 
     }
 }

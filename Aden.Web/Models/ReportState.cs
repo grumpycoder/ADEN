@@ -14,9 +14,11 @@ namespace ADEN.Web.Models
         AwaitingApproval = 4,
         [Display(Name = "Assigned for Submit")]
         AssignedForSubmission = 5,
+        [Display(Name = "Complete with Errors")]
+        CompleteWithError = 6,
         [Display(Name = "Completed")]
-        Complete = 6,
+        Complete = 7,
         [Display(Name = "Waived")]
-        Waived = 7,
+        Waived = 8,
     }
 }
