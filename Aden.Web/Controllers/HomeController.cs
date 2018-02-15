@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ADEN.Web.Core;
 using ADEN.Web.Data;
 using ADEN.Web.ViewModels;
-using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
@@ -30,17 +28,9 @@ namespace Aden.Web.Controllers
 
         public ActionResult Assignments(string username)
         {
-            _userName = username;
-            var vm = new AssigmentsViewModel();
-            var workitems = uow.WorkItems.GetActiveByUser(_userName);
-            var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
-
-            var wi = Mapper.Map<List<WorkItemViewModel>>(workitems);
-            var wi2 = Mapper.Map<List<WorkItemViewModel>>(completedWorkItems);
-
-            vm.WorkItems = wi;
-            vm.CompletedWorkItems = wi2;
-            vm.Username = username;
+            var userName = _userName;
+            if (!string.IsNullOrEmpty(username)) userName = username;
+            var vm = new AssigmentsViewModel() { Username = userName };
             return View(vm);
         }
 

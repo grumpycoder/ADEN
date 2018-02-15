@@ -1,20 +1,21 @@
 ﻿@model ADEN.Web.ViewModels.AssigmentsViewModel
+
 @{
     ViewBag.Title = "My Assignments";
 }
 
 <div class="panel panel-default">
     <div class="panel-body">
-        <form action="/assignments/mine" method="get" role="form">
+        <form action="/assignments" method="get" role="form">
             <div class="col-lg-6">
                 <div class="input-group">
                     @Html.DropDownListFor(m => m.Username,
-                                                 new List<SelectListItem>()
-                                                 {
-                                                                                new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
-                                                                                new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
-                                                                                new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
-                                                 }, new { @class = "form-control" })
+                             new List<SelectListItem>()
+                             {
+                                    new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                                    new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                                    new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                             }, new { @class = "form-control" })
 
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">Change</button>
@@ -24,7 +25,6 @@
         </form>
     </div>
 </div>
-
 
 <div class="panel panel-primary">
 
@@ -55,7 +55,8 @@
 </div>
 
 
-<div class="panel panel-warning" hidden="@(!Model.CompletedWorkItems.Any(x => x.CanCancel))">
+@*<div class="panel panel-warning" hidden="@(!Model.CompletedWorkItems.Any(x => x.CanCancel))">*@
+<div class="panel panel-warning">
 
     <div class="panel-heading">
         <h1 class="panel-title">
@@ -87,7 +88,8 @@
 </div>
 
 
-<div class="panel panel-success" hidden="@(!Model.CompletedWorkItems.Any())">
+@*<div class="panel panel-success" hidden="@(!Model.CompletedWorkItems.Any())">*@
+<div class="panel panel-success">
 
     <div class="panel-heading">
         <h1 class="panel-title">
@@ -166,7 +168,7 @@
         }
 
         function cancelActionsFormatter(value, row) {
-               return  '<button class="btn btn-default" data-cancel-workitem data-cancel-workitem-id="' + row.id + '">Cancel ' + row.action + '</button>';
+            return '<button class="btn btn-default" data-cancel-workitem data-cancel-workitem-id="' + row.id + '">Cancel ' + row.action + '</button>';
         }
 
         $(function () {

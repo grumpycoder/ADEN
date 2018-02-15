@@ -27,7 +27,7 @@ namespace ADEN.Web.Controllers
         [HttpGet, Route("{username}")]
         public object Get(string username)
         {
-            var vm = new AssigmentsViewModel();
+       
             var workitems = uow.WorkItems.GetActiveByUser(username);
             var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
             var retrievableWorkItems = uow.WorkItems.GetCompletedByUser(username);
@@ -36,9 +36,6 @@ namespace ADEN.Web.Controllers
             var wi2 = Mapper.Map<List<WorkItemViewModel>>(completedWorkItems);
             var wi3 = Mapper.Map<List<WorkItemViewModel>>(retrievableWorkItems);
 
-            //vm.WorkItems = wi;
-            //vm.CompletedWorkItems = wi2;
-            //vm.RetrievableWorkItems = wi3;
             var s = new
             {
                 WorkItems = wi,
