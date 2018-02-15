@@ -16,7 +16,8 @@ namespace ADEN.Web.ViewModels
         public string State { get; set; }
         public string Action { get; set; }
 
-        public string FileSpecification { get; set; }
+        public string FileName { get; set; }
+        public string FileNumber { get; set; }
 
         public bool CanCancel { get; set; }
         public DateTime? CompletedDate { get; set; }
@@ -29,7 +30,8 @@ namespace ADEN.Web.ViewModels
                 .ForMember(d => d.DueDate, opt => opt.MapFrom(s => s.Report.FileSpecification.DueDate))
                 .ForMember(d => d.State, opt => opt.MapFrom(s => s.WorkItemState.GetDisplayName()))
                 .ForMember(d => d.State, opt => opt.MapFrom(s => s.CompletedDate))
-                .ForMember(d => d.FileSpecification, opt => opt.MapFrom(s => s.Report.FileSpecification.FileName))
+                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Report.FileSpecification.FileName))
+                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Report.FileSpecification.FileNumber))
                 .ForMember(d => d.Action, opt => opt.MapFrom(s => s.WorkItemAction.GetDisplayName()));
         }
     }

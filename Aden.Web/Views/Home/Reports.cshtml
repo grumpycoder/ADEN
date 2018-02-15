@@ -35,10 +35,12 @@
                data-filter-control="true">
             <thead>
             <tr>
-                <th data-field="id"></th>
                 <th data-field="fileName" data-title="File Name"></th>
                 <th data-field="fileNumber" data-title="File Number"></th>
                 <th data-field="dataYear"data-title="Data Year"></th>
+                <th data-field="generatedDate"data-title="Generated" data-formatter="dateFormatterWithTime"></th>
+                <th data-field="approvedDate"data-title="Approved" data-formatter="dateFormatterWithTime"></th>
+                <th data-field="submittedDate"data-title="Submittted" data-formatter="dateFormatterWithTime"></th>
                 <th data-field="reportState" data-title="State"></th>
                 <th data-field="id" data-formatter="historyFormatter"></th>
                 @*<th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
@@ -92,14 +94,20 @@
 {
     <script>
 
+        function dateFormatterWithTime(value, row, index, field) {
+            if (value === null) return '';
+            return moment(value).format('MM/DD/YYYY hh:mm A');
+        }
+
         function historyFormatter(value, row, index, field) {
-            var lnk = '<a href="/workitemhistory/' + row.id + '" data-target="#historyModal" data-toggle="historymodal" ' +
-                'data-url=/workitemhistory/' + row.id + ' data-history data-title="Work History" data-placement="left">' +
+            var lnk = '<a href="#historyModal" data-target="#historyModal" data-toggle="historyModal" ' +
+                'data-url=/workitemhistory/' + row.id + ' data-history data-title="Work History">' +
                 '<i class="fa fa-history"></i></a>';
             return lnk;
         }
 
         function actionsFormatter(value, row, index, field) {
+
             var lnk = '';
             if (row.reportState !== 1) {
                 lnk += '<a class="btn btn-default btn-sm" href="reports/' + row.fileNumber + '">Reports</a>';
@@ -161,9 +169,9 @@
                 $table.bootstrapTable('refresh');
             }
 
-            $(document).on('click',
-                '[data-history]',
+            $(document).on('click', '[data-history]',
                 function (e) {
+                    e.preventDefault();
                     var $currentTarget = $(e.currentTarget);
                     var targetModal = $currentTarget.data('target');
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ADEN.Web.Helpers;
 using ADEN.Web.Models;
 using AutoMapper;
@@ -15,7 +16,10 @@ namespace Aden.Web.ViewModels
         public ReportState ReportStateId { get; set; }
         public string ReportState { get; set; }
         public int FileSpecificationId { get; set; }
-        public List<ReportDocument> Documents { get; set; }
+        public List<ReportDocumentViewModel> Documents { get; set; }
+        public DateTime? GeneratedDate { get; set; }
+        public DateTime? ApprovedDate { get; set; }
+        public DateTime? SubmittedDate { get; set; }
 
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {

@@ -1,8 +1,8 @@
-﻿using ADEN.Web.Data;
-using ADEN.Web.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using ADEN.Web.Data;
+using ADEN.Web.Models;
 
 namespace ADEN.Web.Core
 {
@@ -18,14 +18,16 @@ namespace ADEN.Web.Core
         public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber, int datayear)
         {
             return _context.Reports.Include(f => f.FileSpecification).Include(r => r.Documents)
-                .Where(f => (f.FileSpecification.FileNumber == fileNumber && f.FileSpecification.DataYear == datayear) || string.IsNullOrEmpty(fileNumber)).ToList();
+                .Where(f => (f.FileSpecification.FileNumber == fileNumber && f.FileSpecification.DataYear == datayear) || string.IsNullOrEmpty(fileNumber))
+                .OrderByDescending(x => x.Id)
+                .ToList();
         }
 
 
         public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber)
         {
 
-            return _context.Reports.Include(f => f.FileSpecification).Include(r => r.Documents)
+            return _context.Reports.Include(f => f.FileSpecification).Include(r => r.Documents).OrderByDescending(x => x.Id)
                 .Where(f => (f.FileSpecification.FileNumber == fileNumber) || string.IsNullOrEmpty(fileNumber)).ToList();
         }
 
@@ -34,7 +36,7 @@ namespace ADEN.Web.Core
             var reports = _context.Reports
                 .Include(f => f.FileSpecification)
                 .Include(r => r.Documents)
-                .OrderBy(x => x.Id)
+                .OrderByDescending(x => x.Id)
                 .Where(f => (string.IsNullOrEmpty(search)) ||
                             (f.FileSpecification.FileNumber.Contains(search) ||
                              f.FileSpecification.FileName.Contains(search)))

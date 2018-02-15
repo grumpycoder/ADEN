@@ -41,8 +41,8 @@
                data-undefined-text="">
             <thead>
                 <tr>
-                    <th data-field="id">Report</th>
-                    <th data-field="fileSpecification">Report</th>
+                    <th data-field="fileName">File Name</th>
+                    <th data-field="fileNumber">File Number</th>
                     <th data-field="dataYear">Data Year</th>
                     <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
                     <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
@@ -74,8 +74,8 @@
                data-response-handler="retrieveAssignmentresponseHandler">
             <thead>
                 <tr>
-                    <th data-field="id">Report</th>
-                    <th data-field="fileSpecification">Report</th>
+                    <th data-field="fileName">File Name</th>
+                    <th data-field="fileNumber">File Number</th>
                     <th data-field="dataYear">Data Year</th>
                     <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
                     <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
@@ -106,7 +106,8 @@
                data-undefined-text="">
             <thead>
                 <tr>
-                    <th data-field="fileSpecification">Report</th>
+                    <th data-field="fileName">File Name</th>
+                    <th data-field="fileNumber">File Number</th>
                     <th data-field="dataYear">Data Year</th>
                     <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
                     <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
@@ -154,8 +155,9 @@
         }
 
         function actionsFormatter(value, row) {
+            console.log('row', row);
             var lnk =
-                '<button class="btn btn-default" data-report-id="' +
+                '<button class="btn btn-default btn-grid" data-report-id="' +
                 row.reportId +
                 '" data-workitem-id="' +
                 row.id +
@@ -164,11 +166,12 @@
                 '">' +
                 row.action +
                 '</button>';
+            lnk += '<a class="btn btn-default btn-grid" href="reports/' + row.fileNumber + '/' + row.dataYear + '">Reports</a>&nbsp;';
             return lnk;
         }
 
         function cancelActionsFormatter(value, row) {
-            return '<button class="btn btn-default" data-cancel-workitem data-cancel-workitem-id="' + row.id + '">Cancel ' + row.action + '</button>';
+            return '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + row.id + '">Cancel ' + row.action + '</button>';
         }
 
         $(function () {

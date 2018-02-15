@@ -47,3 +47,15 @@
 .panel-title a:visited {
     text-decoration: none;
 }
+
+.btn-grid {
+    min-width: 85px;
+}
+
+.btn-lg-grid {
+    min-width: 90px;
+}
+
+.align-right {
+    text-align: right;
+}
