@@ -46,9 +46,10 @@ namespace ADEN.Web.Core
 
         public IEnumerable<WorkItem> GetCompletedByUser(string username)
         {
-            return _context.WorkItems
-                .Include(f => f.Report.FileSpecification).Include(r => r.Report.WorkItems)
-                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToList();
+            var workItems = _context.WorkItems
+                .Include(f => f.Report.FileSpecification).Include(r => r.Report.WorkItems).AsQueryable();
+
+            return workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToList();
         }
 
         public IEnumerable<WorkItem> GetHistoryByFileSpecification(int fileSpecificationId, int dataYear)

@@ -1,14 +1,16 @@
-﻿using ADEN.Web.Core;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using ADEN.Web.Core;
 using ADEN.Web.Data;
 using ADEN.Web.ViewModels;
-using System.Web.Mvc;
+using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly UnitOfWork uow;
-        private string UserName = "mlawrence@alsde.edu";
+        private string _userName = "mlawrence@alsde.edu";
 
         public HomeController()
         {
@@ -28,13 +30,17 @@ namespace Aden.Web.Controllers
 
         public ActionResult Assignments(string username)
         {
-            UserName = username;
+            _userName = username;
             var vm = new AssigmentsViewModel();
-            var workitems = uow.WorkItems.GetActiveByUser(UserName);
+            var workitems = uow.WorkItems.GetActiveByUser(_userName);
             var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
-            vm.WorkItems = workitems;
-            vm.CompletedWorkItems = completedWorkItems;
 
+            var wi = Mapper.Map<List<WorkItemViewModel>>(workitems);
+            var wi2 = Mapper.Map<List<WorkItemViewModel>>(completedWorkItems);
+
+            vm.WorkItems = wi;
+            vm.CompletedWorkItems = wi2;
+            vm.Username = username;
             return View(vm);
         }
 

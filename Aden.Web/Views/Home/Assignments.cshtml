@@ -3,36 +3,27 @@
     ViewBag.Title = "My Assignments";
 }
 
-    @*<div class="row">
-        <div class="col-md-12">*@
+<div class="panel panel-default">
+    <div class="panel-body">
+        <form action="/assignments/mine" method="get" role="form">
+            <div class="col-lg-6">
+                <div class="input-group">
+                    @Html.DropDownListFor(m => m.Username,
+                                                 new List<SelectListItem>()
+                                                 {
+                                                                                new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                                                                                new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                                                                                new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                                                 }, new { @class = "form-control" })
 
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    
-
-                    <form action="/assignments/mine" method="get" role="form">
-                        <div class="col-lg-6">
-                            <div class="input-group">
-                                @Html.DropDownListFor(m => m.Username,
-                                    new List<SelectListItem>()
-                                    {
-                                        new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
-                                        new SelectListI/tem() {Text = "jking", Value = "jking@alsde.edu"},
-                                        new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
-                                    }, new {@class = "form-control"})
-
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit">Change</button>
-                                </span>
-                            </div><!-- /input-group -->
-                        </div><!-- /.col-lg-6 -->
-                    </form>
-                    
-                </div>
-            </div>
-
-                @*</div>
-    </div>*@
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="submit">Change</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+        </form>
+    </div>
+</div>
 
 
 <div class="panel panel-primary">
@@ -41,34 +32,24 @@
         <h1 class="panel-title">My Assignments</h1>
     </div>
     <div class="panel-body">
-        <table class="table table-bordered table-responsive">
+        <table class="table table-bordered table-responsive" id="gridWorkItems"
+               data-id-field="id"
+               data-show-refresh="true"
+               data-url="/api/wi/currentassignments/@Model.Username/"
+               data-toggle="table"
+               data-side-pagination="client"
+               data-undefined-text="">
             <thead>
                 <tr>
-                    <td>Report</td>
-                    <td>Data Year</td>
-                    <td>Assigned</td>
-                    <td>Due</td>
-                    <td>Action</td>
-                    <td>State</td>
-                    <td></td>
+                    <th data-field="id">Report</th>
+                    <th data-field="fileSpecification">Report</th>
+                    <th data-field="dataYear">Data Year</th>
+                    <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
+                    <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
+                    <th data-field="action">Action</th>
+                    <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var assignment in Model.WorkItems)
-                {
-                    <tr>
-                        <td>@assignment.Report.FileSpecification</td>
-                        <td>@assignment.Report.DataYear</td>
-                        <td>@assignment.AssignedDate</td>
-                        <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
-                        <td>@assignment.WorkItemAction.GetDisplayName()</td>
-                        <td>@assignment.WorkItemState.GetDisplayName()</td>
-                        <td>
-                            <button class="btn btn-default" data-report-id="@assignment.ReportId" data-workitem-id="@assignment.Id" data-workitem-action="@assignment.WorkItemAction" disabled="@assignment.WorkItemState.Equals(WorkItemState.Completed)">@assignment.WorkItemAction</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
         </table>
     </div>
 </div>
@@ -82,37 +63,25 @@
         </h1>
     </div>
     <div class="panel-body">
-        <table class="table">
+        <table class="table table-bordered table-responsive" id="gridUndoWorkItems"
+               data-url="/api/wi/completedassignments/@Model.Username/"
+               data-id-field="id"
+               data-show-refresh="true"
+               data-toggle="table"
+               data-side-pagination="client"
+               data-undefined-text=""
+               data-response-handler="retrieveAssignmentresponseHandler">
             <thead>
                 <tr>
-                    <td>Report</td>
-                    <td>Assigned</td>
-                    <td>Due</td>
-                    <td>Action</td>
-                    <td>State</td>
-                    <td>Completed</td>
-                    <td></td>
+                    <th data-field="id">Report</th>
+                    <th data-field="fileSpecification">Report</th>
+                    <th data-field="dataYear">Data Year</th>
+                    <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
+                    <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
+                    <th data-field="action">Action</th>
+                    <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="cancelActionsFormatter"></th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var assignment in Model.CompletedWorkItems.OrderBy(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction).Where(x => x.CanCancel == true))
-                    {
-                        <tr>
-                            <td>@assignment.Report.FileSpecification</td>
-                            <td>@assignment.AssignedDate</td>
-                            <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
-                            <td>@assignment.WorkItemAction.GetDisplayName()</td>
-                            <td>@assignment.WorkItemState.GetDisplayName()</td>
-                            <td>@assignment.CompletedDate</td>
-                            <td>
-                                @if (assignment.CanCancel)
-                                {
-                                <button class="btn btn-default" data-cancel-workitem="@assignment.Id" data-cancel-workitem-id="@assignment.Id">Cancel @assignment.WorkItemAction.GetDisplayName()</button>
-                                }
-                            </td>
-                        </tr>
-                    }
-            </tbody>
         </table>
     </div>
 </div>
@@ -126,35 +95,26 @@
         </h1>
     </div>
     <div class="panel-body">
-        <table class="table">
+        <table class="table table-bordered table-responsive" id="gridCompletedWorkItems"
+               data-url="/api/wi/completedassignments/@Model.Username/"
+               data-id-field="id"
+               data-show-refresh="true"
+               data-toggle="table"
+               data-side-pagination="client"
+               data-undefined-text="">
             <thead>
                 <tr>
-                    <td>Report</td>
-                    <td>Assigned</td>
-                    <td>Due</td>
-                    <td>Action</td>
-                    <td>State</td>
-                    <td>Completed</td>
+                    <th data-field="fileSpecification">Report</th>
+                    <th data-field="dataYear">Data Year</th>
+                    <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
+                    <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
+                    <th data-field="action">Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var assignment in Model.CompletedWorkItems.OrderByDescending(x => x.CompletedDate).ThenByDescending(x => x.WorkItemAction))
-                    {
-                        <tr>
-                            <td>@assignment.Report.FileSpecification</td>
-                            <td>@assignment.AssignedDate</td>
-                            <td>@string.Format("{0:d}", assignment.Report.FileSpecification.DueDate)</td>
-                            <td>@assignment.WorkItemAction.GetDisplayName()</td>
-                            <td>@assignment.WorkItemState.GetDisplayName()</td>
-                            <td>@assignment.CompletedDate</td>
-                        </tr>
-                    }
-            </tbody>
         </table>
+
     </div>
 </div>
-
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
@@ -178,69 +138,91 @@
 {
     <script type="text/javascript">
 
+        function retrieveAssignmentresponseHandler(res) {
+            var wi = res.filter(function (item, idx) { return item.canCancel === true; });
+            return wi;
+        }
+
+        function dateFormatter(value, row, index, field) {
+            return moment(value).format('MM/DD/YYYY');
+        }
+
+        function dateFormatterWithTime(value, row, index, field) {
+            return moment(value).format('MM/DD/YYYY hh:mm A');
+        }
+
+        function actionsFormatter(value, row) {
+            var lnk =
+                '<button class="btn btn-default" data-report-id="' +
+                row.reportId +
+                '" data-workitem-id="' +
+                row.id +
+                '" data-workitem-action="' +
+                row.action +
+                '">' +
+                row.action +
+                '</button>';
+            return lnk;
+        }
+
+        function cancelActionsFormatter(value, row) {
+               return  '<button class="btn btn-default" data-cancel-workitem data-cancel-workitem-id="' + row.id + '">Cancel ' + row.action + '</button>';
+        }
+
         $(function () {
             console.log('ready');
 
-            $('button[data-workitem-id]').click(function (e) {
-                e.preventDefault();
-                var btn = $(this);
-                var id = btn.data('workitem-id');
-                var reportId = btn.data('report-id');
-                var action = btn.data('workitem-action');
-                console.log('workitem-id', btn.data('workitem-id'));
-                console.log('workitem-action', btn.data('workitem-action'));
+            function refreshGrids() {
+                //$('#gridWorkItems').bootstrapTable('refresh', { url: '/api/wi/currentassignments/' + username + '/'});
+                //$('#gridUndoWorkItems').bootstrapTable('refresh', { url: '/api/wi/completedassignments/' + username + '/' });;
+                //$('#gridCompletedWorkItems').bootstrapTable('refresh', { url: '/api/wi/completedassignments/' + username + '/' });;
 
-                $.ajax({
-                    url: '/api/wi/complete/' + id,
-                    type: 'POST',
-                    success: function (data) {
-                        //play with data
-                        console.log('data', data);
-                    },
-                    error: function (err) {
-                        console.log('err', err);
-                    }
-                });
-            });
+                $('#gridWorkItems').bootstrapTable('refresh');
+                $('#gridUndoWorkItems').bootstrapTable('refresh');
+                $('#gridCompletedWorkItems').bootstrapTable('refresh');
+            }
 
-
-            $('button[data-cancel-workitem]').click(function (e) {
-                e.preventDefault();
-                var btn = $(this);
-                var id = btn.data('cancel-workitem-id');
-                console.log('id', id);
-                $.ajax({
-                    url: '/api/wi/undo/' + id,
-                    type: 'POST',
-                    success: function (data) {
-                        //play with data
-                        console.log('data', data);
-                    },
-                    error: function (err) {
-                        console.log('err', err);
-                    }
+            $(document).on('click',
+                'button[data-workitem-id]',
+                function (e) {
+                    e.preventDefault();
+                    var btn = $(this);
+                    var id = btn.data('workitem-id');
+                    $.ajax({
+                        url: '/api/wi/complete/' + id,
+                        type: 'POST',
+                        success: function (data) {
+                            refreshGrids();
+                        },
+                        error: function (err) {
+                            console.log('err', err);
+                        }
+                    });
                 });
 
-            });
 
-            function loadDocuments(id) {
-                var url = '/documentlist/' + id;
-                $('#.modal-body').load(url,
-                    function () {
-                        $('#myModal2').modal({ show: true });
+            $(document).on('click',
+                'button[data-cancel-workitem]',
+                function (e) {
+                    e.preventDefault();
+                    console.log('cancel');
+                    var btn = $(this);
+                    var id = btn.data('cancel-workitem-id');
+                    console.log('id', id);
+                    $.ajax({
+                        url: '/api/wi/undo/' + id,
+                        type: 'POST',
+                        success: function (data) {
+                            refreshGrids();
+                        },
+                        error: function (err) {
+                            console.log('err', err);
+                        }
                     });
 
-                //$('a[data-history]').on('click', function (e) {
-                //    e.preventDefault();
-                //    var url = $(this).attr('href');
-                //    console.log(url);
-                //    $('.modal-body').load(url,
-                //        function () {
-                //            $('#myModal').modal({ show: true });
-                //        });
-                //});
-            }
-        })
+                });
+
+        });
 
     </script>
 }
