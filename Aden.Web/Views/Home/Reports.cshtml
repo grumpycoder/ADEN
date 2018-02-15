@@ -34,13 +34,19 @@
                data-filter-show-clear="true"
                data-filter-control="true">
             <thead>
-                <tr>
-                    <th data-field="fileSpecification.fileName" data-searchable="true" data-filter-control="input">File Name</th>
-                    <th data-field="fileSpecification.fileNumber" data-filter-control="input">FileNumber</th>
-                    <th data-field="fileSpecification.dataYear" data-filter-control="input">Data Year</th>
+            <tr>
+                <th data-field="id"></th>
+                <th data-field="fileName" data-title="File Name"></th>
+                <th data-field="fileNumber" data-title="File Number"></th>
+                <th data-field="dataYear"data-title="Data Year"></th>
+                <th data-field="reportState" data-title="State"></th>
+                <th data-field="id" data-formatter="historyFormatter"></th>
+                @*<th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
+                    <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
+                    <th data-field="dataYear" data-filter-control="input">Data Year</th>
                     <th data-field="reportState" data-filter-control="input">State</th>
-                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
-                </tr>
+                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>*@
+            </tr>
             </thead>
         </table>
     </div>
@@ -87,10 +93,8 @@
     <script>
 
         function historyFormatter(value, row, index, field) {
-            var id = row.fileSpecificationId;
-            var dataYear = row.dataYear;
-            var lnk = '<a href="/workitemhistory/' + dataYear + '/' + id + '" data-target="#historyModal" data-toggle="historymodal" ' +
-                'data-url=/workitemhistory/' + dataYear + '/' + id + ' data-history data-title="Work History" data-placement="left">' +
+            var lnk = '<a href="/workitemhistory/' + row.id + '" data-target="#historyModal" data-toggle="historymodal" ' +
+                'data-url=/workitemhistory/' + row.id + ' data-history data-title="Work History" data-placement="left">' +
                 '<i class="fa fa-history"></i></a>';
             return lnk;
         }
@@ -120,6 +124,9 @@
                     '<i class="glyphicon glyphicon-file"></i>' + doc.filename + '</a>' +
                     '</li>');
             });
+            if (row.documents.length === 0) {
+                html.push('<li>No documents</li>');
+            }
             html.push('</ul>');
             return html.join('');
         }

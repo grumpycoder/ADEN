@@ -1,0 +1,31 @@
+﻿using System.Collections.Generic;
+using ADEN.Web.Helpers;
+using ADEN.Web.Models;
+using AutoMapper;
+using Heroic.AutoMapper;
+
+namespace Aden.Web.ViewModels
+{
+    public class ReportViewModel : IMapFrom<Report>, IHaveCustomMappings
+    {
+        public int Id { get; set; }
+        public string FileName { get; set; }
+        public string FileNumber { get; set; }
+        public int DataYear { get; set; }
+        public ReportState ReportStateId { get; set; }
+        public string ReportState { get; set; }
+        public int FileSpecificationId { get; set; }
+        public List<ReportDocument> Documents { get; set; }
+
+        public void CreateMappings(IMapperConfigurationExpression configuration)
+        {
+            configuration.CreateMap<Report, ReportViewModel>()
+                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileSpecification.FileName))
+                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileSpecification.FileNumber))
+                .ForMember(d => d.Documents, opt => opt.MapFrom(s => s.Documents))
+                .ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
+                .ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName()));
+
+        }
+    }
+}

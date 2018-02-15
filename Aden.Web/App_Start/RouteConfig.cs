@@ -41,10 +41,16 @@ namespace Aden.Web
                 defaults: new { controller = "Home", action = "Assignments", id = UrlParameter.Optional }
             );
 
+            //routes.MapRoute(
+            //    name: "WorkItemHistoryActions",
+            //    url: "workitemhistory/{datayear}/{id}",
+            //    defaults: new { controller = "Home", action = "WorkItemHistory", id = UrlParameter.Optional }
+            //);
+
             routes.MapRoute(
                 name: "WorkItemHistoryActions",
-                url: "workitemhistory/{datayear}/{id}",
-                defaults: new { controller = "Home", action = "WorkItemHistory", id = UrlParameter.Optional }
+                url: "workitemhistory/{reportId}",
+                defaults: new { controller = "Home", action = "WorkItemHistory", reportId = UrlParameter.Optional }
             );
 
             routes.MapRoute(

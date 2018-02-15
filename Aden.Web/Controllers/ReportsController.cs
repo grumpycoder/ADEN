@@ -1,8 +1,11 @@
-﻿using ADEN.Web.Core;
-using ADEN.Web.Data;
-using ADEN.Web.Models;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Aden.Web.ViewModels;
+using ADEN.Web.Core;
+using ADEN.Web.Data;
+using ADEN.Web.Models;
+using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
@@ -27,10 +30,13 @@ namespace Aden.Web.Controllers
         [HttpGet, Route("{filespecificationId}/{datayear}")]
         public object Get(string filespecificationId, int datayear)
         {
+            var reports = uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear); 
+
+            var reportList = Mapper.Map<List<ReportViewModel>>(reports);
+            return Ok(reportList);
             return Ok(uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear));
 
         }
-
 
         [HttpGet, Route("search")]
         public object Search(string search = null, string order = "asc", int offset = 0, int limit = 10)
@@ -38,10 +44,12 @@ namespace Aden.Web.Controllers
             var reports = uow.Reports.GetByFileSpecificationNumberPaged(search, order, offset, limit);
             var totalRows = uow.FileSpecifications.GetAllWithReportsPaged(search);
 
+            var reportList = Mapper.Map<List<ReportViewModel>>(reports);
+
             var s = new
             {
                 Total = totalRows.Count(),
-                Rows = reports
+                Rows = reportList
             };
             return Ok(s);
         }

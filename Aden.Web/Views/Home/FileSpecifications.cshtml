@@ -49,7 +49,7 @@
                     <th data-field="isSCH" data-formatter="checkboxFormatter" data-align="center">SCH</th>
                     <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
                     <th data-field="dataYear" data-filter-control="input">Data Year</th>
-                    <th data-field="state" data-filter-control="input">State</th>
+                    <th data-field="reportState" data-filter-control="input">State</th>
                     <th data-field="id" data-class="no-wrap" data-align="center" data-formatter="actionsFormatter"></th>
                 </tr>
             </thead>
@@ -93,12 +93,17 @@
 
         function actionsFormatter(value, row, index, field) {
             var lnk = '';
-            if (row.reportState !== 1) {
+            console.log('row', row);
+            console.log('value', value);
+            if (row.reportStateId !== 1) {
                 lnk += '<a class="btn btn-default btn-sm" href="reports/' + row.fileNumber + '/' + row.dataYear + '">Reports</a>&nbsp;';
-                lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' + value + '">ReOpen</button>';
-            } else {
-                lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' + value + '">Start</button>&nbsp;';
-                lnk += '<button class="btn btn-default btn-sm" data-waiver data-filespec-id="' + value + '">Waiver</button>';
+            }
+            if (row.reportStateId >= 5) {
+                lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' + row.id + '">ReOpen</button>';
+            }
+            if(row.reportStateId === 1) {
+                lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' + row.id + '">Start</button>&nbsp;';
+                lnk += '<button class="btn btn-default btn-sm" data-waiver data-filespec-id="' + row.id + '">Waiver</button>';
             }
             return lnk;
         }

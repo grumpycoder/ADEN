@@ -57,5 +57,9 @@ namespace ADEN.Web.Core
             return _context.WorkItems.Where(w => w.Report.FileSpecificationId == fileSpecificationId && w.Report.DataYear == dataYear).OrderByDescending(d => d.Id).ToList();
         }
 
+        public IEnumerable<WorkItem> GetHistoryByReport(int reportId)
+        {
+            return _context.WorkItems.Where(w => w.ReportId == reportId).OrderByDescending(d => d.Id).ToList();
+        }
     }
 }
