@@ -200,6 +200,7 @@
     <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AssigmentsViewModel.cs" />
+    <Compile Include="ViewModels\FileSpecificationViewModel.cs" />
     <Compile Include="ViewModels\WorkItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

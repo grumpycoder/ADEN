@@ -1,7 +1,10 @@
-﻿using ADEN.Web.Core;
-using ADEN.Web.Data;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using ADEN.Web.Core;
+using ADEN.Web.Data;
+using ADEN.Web.ViewModels;
+using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
@@ -22,10 +25,12 @@ namespace Aden.Web.Controllers
             //return Ok(uow.FileSpecifications.GetAllWithReports());
             var specs = uow.FileSpecifications.GetAllWithReportsPaged(search, order, offset, limit);
             var totalRows = uow.FileSpecifications.GetAllWithReportsPaged(search);
+
+            var si = Mapper.Map<List<FileSpecificationViewModel>>(specs);
             var s = new
             {
                 Total = totalRows.Count(),
-                Rows = specs
+                Rows = si
             };
             return Ok(s);
         }
