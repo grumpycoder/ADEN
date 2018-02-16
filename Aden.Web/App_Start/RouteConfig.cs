@@ -54,6 +54,18 @@ namespace Aden.Web
             );
 
             routes.MapRoute(
+                name: "EditFileSpecificationsActions",
+                url: "editfilespecification/{id}",
+                defaults: new { controller = "Home", action = "EditFileSpecification", Id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "SaveFileSpecificationsActions",
+                url: "savespecification",
+                defaults: new { controller = "Home", action = "SaveSpecification" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "FileSpecifications", id = UrlParameter.Optional }

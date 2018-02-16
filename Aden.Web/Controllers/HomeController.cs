@@ -2,6 +2,7 @@
 using ADEN.Web.Core;
 using ADEN.Web.Data;
 using ADEN.Web.ViewModels;
+using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
@@ -54,6 +55,49 @@ namespace Aden.Web.Controllers
             return File(document.File, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
         }
 
+        public ActionResult EditFileSpecification(int id)
+        {
+            var spec = uow.FileSpecifications.GetById(id);
 
+            var model = Mapper.Map<FileSpecificationEditViewModel>(spec);
+            return PartialView("_FileSpecificationForm", model);
+
+        }
+
+        [HttpPost]
+        public ActionResult SaveSpecification(FileSpecificationEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                //Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return View("_FileSpecificationForm", model);
+            }
+
+            var spec = uow.FileSpecifications.GetById(model.Id);
+
+            //Mapper.Map(model, spec);
+            spec.FileName = model.FileName;
+            spec.FileNumber = model.FileNumber;
+            spec.Version = model.Version;
+            spec.IsSEA = model.IsSEA;
+            spec.IsLEA = model.IsLEA;
+            spec.IsSCH = model.IsSCH;
+            spec.Department = model.Department;
+            spec.GenerationUserGroup = model.Department;
+            spec.ApprovalUserGroup = model.Department;
+            spec.SubmissionUserGroup = model.Department;
+            spec.FileNameFormat = model.Department;
+            spec.DueDate = model.DueDate;
+            spec.DataYear = model.DataYear;
+            spec.IsRetired = model.IsRetired;
+            spec.ReportAction = model.ReportAction;
+
+
+            uow.Complete();
+
+            return Content("success");
+
+            //return RedirectToAction("FileSpecifications");
+        }
     }
 }

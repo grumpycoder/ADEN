@@ -35,6 +35,19 @@ namespace Aden.Web.Controllers
             return Ok(s);
         }
 
+        public object Put(FileSpecificationEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var spec = uow.FileSpecifications.GetById(model.Id);
 
+            Mapper.Map(model, spec);
+
+            uow.Complete();
+
+            return Ok();
+        }
     }
 }

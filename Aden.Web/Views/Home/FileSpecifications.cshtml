@@ -77,6 +77,11 @@
     </div>
 </div>
 
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+    <div id="editContainer">
+    </div>
+</div>
+
 @section scripts
 {
     <script type="text/javascript">
@@ -149,13 +154,16 @@
                 row.mostRecentReportId +
                 ' data-history data-title="Work History" data-toggle="tooltip" title="Work History" data-placement="left">' +
                 '<i class="fa fa-history"></i></a>';
+            lnk += '<a href="/EditFileSpecification/' + row.id + '" data-edit data-id="' + row.id + '">Edit</a>';
             return lnk;
         }
+
+        var $table = $('#grid');
 
         $(function() {
             console.log('ready');
 
-            var $table = $('#grid');
+           
 
             $('input').keyup(debounce(function() {
                     var $this = $(this);
@@ -214,6 +222,17 @@
                         });
                 });
 
+            $(document).on('click',
+                '[data-edit]',
+                function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    $.get(url, function (data) {
+                        $('#editContainer').html(data);
+                        $('#editModal').modal({ show: true });
+                    });
+                });
+        
             $('body').tooltip({ selector: '[data-toggle=tooltip]' });
 
             function debounce(fn, delay) {
@@ -228,6 +247,29 @@
                 };
             }
 
+          
+
         });
+
+        function updateComplete() {
+            console.log('update complete');
+        }
+
+        function UpdateSuccess(data) {
+            console.log('updatesuccess');
+            if (data !== "success") {
+                console.log('error', data);
+                $('#editContainer').html(data);
+                return;
+            }
+            $('#editModal').modal('hide');
+            $('#editContainer').html("");
+            $table.bootstrapTable('refresh');
+        }
+
+        function UpdateFailed(data) {
+            console.log('failed data', data);
+        }
+
     </script>
 }
