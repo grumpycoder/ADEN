@@ -1,7 +1,8 @@
-﻿using ADEN.Web.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Aden.Web.Services;
+using ADEN.Web.Helpers;
 
 namespace ADEN.Web.Models
 {
@@ -40,7 +41,11 @@ namespace ADEN.Web.Models
 
         public void AddWorkItem(WorkItem workItem)
         {
+            //TODO: Throw error is uncompleted work item exists
             WorkItems.Add(workItem);
+            workItem.Report = this;
+            //Send notification
+            NotificationService.SendWorkNotification(workItem);
         }
 
         public void CreateDocument(byte[] file, ReportLevel reportLevel)
@@ -60,6 +65,8 @@ namespace ADEN.Web.Models
             foreach (var workItem in WorkItems.Where(i => i.WorkItemState == WorkItemState.NotStarted))
             {
                 workItem.Cancel();
+                //Send notification
+                NotificationService.SendCancelWorkNotification(workItem);
             }
 
         }
@@ -68,8 +75,9 @@ namespace ADEN.Web.Models
         {
             var wi = WorkItem.Create(WorkItemAction.Generate, FileSpecification.GenerationUserGroup);
             AddWorkItem(wi);
-            ReportState = FileSpecification.ReportState = ReportState.AssignedForGeneration;
 
+            //TODO: Does this belong here
+            ReportState = FileSpecification.ReportState = ReportState.AssignedForGeneration;
         }
 
         public void Waive()

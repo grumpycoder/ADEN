@@ -192,6 +192,7 @@
     <Compile Include="Models\FileSpecification.cs" />
     <Compile Include="Models\FileSpecificationDetail.cs" />
     <Compile Include="Models\FileSpecificationState.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportDocument.cs" />
     <Compile Include="Models\ReportLevel.cs" />

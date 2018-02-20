@@ -42,6 +42,10 @@ namespace ADEN.Web.Models
             }
         }
 
+        private WorkItem()
+        {
+        }
+
         public void Complete()
         {
             CompletedDate = DateTime.Now;
@@ -76,22 +80,24 @@ namespace ADEN.Web.Models
                     wi = WorkItem.Create(WorkItemAction.Submit, Report.FileSpecification.SubmissionUserGroup);
                     Report.AddWorkItem(wi);
                     break;
+                case WorkItemAction.SubmitWithError:
+                    Report.SubmittedDate = DateTime.Now;
+                    Report.SubmittedUser = AssignedUser;
+                    Report.ReportState = Report.FileSpecification.ReportState = ReportState.CompleteWithError;
+                    wi = WorkItem.Create(WorkItemAction.ReviewError, Report.FileSpecification.ApprovalUserGroup);
+                    Report.AddWorkItem(wi);
+                    break;
                 case WorkItemAction.Submit:
                     Report.SubmittedDate = DateTime.Now;
                     Report.SubmittedUser = AssignedUser;
                     Report.ReportState = Report.FileSpecification.ReportState = ReportState.Complete;
                     break;
-                case WorkItemAction.SubmitWithError:
-                    Report.SubmittedDate = DateTime.Now;
-                    Report.SubmittedUser = AssignedUser;
-                    Report.ReportState = Report.FileSpecification.ReportState = ReportState.CompleteWithError;
+                case WorkItemAction.ReviewError:
+                    Report.StartNewWork();
                     break;
             }
         }
 
-        private WorkItem()
-        {
-        }
 
         private WorkItem(WorkItemAction action, string assignee)
         {

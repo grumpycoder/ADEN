@@ -90,7 +90,7 @@ namespace ADEN.Web.Controllers
             var wi = uow.WorkItems.GetById(id);
             if (wi == null) return NotFound();
 
-            wi.SetAction(WorkItemAction.SubmitWithError); 
+            wi.SetAction(WorkItemAction.SubmitWithError);
 
             wi.Complete();
             uow.Complete();

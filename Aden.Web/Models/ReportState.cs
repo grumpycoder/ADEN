@@ -6,11 +6,11 @@ namespace ADEN.Web.Models
     {
         [Display(Name = "Not Started")]
         NotStarted = 1,
-        [Display(Name = "Assigned for Generation")]
+        [Display(Name = "Assigned for Generate")]
         AssignedForGeneration = 2,
         [Display(Name = "Assigned for Review")]
         AssignedForReview = 3,
-        [Display(Name = "Assigned for Approval")]
+        [Display(Name = "Assigned for Approve")]
         AwaitingApproval = 4,
         [Display(Name = "Assigned for Submit")]
         AssignedForSubmission = 5,

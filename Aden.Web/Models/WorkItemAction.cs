@@ -13,6 +13,8 @@ namespace ADEN.Web.Models
         [Display(Name = "Submit")]
         Submit = 4,
         [Display(Name = "Submit With Error")]
-        SubmitWithError = 5
+        SubmitWithError = 5,
+        [Display(Name = "Review Error")]
+        ReviewError = 6
     }
 }
