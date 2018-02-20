@@ -35,7 +35,6 @@ namespace Aden.Web.Controllers
             return View(vm);
         }
 
-        //public ActionResult WorkItemHistory(int datayear, int id)
         public ActionResult WorkItemHistory(int reportId)
         {
             //var workItems = uow.WorkItems.GetHistoryByFileSpecification(id, datayear);
@@ -69,13 +68,11 @@ namespace Aden.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return View("_FileSpecificationForm", model);
             }
 
             var spec = uow.FileSpecifications.GetById(model.Id);
-
-            //Mapper.Map(model, spec);
+            //TODO: Use Automapper
             spec.FileName = model.FileName;
             spec.FileNumber = model.FileNumber;
             spec.Version = model.Version;
@@ -92,12 +89,10 @@ namespace Aden.Web.Controllers
             spec.IsRetired = model.IsRetired;
             spec.ReportAction = model.ReportAction;
 
-
             uow.Complete();
 
             return Content("success");
 
-            //return RedirectToAction("FileSpecifications");
         }
     }
 }

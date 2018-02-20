@@ -24,7 +24,6 @@ namespace Aden.Web.Controllers
         public object Get(string filespecificationId = null)
         {
             return Ok(uow.Reports.GetByFileSpecificationNumber(filespecificationId));
-
         }
 
         [HttpGet, Route("{filespecificationId}/{datayear}")]
@@ -34,8 +33,6 @@ namespace Aden.Web.Controllers
 
             var reportList = Mapper.Map<List<ReportViewModel>>(reports);
             return Ok(reportList);
-            return Ok(uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear));
-
         }
 
         [HttpGet, Route("search")]
