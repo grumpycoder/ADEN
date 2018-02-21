@@ -117,7 +117,7 @@ namespace Aden.Web.Controllers
             wi.SetAction(WorkItemAction.SubmitWithError);
 
             wi.Complete();
-            uow.Complete();
+            //uow.Complete();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 
@@ -133,6 +133,13 @@ namespace Aden.Web.Controllers
             }
 
             NotificationService.SendWorkItemError(next, wi.Notes, Server.MapPath("~/App_Data/"));
+
+            var path = Server.MapPath("~/App_Data/");
+
+            foreach (FileInfo file in new DirectoryInfo(path).GetFiles())
+            {
+                file.Delete();
+            }
 
 
             return Content("success");

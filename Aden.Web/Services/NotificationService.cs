@@ -41,23 +41,46 @@ namespace Aden.Web.Services
 
         public static void SendWorkItemError(WorkItem workItem, string notes, string filePath)
         {
-            var client = new SmtpClient();
-            var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser);
-            message.To.Add("helpdesk@mail.com");
-
-            message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
-            var bodyText = string.Format("{0} submission has generated an error. {1}", workItem.Report.FileSpecification.FileName, Environment.NewLine);
-            bodyText += string.Format("Notes: {0} {1}", Environment.NewLine, notes);
-            message.Body = bodyText;
-
-            foreach (var f in Directory.GetFiles(filePath))
+            using (var client = new SmtpClient())
             {
-                message.Attachments.Add(new Attachment(f));
+                using (var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser))
+                {
+                    message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
+                    var bodyText = string.Format("{0} submission has generated an error. {1}", workItem.Report.FileSpecification.FileName, Environment.NewLine);
+                    bodyText += string.Format("Notes: {0} {1}", Environment.NewLine, notes);
+                    message.Body = bodyText;
+
+                    foreach (var f in Directory.GetFiles(filePath))
+                    {
+                        message.Attachments.Add(new Attachment(f));
+                    }
+
+                    client.Send(message);
+                }
             }
 
-            client.Send(message);
+            using (var client = new SmtpClient())
+            {
+                using (var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser))
+                {
+                    message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
 
+                    var bodyText = string.Format("Place below text into ticket and attach any images. Thanks {0}", Environment.NewLine);
+                    var line = new String('-', 25);
+                    bodyText += string.Format("{0}{1}", line, Environment.NewLine);
 
+                    bodyText += string.Format("{0} submission has generated an error. {1}", workItem.Report.FileSpecification.FileName, Environment.NewLine);
+                    bodyText += string.Format("Notes: {0} {1}", Environment.NewLine, notes);
+                    message.Body = bodyText;
+
+                    foreach (var f in Directory.GetFiles(filePath))
+                    {
+                        message.Attachments.Add(new Attachment(f));
+                    }
+
+                    client.Send(message);
+                }
+            }
         }
     }
 }
