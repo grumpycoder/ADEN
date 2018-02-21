@@ -117,7 +117,7 @@ namespace Aden.Web.Controllers
             wi.SetAction(WorkItemAction.SubmitWithError);
 
             wi.Complete();
-            //uow.Complete();
+            uow.Complete();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 
@@ -140,7 +140,6 @@ namespace Aden.Web.Controllers
             {
                 file.Delete();
             }
-
 
             return Content("success");
         }
