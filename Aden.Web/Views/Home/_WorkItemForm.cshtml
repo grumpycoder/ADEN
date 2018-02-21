@@ -1,0 +1,46 @@
+﻿@model ADEN.Web.ViewModels.WorkItemViewModel
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Submission Error Notes</h4>
+        </div>
+
+        @*@using (Ajax.BeginForm("SaveWorkItem", "Home", null, new AjaxOptions { HttpMethod = "Post", OnSuccess = "UpdateSuccess", OnFailure = "UpdateFailed" }, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))*@
+        @using (Html.BeginForm("SaveWorkItem", "Home", FormMethod.Post))
+        {
+            <div class="modal-body">
+
+
+
+                @Html.AntiForgeryToken()
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-group">
+                    <label class="control-label">Notes</label>
+                    <textarea class="form-control" placeholder="What happened?"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="Image">Upload Screenshots</label>
+                    <input type="file" id="Image" multiple="multiple" class="form-control" />
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="button" class="btn btn-primary" value="Save" id="btnSubmit" />
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+

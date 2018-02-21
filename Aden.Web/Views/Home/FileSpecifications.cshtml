@@ -162,9 +162,7 @@
 
         $(function() {
             console.log('ready');
-
-           
-
+            
             $('input').keyup(debounce(function() {
                     var $this = $(this);
                 },
@@ -228,6 +226,7 @@
                     e.preventDefault();
                     var url = $(this).attr("href");
                     $.get(url, function (data) {
+                        console.log('data', data);
                         $('#editContainer').html(data);
                         $('#editModal').modal({ show: true });
                     });

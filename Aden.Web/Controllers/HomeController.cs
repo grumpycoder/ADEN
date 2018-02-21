@@ -1,6 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using Aden.Web.Services;
 using ADEN.Web.Core;
 using ADEN.Web.Data;
+using ADEN.Web.Models;
 using ADEN.Web.ViewModels;
 using AutoMapper;
 
@@ -94,5 +99,58 @@ namespace Aden.Web.Controllers
             return Content("success");
 
         }
+
+        public ActionResult EditWorkItem(int id)
+        {
+            var wi = uow.WorkItems.GetById(id);
+
+            var model = Mapper.Map<WorkItemViewModel>(wi);
+            return PartialView("_WorkItemForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase[] files)
+        {
+
+            var wi = uow.WorkItems.GetById(model.Id);
+            wi.Notes = model.Notes;
+            wi.SetAction(WorkItemAction.SubmitWithError);
+
+            wi.Complete();
+            uow.Complete();
+
+            var next = wi.Report.WorkItems.LastOrDefault();
+
+            foreach (var f in files)
+            {
+                //Checking file is available to save.  
+                if (f == null) continue;
+                var inputFileName = Path.GetFileName(f.FileName);
+                var serverSavePath = Path.Combine(Server.MapPath("~/App_Data/") + inputFileName);
+                f.SaveAs(serverSavePath);
+                //assigning file uploaded status to ViewBag for showing message to user.  
+                ViewBag.UploadStatus = files.Count() + " files uploaded successfully.";
+            }
+
+            NotificationService.SendWorkItemError(next, wi.Notes, Server.MapPath("~/App_Data/"));
+
+
+            return Content("success");
+        }
+
+        //[HttpPost]
+        //public ActionResult SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase files)
+        //{
+        //    var wi = uow.WorkItems.GetById(model.Id);
+
+        //    wi.Notes = model.Notes;
+
+        //    var file = files;
+        //    var InputFileName = Path.GetFileName(file.FileName);
+        //    var ServerSavePath = Path.Combine(Server.MapPath("~/App_Data/") + InputFileName);
+        //    //Save file to server folder  
+        //    file.SaveAs(ServerSavePath);
+        //    return Content("success");
+        //}
     }
 }

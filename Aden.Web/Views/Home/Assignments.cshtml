@@ -10,12 +10,12 @@
             <div class="col-lg-6">
                 <div class="input-group">
                     @Html.DropDownListFor(m => m.Username,
-                             new List<SelectListItem>()
-                             {
-                                    new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
-                                    new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
-                                    new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
-                             }, new { @class = "form-control" })
+                                                           new List<SelectListItem>()
+                                                           {
+                                                                                    new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                                                                                    new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                                                                                    new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                                                           }, new { @class = "form-control" })
 
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="submit">Change</button>
@@ -46,7 +46,6 @@
                     <th data-field="dataYear">Data Year</th>
                     <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
                     <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                    <th data-field="action">Action</th>
                     <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
                 </tr>
             </thead>
@@ -120,7 +119,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModal2Label">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -137,6 +136,11 @@
     </div>
 </div>
 
+<div class="modal fade" id="workItemModal" tabindex="-1" role="dialog" aria-labelledby="WorkItemModal" aria-hidden="true">
+    <div id="workItemContainer">
+    </div>
+</div>
+
 @section scripts
 {
     <script type="text/javascript">
@@ -145,7 +149,6 @@
             var lnk = '<a href="reports/' + row.fileNumber + '/' + row.dataYear + '">' + row.fileName + '</a>';
             return lnk;
         }
-
 
         function retrieveAssignmentresponseHandler(res) {
             var wi = res.filter(function (item, idx) { return item.canCancel === true; });
@@ -162,6 +165,7 @@
 
         function actionsFormatter(value, row) {
             console.log('row', row);
+            console.log('id', row.id);
             var lnk =
                 '<button class="btn btn-primary btn-grid" data-report-id="' +
                 row.reportId +
@@ -174,13 +178,8 @@
                 '</button>&nbsp;';
             if (row.action === 'Submit') {
                 lnk +=
-                    '<button class="btn btn-danger btn-grid" data-report-id="' +
-                    row.reportId +
-                    '" data-workitem-error-id="' +
-                    row.id +
-                    '" data-workitem-action="' +
-                    row.action +
-                    '">Submit With Errors</button>';
+                    '<a href="/EditWorkItem/' + row.id + '" class="btn btn-danger btn-grid" data-edit-workitem-id="' + row.id +
+                    '" data-workitem-action="' + row.action + '">Submit With Errors</a>';
             }
             return lnk;
         }
@@ -188,6 +187,8 @@
         function cancelActionsFormatter(value, row) {
             return '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + row.id + '">Cancel ' + row.action + '</button>';
         }
+
+        var $table = $('#gridWorkItems');
 
         $(function () {
             console.log('ready');
@@ -199,9 +200,10 @@
             }
 
             $(document).on('click',
-                'button[data-workitem-id]',
+                '[data-workitem-id]',
                 function (e) {
                     e.preventDefault();
+                    console.log('work item click');
                     var btn = $(this);
                     var id = btn.data('workitem-id');
                     $.ajax({
@@ -216,29 +218,31 @@
                     });
                 });
 
-            $(document).on('click',
-                'button[data-workitem-error-id]',
-                function (e) {
-                    e.preventDefault();
-                    var btn = $(this);
-                    var id = btn.data('workitem-error-id');
-                    $.ajax({
-                        url: '/api/wi/completewitherror/' + id,
-                        type: 'POST',
-                        success: function (data) {
-                            console.log('data', data);
-                            refreshGrids();
-                        },
-                        error: function (err) {
-                            console.log('err', err);
-                        }
-                    });
+            $(document).on('click', '[data-edit-workitem-id]', function (e) {
+                e.preventDefault();
+                var url = $(this).attr("href");
+                $.get(url, function (data) {
+                    $('#workItemContainer').html(data);
+                    $('#workItemModal').modal({ show: true });
                 });
+                //$.ajax({
+                //    url: '/api/wi/completewitherror/' + id,
+                //    type: 'POST',
+                //    success: function (data) {
+                //        console.log('data', data);
+                //        refreshGrids();
+                //    },
+                //    error: function (err) {
+                //        console.log('err', err);
+                //    }
+                //});
+            });
 
             $(document).on('click',
                 'button[data-cancel-workitem]',
                 function (e) {
                     e.preventDefault();
+                    console.log('cancel work item click');
                     console.log('cancel');
                     var btn = $(this);
                     var id = btn.data('cancel-workitem-id');
@@ -256,7 +260,66 @@
 
                 });
 
+            $(document).on('click', '#btnSubmit', function(e) {
+                e.preventDefault();
+                console.log('submit');
+
+                var formData = new FormData();
+                //var file = document.getElementById("Image").files[0];
+                var files = document.getElementById("Image").files;
+
+                formData.append("Notes", $("#Notes").val());
+                formData.append("Id", $("#Id").val());
+                //formData.append("Image", files);
+                //formData.append("files", file);
+
+                for (var i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
+                }
+
+                console.log('form data', formData);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SaveWorkItem","Home")',
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        console.log('response', response);
+                        $('#workItemModal').modal('hide');
+                        $('#workItemContainer').html("");
+                    },
+                    error: function (error) {
+                        console.log('error', error);
+                        $('#workItemModal').modal('hide');
+                        $('#workItemContainer').html("");
+                    }
+                });
+
+            });
+
         });
+
+
+        function updateComplete() {
+            console.log('update complete');
+        }
+
+        function UpdateSuccess(data) {
+            console.log('updatesuccess');
+            if (data !== "success") {
+                console.log('error', data);
+                $('#editContainer').html(data);
+                return;
+            }
+            $('#workItemModal').modal('hide');
+            $('#workItemContainer').html("");
+        }
+
+        function UpdateFailed(data) {
+            console.log('failed data', data);
+        }
 
     </script>
 }

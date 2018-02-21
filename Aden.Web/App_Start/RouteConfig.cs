@@ -66,6 +66,12 @@ namespace Aden.Web
             );
 
             routes.MapRoute(
+                name: "EditWorkItemsActions",
+                url: "editworkitem/{id}",
+                defaults: new { controller = "Home", action = "EditWorkItem", Id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "FileSpecifications", id = UrlParameter.Optional }

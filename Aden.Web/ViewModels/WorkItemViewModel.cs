@@ -23,6 +23,8 @@ namespace ADEN.Web.ViewModels
         public bool CanCancel { get; set; }
         public DateTime? CompletedDate { get; set; }
 
+        public string Notes { get; set; }
+
 
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
