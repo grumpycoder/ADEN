@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <Use64BitIISExpress />
     <UseGlobalApplicationHostFile />
+    <ApplicationVersion>7.0.6.6634</ApplicationVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -191,7 +192,7 @@
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="Models\FileSpecification.cs" />
-    <Compile Include="Models\FileSpecificationDetail.cs" />
+    <Compile Include="Models\Submission.cs" />
     <Compile Include="Models\FileSpecificationState.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

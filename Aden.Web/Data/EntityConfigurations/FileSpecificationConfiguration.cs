@@ -12,7 +12,6 @@ namespace ADEN.Web.Data.EntityConfigurations
             Property(s => s.ReportState).HasColumnName("ReportStateId");
             Property(s => s.FileNumber).HasMaxLength(8);
             Property(s => s.FileName).HasMaxLength(250);
-            Property(s => s.Version).HasMaxLength(5);
             //Property(s => s.FileNameFormat).HasMaxLength(50);
             //Property(s => s.DueDate).HasColumnType("datetime2");
 

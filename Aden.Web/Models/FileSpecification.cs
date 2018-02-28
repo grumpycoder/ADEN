@@ -8,7 +8,6 @@ namespace ADEN.Web.Models
         public int Id { get; set; }
         public string FileNumber { get; set; }
         public string FileName { get; set; }
-        public string Version { get; set; }
 
         public bool IsSEA { get; set; }
         public bool IsLEA { get; set; }

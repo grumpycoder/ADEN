@@ -3,21 +3,22 @@ using System.Collections.Generic;
 
 namespace ADEN.Web.Models
 {
-    public class FileSpecificationDetail
+    public class Submission
     {
         public int Id { get; set; }
         public DateTime? DueDate { get; set; }
         public int? DataYear { get; set; }
-        public string FileNameFormat { get; set; }
+
+        public ReportState ReportState { get; set; }
+        public string ReportAction { get; set; }
+
+        public virtual List<Report> Reports { get; set; }
+
+        public byte[] SpecificationDocument { get; set; }
 
         public int FileSpecificationId { get; set; }
         public virtual FileSpecification FileSpecification { get; set; }
 
-        public virtual ICollection<Report> Reports { get; set; }
 
-        public void AddReport(Report report)
-        {
-            Reports.Add(report);
-        }
     }
 }
