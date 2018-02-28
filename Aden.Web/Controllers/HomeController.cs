@@ -80,7 +80,6 @@ namespace Aden.Web.Controllers
             //TODO: Use Automapper
             spec.FileName = model.FileName;
             spec.FileNumber = model.FileNumber;
-            spec.Version = model.Version;
             spec.IsSEA = model.IsSEA;
             spec.IsLEA = model.IsLEA;
             spec.IsSCH = model.IsSCH;
