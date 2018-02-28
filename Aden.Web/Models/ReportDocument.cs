@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public ReportLevel ReportLevel { get; set; }
-        public byte[] File { get; set; }
+        public byte[] FileData { get; set; }
         public string Filename { get; set; }
         public int Version { get; set; }
         public int ReportId { get; set; }
@@ -20,7 +20,7 @@
         {
             var doc = new ReportDocument()
             {
-                File = file,
+                FileData = file,
                 ReportLevel = reportLevel,
                 Version = version,
                 Filename = filename
