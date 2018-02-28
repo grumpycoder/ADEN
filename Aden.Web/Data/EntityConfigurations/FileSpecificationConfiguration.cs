@@ -9,6 +9,7 @@ namespace ADEN.Web.Data.EntityConfigurations
         {
             ToTable("Aden.FileSpecifications");
             Property(s => s.Id).HasColumnName("FileSpecificationId");
+            Property(s => s.ReportState).HasColumnName("ReportStateId");
             Property(s => s.FileNumber).HasMaxLength(8);
             Property(s => s.FileName).HasMaxLength(250);
             Property(s => s.Version).HasMaxLength(5);
