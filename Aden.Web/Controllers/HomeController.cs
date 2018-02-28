@@ -56,7 +56,7 @@ namespace Aden.Web.Controllers
         public FileResult Download(int id)
         {
             var document = uow.Documents.GetById(id);
-            return File(document.File, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
+            return File(document.FileData, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
         }
 
         public ActionResult EditFileSpecification(int id)
