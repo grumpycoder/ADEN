@@ -1,8 +1,8 @@
-﻿using ADEN.Web.Data.EntityConfigurations;
-using ADEN.Web.Models;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Diagnostics;
+using ADEN.Web.Data.EntityConfigurations;
+using ADEN.Web.Models;
 
 namespace ADEN.Web.Data
 {
@@ -37,6 +37,7 @@ namespace ADEN.Web.Data
 
             modelBuilder.Configurations.Add(new ReportConfiguration());
             modelBuilder.Configurations.Add(new FileSpecificationConfiguration());
+            modelBuilder.Configurations.Add(new SubmissionConfiguration());
             modelBuilder.Configurations.Add(new WorkItemConfiguration());
             modelBuilder.Configurations.Add(new ReportDocumentConfiguration());
         }

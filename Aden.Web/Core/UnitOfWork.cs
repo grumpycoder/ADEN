@@ -1,10 +1,10 @@
-﻿using ADEN.Web.Data;
-using ADEN.Web.Helpers;
-using ADEN.Web.Models;
-using System.Data;
+﻿using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using ADEN.Web.Data;
+using ADEN.Web.Helpers;
+using ADEN.Web.Models;
 
 namespace ADEN.Web.Core
 {
@@ -27,26 +27,26 @@ namespace ADEN.Web.Core
 
         public OperationResult GenerateDocuments(int reportId)
         {
-            var report = _context.Reports.Include(r => r.FileSpecification).Include(r => r.Documents).SingleOrDefault(r => r.Id == reportId);
+            var report = _context.Reports.Include(r => r.Submission).Include(r => r.Documents).SingleOrDefault(r => r.Id == reportId);
 
             if (report == null) return new OperationResult("Unable to generate document. Report not found", false);
 
-            if (report.FileSpecification.IsSCH)
+            if (report.Submission.IsSCH)
             {
-                var dataTable = ExecuteDocumentCreation(report.FileSpecification, "SCH");
+                var dataTable = ExecuteDocumentCreation(report.Submission, "SCH");
                 var file = dataTable.ToCSVBytes();
                 report.CreateDocument(file, ReportLevel.SCH);
             }
-            if (report.FileSpecification.IsLEA)
+            if (report.Submission.IsLEA)
             {
 
-                var dataTable = ExecuteDocumentCreation(report.FileSpecification, "LEA");
+                var dataTable = ExecuteDocumentCreation(report.Submission, "LEA");
                 var file = dataTable.ToCSVBytes();
                 report.CreateDocument(file, ReportLevel.LEA);
             }
-            if (report.FileSpecification.IsSEA)
+            if (report.Submission.IsSEA)
             {
-                var dataTable = ExecuteDocumentCreation(report.FileSpecification, "SEA");
+                var dataTable = ExecuteDocumentCreation(report.Submission, "SEA");
                 var file = dataTable.ToCSVBytes();
                 report.CreateDocument(file, ReportLevel.SEA);
             }
@@ -56,15 +56,15 @@ namespace ADEN.Web.Core
             return new OperationResult("Documents created successfully");
         }
 
-        private DataTable ExecuteDocumentCreation(FileSpecification specification, string reportLevel)
+        private DataTable ExecuteDocumentCreation(Submission submission, string reportLevel)
         {
             var dataTable = new DataTable();
             using (var connection = new SqlConnection(_context.Database.Connection.ConnectionString))
             {
-                using (var cmd = new SqlCommand(specification.ReportAction, connection))
+                using (var cmd = new SqlCommand(submission.FileSpecification.ReportAction, connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@DataYear", specification.DataYear);
+                    cmd.Parameters.AddWithValue("@DataYear", submission.DataYear);
                     cmd.Parameters.AddWithValue("@ReportLevel", reportLevel);
                     var adapter = new SqlDataAdapter(cmd);
                     adapter.Fill(dataTable);

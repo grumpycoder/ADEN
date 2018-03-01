@@ -17,8 +17,8 @@ namespace Aden.Web.Services
         {
             var client = new SmtpClient();
             var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser);
-            message.Subject = string.Format("{0} {1} Assigned", workItem.Report.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
-            var bodyText = string.Format("You have been assigned a {0} task for {1} to be completed by {2}", workItem.WorkItemAction.GetDisplayName(), workItem.Report.FileSpecification.FileName, workItem.Report.FileSpecification.DueDate);
+            message.Subject = string.Format("{0} {1} Assigned", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
+            var bodyText = string.Format("You have been assigned a {0} task for {1} to be completed by {2}", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName, workItem.Report.Submission.DueDate);
 
             message.Body = bodyText;
 
@@ -30,8 +30,8 @@ namespace Aden.Web.Services
             var client = new SmtpClient();
             var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser);
 
-            message.Subject = string.Format("{0} {1} Assignment cancelled", workItem.Report.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
-            var bodyText = string.Format("You're assignment of {0} task for {1} has been cancelled", workItem.WorkItemAction.GetDisplayName(), workItem.Report.FileSpecification.FileName);
+            message.Subject = string.Format("{0} {1} Assignment cancelled", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
+            var bodyText = string.Format("You're assignment of {0} task for {1} has been cancelled", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName);
 
             message.Body = bodyText;
 
@@ -45,8 +45,8 @@ namespace Aden.Web.Services
             {
                 using (var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser))
                 {
-                    message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
-                    var bodyText = string.Format("{0} submission has generated an error. {1}", workItem.Report.FileSpecification.FileName, Environment.NewLine);
+                    message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
+                    var bodyText = string.Format("{0} submission has generated an error. {1}", workItem.Report.Submission.FileSpecification.FileName, Environment.NewLine);
                     bodyText += string.Format("Notes: {0} {1}", Environment.NewLine, notes);
                     message.Body = bodyText;
 
@@ -63,13 +63,13 @@ namespace Aden.Web.Services
             {
                 using (var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser))
                 {
-                    message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
+                    message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
 
                     var bodyText = string.Format("Place below text into ticket and attach any images. Thanks {0}", Environment.NewLine);
                     var line = new String('-', 25);
                     bodyText += string.Format("{0}{1}", line, Environment.NewLine);
 
-                    bodyText += string.Format("{0} submission has generated an error. {1}", workItem.Report.FileSpecification.FileName, Environment.NewLine);
+                    bodyText += string.Format("{0} submission has generated an error. {1}", workItem.Report.Submission.FileSpecification.FileName, Environment.NewLine);
                     bodyText += string.Format("Notes: {0} {1}", Environment.NewLine, notes);
                     message.Body = bodyText;
 

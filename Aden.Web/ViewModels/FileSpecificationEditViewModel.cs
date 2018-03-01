@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using ADEN.Web.Helpers;
 using ADEN.Web.Models;
 using AutoMapper;
 using Heroic.AutoMapper;
@@ -34,9 +32,10 @@ namespace ADEN.Web.ViewModels
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<FileSpecification, FileSpecificationViewModel>()
-                .ForMember(d => d.MostRecentReportId, opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
-                .ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
-                .ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName())).ReverseMap();
+                //.ForMember(d => d.MostRecentReportId, opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
+                //.ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
+                //.ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName())).ReverseMap()
+                ;
 
         }
     }
