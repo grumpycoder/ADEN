@@ -29,7 +29,7 @@ namespace Aden.Web.Controllers
         [HttpGet, Route("{filespecificationId}/{datayear}")]
         public object Get(string filespecificationId, int datayear)
         {
-            var reports = uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear); 
+            var reports = uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear);
 
             var reportList = Mapper.Map<List<ReportViewModel>>(reports);
             return Ok(reportList);
@@ -51,16 +51,16 @@ namespace Aden.Web.Controllers
             return Ok(s);
         }
 
-        [HttpPost, Route("create/{id}")]
-        public object Create(int id)
+        [HttpPost, Route("create/{submissionid}")]
+        public object Create(int submissionid)
         {
-            var spec = uow.FileSpecifications.GetById(id);
+            var submission = uow.Submissions.GetById(submissionid);
 
-            if (spec == null) return NotFound();
+            if (submission == null) return NotFound();
 
-            //var report = Report.Create(spec);
-            var report = new Report();
-            spec.AddReport(report);
+            var report = Report.Create(submission);
+
+            submission.AddReport(report);
 
             report.StartNewWork();
 
@@ -76,7 +76,6 @@ namespace Aden.Web.Controllers
 
             if (spec == null) return NotFound();
 
-            //var report = Report.Create(spec);
             var report = new Report();
             spec.AddReport(report);
 
