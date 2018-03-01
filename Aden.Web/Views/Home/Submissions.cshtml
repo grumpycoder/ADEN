@@ -1,0 +1,273 @@
+﻿
+@{
+    ViewBag.Title = "Submissions";
+}
+
+<style>
+</style>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h1 class="panel-title">
+            Submissions
+            <a href="#" class="panel-right">
+                <i class="fa fa-cloud-download"></i>&nbsp;Update
+            </a>
+        </h1>
+    </div>
+    <div class="panel-body">
+
+        <table id="grid"
+               data-url="/api/submissions"
+               data-toggle="table"
+               data-pagination="true"
+               data-page-size="5"
+               data-page-list="[5,10,25,50]"
+               data-pagination-first-text="First"
+               data-pagination-pre-text="Previous"
+               data-pagination-next-text="Next"
+               data-pagination-last-text="Last"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-columns="true"
+               data-side-pagination="server"
+               data-show-export="true"
+               data-minimum-count-columns="2"
+               data-show-pagination-switch="true"
+               data-search="true"
+               data-search-on-enter-key="true"
+               data-undefined-text=""
+               data-filter-show-clear="true"
+               data-filter-control="true"
+               data-row-style="rowStyle">
+            <thead>
+                <tr>
+                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
+                    <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
+                    <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
+                    <th data-field="isSEA" data-formatter="checkboxFormatter" data-align="center">SEA</th>
+                    <th data-field="isLEA" data-formatter="checkboxFormatter" data-align="center">LEA</th>
+                    <th data-field="isSCH" data-formatter="checkboxFormatter" data-align="center">SCH</th>
+                    <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
+                    <th data-field="dataYear" data-filter-control="input">Data Year</th>
+                    <th data-field="reportState" data-filter-control="input">State</th>
+                    <th data-field="id" data-class="no-wrap" data-align="right" data-formatter="actionsFormatter"></th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Report History</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+    <div id="editContainer">
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function rowStyle(row, index) {
+            var classes = ['active', 'success', 'info', 'warning', 'danger'];
+            if (row.reportStateId === 6) {
+                return {
+                    classes: classes[4]
+                };
+            }
+            if (row.reportStateId === 7) {
+                return {
+                    classes: classes[1]
+                };
+            }
+            if (moment().isSameOrAfter(row.dueDate)) {
+                return {
+                    classes: classes[3]
+                };
+            }
+            if (moment().add(14, 'days').isSameOrAfter(row.dueDate) && row.reportStateId !== 6) {
+                return {
+                    classes: classes[2]
+                };
+            }
+
+            return {};
+        }
+
+        function checkboxFormatter(value, row, index, field) {
+            if (value === true) {
+                return '<div class="text-center"><i class="fa fa-check-circle"></i></div>';
+            }
+            return null;
+        }
+
+        function dateFormatter(value, row, index, field) {
+            return moment(value).format('MM/DD/YYYY');
+        }
+
+        function actionsFormatter(value, row, index, field) {
+            //console.log('row', row);
+            var lnk = '';
+            if (row.reportStateId !== 1) {
+                lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' +
+                    row.fileNumber +
+                    '/' +
+                    row.dataYear +
+                    '">Reports</a>&nbsp;';
+            }
+            if (row.reportStateId >= 5) {
+                lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+                    row.id +
+                    '">ReOpen</button>';
+            }
+            if (row.reportStateId === 1) {
+                lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+                    row.id +
+                    '">Start</button>&nbsp;';
+                lnk += '<button class="btn btn-default btn-sm btn-grid" data-waiver data-filespec-id="' +
+                    row.id +
+                    '">Waiver</button>';
+            }
+            return lnk;
+        }
+
+        function historyFormatter(value, row, index, field) {
+            var lnk = '<a href=/workitemhistory/' +
+                row.mostRecentReportId +
+                ' data-history data-title="Work History" data-toggle="tooltip" title="Work History" data-placement="left">' +
+                '<i class="fa fa-history"></i></a>';
+            lnk += '<a href="/EditFileSpecification/' + row.id + '" data-edit data-id="' + row.id + '">Edit</a>';
+            return lnk;
+        }
+
+        var $table = $('#grid');
+
+        $(function() {
+            console.log('ready');
+
+            $('input').keyup(debounce(function() {
+                    var $this = $(this);
+                },
+                500));
+
+            $(document).on('click',
+                '[data-start]',
+                function(e) {
+                    e.preventDefault();
+                    console.log('start');
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    $.ajax({
+                        url: '/api/reports/create/' + id,
+                        type: 'POST',
+                        success: function(data) {
+                            //play with data
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function(err) {
+                            console.log('err', err);
+                        }
+                    });
+                });
+
+            $(document).on('click',
+                '[data-waiver]',
+                function(e) {
+                    e.preventDefault();
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    $.ajax({
+                        url: '/api/reports/waiver/' + id,
+                        type: 'POST',
+                        success: function(data) {
+                            //play with data
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function(err) {
+                            console.log('err', err);
+                        }
+                    });
+                });
+
+            $(document).on('click',
+                '[data-history]',
+                function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr('href');
+                    var title = $(this).data('title');
+                    $('.modal-title').html(title);
+                    $('.modal-body').load(url,
+                        function() {
+                            $('#myModal').modal({ show: true });
+                        });
+                });
+
+            $(document).on('click',
+                '[data-edit]',
+                function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    $.get(url, function (data) {
+                        console.log('data', data);
+                        $('#editContainer').html(data);
+                        $('#editModal').modal({ show: true });
+                    });
+                });
+
+            $('body').tooltip({ selector: '[data-toggle=tooltip]' });
+
+            function debounce(fn, delay) {
+                var timer = null;
+                return function() {
+                    var context = this, args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() {
+                            fn.apply(context, args);
+                        },
+                        delay);
+                };
+            }
+
+
+
+        });
+
+        function updateComplete() {
+            console.log('update complete');
+        }
+
+        function UpdateSuccess(data) {
+            console.log('updatesuccess');
+            if (data !== "success") {
+                console.log('error', data);
+                $('#editContainer').html(data);
+                return;
+            }
+            $('#editModal').modal('hide');
+            $('#editContainer').html("");
+            $table.bootstrapTable('refresh');
+        }
+
+        function UpdateFailed(data) {
+            console.log('failed data', data);
+        }
+
+    </script>
+}

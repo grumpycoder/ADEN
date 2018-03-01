@@ -27,6 +27,11 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        public ActionResult Submissions()
+        {
+            return View();
+        }
+
         public ActionResult Reports(string id = null, int datayear = 0)
         {
             return View();

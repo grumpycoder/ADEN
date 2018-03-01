@@ -22,7 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <Use64BitIISExpress />
     <UseGlobalApplicationHostFile />
-    <ApplicationVersion>9.0.8.6634</ApplicationVersion>
+    <ApplicationVersion>21.0.20.6635</ApplicationVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -178,6 +178,7 @@
     <Compile Include="Core\FileSpecificationRepository.cs" />
     <Compile Include="Core\OperationResult.cs" />
     <Compile Include="Core\ReportRepository.cs" />
+    <Compile Include="Core\SubmissionRepository.cs" />
     <Compile Include="Core\UnitOfWork.cs" />
     <Compile Include="Core\WorkItemRepository.cs" />
     <Compile Include="Data\AdenContext.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="ViewModels\FileSpecificationViewModel.cs" />
     <Compile Include="ViewModels\ReportDocumentViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
+    <Compile Include="ViewModels\SubmissionViewModel.cs" />
     <Compile Include="ViewModels\WorkItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -278,6 +280,7 @@
     <Content Include="Views\Home\Document.cshtml" />
     <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
     <Content Include="Views\Home\_WorkItemForm.cshtml" />
+    <Content Include="Views\Home\Submissions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
