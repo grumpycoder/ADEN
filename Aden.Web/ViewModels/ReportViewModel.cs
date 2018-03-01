@@ -24,8 +24,8 @@ namespace Aden.Web.ViewModels
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<Report, ReportViewModel>()
-                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileSpecification.FileName))
-                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileSpecification.FileNumber))
+                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Submission.FileSpecification.FileName))
+                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Submission.FileSpecification.FileNumber))
                 .ForMember(d => d.Documents, opt => opt.MapFrom(s => s.Documents))
                 .ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
                 .ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName()));

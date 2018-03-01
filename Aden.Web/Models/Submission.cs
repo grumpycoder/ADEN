@@ -9,8 +9,11 @@ namespace ADEN.Web.Models
         public DateTime? DueDate { get; set; }
         public int? DataYear { get; set; }
 
+        public bool IsSEA { get; set; }
+        public bool IsLEA { get; set; }
+        public bool IsSCH { get; set; }
+
         public ReportState ReportState { get; set; }
-        public string ReportAction { get; set; }
 
         public virtual List<Report> Reports { get; set; }
 
@@ -18,7 +21,6 @@ namespace ADEN.Web.Models
 
         public int FileSpecificationId { get; set; }
         public virtual FileSpecification FileSpecification { get; set; }
-
 
     }
 }

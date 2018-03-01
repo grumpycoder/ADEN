@@ -58,7 +58,8 @@ namespace Aden.Web.Controllers
 
             if (spec == null) return NotFound();
 
-            var report = Report.Create(spec);
+            //var report = Report.Create(spec);
+            var report = new Report();
             spec.AddReport(report);
 
             report.StartNewWork();
@@ -75,7 +76,8 @@ namespace Aden.Web.Controllers
 
             if (spec == null) return NotFound();
 
-            var report = Report.Create(spec);
+            //var report = Report.Create(spec);
+            var report = new Report();
             spec.AddReport(report);
 
             report.Waive();

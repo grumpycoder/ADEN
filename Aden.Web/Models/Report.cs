@@ -10,7 +10,6 @@ namespace ADEN.Web.Models
     {
         public int Id { get; set; }
         public int? DataYear { get; set; }
-        public int? SubmittedVersion { get; set; }
         public DateTime? GeneratedDate { get; set; }
         public DateTime? ApprovedDate { get; set; }
         public DateTime? SubmittedDate { get; set; }
@@ -20,8 +19,8 @@ namespace ADEN.Web.Models
 
         public List<ReportDocument> Documents { get; set; }
 
-        public int FileSpecificationId { get; set; }
-        public virtual FileSpecification FileSpecification { get; set; }
+        public int SubmissionId { get; set; }
+        public virtual Submission Submission { get; set; }
 
         public ReportState ReportState { set; get; }
 
@@ -33,9 +32,9 @@ namespace ADEN.Web.Models
             Documents = new List<ReportDocument>();
         }
 
-        public static Report Create(FileSpecification spec)
+        public static Report Create(Submission submission)
         {
-            var report = new Report { DataYear = spec.DataYear, ReportState = ReportState.NotStarted };
+            var report = new Report { DataYear = submission.DataYear, ReportState = ReportState.NotStarted };
             return report;
         }
 
@@ -54,7 +53,7 @@ namespace ADEN.Web.Models
             if (Documents.Any(d => d.ReportLevel == reportLevel)) version = Documents.Max(x => x.Version);
 
             version += 1;
-            var filename = FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
+            var filename = Submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
 
             var doc = ReportDocument.Create(filename, version, reportLevel, file);
             Documents.Add(doc);
@@ -73,16 +72,16 @@ namespace ADEN.Web.Models
 
         public void StartNewWork()
         {
-            var wi = WorkItem.Create(WorkItemAction.Generate, FileSpecification.GenerationUserGroup);
+            var wi = WorkItem.Create(WorkItemAction.Generate, Submission.FileSpecification.GenerationUserGroup);
             AddWorkItem(wi);
 
             //TODO: Does this belong here
-            ReportState = FileSpecification.ReportState = ReportState.AssignedForGeneration;
+            ReportState = Submission.ReportState = ReportState.AssignedForGeneration;
         }
 
         public void Waive()
         {
-            ReportState = FileSpecification.ReportState = ReportState.Waived;
+            ReportState = Submission.ReportState = ReportState.Waived;
         }
     }
 }

@@ -29,12 +29,12 @@ namespace ADEN.Web.ViewModels
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<WorkItem, WorkItemViewModel>()
-                .ForMember(d => d.DataYear, opt => opt.MapFrom(s => s.Report.FileSpecification.DataYear))
-                .ForMember(d => d.DueDate, opt => opt.MapFrom(s => s.Report.FileSpecification.DueDate))
+                .ForMember(d => d.DataYear, opt => opt.MapFrom(s => s.Report.Submission.DataYear))
+                .ForMember(d => d.DueDate, opt => opt.MapFrom(s => s.Report.Submission.DueDate))
                 .ForMember(d => d.State, opt => opt.MapFrom(s => s.WorkItemState.GetDisplayName()))
                 .ForMember(d => d.CompletedDate, opt => opt.MapFrom(s => s.CompletedDate))
-                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Report.FileSpecification.FileName))
-                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Report.FileSpecification.FileNumber))
+                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileName))
+                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileNumber))
                 .ForMember(d => d.WorkItemActionId, opt => opt.MapFrom(s => s.WorkItemAction))
                 .ForMember(d => d.Action, opt => opt.MapFrom(s => s.WorkItemAction.GetDisplayName()));
         }

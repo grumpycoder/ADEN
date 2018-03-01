@@ -65,33 +65,33 @@ namespace ADEN.Web.Models
                     Report.GeneratedDate = DateTime.Now;
                     Report.GeneratedUser = AssignedUser;
                     Report.ReportState = ReportState.AssignedForReview;
-                    Report.FileSpecification.ReportState = ReportState.AssignedForReview;
-                    wi = WorkItem.Create(WorkItemAction.Review, Report.FileSpecification.GenerationUserGroup);
+                    Report.Submission.ReportState = ReportState.AssignedForReview;
+                    wi = WorkItem.Create(WorkItemAction.Review, Report.Submission.FileSpecification.GenerationUserGroup);
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.Review:
-                    Report.ReportState = Report.FileSpecification.ReportState = ReportState.AwaitingApproval;
-                    wi = WorkItem.Create(WorkItemAction.Approve, Report.FileSpecification.ApprovalUserGroup);
+                    Report.ReportState = Report.Submission.ReportState = ReportState.AwaitingApproval;
+                    wi = WorkItem.Create(WorkItemAction.Approve, Report.Submission.FileSpecification.ApprovalUserGroup);
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.Approve:
                     Report.ApprovedDate = DateTime.Now;
                     Report.ApprovedUser = AssignedUser;
-                    Report.ReportState = Report.FileSpecification.ReportState = ReportState.AssignedForSubmission;
-                    wi = WorkItem.Create(WorkItemAction.Submit, Report.FileSpecification.SubmissionUserGroup);
+                    Report.ReportState = Report.ReportState = ReportState.AssignedForSubmission;
+                    wi = WorkItem.Create(WorkItemAction.Submit, Report.Submission.FileSpecification.SubmissionUserGroup);
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.SubmitWithError:
                     Report.SubmittedDate = DateTime.Now;
                     Report.SubmittedUser = AssignedUser;
-                    Report.ReportState = Report.FileSpecification.ReportState = ReportState.CompleteWithError;
-                    wi = WorkItem.Create(WorkItemAction.ReviewError, Report.FileSpecification.ApprovalUserGroup);
+                    Report.ReportState = Report.ReportState = ReportState.CompleteWithError;
+                    wi = WorkItem.Create(WorkItemAction.ReviewError, Report.Submission.FileSpecification.ApprovalUserGroup);
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.Submit:
                     Report.SubmittedDate = DateTime.Now;
                     Report.SubmittedUser = AssignedUser;
-                    Report.ReportState = Report.FileSpecification.ReportState = ReportState.Complete;
+                    Report.ReportState = Report.ReportState = ReportState.Complete;
                     break;
                 case WorkItemAction.ReviewError:
                     Report.StartNewWork();

@@ -81,16 +81,11 @@ namespace Aden.Web.Controllers
             //TODO: Use Automapper
             spec.FileName = model.FileName;
             spec.FileNumber = model.FileNumber;
-            spec.IsSEA = model.IsSEA;
-            spec.IsLEA = model.IsLEA;
-            spec.IsSCH = model.IsSCH;
             spec.Department = model.Department;
             spec.GenerationUserGroup = model.Department;
             spec.ApprovalUserGroup = model.Department;
             spec.SubmissionUserGroup = model.Department;
             spec.FileNameFormat = model.Department;
-            spec.DueDate = model.DueDate;
-            spec.DataYear = model.DataYear;
             spec.IsRetired = model.IsRetired;
             spec.ReportAction = model.ReportAction;
 
