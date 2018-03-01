@@ -32,5 +32,10 @@ namespace ADEN.Web.Core
             var submissions = _context.Submissions.Include(r => r.Reports).IncludeFilter(r => r.Reports.Where(x => x.DataYear == r.DataYear)).ToList();
             return submissions.ToList();
         }
+
+        public Submission GetById(int id)
+        {
+            return _context.Submissions.SingleOrDefault(x => x.Id == id);
+        }
     }
 }

@@ -22,5 +22,10 @@ namespace ADEN.Web.Models
         public int FileSpecificationId { get; set; }
         public virtual FileSpecification FileSpecification { get; set; }
 
+        public void AddReport(Report report)
+        {
+            report.Submission = this;
+            Reports.Add(report);
+        }
     }
 }
