@@ -19,31 +19,10 @@ namespace ADEN.Web.Models
 
         public virtual List<Submission> Submissions { get; set; }
 
-        //public bool IsSEA { get; set; }
-        //public bool IsLEA { get; set; }
-        //public bool IsSCH { get; set; }
-        //public DateTime? DueDate { get; set; }
-        //public int? DataYear { get; set; }
-        //public ReportState ReportState { get; set; }
-
-        //public virtual List<Report> Reports { get; set; }
-
-        public void AddReport(Report report)
-        {
-            //report.FileSpecification = this;
-            //Reports.Add(report);
-        }
-
         public override string ToString()
         {
             return string.Format("{0} {1}", FileNumber, FileName);
         }
-
-        public void Reset(DateTime dueDate, int dataYear)
-        {
-            //DataYear = dataYear;
-            //DueDate = dueDate;
-            //ReportState = ReportState.NotStarted;
-        }
+        
     }
 }
