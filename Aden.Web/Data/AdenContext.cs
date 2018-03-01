@@ -24,6 +24,7 @@ namespace ADEN.Web.Data
         public DbSet<FileSpecification> FileSpecifications { get; set; }
         public DbSet<WorkItem> WorkItems { get; set; }
         public DbSet<ReportDocument> ReportDocuments { get; set; }
+        public DbSet<Submission> Submissions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

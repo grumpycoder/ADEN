@@ -8,7 +8,7 @@ namespace ADEN.Web.Data.EntityConfigurations
         public SubmissionConfiguration()
         {
             ToTable("Aden.Submissions");
-            Property(s => s.Id).HasColumnName("SubmisssionId");
+            Property(s => s.Id).HasColumnName("SubmissionId");
             Property(s => s.ReportState).HasColumnName("ReportStateId");
         }
     }

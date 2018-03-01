@@ -15,6 +15,7 @@ namespace ADEN.Web.Core
         public ReportRepository Reports { get; set; }
         public WorkItemRepository WorkItems { get; set; }
         public DocumentRepository Documents { get; set; }
+        public SubmissionRepository Submissions { get; set; }
 
         public UnitOfWork(AdenContext context)
         {
@@ -23,6 +24,7 @@ namespace ADEN.Web.Core
             Reports = new ReportRepository(context);
             WorkItems = new WorkItemRepository(context);
             Documents = new DocumentRepository(context);
+            Submissions = new SubmissionRepository(context);
         }
 
         public OperationResult GenerateDocuments(int reportId)
