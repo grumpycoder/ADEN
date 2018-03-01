@@ -69,15 +69,15 @@ namespace Aden.Web.Controllers
             return Ok();
         }
 
-        [HttpPost, Route("waiver/{id}")]
-        public object Waiver(int id)
+        [HttpPost, Route("waiver/{submissionid}")]
+        public object Waiver(int submissionid)
         {
-            var spec = uow.FileSpecifications.GetById(id);
+            var submission = uow.Submissions.GetById(submissionid);
 
-            if (spec == null) return NotFound();
+            if (submission == null) return NotFound();
 
             var report = new Report();
-            spec.AddReport(report);
+            submission.AddReport(report);
 
             report.Waive();
 

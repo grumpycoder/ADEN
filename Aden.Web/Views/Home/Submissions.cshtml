@@ -50,7 +50,8 @@
                     <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
                     <th data-field="dataYear" data-filter-control="input">Data Year</th>
                     <th data-field="reportState" data-filter-control="input">State</th>
-                    <th data-field="id" data-class="no-wrap" data-align="right" data-formatter="actionsFormatter"></th>
+                    <th data-field="specificationDocument" data-formatter="documentFormatter">Spec Doc</th>
+                    <th data-field="fileSpecificationId" data-class="no-wrap" data-align="center" data-formatter="actionsFormatter"></th>
                 </tr>
             </thead>
         </table>
@@ -153,8 +154,11 @@
                 row.mostRecentReportId +
                 ' data-history data-title="Work History" data-toggle="tooltip" title="Work History" data-placement="left">' +
                 '<i class="fa fa-history"></i></a>';
-            lnk += '<a href="/EditFileSpecification/' + row.id + '" data-edit data-id="' + row.id + '">Edit</a>';
             return lnk;
+        }
+
+        function documentFormatter(value, row, index, field) {
+            return '<div class="text-center"><i class="fa fa-file"></i></div>';
         }
 
         var $table = $('#grid');

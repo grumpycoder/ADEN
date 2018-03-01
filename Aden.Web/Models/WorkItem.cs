@@ -77,21 +77,21 @@ namespace ADEN.Web.Models
                 case WorkItemAction.Approve:
                     Report.ApprovedDate = DateTime.Now;
                     Report.ApprovedUser = AssignedUser;
-                    Report.ReportState = Report.ReportState = ReportState.AssignedForSubmission;
+                    Report.ReportState = Report.Submission.ReportState = ReportState.AssignedForSubmission;
                     wi = WorkItem.Create(WorkItemAction.Submit, Report.Submission.FileSpecification.SubmissionUserGroup);
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.SubmitWithError:
                     Report.SubmittedDate = DateTime.Now;
                     Report.SubmittedUser = AssignedUser;
-                    Report.ReportState = Report.ReportState = ReportState.CompleteWithError;
+                    Report.ReportState = Report.Submission.ReportState = ReportState.CompleteWithError;
                     wi = WorkItem.Create(WorkItemAction.ReviewError, Report.Submission.FileSpecification.ApprovalUserGroup);
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.Submit:
                     Report.SubmittedDate = DateTime.Now;
                     Report.SubmittedUser = AssignedUser;
-                    Report.ReportState = Report.ReportState = ReportState.Complete;
+                    Report.ReportState = Report.Submission.ReportState = ReportState.Complete;
                     break;
                 case WorkItemAction.ReviewError:
                     Report.StartNewWork();
