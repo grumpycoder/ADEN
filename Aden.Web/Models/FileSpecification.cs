@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ADEN.Web.Models
 {
@@ -17,12 +16,21 @@ namespace ADEN.Web.Models
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }
 
-        public virtual List<Submission> Submissions { get; set; }
+        public List<Submission> Submissions { get; set; }
 
         public override string ToString()
         {
             return string.Format("{0} {1}", FileNumber, FileName);
         }
-        
+
+        public void Retire()
+        {
+            IsRetired = true;
+        }
+
+        public void Activate()
+        {
+            IsRetired = false;
+        }
     }
 }

@@ -82,16 +82,18 @@ namespace Aden.Web.Controllers
             }
 
             var spec = uow.FileSpecifications.GetById(model.Id);
-            //TODO: Use Automapper
-            spec.FileName = model.FileName;
-            spec.FileNumber = model.FileNumber;
-            spec.Department = model.Department;
-            spec.GenerationUserGroup = model.Department;
-            spec.ApprovalUserGroup = model.Department;
-            spec.SubmissionUserGroup = model.Department;
-            spec.FileNameFormat = model.Department;
-            spec.IsRetired = model.IsRetired;
-            spec.ReportAction = model.ReportAction;
+            //TODO: Use AutoMapper 
+
+            Mapper.Map(model, spec);
+
+            //spec.FileName = model.FileName;
+            //spec.FileNumber = model.FileNumber;
+            //spec.Department = model.Department;
+            //spec.GenerationUserGroup = model.GenerationUserGroup;
+            //spec.ApprovalUserGroup = model.ApprovalUserGroup;
+            //spec.SubmissionUserGroup = model.SubmissionUserGroup;
+            //spec.FileNameFormat = model.FileNameFormat;
+            //spec.ReportAction = model.ReportAction;
 
             uow.Complete();
 

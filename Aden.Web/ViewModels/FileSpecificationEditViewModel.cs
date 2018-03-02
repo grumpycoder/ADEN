@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using ADEN.Web.Models;
 using AutoMapper;
 using Heroic.AutoMapper;
@@ -18,20 +17,21 @@ namespace ADEN.Web.ViewModels
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }
 
-        public bool? IsRetired { get; set; }
-        public DateTime? DueDate { get; set; }
-        public int? DataYear { get; set; }
         public string FileNameFormat { get; set; }
         public string ReportAction { get; set; }
 
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<FileSpecification, FileSpecificationViewModel>()
-                //.ForMember(d => d.MostRecentReportId, opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
-                //.ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
-                //.ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName())).ReverseMap()
-                ;
-
+            configuration.CreateMap<FileSpecification, FileSpecificationEditViewModel>()
+                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileName))
+                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileNumber))
+                .ForMember(d => d.Department, opt => opt.MapFrom(s => s.Department))
+                .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(s => s.GenerationUserGroup))
+                .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(s => s.ApprovalUserGroup))
+                .ForMember(d => d.SubmissionUserGroup, opt => opt.MapFrom(s => s.SubmissionUserGroup))
+                .ForMember(d => d.FileNameFormat, opt => opt.MapFrom(s => s.FileNameFormat))
+                .ForMember(d => d.ReportAction, opt => opt.MapFrom(s => s.ReportAction)).ReverseMap()
+                .ForAllOtherMembers(d => d.Ignore());
         }
     }
 }
