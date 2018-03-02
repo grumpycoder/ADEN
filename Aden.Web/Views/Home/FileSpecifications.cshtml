@@ -45,12 +45,13 @@
                     <th data-field="id" data-formatter="editFormatter" data-align="center"></th>
                     <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
                     <th data-field="fileNumber" data-filter-control="input">File Number</th>
-                    <th data-field="isRetired" data-filter-control="input">Retired?</th>
+                    <th data-field="isRetired" data-filter-control="input" data-formatter="checkboxFormatter">Retired?</th>
                     <th data-field="fileNameFormat" data-filter-control="input">File Name</th>
+                    <th data-field="department" data-filter-control="input">Department</th>
                     <th data-field="reportAction" data-filter-control="input">Report Action</th>
                     <th data-field="generationUserGroup" data-filter-control="input">Generation Group</th>
                     <th data-field="approvalUserGroup" data-filter-control="input">Approval Group</th>
-                    <th data-field="xubmissionUserGroup" data-filter-control="input">Submission Group</th>
+                    <th data-field="submissionUserGroup" data-filter-control="input">Submission Group</th>
                     <th data-field="id" data-class="no-wrap" data-align="right" data-formatter="actionsFormatter"></th>
                 </tr>
             </thead>
@@ -114,9 +115,11 @@
 
         function checkboxFormatter(value, row, index, field) {
             if (value === true) {
-                return '<div class="text-center"><i class="fa fa-check-circle"></i></div>';
+                //return '<div class="text-center"><i class="fa fa-check-circle"></i></div>';
+                return '<div>Yes</div>';
             }
-            return null;
+
+            return '<div>No</div>';
         }
 
         function dateFormatter(value, row, index, field) {
@@ -126,25 +129,23 @@
         function actionsFormatter(value, row, index, field) {
             //console.log('row', row);
             var lnk = '';
-            if (row.reportStateId !== 1) {
+            if (!row.isRetired) {
                 lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' +
                     row.fileNumber +
                     '/' +
                     row.dataYear +
-                    '">Reports</a>&nbsp;';
+                    '" data-retire data-filespec-id=' +
+                    row.id +
+                    '>Retire</a>&nbsp;';
             }
-            if (row.reportStateId >= 5) {
-                lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+            if (row.isRetired) {
+                lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' +
+                    row.fileNumber +
+                    '/' +
+                    row.dataYear +
+                    '" data-activate data-filespec-id=' +
                     row.id +
-                    '">ReOpen</button>';
-            }
-            if (row.reportStateId === 1) {
-                lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
-                    row.id +
-                    '">Start</button>&nbsp;';
-                lnk += '<button class="btn btn-default btn-sm btn-grid" data-waiver data-filespec-id="' +
-                    row.id +
-                    '">Waiver</button>';
+                    '>Activate</a>&nbsp;';
             }
             return lnk;
         }
@@ -158,21 +159,21 @@
 
         $(function() {
             console.log('ready');
-            
+
             $('input').keyup(debounce(function() {
                     var $this = $(this);
                 },
                 500));
 
             $(document).on('click',
-                '[data-start]',
+                '[data-retire]',
                 function(e) {
                     e.preventDefault();
                     console.log('start');
                     var btn = $(this);
                     var id = btn.data('filespec-id');
                     $.ajax({
-                        url: '/api/reports/create/' + id,
+                        url: '/api/filespecifications/retire/' + id,
                         type: 'POST',
                         success: function(data) {
                             //play with data
@@ -184,50 +185,40 @@
                     });
                 });
 
+
             $(document).on('click',
-                '[data-waiver]',
-                function(e) {
+                '[data-activate]',
+                function (e) {
                     e.preventDefault();
+                    console.log('start');
                     var btn = $(this);
                     var id = btn.data('filespec-id');
                     $.ajax({
-                        url: '/api/reports/waiver/' + id,
+                        url: '/api/filespecifications/activate/' + id,
                         type: 'POST',
-                        success: function(data) {
+                        success: function (data) {
                             //play with data
                             $table.bootstrapTable('refresh');
                         },
-                        error: function(err) {
+                        error: function (err) {
                             console.log('err', err);
                         }
                     });
-                });
-
-            $(document).on('click',
-                '[data-history]',
-                function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr('href');
-                    var title = $(this).data('title');
-                    $('.modal-title').html(title);
-                    $('.modal-body').load(url,
-                        function() {
-                            $('#myModal').modal({ show: true });
-                        });
                 });
 
             $(document).on('click',
                 '[data-edit]',
-                function (e) {
+                function(e) {
                     e.preventDefault();
                     var url = $(this).attr("href");
-                    $.get(url, function (data) {
-                        console.log('data', data);
-                        $('#editContainer').html(data);
-                        $('#editModal').modal({ show: true });
-                    });
+                    $.get(url,
+                        function(data) {
+                            console.log('data', data);
+                            $('#editContainer').html(data);
+                            $('#editModal').modal({ show: true });
+                        });
                 });
-        
+
             $('body').tooltip({ selector: '[data-toggle=tooltip]' });
 
             function debounce(fn, delay) {
@@ -242,7 +233,6 @@
                 };
             }
 
-          
 
         });
 

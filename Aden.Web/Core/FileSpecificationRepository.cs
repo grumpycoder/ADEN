@@ -59,5 +59,7 @@ namespace ADEN.Web.Core
 
             return specs.ToList();
         }
+
+     
     }
 }

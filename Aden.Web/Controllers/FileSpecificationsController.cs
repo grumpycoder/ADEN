@@ -49,5 +49,33 @@ namespace Aden.Web.Controllers
 
             return Ok();
         }
+
+        [HttpPost, Route("retire/{id}")]
+        public object Retire(int id)
+        {
+            var spec = uow.FileSpecifications.GetById(id);
+
+            if (spec == null) return NotFound();
+
+            spec.Retire();
+
+            uow.Complete();
+
+            return Ok(spec);
+        }
+
+        [HttpPost, Route("activate/{id}")]
+        public object Activate(int id)
+        {
+            var spec = uow.FileSpecifications.GetById(id);
+
+            if (spec == null) return NotFound();
+
+            spec.Activate();
+
+            uow.Complete();
+
+            return Ok(spec);
+        }
     }
 }
