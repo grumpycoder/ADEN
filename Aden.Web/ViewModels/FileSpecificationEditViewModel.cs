@@ -12,11 +12,6 @@ namespace ADEN.Web.ViewModels
         [Required]
         public string FileNumber { get; set; }
         public string FileName { get; set; }
-        public string Version { get; set; }
-
-        public bool IsSEA { get; set; }
-        public bool IsLEA { get; set; }
-        public bool IsSCH { get; set; }
 
         public string Department { get; set; }
         public string GenerationUserGroup { get; set; }

@@ -1,5 +1,4 @@
-﻿using System;
-using ADEN.Web.Models;
+﻿using ADEN.Web.Models;
 using AutoMapper;
 using Heroic.AutoMapper;
 
@@ -10,14 +9,16 @@ namespace ADEN.Web.ViewModels
         public int Id { get; set; }
         public string FileName { get; set; }
         public string FileNumber { get; set; }
-        public int DataYear { get; set; }
-        public string ReportState { get; set; }
-        public DateTime DueDate { get; set; }
-        public bool? IsSEA { get; set; }
-        public bool? IsLEA { get; set; }
-        public bool? IsSCH { get; set; }
-        public ReportState ReportStateId { get; set; }
-        public int? MostRecentReportId { get; set; }
+
+        public bool? IsRetired { get; set; }
+        public string FileNameFormat { get; set; }
+        public string ReportAction { get; set; }
+
+        public string Department { get; set; }
+        public string GenerationUserGroup { get; set; }
+        public string ApprovalUserGroup { get; set; }
+        public string SubmissionUserGroup { get; set; }
+
 
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {

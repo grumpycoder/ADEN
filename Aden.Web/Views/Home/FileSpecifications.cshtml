@@ -42,15 +42,15 @@
                data-row-style="rowStyle">
             <thead>
                 <tr>
-                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
+                    <th data-field="id" data-formatter="editFormatter" data-align="center"></th>
                     <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
-                    <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
-                    <th data-field="isSEA" data-formatter="checkboxFormatter" data-align="center">SEA</th>
-                    <th data-field="isLEA" data-formatter="checkboxFormatter" data-align="center">LEA</th>
-                    <th data-field="isSCH" data-formatter="checkboxFormatter" data-align="center">SCH</th>
-                    <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
-                    <th data-field="dataYear" data-filter-control="input">Data Year</th>
-                    <th data-field="reportState" data-filter-control="input">State</th>
+                    <th data-field="fileNumber" data-filter-control="input">File Number</th>
+                    <th data-field="isRetired" data-filter-control="input">Retired?</th>
+                    <th data-field="fileNameFormat" data-filter-control="input">File Name</th>
+                    <th data-field="reportAction" data-filter-control="input">Report Action</th>
+                    <th data-field="generationUserGroup" data-filter-control="input">Generation Group</th>
+                    <th data-field="approvalUserGroup" data-filter-control="input">Approval Group</th>
+                    <th data-field="xubmissionUserGroup" data-filter-control="input">Submission Group</th>
                     <th data-field="id" data-class="no-wrap" data-align="right" data-formatter="actionsFormatter"></th>
                 </tr>
             </thead>
@@ -149,12 +149,8 @@
             return lnk;
         }
 
-        function historyFormatter(value, row, index, field) {
-            var lnk = '<a href=/workitemhistory/' +
-                row.mostRecentReportId +
-                ' data-history data-title="Work History" data-toggle="tooltip" title="Work History" data-placement="left">' +
-                '<i class="fa fa-history"></i></a>';
-            lnk += '<a href="/EditFileSpecification/' + row.id + '" data-edit data-id="' + row.id + '">Edit</a>';
+        function editFormatter(value, row, index, field) {
+            var lnk = '<a href="/EditFileSpecification/' + row.id + '" data-edit data-id="' + row.id + '">Edit</a>';
             return lnk;
         }
 
