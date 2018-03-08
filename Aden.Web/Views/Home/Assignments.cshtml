@@ -32,6 +32,7 @@
         <h1 class="panel-title">My Assignments</h1>
     </div>
     <div class="panel-body">
+        <h2>@User.Identity.Name</h2>
         <table class="table table-bordered table-responsive" id="gridWorkItems"
                data-id-field="id"
                data-show-refresh="true"
@@ -40,14 +41,14 @@
                data-side-pagination="client"
                data-undefined-text="">
             <thead>
-                <tr>
-                    <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
-                    <th data-field="fileNumber">File Number</th>
-                    <th data-field="dataYear">Data Year</th>
-                    <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
-                    <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                    <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
-                </tr>
+            <tr>
+                <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
+                <th data-field="fileNumber">File Number</th>
+                <th data-field="dataYear">Data Year</th>
+                <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
+                <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
+                <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
+            </tr>
             </thead>
         </table>
     </div>

@@ -55,7 +55,7 @@ namespace Aden.Web.Controllers
 
             var userName = _userName;
             if (!string.IsNullOrEmpty(username)) userName = username;
-            var vm = new AssigmentsViewModel() { Username = userName };
+            var vm = new AssigmentsViewModel() { Username = user.Name };
             return View(vm);
         }
 
@@ -157,6 +157,11 @@ namespace Aden.Web.Controllers
             }
 
             return Content("success");
+        }
+
+        public ActionResult Error(string message)
+        {
+            return View();
         }
 
         //[HttpPost]

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Serialization;
 
-namespace ADEN.Web.Models
+namespace Aden.DirectoryService.Models.WebService
 {
     public class ApplicationUserIds
     {
@@ -50,7 +50,8 @@ namespace ADEN.Web.Models
         public string Number { get; set; }
     }
 
-    public class Person
+    [XmlRoot(ElementName = "Person")]
+    public class PersonContract
     {
         public string Email
         {
@@ -90,4 +91,5 @@ namespace ADEN.Web.Models
         [XmlAttribute]
         public string IdentityGuid { get; set; }
     }
+
 }
