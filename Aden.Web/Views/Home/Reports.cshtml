@@ -10,6 +10,7 @@
     <input type="hidden" value="@ViewContext.RouteData.Values["id"]" id="filespec" />
     <input type="hidden" value="@ViewContext.RouteData.Values["datayear"]" id="datayear" />
     <div class="panel-body">
+        <h3>@ViewBag.Message</h3>
         <table id="grid"
                data-detail-view="true"
                data-detail-formatter="detailFormatter"

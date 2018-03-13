@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://services.alsde.edu/ALSDEAPI" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://services.alsde.edu/ALSDEAPI" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://services.alsde.edu/ALSDEAPI">
+      <s:element name="GetCertificateTypes">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetCertificateTypesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetCertificateTypesResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGradeLevels">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetGradeLevelsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetGradeLevelsResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLeas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetLeasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetLeasResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mguid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonDetailResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserDetail">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUserDetailResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUserDetailResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonList">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mguid" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPersonListResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPersonListResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSchoolsByLea">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="syscode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSchoolsByLeaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSchoolsByLeaResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUniversityPrepPrograms">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="accessKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sharedToken" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetUniversityPrepProgramsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetUniversityPrepProgramsResult">
+              <s:complexType mixed="true">
+                <s:sequence>
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetCertificateTypesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetCertificateTypes" />
+  </wsdl:message>
+  <wsdl:message name="GetCertificateTypesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetCertificateTypesResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetGradeLevelsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetGradeLevels" />
+  </wsdl:message>
+  <wsdl:message name="GetGradeLevelsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetGradeLevelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetLeasSoapIn">
+    <wsdl:part name="parameters" element="tns:GetLeas" />
+  </wsdl:message>
+  <wsdl:message name="GetLeasSoapOut">
+    <wsdl:part name="parameters" element="tns:GetLeasResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonDetail" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUserDetailSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUserDetail" />
+  </wsdl:message>
+  <wsdl:message name="GetUserDetailSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUserDetailResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonListSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPersonList" />
+  </wsdl:message>
+  <wsdl:message name="GetPersonListSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPersonListResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSchoolsByLeaSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSchoolsByLea" />
+  </wsdl:message>
+  <wsdl:message name="GetSchoolsByLeaSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSchoolsByLeaResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetUniversityPrepProgramsSoapIn">
+    <wsdl:part name="parameters" element="tns:GetUniversityPrepPrograms" />
+  </wsdl:message>
+  <wsdl:message name="GetUniversityPrepProgramsSoapOut">
+    <wsdl:part name="parameters" element="tns:GetUniversityPrepProgramsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceSoap">
+    <wsdl:operation name="GetCertificateTypes">
+      <wsdl:input message="tns:GetCertificateTypesSoapIn" />
+      <wsdl:output message="tns:GetCertificateTypesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGradeLevels">
+      <wsdl:input message="tns:GetGradeLevelsSoapIn" />
+      <wsdl:output message="tns:GetGradeLevelsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLeas">
+      <wsdl:input message="tns:GetLeasSoapIn" />
+      <wsdl:output message="tns:GetLeasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonDetail">
+      <wsdl:input message="tns:GetPersonDetailSoapIn" />
+      <wsdl:output message="tns:GetPersonDetailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserDetail">
+      <wsdl:input message="tns:GetUserDetailSoapIn" />
+      <wsdl:output message="tns:GetUserDetailSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonList">
+      <wsdl:input message="tns:GetPersonListSoapIn" />
+      <wsdl:output message="tns:GetPersonListSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSchoolsByLea">
+      <wsdl:input message="tns:GetSchoolsByLeaSoapIn" />
+      <wsdl:output message="tns:GetSchoolsByLeaSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversityPrepPrograms">
+      <wsdl:input message="tns:GetUniversityPrepProgramsSoapIn" />
+      <wsdl:output message="tns:GetUniversityPrepProgramsSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCertificateTypes">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetCertificateTypes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGradeLevels">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetGradeLevels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLeas">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetLeas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonDetail">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetPersonDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserDetail">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetUserDetail" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonList">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetPersonList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSchoolsByLea">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetSchoolsByLea" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversityPrepPrograms">
+      <soap:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetUniversityPrepPrograms" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceSoap12" type="tns:ServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetCertificateTypes">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetCertificateTypes" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetGradeLevels">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetGradeLevels" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLeas">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetLeas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonDetail">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetPersonDetail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserDetail">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetUserDetail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPersonList">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetPersonList" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSchoolsByLea">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetSchoolsByLea" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUniversityPrepPrograms">
+      <soap12:operation soapAction="http://services.alsde.edu/ALSDEAPI/GetUniversityPrepPrograms" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+      <soap:address location="https://glanier.alsde.edu/AlsdeApi_v2/service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceSoap12" binding="tns:ServiceSoap12">
+      <soap12:address location="https://glanier.alsde.edu/AlsdeApi_v2/service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

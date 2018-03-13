@@ -11,6 +11,7 @@ using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly UnitOfWork uow;
@@ -22,26 +23,39 @@ namespace Aden.Web.Controllers
             uow = new UnitOfWork(context);
         }
 
+        [Authorize]
         public ActionResult FileSpecifications()
         {
+            var user = HttpContext.User.Identity;
+
+            ViewBag.Message = "You are logged in: " + user.Name;
             return View();
         }
 
         public ActionResult Submissions()
         {
+            var user = HttpContext.User.Identity;
+
+            ViewBag.Message = "You are logged in: " + user.Name;
             return View();
         }
 
+        [Authorize]
         public ActionResult Reports(string id = null, int datayear = 0)
         {
+            var user = HttpContext.User.Identity;
+
+            ViewBag.Message = "You are logged in: " + user.Name;
             return View();
         }
 
         public ActionResult Assignments(string username)
         {
+            var user = HttpContext.User.Identity;
+
             var userName = _userName;
             if (!string.IsNullOrEmpty(username)) userName = username;
-            var vm = new AssigmentsViewModel() { Username = userName };
+            var vm = new AssigmentsViewModel() { Username = user.Name };
             return View(vm);
         }
 
@@ -143,6 +157,11 @@ namespace Aden.Web.Controllers
             }
 
             return Content("success");
+        }
+
+        public ActionResult Error(string message)
+        {
+            return View();
         }
 
         //[HttpPost]

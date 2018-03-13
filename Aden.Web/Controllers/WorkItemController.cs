@@ -23,6 +23,7 @@ namespace ADEN.Web.Controllers
         [HttpGet, Route("{username}")]
         public object Get(string username)
         {
+            username = User.Identity.Name; 
 
             var workitems = uow.WorkItems.GetActiveByUser(username);
             var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
