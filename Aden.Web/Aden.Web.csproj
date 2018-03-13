@@ -257,7 +257,6 @@
     <Compile Include="ViewModels\ReportViewModel.cs" />
     <Compile Include="ViewModels\SubmissionViewModel.cs" />
     <Compile Include="ViewModels\WorkItemViewModel.cs" />
-    <Compile Include="Web References\IdemService\Reference.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap - Copy.css" />
@@ -311,7 +310,6 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <None Include="Web References\IdemService\service.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -334,8 +332,6 @@
     <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
     <Content Include="Views\Home\_WorkItemForm.cshtml" />
     <Content Include="Views\Home\Submissions.cshtml" />
-    <Content Include="Web References\IdemService\Reference.map" />
-    <None Include="Web References\IdemService\service.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
