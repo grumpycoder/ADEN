@@ -43,6 +43,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Alsde.Entity, Version=2018.3.1.6646, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Entity.2018.3.0\lib\net451\Alsde.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="Alsde.Extensions, Version=2018.3.1.6646, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Extensions.2018.3.0\lib\net451\Alsde.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Alsde.Security, Version=2018.3.2.6647, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Security.2018.3.1\lib\net451\Alsde.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Alsde.Services, Version=2018.3.1.6647, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Services.2018.3.0\lib\net451\Alsde.Services.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
@@ -330,20 +342,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Aden.Core\Aden.Core.csproj">
-      <Project>{190d1eb5-9cda-4dc1-8d07-e2cf066d9a23}</Project>
-      <Name>Aden.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Aden.DirectoryService\Aden.DirectoryService.csproj">
-      <Project>{6509A66A-FDAF-4FEB-B866-F228A99D5AE6}</Project>
-      <Name>Aden.DirectoryService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Aden.Identity\Aden.Identity.csproj">
-      <Project>{5dae091b-bd02-494c-a57a-790f14a48dd3}</Project>
-      <Name>Aden.Identity</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
