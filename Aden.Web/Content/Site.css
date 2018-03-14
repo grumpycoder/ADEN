@@ -1,7 +1,7 @@
-﻿body {
+﻿/*body {
     padding-top: 60px;
     padding-bottom: 20px;
-}
+}*/
 
 .dl-horizontal dt {
     white-space: normal;
@@ -33,7 +33,7 @@
         border-right-width: 1px;
     }
 
-.panel-right {
+/*.panel-right {
     border: 0.05em solid lightgray;
     border-radius: 0.25em 0.25em;
     margin-top: -0.4em;
@@ -46,7 +46,7 @@
 .panel-title a:active,
 .panel-title a:visited {
     text-decoration: none;
-}
+}*/
 
 .btn-grid {
     min-width: 85px;

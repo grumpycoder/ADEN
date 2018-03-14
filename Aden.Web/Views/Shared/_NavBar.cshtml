@@ -1,22 +1,31 @@
 ﻿
-<div class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @*@Html.ActionLink("ADEN", "FileSpecifications", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-            <a href="/" class="navbar-brand"><i class="fa fa-home"></i></a>
+
+<header class="main-header">
+    <nav class="navbar navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand"><b>Aden</b></a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("My Tasks", "Assignments", "Home")</li>
+                    <li>@Html.ActionLink("Submissions", "Submissions", "Home")</li>
+                    <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
+                    <li>@Html.ActionLink("File Specifications", "FileSpecifications", "Home")</li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+            <!-- Navbar Right Menu -->
+            @*@Html.Partial("_LoginPartial")*@
+
+            <!-- /.navbar-custom-menu -->
         </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("My Tasks", "Assignments", "Home")</li>
-                <li>@Html.ActionLink("Submissions", "Submissions", "Home")</li>
-                <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
-                <li>@Html.ActionLink("File Specifications", "FileSpecifications", "Home")</li>
-            </ul>
-        </div>
-    </div>
-</div>
+        <!-- /.container-fluid -->
+    </nav>
+</header>
+
