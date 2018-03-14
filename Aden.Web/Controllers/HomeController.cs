@@ -23,7 +23,6 @@ namespace Aden.Web.Controllers
             uow = new UnitOfWork(context);
         }
 
-        [Authorize]
         public ActionResult FileSpecifications()
         {
             var user = HttpContext.User.Identity;
@@ -40,7 +39,6 @@ namespace Aden.Web.Controllers
             return View();
         }
 
-        [Authorize]
         public ActionResult Reports(string id = null, int datayear = 0)
         {
             var user = HttpContext.User.Identity;

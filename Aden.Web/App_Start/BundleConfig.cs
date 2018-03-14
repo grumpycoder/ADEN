@@ -27,6 +27,17 @@ namespace Aden.Web
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.css",
                       "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/lte").Include(
+                "~/Content/bootstrap.css",
+                "~/admin-lte/css/adminlte.css",
+                "~/Content/site.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/lte").Include(
+                "~/Scripts/jquery-{version}.js",
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/moment.js"));
+            
         }
     }
 }
