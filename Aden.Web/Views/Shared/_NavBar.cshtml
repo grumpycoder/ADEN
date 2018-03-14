@@ -1,0 +1,22 @@
+﻿
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @*@Html.ActionLink("ADEN", "FileSpecifications", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            <a href="/" class="navbar-brand"><i class="fa fa-home"></i></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>@Html.ActionLink("My Tasks", "Assignments", "Home")</li>
+                <li>@Html.ActionLink("Submissions", "Submissions", "Home")</li>
+                <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
+                <li>@Html.ActionLink("File Specifications", "FileSpecifications", "Home")</li>
+            </ul>
+        </div>
+    </div>
+</div>

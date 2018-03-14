@@ -417,6 +417,8 @@
     <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
     <Content Include="Views\Home\_WorkItemForm.cshtml" />
     <Content Include="Views\Home\Submissions.cshtml" />
+    <Content Include="Views\Shared\_LayoutLte.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
