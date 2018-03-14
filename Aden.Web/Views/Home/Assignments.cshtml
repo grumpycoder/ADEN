@@ -4,120 +4,146 @@
     ViewBag.Title = "My Assignments";
 }
 
-<div class="panel panel-default">
-    <div class="panel-body">
-        <form action="/assignments" method="get" role="form">
-            <div class="col-lg-6">
-                <div class="input-group">
-                    @Html.DropDownListFor(m => m.Username,
-                                                           new List<SelectListItem>()
-                                                           {
-                                                                                    new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
-                                                                                    new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
-                                                                                    new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
-                                                           }, new { @class = "form-control" })
+<section class="content-header">
+    <h1>
+        Assignments
+        <small>Your current Aden report tasks</small>
+    </h1>
 
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">Change</button>
-                    </span>
-                </div><!-- /input-group -->
-            </div><!-- /.col-lg-6 -->
-        </form>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">@ViewBag.CurrentView</li>
+    </ol>
+</section>
+
+
+<section class="content">
+    @*<div class="row">
+        <div class="col-md-6">
+            <form action="/assignments" method="get" role="form">
+                <div class="col-lg-6">
+                    <div class="input-group">
+                        @Html.DropDownListFor(m => m.Username,
+                            new List<SelectListItem>()
+                            {
+                                new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                                new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                                new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                            }, new { @class = "form-control" })
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Change</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </form>
+        </div>
+    </div>*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary box-solid">
+
+                <div class="box-header">
+                    <h3 class="box-title">Current Assignments</h3>
+                    <small>Your active tasks to be completed</small>
+                </div>
+
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive" id="gridWorkItems"
+                           data-id-field="id"
+                           data-show-refresh="true"
+                           data-url="/api/wi/currentassignments/@Model.Username/"
+                           data-toggle="table"
+                           data-side-pagination="client"
+                           data-undefined-text="">
+                        <thead>
+                        <tr>
+                            <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
+                            <th data-field="fileNumber">File Number</th>
+                            <th data-field="dataYear">Data Year</th>
+                            <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
+                            <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
+                            <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="box box-warning box-solid">
+
+                <div class="box-header">
+                    <h3 class="box-title">Retrievable Actions</h3>
+                    <small>Tasks you can undo until next action has been completed</small>
+                </div>
+
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive" id="gridUndoWorkItems"
+                           data-url="/api/wi/completedassignments/@Model.Username/"
+                           data-id-field="id"
+                           data-show-refresh="true"
+                           data-toggle="table"
+                           data-side-pagination="client"
+                           data-undefined-text=""
+                           data-response-handler="retrieveAssignmentresponseHandler">
+                        <thead>
+                        <tr>
+                            <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
+                            <th data-field="fileNumber">File Number</th>
+                            <th data-field="dataYear">Data Year</th>
+                            <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
+                            <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
+                            <th data-field="action">Action</th>
+                            <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="cancelActionsFormatter"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="box box-default box-solid">
+
+                <div class="box-header">
+                    <h3 class="box-title">Completed Assignments</h3>
+                    <small>Tasks you can completed</small>
+                </div>
+
+                <div class="box-body">
+                    <table class="table table-bordered table-responsive" id="gridCompletedWorkItems"
+                           data-url="/api/wi/completedassignments/@Model.Username/"
+                           data-id-field="id"
+                           data-show-refresh="true"
+                           data-toggle="table"
+                           data-side-pagination="client"
+                           data-undefined-text="">
+                        <thead>
+                        <tr>
+                            <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
+                            <th data-field="fileNumber">File Number</th>
+                            <th data-field="dataYear">Data Year</th>
+                            <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
+                            <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
+                            <th data-field="action">Action</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
     </div>
-</div>
-
-<div class="panel panel-primary">
-
-    <div class="panel-heading">
-        <h1 class="panel-title">My Assignments</h1>
-    </div>
-    <div class="panel-body">
-        <h2>@User.Identity.Name</h2>
-        <table class="table table-bordered table-responsive" id="gridWorkItems"
-               data-id-field="id"
-               data-show-refresh="true"
-               data-url="/api/wi/currentassignments/@Model.Username/"
-               data-toggle="table"
-               data-side-pagination="client"
-               data-undefined-text="">
-            <thead>
-            <tr>
-                <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
-                <th data-field="fileNumber">File Number</th>
-                <th data-field="dataYear">Data Year</th>
-                <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
-                <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
-            </tr>
-            </thead>
-        </table>
-    </div>
-</div>
+</section>
 
 
-@*<div class="panel panel-warning" hidden="@(!Model.CompletedWorkItems.Any(x => x.CanCancel))">*@
-<div class="panel panel-warning">
-
-    <div class="panel-heading">
-        <h1 class="panel-title">
-            Retrievable Actions
-        </h1>
-    </div>
-    <div class="panel-body">
-        <table class="table table-bordered table-responsive" id="gridUndoWorkItems"
-               data-url="/api/wi/completedassignments/@Model.Username/"
-               data-id-field="id"
-               data-show-refresh="true"
-               data-toggle="table"
-               data-side-pagination="client"
-               data-undefined-text=""
-               data-response-handler="retrieveAssignmentresponseHandler">
-            <thead>
-                <tr>
-                    <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
-                    <th data-field="fileNumber">File Number</th>
-                    <th data-field="dataYear">Data Year</th>
-                    <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
-                    <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                    <th data-field="action">Action</th>
-                    <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="cancelActionsFormatter"></th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
 
 
-@*<div class="panel panel-success" hidden="@(!Model.CompletedWorkItems.Any())">*@
-<div class="panel panel-success">
-
-    <div class="panel-heading">
-        <h1 class="panel-title">
-            Completed Actions
-        </h1>
-    </div>
-    <div class="panel-body">
-        <table class="table table-bordered table-responsive" id="gridCompletedWorkItems"
-               data-url="/api/wi/completedassignments/@Model.Username/"
-               data-id-field="id"
-               data-show-refresh="true"
-               data-toggle="table"
-               data-side-pagination="client"
-               data-undefined-text="">
-            <thead>
-                <tr>
-                    <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
-                    <th data-field="fileNumber">File Number</th>
-                    <th data-field="dataYear">Data Year</th>
-                    <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
-                    <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                    <th data-field="action">Action</th>
-                </tr>
-            </thead>
-        </table>
-
-    </div>
-</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
