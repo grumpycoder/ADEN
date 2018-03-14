@@ -224,6 +224,7 @@
     <Compile Include="Data\EntityConfigurations\ReportConfiguration.cs" />
     <Compile Include="Data\EntityConfigurations\ReportDocumentConfiguration.cs" />
     <Compile Include="Data\EntityConfigurations\WorkItemConfiguration.cs" />
+    <Compile Include="Filters\TrackViewName.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

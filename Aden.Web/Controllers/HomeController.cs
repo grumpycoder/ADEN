@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Aden.Web.Filters;
 using Aden.Web.Services;
 using ADEN.Web.Core;
 using ADEN.Web.Data;
@@ -23,6 +24,7 @@ namespace Aden.Web.Controllers
             uow = new UnitOfWork(context);
         }
 
+        [TrackViewName]
         public ActionResult FileSpecifications()
         {
             var user = HttpContext.User.Identity;
@@ -31,6 +33,7 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        [TrackViewName]
         public ActionResult Submissions()
         {
             var user = HttpContext.User.Identity;
@@ -39,6 +42,7 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        [TrackViewName]
         public ActionResult Reports(string id = null, int datayear = 0)
         {
             var user = HttpContext.User.Identity;
@@ -47,6 +51,7 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        [TrackViewName]
         public ActionResult Assignments(string username)
         {
             var user = HttpContext.User.Identity;

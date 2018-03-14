@@ -4,62 +4,75 @@
     ViewBag.Title = "Submissions";
 }
 
-<style>
-</style>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h1 class="panel-title">
-            Submissions
-            <a href="#" class="panel-right">
-                <i class="fa fa-cloud-download"></i>&nbsp;Update
-            </a>
-        </h1>
-    </div>
-    <div class="panel-body">
-        <h3>@ViewBag.Message</h3>
-        <h2>@User.Identity.GetUserName()</h2>
-        <table id="grid"
-               data-url="/api/submissions"
-               data-toggle="table"
-               data-pagination="true"
-               data-page-size="5"
-               data-page-list="[5,10,25,50]"
-               data-pagination-first-text="First"
-               data-pagination-pre-text="Previous"
-               data-pagination-next-text="Next"
-               data-pagination-last-text="Last"
-               data-show-refresh="true"
-               data-show-toggle="true"
-               data-show-columns="true"
-               data-side-pagination="server"
-               data-show-export="true"
-               data-minimum-count-columns="2"
-               data-show-pagination-switch="true"
-               data-search="true"
-               data-search-on-enter-key="true"
-               data-undefined-text=""
-               data-filter-show-clear="true"
-               data-filter-control="true"
-               data-row-style="rowStyle">
-            <thead>
-                <tr>
-                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
-                    <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
-                    <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
-                    <th data-field="isSEA" data-formatter="checkboxFormatter" data-align="center">SEA</th>
-                    <th data-field="isLEA" data-formatter="checkboxFormatter" data-align="center">LEA</th>
-                    <th data-field="isSCH" data-formatter="checkboxFormatter" data-align="center">SCH</th>
-                    <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
-                    <th data-field="dataYear" data-filter-control="input">Data Year</th>
-                    <th data-field="reportState" data-filter-control="input">State</th>
-                    <th data-field="specificationDocument" data-formatter="documentFormatter">Spec Doc</th>
-                    <th data-field="fileSpecificationId" data-class="no-wrap" data-align="center" data-formatter="actionsFormatter"></th>
-                </tr>
-            </thead>
-        </table>
-    </div>
-</div>
+<section class="content-header">
+    <h1>
+        Submissions
+        <small>Eden report generation and submission results</small>
+    </h1>
 
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">@ViewBag.CurrentView</li>
+    </ol>
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-default box-solid">
+
+                @*<div class="box-header">
+                        <h3 class="box-title">File Specifications</h3>
+                        <small>Administrative definitions of the Federal Specifications</small>
+                    </div>*@
+
+                <div class="box-body">
+                    <table id="grid"
+                           data-url="/api/submissions"
+                           data-toggle="table"
+                           data-pagination="true"
+                           data-page-size="5"
+                           data-page-list="[5,10,25,50]"
+                           data-pagination-first-text="First"
+                           data-pagination-pre-text="Previous"
+                           data-pagination-next-text="Next"
+                           data-pagination-last-text="Last"
+                           data-show-refresh="true"
+                           data-show-toggle="true"
+                           data-show-columns="true"
+                           data-side-pagination="server"
+                           data-show-export="true"
+                           data-minimum-count-columns="2"
+                           data-show-pagination-switch="true"
+                           data-search="true"
+                           data-search-on-enter-key="true"
+                           data-undefined-text=""
+                           data-filter-show-clear="true"
+                           data-filter-control="true"
+                           data-row-style="rowStyle">
+                        <thead>
+                            <tr>
+                                <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
+                                <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
+                                <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
+                                <th data-field="isSEA" data-formatter="checkboxFormatter" data-align="center">SEA</th>
+                                <th data-field="isLEA" data-formatter="checkboxFormatter" data-align="center">LEA</th>
+                                <th data-field="isSCH" data-formatter="checkboxFormatter" data-align="center">SCH</th>
+                                <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
+                                <th data-field="dataYear" data-filter-control="input">Data Year</th>
+                                <th data-field="reportState" data-filter-control="input">State</th>
+                                <th data-field="specificationDocument" data-formatter="documentFormatter">Spec Doc</th>
+                                <th data-field="fileSpecificationId" data-class="no-wrap" data-align="center" data-formatter="actionsFormatter"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
