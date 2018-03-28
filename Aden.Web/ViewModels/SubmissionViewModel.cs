@@ -33,6 +33,11 @@ namespace Aden.Web.ViewModels
         public int FileSpecificationId { get; set; }
         public virtual FileSpecification FileSpecification { get; set; }
 
+        public bool CanStartReport
+        {
+            get { return !string.IsNullOrEmpty(FileSpecification.ReportAction); }
+        }
+
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<Submission, SubmissionViewModel>()

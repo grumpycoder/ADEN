@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Aden.Web.ViewModels;
@@ -58,15 +59,18 @@ namespace Aden.Web.Controllers
 
             if (submission == null) return NotFound();
 
-            var report = Report.Create(submission);
-
-            submission.AddReport(report);
-
-            report.StartNewWork();
-
-            uow.Complete();
-
-            return Ok();
+            try
+            {
+                var report = Report.Create(submission);
+                submission.AddReport(report);
+                report.StartNewWork();
+                uow.Complete();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost, Route("waiver/{submissionid}")]
