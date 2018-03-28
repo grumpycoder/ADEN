@@ -218,19 +218,6 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SubmissionsController.cs" />
     <Compile Include="Controllers\WorkItemController.cs" />
-    <Compile Include="Core\DocumentRepository.cs" />
-    <Compile Include="Core\FileSpecificationRepository.cs" />
-    <Compile Include="Core\OperationResult.cs" />
-    <Compile Include="Core\ReportRepository.cs" />
-    <Compile Include="Core\SubmissionRepository.cs" />
-    <Compile Include="Core\UnitOfWork.cs" />
-    <Compile Include="Core\WorkItemRepository.cs" />
-    <Compile Include="Data\AdenContext.cs" />
-    <Compile Include="Data\EntityConfigurations\SubmissionConfiguration.cs" />
-    <Compile Include="Data\EntityConfigurations\FileSpecificationConfiguration.cs" />
-    <Compile Include="Data\EntityConfigurations\ReportConfiguration.cs" />
-    <Compile Include="Data\EntityConfigurations\ReportDocumentConfiguration.cs" />
-    <Compile Include="Data\EntityConfigurations\WorkItemConfiguration.cs" />
     <Compile Include="Filters\TrackViewName.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -239,23 +226,11 @@
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
-    <Compile Include="Models\FileSpecification.cs" />
-    <Compile Include="Models\Person.cs" />
-    <Compile Include="Models\Submission.cs" />
-    <Compile Include="Models\FileSpecificationState.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Services\NotificationService.cs" />
-    <Compile Include="Models\Report.cs" />
-    <Compile Include="Models\ReportDocument.cs" />
-    <Compile Include="Models\ReportLevel.cs" />
-    <Compile Include="Models\ReportState.cs" />
-    <Compile Include="Models\WorkItem.cs" />
-    <Compile Include="Models\WorkItemAction.cs" />
-    <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AssigmentsViewModel.cs" />
@@ -433,6 +408,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Aden.Core\Aden.Core.csproj">
+      <Project>{F7E51D12-2AC6-462B-B229-196A1D3CE50F}</Project>
+      <Name>Aden.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ADEN.Web.Models;
+using Aden.Core.Models;
 using AutoMapper;
 using Heroic.AutoMapper;
 
-namespace ADEN.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class FileSpecificationEditViewModel : IMapFrom<FileSpecification>, IHaveCustomMappings
     {

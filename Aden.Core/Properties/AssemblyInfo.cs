@@ -1,15 +1,15 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Aden.Web")]
+[assembly: AssemblyTitle("Aden.Core")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ALSDE")]
-[assembly: AssemblyProduct("Aden.Web")]
+[assembly: AssemblyProduct("Aden.Core")]
 [assembly: AssemblyCopyright("Copyright © ALSDE 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0c799b70-a317-4ad7-b72f-dc176aa063b5")]
+[assembly: Guid("f7e51d12-2ac6-462b-b229-196a1d3ce50f")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,9 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Revision and Build Numbers
+// You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2018.3.37.6662")]
-[assembly: AssemblyFileVersion("2018.3.37.6662")]
-
-[assembly: AssemblyInformationalVersion("2018.3.22")]
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("2018.3.12.6662")]
+[assembly: AssemblyFileVersion("2018.3.12.6662")]

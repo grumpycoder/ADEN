@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
-using ADEN.Web.Core;
-using ADEN.Web.Data;
-using ADEN.Web.Models;
-using ADEN.Web.ViewModels;
+using Aden.Core.Data;
+using Aden.Core.Models;
+using Aden.Core.Repositories;
+using Aden.Web.ViewModels;
 using AutoMapper;
 
 
-namespace ADEN.Web.Controllers
+namespace Aden.Web.Controllers
 {
     [RoutePrefix("api/wi")]
     public class WorkItemController : ApiController
@@ -23,7 +23,7 @@ namespace ADEN.Web.Controllers
         [HttpGet, Route("{username}")]
         public object Get(string username)
         {
-            username = User.Identity.Name; 
+            username = User.Identity.Name;
 
             var workitems = uow.WorkItems.GetActiveByUser(username);
             var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);

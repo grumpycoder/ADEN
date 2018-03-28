@@ -1,4 +1,4 @@
-﻿using ADEN.Web.Models;
+﻿using Aden.Core.Models;
 using Heroic.AutoMapper;
 
 namespace Aden.Web.ViewModels

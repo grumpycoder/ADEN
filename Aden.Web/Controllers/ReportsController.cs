@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Aden.Core.Data;
+using Aden.Core.Models;
+using Aden.Core.Repositories;
 using Aden.Web.ViewModels;
-using ADEN.Web.Core;
-using ADEN.Web.Data;
-using ADEN.Web.Models;
 using AutoMapper;
 
 namespace Aden.Web.Controllers

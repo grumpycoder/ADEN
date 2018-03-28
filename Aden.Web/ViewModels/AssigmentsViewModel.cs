@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ADEN.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class AssigmentsViewModel
     {

@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Aden.Core.Data;
+using Aden.Core.Models;
+using Aden.Core.Repositories;
+using Aden.Core.Services;
 using Aden.Web.Filters;
-using Aden.Web.Services;
-using ADEN.Web.Core;
-using ADEN.Web.Data;
-using ADEN.Web.Models;
-using ADEN.Web.ViewModels;
+using Aden.Web.ViewModels;
 using AutoMapper;
 
 namespace Aden.Web.Controllers

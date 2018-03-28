@@ -1,10 +1,10 @@
 ﻿using System;
-using ADEN.Web.Helpers;
-using ADEN.Web.Models;
+using Aden.Core.Models;
+using Aden.Web.Helpers;
 using AutoMapper;
 using Heroic.AutoMapper;
 
-namespace ADEN.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class WorkItemViewModel : IMapFrom<WorkItem>, IHaveCustomMappings
     {

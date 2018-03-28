@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Aden.Web.Helpers
+namespace Aden.Core.Helpers
 {
 
     /// <summary>

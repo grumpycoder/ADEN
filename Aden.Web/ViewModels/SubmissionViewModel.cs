@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ADEN.Web.Helpers;
-using ADEN.Web.Models;
+using Aden.Core.Models;
+using Aden.Web.Helpers;
 using AutoMapper;
 using Heroic.AutoMapper;
 

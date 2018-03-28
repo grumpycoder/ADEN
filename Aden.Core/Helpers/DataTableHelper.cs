@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Aden.Web.Helpers
+namespace Aden.Core.Helpers
 {
     public static class DataTableHelper
     {

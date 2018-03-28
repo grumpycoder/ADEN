@@ -1,8 +1,8 @@
-﻿using ADEN.Web.Models;
+﻿using Aden.Core.Models;
 using AutoMapper;
 using Heroic.AutoMapper;
 
-namespace ADEN.Web.ViewModels
+namespace Aden.Web.ViewModels
 {
     public class FileSpecificationViewModel : IMapFrom<FileSpecification>, IHaveCustomMappings
     {

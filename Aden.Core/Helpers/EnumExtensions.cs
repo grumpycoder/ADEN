@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace Aden.Web.Helpers
+namespace Aden.Core.Helpers
 {
     public static class EnumHelper<T>
     {
