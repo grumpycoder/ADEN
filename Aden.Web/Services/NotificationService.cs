@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Mail;
 using ADEN.Web.Helpers;
@@ -21,8 +22,15 @@ namespace Aden.Web.Services
             var bodyText = string.Format("You have been assigned a {0} task for {1} to be completed by {2}", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName, workItem.Report.Submission.DueDate);
 
             message.Body = bodyText;
-
-            client.Send(message);
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception e)
+            {
+                //TODO: Log sending error and queue message
+                Debug.WriteLine("Error sending email message", e);
+            }
         }
 
         public static void SendCancelWorkNotification(WorkItem workItem)
@@ -35,7 +43,15 @@ namespace Aden.Web.Services
 
             message.Body = bodyText;
 
-            client.Send(message);
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception e)
+            {
+                //TODO: Log sending error and queue message
+                Debug.WriteLine("Error sending email message", e);
+            }
 
         }
 
@@ -55,7 +71,15 @@ namespace Aden.Web.Services
                         message.Attachments.Add(new Attachment(f));
                     }
 
-                    client.Send(message);
+                    try
+                    {
+                        client.Send(message);
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: Log sending error and queue message
+                        Debug.WriteLine("Error sending email message", e);
+                    }
                 }
             }
 
@@ -78,7 +102,15 @@ namespace Aden.Web.Services
                         message.Attachments.Add(new Attachment(f));
                     }
 
-                    client.Send(message);
+                    try
+                    {
+                        client.Send(message);
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: Log sending error and queue message
+                        Debug.WriteLine("Error sending email message", e);
+                    }
                 }
             }
         }
