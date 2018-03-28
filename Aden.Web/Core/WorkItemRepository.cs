@@ -61,5 +61,16 @@ namespace ADEN.Web.Core
         {
             return _context.WorkItems.Where(w => w.ReportId == reportId).OrderByDescending(d => d.Id).ToList();
         }
+
+        public string GetUserWithLeastAssignments(IEnumerable<string> members)
+        {
+            var assignee = _context.WorkItems.Where(u => members.Contains(u.AssignedUser)).GroupBy(u => u.AssignedUser).Select(n => new
+            {
+                n.Key,
+                Count = n.Count()
+            }).OrderBy(x => x.Count).FirstOrDefault();
+
+            return assignee != null ? assignee.Key : string.Empty;
+        }
     }
 }

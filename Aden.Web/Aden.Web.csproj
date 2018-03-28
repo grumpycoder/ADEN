@@ -49,6 +49,10 @@
     <Reference Include="Alsde.Extensions, Version=2018.3.1.6646, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.3.0\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="ALSDE.IdemLib, Version=17.708.16704.614, Culture=neutral, PublicKeyToken=fa4115e8724c5de1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\ALSDE.IdemLib.dll</HintPath>
+    </Reference>
     <Reference Include="Alsde.Security, Version=2018.3.2.6647, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.3.1\lib\net451\Alsde.Security.dll</HintPath>
     </Reference>
@@ -106,6 +110,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -447,7 +454,7 @@
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:64068/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>True</UseCustomServer>
+          <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://devaden.alsde.edu</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
