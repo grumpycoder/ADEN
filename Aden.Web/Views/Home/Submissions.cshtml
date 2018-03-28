@@ -141,6 +141,8 @@
         function actionsFormatter(value, row, index, field) {
             //console.log('row', row);
             var lnk = '';
+            var canStartReport = row.canStartReport;
+            console.log('canstart', canStartReport);
             if (row.reportStateId !== 1) {
                 lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' +
                     row.fileNumber +
@@ -154,9 +156,15 @@
                     '">ReOpen</button>';
             }
             if (row.reportStateId === 1) {
-                lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
-                    row.id +
-                    '">Start</button>&nbsp;';
+                if (canStartReport) {
+                    lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+                        row.id + '">Start</button>&nbsp;';
+
+                } else {
+                    lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+                        row.id +
+                        '" disabled="true" data-toggle="tooltip" title="Missing action on specification" data-placement="left">Start</button>&nbsp;';
+                }
                 lnk += '<button class="btn btn-default btn-sm btn-grid" data-waiver data-filespec-id="' +
                     row.id +
                     '">Waiver</button>';
@@ -167,7 +175,7 @@
         function historyFormatter(value, row, index, field) {
             var lnk = '<a href=/workitemhistory/' +
                 row.mostRecentReportId +
-                ' data-history data-title="Work History" data-toggle="tooltip" title="Work History" data-placement="left">' +
+                ' data-history data-title="Work History" data-toggle="tooltip" title="Work History" data-placement="right">' +
                 '<i class="fa fa-history"></i></a>';
             return lnk;
         }
@@ -200,8 +208,10 @@
                             //play with data
                             $table.bootstrapTable('refresh');
                         },
-                        error: function(err) {
+                        error: function (err) {
+                            debugger;
                             console.log('err', err);
+                            toastr.error('Something went wrong: ' + err.responseJSON.message);
                         }
                     });
                 });

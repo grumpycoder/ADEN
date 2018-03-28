@@ -34,6 +34,8 @@ namespace ADEN.Web.Models
 
         public static Report Create(Submission submission)
         {
+            if (string.IsNullOrEmpty(submission.FileSpecification.ReportAction)) throw new Exception("No action defined to generate report");
+
             var report = new Report { DataYear = submission.DataYear, ReportState = ReportState.NotStarted };
             return report;
         }
