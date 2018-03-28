@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ADEN.Web.Core;
+using ADEN.Web.Data;
+using ALSDE.Idem;
 
 namespace ADEN.Web.Models
 {
@@ -42,6 +45,8 @@ namespace ADEN.Web.Models
                 return false;
             }
         }
+
+
 
         private WorkItem()
         {
@@ -108,8 +113,13 @@ namespace ADEN.Web.Models
             WorkItemState = WorkItemState.NotStarted;
         }
 
-        public static WorkItem Create(WorkItemAction action, string assignee)
+        public static WorkItem Create(WorkItemAction action, string group)
         {
+            var members = GroupHelper.GetGroupMembers("CohortAdminUsers").Select(m => m.EmailAddress).ToList();
+
+            var uow = new UnitOfWork(AdenContext.Create());
+            var assignee = uow.WorkItems.GetUserWithLeastAssignments(members);
+
             var wi = new WorkItem(action, assignee);
             return wi;
         }
