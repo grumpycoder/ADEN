@@ -7,7 +7,11 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
 
-    @Styles.Render("~/Content/lte")
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/css/DevExtremeBundle")
+    @Scripts.Render("~/js/DevExtremeBundle")
 
 </head>
 <body>
@@ -41,17 +45,17 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/lte")
-@Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
 
     @*@Scripts.Render("~/bundles/jquery")*@
     @*@Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
-@*@Scripts.Render("~/bundles/bootstrap")*@
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+        <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
 
 
-<!-- Latest compiled and minified JavaScript -->
+    <!-- Latest compiled and minified JavaScript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
 

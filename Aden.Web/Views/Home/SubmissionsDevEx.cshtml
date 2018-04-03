@@ -1,0 +1,319 @@
+﻿@using Microsoft.AspNet.Identity
+
+@{
+    ViewBag.Title = "Submissions";
+}
+
+<section class="content-header">
+    @*<h1>
+        Submissions
+        <small>Eden report generation and submission results</small>
+    </h1>*@
+
+    <div>
+        <ul class="breadcrumb pull-right">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ul>
+    </div>
+
+</section>
+
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            
+          
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <span class="header">Submissions</span>
+                    <small>Eden report generation and submission results</small>
+
+                    <ul class="breadcrumb pull-right">
+                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                        <li class="active">@ViewBag.CurrentView</li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    @(Html.DevExtreme().DataGrid()
+                  .ID("submissionGrid")
+                  .ShowRowLines(true)
+                  .RowAlternationEnabled(true)
+                  .ShowBorders(true)
+                  .FilterRow(filterRow => filterRow
+                      .Visible(true)
+                      .ApplyFilter(GridApplyFilterMode.Auto)
+                  )
+                  .SearchPanel(searchPanel => searchPanel
+                      .Visible(true)
+                      .Width(240)
+                      .Placeholder("Search...")
+                  )
+                  .HeaderFilter(headerFilter => headerFilter.Visible(true))
+                  .Columns(columns =>
+                  {
+
+                      
+                      columns.Add().DataField("mostRecentReportId").Width(50)
+                          .CellTemplate(@<text>
+                                <a href="@Url.Action("workitemhistory")/<%= value || 0 %>" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a>
+                            </text>);
+                      columns.Add().DataField("fileName");
+                      columns.Add().DataField("fileNumber");
+                      columns.Add().DataField("dueDate");
+                      columns.Add().DataField("dataYear");
+                      columns.Add().DataField("reportState");
+                      columns.Add().DataField("isSEA");
+                      columns.Add().DataField("isLEA");
+                      columns.Add().DataField("isSCH");
+                      columns.Add().Width(150).CellTemplate("" +
+                                             "<button class='btn btn-default btn-sm' data-start>Start</button>" +
+                                             "<button class='btn btn-default btn-sm' data-waiver>Waiver</button>"
+                      );
+                  })
+.Paging(paging => paging.PageSize(10))
+.Pager(pager =>
+{
+    pager.ShowPageSizeSelector(true);
+    pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+    pager.ShowInfo(true);
+})
+.DataSource(d => d.StaticJson().Url("/api/submissions/all").Key("id"))
+                    )
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Report History</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+    <div id="editContainer">
+    </div>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        function rowStyle(row, index) {
+            var classes = ['active', 'success', 'info', 'warning', 'danger'];
+            if (row.reportStateId === 6) {
+                return {
+                    classes: classes[4]
+                };
+            }
+            if (row.reportStateId === 7) {
+                return {
+                    classes: classes[1]
+                };
+            }
+            if (moment().isSameOrAfter(row.dueDate)) {
+                return {
+                    classes: classes[3]
+                };
+            }
+            if (moment().add(14, 'days').isSameOrAfter(row.dueDate) && row.reportStateId !== 6) {
+                return {
+                    classes: classes[2]
+                };
+            }
+
+            return {};
+        }
+
+        function checkboxFormatter(value, row, index, field) {
+            if (value === true) {
+                return '<div class="text-center"><i class="fa fa-check-circle"></i></div>';
+            }
+            return null;
+        }
+
+        function dateFormatter(value, row, index, field) {
+            return moment(value).format('MM/DD/YYYY');
+        }
+
+        function actionsFormatter(value, row, index, field) {
+            //console.log('row', row);
+            var lnk = '';
+            var canStartReport = row.canStartReport;
+            console.log('canstart', canStartReport);
+            if (row.reportStateId !== 1) {
+                lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' +
+                    row.fileNumber +
+                    '/' +
+                    row.dataYear +
+                    '">Reports</a>&nbsp;';
+            }
+            if (row.reportStateId >= 5) {
+                lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+                    row.id +
+                    '">ReOpen</button>';
+            }
+            if (row.reportStateId === 1) {
+                if (canStartReport) {
+                    lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+                        row.id + '">Start</button>&nbsp;';
+
+                } else {
+                    lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-filespec-id="' +
+                        row.id +
+                        '" disabled="true" data-toggle="tooltip" title="Missing action on specification" data-placement="left">Start</button>&nbsp;';
+                }
+                lnk += '<button class="btn btn-default btn-sm btn-grid" data-waiver data-filespec-id="' +
+                    row.id +
+                    '">Waiver</button>';
+            }
+            return lnk;
+        }
+
+        function historyFormatter(value, row, index, field) {
+            var lnk = '<a href=/workitemhistory/' +
+                row.mostRecentReportId +
+                ' data-history data-title="Work History" data-toggle="tooltip" title="Work History" data-placement="right">' +
+                '<i class="fa fa-history"></i></a>';
+            return lnk;
+        }
+
+        function documentFormatter(value, row, index, field) {
+            return '<div class="text-center"><i class="fa fa-file"></i></div>';
+        }
+
+        var $table = $('#grid');
+
+        $(function() {
+            console.log('ready');
+
+            $('input').keyup(debounce(function() {
+                    var $this = $(this);
+                },
+                500));
+
+            $(document).on('click',
+                '[data-start]',
+                function(e) {
+                    e.preventDefault();
+                    console.log('start');
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    $.ajax({
+                        url: '/api/reports/create/' + id,
+                        type: 'POST',
+                        success: function(data) {
+                            //play with data
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function (err) {
+                            debugger;
+                            console.log('err', err);
+                            toastr.error('Something went wrong: ' + err.responseJSON.message);
+                        }
+                    });
+                });
+
+            $(document).on('click',
+                '[data-waiver]',
+                function(e) {
+                    e.preventDefault();
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    $.ajax({
+                        url: '/api/reports/waiver/' + id,
+                        type: 'POST',
+                        success: function(data) {
+                            //play with data
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function(err) {
+                            console.log('err', err);
+                        }
+                    });
+                });
+
+            $(document).on('click',
+                '[data-history]',
+                function(e) {
+                    e.preventDefault();
+                    console.log('data history click');
+                    var url = $(this).attr('href');
+                    var title = $(this).data('title');
+                    $('.modal-title').html(title);
+                    $('.modal-body').html('');
+
+                    $('.modal-body').load(url,
+                        function() {
+                            $('#myModal').modal({ show: true });
+                        });
+                });
+
+            $(document).on('click',
+                '[data-edit]',
+                function (e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    $.get(url, function (data) {
+                        console.log('data', data);
+                        $('#editContainer').html(data);
+                        $('#editModal').modal({ show: true });
+                    });
+                });
+
+            $('body').tooltip({ selector: '[data-toggle=tooltip]' });
+
+            function debounce(fn, delay) {
+                var timer = null;
+                return function() {
+                    var context = this, args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() {
+                            fn.apply(context, args);
+                        },
+                        delay);
+                };
+            }
+
+        });
+
+        function updateComplete() {
+            console.log('update complete');
+        }
+
+        function UpdateSuccess(data) {
+            console.log('updatesuccess');
+            if (data !== "success") {
+                console.log('error', data);
+                $('#editContainer').html(data);
+                return;
+            }
+            $('#editModal').modal('hide');
+            $('#editContainer').html("");
+            $table.bootstrapTable('refresh');
+        }
+
+        function UpdateFailed(data) {
+            console.log('failed data', data);
+        }
+
+    </script>
+}

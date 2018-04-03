@@ -71,6 +71,12 @@
     <Reference Include="DelegateDecompiler.EntityFramework, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
       <HintPath>..\packages\DelegateDecompiler.EntityFramework.0.23.0\lib\net45\DelegateDecompiler.EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="DevExtreme.AspNet.Data, Version=1.0.0.0, Culture=neutral, PublicKeyToken=982f5dab1439d0f7, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExtreme.AspNet.Data.1.0.0\lib\net40\DevExtreme.AspNet.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExtreme.AspNet.Mvc, Version=17.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DevExtreme.AspNet.Mvc.17.2.5\lib\net40\DevExtreme.AspNet.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -208,6 +214,7 @@
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\DevExtremeBundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -328,6 +335,30 @@
     <Content Include="Content\tether\tether-theme-basic.min.css" />
     <Content Include="Content\tether\tether.css" />
     <Content Include="Content\tether\tether.min.css" />
+    <Content Include="css\dx.android5.light.css" />
+    <Content Include="css\dx.carmine.compact.css" />
+    <Content Include="css\dx.carmine.css" />
+    <Content Include="css\dx.common.css" />
+    <Content Include="css\dx.contrast.compact.css" />
+    <Content Include="css\dx.contrast.css" />
+    <Content Include="css\dx.dark.compact.css" />
+    <Content Include="css\dx.dark.css" />
+    <Content Include="css\dx.darkmoon.compact.css" />
+    <Content Include="css\dx.darkmoon.css" />
+    <Content Include="css\dx.darkviolet.compact.css" />
+    <Content Include="css\dx.darkviolet.css" />
+    <Content Include="css\dx.greenmist.compact.css" />
+    <Content Include="css\dx.greenmist.css" />
+    <Content Include="css\dx.ios7.default.css" />
+    <Content Include="css\dx.light.compact.css" />
+    <Content Include="css\dx.light.css" />
+    <Content Include="css\dx.softblue.compact.css" />
+    <Content Include="css\dx.softblue.css" />
+    <Content Include="css\dx.spa.css" />
+    <Content Include="css\dx.win10.black.css" />
+    <Content Include="css\dx.win10.white.css" />
+    <Content Include="css\dx.win8.black.css" />
+    <Content Include="css\dx.win8.white.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -348,11 +379,81 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="admin-lte\css\adminlte.min.css.map" />
     <Content Include="admin-lte\css\adminlte.css.map" />
+    <Content Include="css\icons\dxicons.ttf" />
+    <Content Include="css\icons\dxicons.woff" />
+    <Content Include="css\icons\dxiconsios.ttf" />
+    <Content Include="css\icons\dxiconsios.woff" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="js\angular-route.js" />
+    <Content Include="js\angular-route.min.js" />
+    <Content Include="js\angular.js" />
+    <Content Include="js\angular.min.js" />
+    <Content Include="js\aspnet\dx.aspnet.data.js" />
+    <Content Include="js\aspnet\dx.aspnet.mvc.js" />
+    <Content Include="js\cldr.js" />
+    <Content Include="js\cldr.min.js" />
+    <Content Include="js\cldr\event.js" />
+    <Content Include="js\cldr\event.min.js" />
+    <Content Include="js\cldr\supplemental.js" />
+    <Content Include="js\cldr\supplemental.min.js" />
+    <Content Include="js\cldr\unresolved.js" />
+    <Content Include="js\cldr\unresolved.min.js" />
+    <Content Include="js\dx.all.debug.js" />
+    <Content Include="js\dx.all.js" />
+    <Content Include="js\dx.mobile.debug.js" />
+    <Content Include="js\dx.mobile.js" />
+    <Content Include="js\dx.viz-web.debug.js" />
+    <Content Include="js\dx.viz-web.js" />
+    <Content Include="js\dx.viz.debug.js" />
+    <Content Include="js\dx.viz.js" />
+    <Content Include="js\dx.web.debug.js" />
+    <Content Include="js\dx.web.js" />
+    <Content Include="js\globalize.js" />
+    <Content Include="js\globalize.min.js" />
+    <Content Include="js\globalize\currency.js" />
+    <Content Include="js\globalize\currency.min.js" />
+    <Content Include="js\globalize\date.js" />
+    <Content Include="js\globalize\date.min.js" />
+    <Content Include="js\globalize\message.js" />
+    <Content Include="js\globalize\message.min.js" />
+    <Content Include="js\globalize\number.js" />
+    <Content Include="js\globalize\number.min.js" />
+    <Content Include="js\jquery-1.12.3.js" />
+    <Content Include="js\jquery-1.12.3.min.js" />
+    <Content Include="js\jquery-2.2.3.js" />
+    <Content Include="js\jquery-2.2.3.min.js" />
+    <Content Include="js\jszip.js" />
+    <Content Include="js\jszip.min.js" />
+    <Content Include="js\knockout-3.4.0.debug.js" />
+    <Content Include="js\knockout-3.4.0.js" />
+    <Content Include="js\localization\dx.all.de.js" />
+    <Content Include="js\localization\dx.all.ja.js" />
+    <Content Include="js\localization\dx.all.ru.js" />
+    <Content Include="js\localization\dx.messages.de.js" />
+    <Content Include="js\localization\dx.messages.en.js" />
+    <Content Include="js\localization\dx.messages.es.js" />
+    <Content Include="js\localization\dx.messages.ja.js" />
+    <Content Include="js\localization\dx.messages.pt-BR.js" />
+    <Content Include="js\localization\dx.messages.ru.js" />
+    <Content Include="js\localization\dx.mobile.de.js" />
+    <Content Include="js\localization\dx.mobile.ja.js" />
+    <Content Include="js\localization\dx.mobile.ru.js" />
+    <Content Include="js\localization\dx.web.de.js" />
+    <Content Include="js\localization\dx.web.ja.js" />
+    <Content Include="js\localization\dx.web.ru.js" />
+    <Content Include="js\vectormap-data\africa.js" />
+    <Content Include="js\vectormap-data\canada.js" />
+    <Content Include="js\vectormap-data\eurasia.js" />
+    <Content Include="js\vectormap-data\europe.js" />
+    <Content Include="js\vectormap-data\usa.js" />
+    <Content Include="js\vectormap-data\world.js" />
+    <Content Include="js\vectormap-utils\dx.vectormaputils.debug.js" />
+    <Content Include="js\vectormap-utils\dx.vectormaputils.js" />
+    <Content Include="js\vectormap-utils\dx.vectormaputils.node.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -402,6 +503,7 @@
     <Content Include="Views\Home\Submissions.cshtml" />
     <Content Include="Views\Shared\_LayoutLte.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Home\SubmissionsDevEx.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -440,6 +542,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
+      <UserProperties DismissedDevExtremeVersion="17.2.5.0" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

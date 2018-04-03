@@ -39,7 +39,9 @@ namespace Aden.Web.Controllers
             var user = HttpContext.User.Identity;
 
             ViewBag.Message = "You are logged in: " + user.Name;
-            return View();
+
+            //return View("Submissions");
+            return View("SubmissionsDevEx");
         }
 
         [TrackViewName]
@@ -65,6 +67,7 @@ namespace Aden.Web.Controllers
         public ActionResult WorkItemHistory(int reportId)
         {
             //var workItems = uow.WorkItems.GetHistoryByFileSpecification(id, datayear);
+            
             var workItems = uow.WorkItems.GetHistoryByReport(reportId);
             return PartialView("_WorkItemHistory", workItems);
         }
