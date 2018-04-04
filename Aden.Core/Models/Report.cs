@@ -84,6 +84,8 @@ namespace Aden.Core.Models
         public void Waive()
         {
             ReportState = Submission.ReportState = ReportState.Waived;
+            DataYear = Submission.DataYear; 
+
         }
     }
 }

@@ -43,9 +43,15 @@ namespace Aden.Web
 
             routes.MapRoute(
                 name: "SubmissionActions",
-                url: "assignments/{id}",
+                url: "submissions/{view}",
                 defaults: new { controller = "Home", action = "Submissions", id = UrlParameter.Optional }
             );
+
+            //routes.MapRoute(
+            //    name: "AssignmentActions",
+            //    url: "assignments/{id}",
+            //    defaults: new { controller = "Home", action = "Assignments", id = UrlParameter.Optional }
+            //);
 
             //routes.MapRoute(
             //    name: "WorkItemHistoryActions",

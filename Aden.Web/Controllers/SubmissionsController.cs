@@ -24,7 +24,13 @@ namespace Aden.Web.Controllers
         [HttpGet, Route("all")]
         public object GetPaged(DataSourceLoadOptions loadOptions)
         {
-            var submissions = uow.Submissions.GetAllWithReports();
+            //var submissions = uow.Submissions.GetAllWithReports();
+            //var order = loadOptions.Sort.ToString();
+            //var offset = loadOptions.Skip;
+            //var limit = loadOptions.Take;
+            var submissions = uow.Submissions.GetAllWithReportsPaged();
+
+
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
             return Ok(DataSourceLoader.Load(rows, loadOptions));
         }

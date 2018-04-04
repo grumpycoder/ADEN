@@ -34,14 +34,26 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
-        public ActionResult Submissions()
+        public ActionResult SubmissionsDevEx()
+        {
+            var user = HttpContext.User.Identity;
+
+            ViewBag.Message = "You are logged in: " + user.Name;
+            return View("SubmissionsX");
+        }
+
+        [TrackViewName]
+        public ActionResult Submissions(string view)
         {
             var user = HttpContext.User.Identity;
 
             ViewBag.Message = "You are logged in: " + user.Name;
 
-            //return View("Submissions");
-            return View("SubmissionsDevEx");
+            if (view == "x")
+            {
+                return View("Submissionsx");
+            }
+            return View("Submissions");
         }
 
         [TrackViewName]
@@ -67,7 +79,7 @@ namespace Aden.Web.Controllers
         public ActionResult WorkItemHistory(int reportId)
         {
             //var workItems = uow.WorkItems.GetHistoryByFileSpecification(id, datayear);
-            
+
             var workItems = uow.WorkItems.GetHistoryByReport(reportId);
             return PartialView("_WorkItemHistory", workItems);
         }

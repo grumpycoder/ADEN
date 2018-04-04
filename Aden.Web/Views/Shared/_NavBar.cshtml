@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNet.Identity
+
 
 <header class="main-header">
     <nav class="navbar navbar-static-top">
@@ -16,12 +17,19 @@
                     <li>@Html.ActionLink("My Tasks", "Assignments", "Home")</li>
                     <li>@Html.ActionLink("Submissions", "Submissions", "Home")</li>
                     <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
-                    <li>@Html.ActionLink("File Specifications", "FileSpecifications", "Home")</li>
+                    <li>@Html.ActionLink("File Specification Admin", "FileSpecifications", "Home")</li>
                 </ul>
+
             </div>
             <!-- /.navbar-collapse -->
             <!-- Navbar Right Menu -->
-            @*@Html.Partial("_LoginPartial")*@
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <span class="navbar-text">Hello @User.Identity.GetUserName() !</span>
+                    </li>
+                </ul>
+            </div>
 
             <!-- /.navbar-custom-menu -->
         </div>

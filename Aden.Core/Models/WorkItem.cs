@@ -120,6 +120,9 @@ namespace Aden.Core.Models
             var uow = new UnitOfWork(AdenContext.Create());
             var assignee = uow.WorkItems.GetUserWithLeastAssignments(members);
 
+            //TODO: Handle no members in group
+            assignee = "mlawrence@alsde.edu";
+
             var wi = new WorkItem(action, assignee);
             return wi;
         }
