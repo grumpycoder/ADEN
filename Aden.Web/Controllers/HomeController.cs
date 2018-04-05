@@ -25,21 +25,10 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
-        public ActionResult FileSpecifications()
+        public ActionResult FileSpecifications(string view)
         {
-            var user = HttpContext.User.Identity;
-
-            ViewBag.Message = "You are logged in: " + user.Name;
-            return View();
-        }
-
-        [TrackViewName]
-        public ActionResult SubmissionsDevEx()
-        {
-            var user = HttpContext.User.Identity;
-
-            ViewBag.Message = "You are logged in: " + user.Name;
-            return View("SubmissionsX");
+            var viewName = view == "x" ? "FileSpecificationsX" : "FileSpecifications";
+            return View(viewName);
         }
 
         [TrackViewName]
@@ -49,11 +38,8 @@ namespace Aden.Web.Controllers
 
             ViewBag.Message = "You are logged in: " + user.Name;
 
-            if (view == "x")
-            {
-                return View("Submissionsx");
-            }
-            return View("Submissions");
+            var viewName = view == "x" ? "SubmissionsX" : "Submissions";
+            return View(viewName);
         }
 
         [TrackViewName]

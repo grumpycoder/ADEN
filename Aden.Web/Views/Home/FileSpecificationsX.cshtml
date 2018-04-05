@@ -4,31 +4,60 @@
 }
 
 <section class="content-header">
-    <h1>
-        File Specifications
-        <small>Administrative definitions of the Federal Specifications</small>
-    </h1>
+    <div>
+        <ul class="breadcrumb pull-right">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ul>
+    </div>
 
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">File Specifications</li>
-    </ol>
 </section>
 
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-default box-solid">
+            <div class="panel panel-default">
 
-                @*<div class="box-header">
-                    <h3 class="box-title">File Specifications</h3>
+                <div class="panel-heading">
+                    <span class="header">File Specifications</span>
                     <small>Administrative definitions of the Federal Specifications</small>
-                </div>*@
-
-                <div class="box-body">
+                </div>
 
 
-                    <table id="grid"
+                <div class="panel-body">
+
+                    @(Html.DevExtreme().DataGrid().ID("grid")
+                          .OnEditorPrepared("editorPrepared")
+                          //.Editing(e =>
+                          //{
+                          //    e.Mode(GridEditMode.Row);
+                          //    e.AllowUpdating(true);
+                          //})
+                          .ShowRowLines(true)
+                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                          .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+                          .Columns(c =>
+                          {
+                              c.Add().DataField("fileName");
+                              c.Add().DataField("fileNumber");
+                              c.Add().DataField("isRetired").Caption("Retired?");
+                              c.Add().DataField("fileNameFormat");
+                              c.Add().DataField("department");
+                              c.Add().DataField("reportAction");
+                              c.Add().DataField("generationUserGroup");
+                              c.Add().DataField("approvalUserGroup");
+                              c.Add().DataField("submissionUserGroup");
+                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createFileSpecificationGridActionButtons(container, options);}"));
+                          })
+                          .Paging(paging => paging.PageSize(10)).Pager(pager =>
+                          {
+                              pager.ShowPageSizeSelector(true);
+                              pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+                              pager.ShowInfo(true);
+                          })
+                          .DataSource(d => d.StaticJson().Url("/api/filespecifications").Key("id")))
+
+                    @*<table id="grid"
                            data-url="/api/filespecifications/all"
                            data-toggle="table"
                            data-pagination="true"
@@ -66,7 +95,7 @@
                                 <th data-field="id" data-class="no-wrap" data-align="right" data-formatter="actionsFormatter"></th>
                             </tr>
                         </thead>
-                    </table>
+                    </table>*@
 
                 </div>
 
@@ -75,32 +104,16 @@
     </div>
 </section>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Report History</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
     <div id="editContainer">
     </div>
 </div>
-
 @section scripts
 {
+    <script src="~/Scripts/app/app.js"></script>
     <script type="text/javascript">
+
+       
 
         function rowStyle(row, index) {
             var classes = ['active', 'success', 'info', 'warning', 'danger'];
@@ -170,106 +183,12 @@
             return lnk;
         }
 
-        var $table = $('#grid');
 
         $(function() {
             console.log('ready');
 
-            $('input').keyup(debounce(function() {
-                    var $this = $(this);
-                },
-                500));
-
-            $(document).on('click',
-                '[data-retire]',
-                function(e) {
-                    e.preventDefault();
-                    console.log('start');
-                    var btn = $(this);
-                    var id = btn.data('filespec-id');
-                    $.ajax({
-                        url: '/api/filespecifications/retire/' + id,
-                        type: 'POST',
-                        success: function(data) {
-                            //play with data
-                            $table.bootstrapTable('refresh');
-                        },
-                        error: function(err) {
-                            console.log('err', err);
-                        }
-                    });
-                });
-
-
-            $(document).on('click',
-                '[data-activate]',
-                function (e) {
-                    e.preventDefault();
-                    console.log('start');
-                    var btn = $(this);
-                    var id = btn.data('filespec-id');
-                    $.ajax({
-                        url: '/api/filespecifications/activate/' + id,
-                        type: 'POST',
-                        success: function (data) {
-                            //play with data
-                            $table.bootstrapTable('refresh');
-                        },
-                        error: function (err) {
-                            console.log('err', err);
-                        }
-                    });
-                });
-
-            $(document).on('click',
-                '[data-edit]',
-                function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr("href");
-                    $.get(url,
-                        function(data) {
-                            console.log('data', data);
-                            $('#editContainer').html(data);
-                            $('#editModal').modal({ show: true });
-                        });
-                });
-
             $('body').tooltip({ selector: '[data-toggle=tooltip]' });
-
-            function debounce(fn, delay) {
-                var timer = null;
-                return function() {
-                    var context = this, args = arguments;
-                    clearTimeout(timer);
-                    timer = setTimeout(function() {
-                            fn.apply(context, args);
-                        },
-                        delay);
-                };
-            }
-
-
         });
-
-        function updateComplete() {
-            console.log('update complete');
-        }
-
-        function UpdateSuccess(data) {
-            console.log('updatesuccess');
-            if (data !== "success") {
-                console.log('error', data);
-                $('#editContainer').html(data);
-                return;
-            }
-            $('#editModal').modal('hide');
-            $('#editContainer').html("");
-            $table.bootstrapTable('refresh');
-        }
-
-        function UpdateFailed(data) {
-            console.log('failed data', data);
-        }
 
     </script>
 }

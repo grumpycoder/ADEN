@@ -33,36 +33,34 @@
 
                 <div class="panel-body">
 
-                    @(Html.DevExtreme().DataGrid().ColumnAutoWidth(true).ID("submissionGrid").OnRowPrepared("rowPrepared").OnEditorPrepared("editorPreparing")
-                                                  .ShowRowLines(true)
-                                                  .ShowBorders(true).FilterRow(filterRow => filterRow
-                                                      .Visible(true)
-                                                      .ApplyFilter(GridApplyFilterMode.Auto)
-                                                ).SearchPanel(searchPanel => searchPanel
-                                                    .Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
-                                                  .Columns(cols =>
-                                                  {
-                                                      cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false)
-                                                          .CellTemplate(@<text>
-                                                            <a href="@Url.Action("workitemhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a>
-                                                        </text>);
-                                            cols.Add().DataField("fileName");
-                                            cols.Add().DataField("fileNumber");
-                                            cols.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("mm/dd/yyyy");
-                                            cols.Add().DataField("dataYear");
-                                            cols.Add().DataField("reportState");
-                                            cols.Add().DataField("isSEA").Caption("SEA");
-                                            cols.Add().DataField("isLEA").Caption("LEA");
-                                            cols.Add().DataField("isSCH").Caption("SCH");
-                                            cols.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createButtons(container, options);}"));
-                                        })
-                    .Paging(paging => paging.PageSize(10)).Pager(pager =>
-                    {
-                        pager.ShowPageSizeSelector(true);
-                        pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
-                        pager.ShowInfo(true);
-                    })
-                    .DataSource(d => d.StaticJson().Url("/api/submissions/all").Key("id"))
+                    @(Html.DevExtreme().DataGrid().ColumnAutoWidth(true).ID("grid")
+                          .OnRowPrepared("rowPrepared").OnEditorPrepared("editorPrepared")
+                          .ShowRowLines(true)
+                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                          .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+                          .Columns(cols =>
+                          {
+                              cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false)
+                                  .CellTemplate(@<text>
+                                                    <a href="@Url.Action("workitemhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a>
+                                                 </text>);
+                              cols.Add().DataField("fileName");
+                              cols.Add().DataField("fileNumber");
+                              cols.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("mm/dd/yyyy");
+                              cols.Add().DataField("dataYear");
+                              cols.Add().DataField("reportState");
+                              cols.Add().DataField("isSEA").Caption("SEA");
+                              cols.Add().DataField("isLEA").Caption("LEA");
+                              cols.Add().DataField("isSCH").Caption("SCH");
+                              cols.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createSubmissionGridActionButtons(container, options);}"));
+                          })
+                          .Paging(paging => paging.PageSize(10)).Pager(pager =>
+                          {
+                              pager.ShowPageSizeSelector(true);
+                              pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+                              pager.ShowInfo(true);
+                          })
+                          .DataSource(d => d.StaticJson().Url("/api/submissions/all").Key("id"))
                     )
                 </div>
 

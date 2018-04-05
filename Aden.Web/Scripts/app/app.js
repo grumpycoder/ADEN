@@ -1,5 +1,35 @@
-﻿
-function createButtons(container, options) {
+﻿function UpdateSuccess(data) {
+    debugger;
+    console.log('updatesuccess');
+    if (data !== "success") {
+        console.log('error', data);
+        $('#editContainer').html(data);
+        return;
+    }
+    $('#editModal').modal('hide');
+    $('#editContainer').html("");
+    $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
+    window.toastr.success('Saved ');
+}
+
+function createFileSpecificationGridActionButtons(container, options) {
+    var lnk = '';
+    var isRetired = options.data.isRetired;
+    var fileNumber = options.data.fileNumber;
+    var dataYear = options.data.dataYear;
+    var filespecId = options.data.id;
+
+    if (!isRetired) {
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' + fileNumber + '/' + dataYear + '" data-retire data-filespec-id=' + filespecId + '>Retire</a>&nbsp;';
+    }
+    if (isRetired) {
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' + fileNumber + '/' + dataYear + '" data-activate data-filespec-id=' + filespecId + '>Activate</a>&nbsp;';
+    }
+    lnk += '<a class="btn btn-default btn-sm btn-grid" href="/EditFileSpecification/' + filespecId + '" data-edit data-id="' + filespecId + '">Edit</a>';
+    container.append(lnk);
+}
+
+function createSubmissionGridActionButtons(container, options) {
     var lnk = '';
     var reportStateId = options.data.reportStateId;
     var canStartReport = options.data.canStartReport;
@@ -29,20 +59,20 @@ function createButtons(container, options) {
 
 function rowPrepared(options) {
     var reportStateId = 0;
-    var dueDate = window.moment(); 
+    var dueDate = window.moment();
     if (options.data !== undefined) {
         reportStateId = options.data.reportStateId;
         dueDate = options.data.dueDate;
     }
 
-    var classes = []; 
+    var classes = [];
     classes = rowStyle(reportStateId, dueDate);
     console.log('cell prepared classes', classes);
     console.log('options', options);
     classes = [];
 }
 
-function editorPreparing(info) {
+function editorPrepared(info) {
     if (info.parentType === 'filterRow' && info.editorName === "dxSelectBox") {
         info.trueText = "Yes";
         info.falseText = "No";
@@ -84,7 +114,7 @@ $(function () {
 
     $('body').tooltip({ selector: '[data-toggle=tooltip]' });
 
-    var $grid = $('#submissionGrid').dxDataGrid('instance');
+    var $grid = $('#grid').dxDataGrid('instance');
     var $log = window.toastr;
 
     $(document).on('click', '[data-waiver]', function (e) {
@@ -95,6 +125,7 @@ $(function () {
             url: '/api/reports/waiver/' + id,
             type: 'POST',
             success: function (data) {
+                $log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
                 $grid.refresh().done(function (e) { console.log('done', e) });
             },
             error: function (err) {
@@ -143,4 +174,73 @@ $(function () {
 
     });
 
+    $(document).on('click', '[data-retire]', function (e) {
+        e.preventDefault();
+        console.log('retire');
+        var btn = $(this);
+        var id = btn.data('filespec-id');
+        $.ajax({
+            url: '/api/filespecifications/retire/' + id,
+            type: 'POST',
+            success: function (data) {
+                $grid.refresh().done(function (e) { console.log('done', e) });
+                $log.success('Retired ' + data.fileNumber + ' - ' + data.fileName);
+            },
+            error: function (err) {
+                console.log('err', err);
+                $log.error('Something went wrong: ' + err.message);
+            }
+        });
+    });
+
+    $(document).on('click', '[data-activate]', function (e) {
+        e.preventDefault();
+        console.log('start');
+        var btn = $(this);
+        var id = btn.data('filespec-id');
+        $.ajax({
+            url: '/api/filespecifications/activate/' + id,
+            type: 'POST',
+            success: function (data) {
+                $grid.refresh().done(function (e) { console.log('done', e) });
+                $log.success('Activated ' + data.fileNumber + ' - ' + data.fileName);
+            },
+            error: function (err) {
+                console.log('err', err);
+                $log.error('Something went wrong: ' + err.message);
+            }
+        });
+    });
+
+    $(document).on('click', '[data-edit]', function (e) {
+        e.preventDefault();
+        var url = $(this).attr("href");
+
+        console.log('edit url', url);
+        //window.showBSModal({
+        //    remote: url
+        //});
+
+        $.get(url,
+            function (data) {
+                console.log('data', data);
+
+                $('#editContainer').html(data);
+                $('#editModal').modal({ show: true });
+            });
+
+
+        $(document).on('click', '#saveEditSpecificationForm', function (e) {
+            e.preventDefault();
+            console.log('save');
+        });
+
+        
+
+        function UpdateFailed(data) {
+            console.log('failed data', data);
+            $log.error('Something went wrong: ' + data.message);
+        }
+
+    });
 });

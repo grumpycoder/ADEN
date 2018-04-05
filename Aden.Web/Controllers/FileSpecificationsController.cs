@@ -5,6 +5,7 @@ using Aden.Core.Data;
 using Aden.Core.Repositories;
 using Aden.Web.ViewModels;
 using AutoMapper;
+using DevExtreme.AspNet.Mvc;
 
 namespace Aden.Web.Controllers
 {
@@ -20,6 +21,24 @@ namespace Aden.Web.Controllers
         }
 
         [HttpGet]
+        public object Get(DataSourceLoadOptions loadOptions)
+        {
+            //return Ok(uow.FileSpecifications.GetAllWithReports());
+            //var specs = uow.FileSpecifications.GetAllWithReportsPaged(search, order, offset, limit);
+            var specs = uow.FileSpecifications.GetAllWithReports();
+
+            var vm = Mapper.Map<List<FileSpecificationViewModel>>(specs);
+            return Ok(vm);
+
+            //var s = new
+            //{
+            //    Total = totalRows.Count(),
+            //    Rows = si
+            //};
+            //return Ok(s);
+        }
+
+        [HttpGet, Route("all")]
         public object Get(string search = null, string order = null, int offset = 0, int limit = 10)
         {
             //return Ok(uow.FileSpecifications.GetAllWithReports());
@@ -35,11 +54,12 @@ namespace Aden.Web.Controllers
             return Ok(s);
         }
 
+        [HttpPut, Route("Update")]
         public object Put(FileSpecificationEditViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
             var spec = uow.FileSpecifications.GetById(model.Id);
 
