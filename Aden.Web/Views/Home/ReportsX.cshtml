@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Report>
+@{
+    ViewBag.Title = "Reports";
+}
+
+<section class="content-header">
+    <div>
+        <ul class="breadcrumb pull-right">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ul>
+    </div>
+
+</section>
+
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <span class="header"> Reports</span>
+                    <small>Eden report generation and submission results</small>
+                </div>
+
+                <div class="panel-body">
+                    @*<input type="hidden" value="@ViewContext.RouteData.Values["id"]" id="filespec" />
+                        <input type="hidden" value="@ViewContext.RouteData.Values["datayear"]" id="datayear" />
+                        <input type="hidden" value="@ViewContext.RouteData.Values["view"]" id="view" />*@
+
+                    @(Html.DevExtreme()
+                          .DataGrid().ID("grid")
+                          .ShowRowLines(true)
+                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                          .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+                          .Columns(c =>
+                          {
+                              c.Add().DataField("fileName");
+                              c.Add().DataField("fileNumber");
+                              c.Add().DataField("dataYear");
+                              c.Add().DataField("reportState");
+                              c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                              c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                              c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                              c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
+                          })
+                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/reports/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["id"])).Key("id")))
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Document</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-primary" download="file.csv" href="/download/1079">Download</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="historyModalLabel">Document</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/app/app.js"></script>
+
+}

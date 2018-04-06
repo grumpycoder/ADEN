@@ -67,7 +67,7 @@ namespace Aden.Web.Controllers
 
             uow.Complete();
 
-            return Ok();
+            return Ok(model);
         }
 
         [HttpPost, Route("retire/{id}")]

@@ -43,12 +43,15 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
-        public ActionResult Reports(string id = null, int datayear = 0)
+        public ActionResult Reports(string view, string id = null, int datayear = 0)
         {
             var user = HttpContext.User.Identity;
 
             ViewBag.Message = "You are logged in: " + user.Name;
-            return View();
+
+            var viewName = view == "x" ? "ReportsX" : "Reports";
+
+            return View(viewName);
         }
 
         [TrackViewName]

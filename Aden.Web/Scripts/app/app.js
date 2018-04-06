@@ -1,6 +1,5 @@
 ﻿function UpdateSuccess(data) {
-    debugger;
-    console.log('updatesuccess');
+    console.log('updatesuccess', data);
     if (data !== "success") {
         console.log('error', data);
         $('#editContainer').html(data);
@@ -12,6 +11,30 @@
     window.toastr.success('Saved ');
 }
 
+function createReportDocumentLinks(container, options) {
+    var documents = options.data.documents;
+
+    var lnk = '<span><ul class="list-unstyled">';
+    documents.forEach(function (doc) {
+        lnk += '<li>' +
+            '<a href="#myModal" ' +
+            'data-document-viewer ' + 
+            'data-doc-id="' + doc.id + '" ' +
+            'data-url="/document/' + doc.id + '" ' +
+            'data-toggle="modal" ' +
+            'data-target="#myModal" ' +
+            'data-title="' + doc.filename + '" ' +
+            'data-toggle="tooltip" ' +
+            'title="' + doc.filename + '" ' +
+            'data-placement="right" ' +
+            'data-original-title="' + doc.filename + '">' + doc.filename +
+            '</a>' +
+            '</li>';
+    });
+    lnk += '</ul></span>';
+    container.append(lnk);
+}
+
 function createFileSpecificationGridActionButtons(container, options) {
     var lnk = '';
     var isRetired = options.data.isRetired;
@@ -20,10 +43,10 @@ function createFileSpecificationGridActionButtons(container, options) {
     var filespecId = options.data.id;
 
     if (!isRetired) {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' + fileNumber + '/' + dataYear + '" data-retire data-filespec-id=' + filespecId + '>Retire</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-retire data-filespec-id=' + filespecId + '>Retire</a>&nbsp;';
     }
     if (isRetired) {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' + fileNumber + '/' + dataYear + '" data-activate data-filespec-id=' + filespecId + '>Activate</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-activate data-filespec-id=' + filespecId + '>Activate</a>&nbsp;';
     }
     lnk += '<a class="btn btn-default btn-sm btn-grid" href="/EditFileSpecification/' + filespecId + '" data-edit data-id="' + filespecId + '">Edit</a>';
     container.append(lnk);
@@ -38,7 +61,7 @@ function createSubmissionGridActionButtons(container, options) {
     var dataYear = options.data.dataYear;
 
     if (reportStateId !== 1) {
-        lnk = '<a class="btn btn-default btn-sm btn-grid" href="reports/' + fileNumber + '/' + dataYear + '">Reports</a>&nbsp;';
+        lnk = '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '">Reports</a>&nbsp;';
 
     }
     if (reportStateId >= 5) {
@@ -215,32 +238,44 @@ $(function () {
     $(document).on('click', '[data-edit]', function (e) {
         e.preventDefault();
         var url = $(this).attr("href");
-
-        console.log('edit url', url);
         //window.showBSModal({
         //    remote: url
         //});
 
         $.get(url,
             function (data) {
-                console.log('data', data);
-
                 $('#editContainer').html(data);
                 $('#editModal').modal({ show: true });
             });
 
+
+
+    });
 
         $(document).on('click', '#saveEditSpecificationForm', function (e) {
             e.preventDefault();
             console.log('save');
         });
 
-        
+    $(document).on('click', '[data-document-viewer]', function (e) {
+        var $currentTarget = $(e.currentTarget);
+        var targetModal = $currentTarget.data('target');
+        var $modal = $(targetModal);
 
-        function UpdateFailed(data) {
-            console.log('failed data', data);
-            $log.error('Something went wrong: ' + data.message);
-        }
+        var remoteContent = $currentTarget.data('url');
+        var title = $currentTarget.data('doc-title');
+        var id = $currentTarget.data('doc-id');
 
+        var modalBody = $(targetModal + ' .modal-body');
+        var modalTitle = $(targetModal + ' .modal-title');
+
+        modalTitle.html(title);
+        $modal.on('show.bs.modal', function () {
+            var lnk = $(this).find('a[download]');
+            lnk.attr('href', '/download/' + id);
+            modalBody.load(remoteContent);
+        }).modal();
+        return false;
     });
+
 });
