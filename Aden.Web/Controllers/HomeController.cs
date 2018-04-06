@@ -99,7 +99,7 @@ namespace Aden.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("_FileSpecificationForm", model);
+                return PartialView("_FileSpecificationForm", model);
             }
 
             var spec = uow.FileSpecifications.GetById(model.Id);

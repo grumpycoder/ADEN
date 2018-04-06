@@ -1,14 +1,11 @@
-﻿function UpdateSuccess(data) {
-    console.log('updatesuccess', data);
-    if (data !== "success") {
-        console.log('error', data);
-        $('#editContainer').html(data);
-        return;
+﻿
+function OnSpecificationUpdateFormComplete(data) {
+    if (data.responseText === 'success') {
+        $('#editModal').modal('hide');
+        $('#editContainer').html("");
+        $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
+        window.toastr.success('Saved ');
     }
-    $('#editModal').modal('hide');
-    $('#editContainer').html("");
-    $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
-    window.toastr.success('Saved ');
 }
 
 function createReportDocumentLinks(container, options) {
@@ -248,14 +245,14 @@ $(function () {
                 $('#editModal').modal({ show: true });
             });
 
-
-
-    });
-
         $(document).on('click', '#saveEditSpecificationForm', function (e) {
             e.preventDefault();
             console.log('save');
         });
+
+    });
+
+
 
     $(document).on('click', '[data-document-viewer]', function (e) {
         var $currentTarget = $(e.currentTarget);
