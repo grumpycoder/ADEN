@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web;
 using Aden.Core.Models;
 using Aden.Web.Helpers;
 using AutoMapper;
@@ -30,8 +28,6 @@ namespace Aden.Web.ViewModels
         public DateTime? CompletedDate { get; set; }
 
         public string Notes { get; set; }
-        //public List<HttpPostedFileBase> Files { get; set; }
-        //public HttpPostedFileBase File { get; set; }
 
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {

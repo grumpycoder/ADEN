@@ -78,7 +78,10 @@ namespace Aden.Web.Controllers
 
                 wi.Complete();
                 uow.Complete();
-                return Ok(result.Message);
+
+                var vm = Mapper.Map<WorkItemViewModel>(wi);
+                return Ok(vm);
+
             }
 
             try
@@ -105,7 +108,9 @@ namespace Aden.Web.Controllers
 
             wi.Complete();
             uow.Complete();
-            return Ok("complete with error");
+            var vm = Mapper.Map<WorkItemViewModel>(wi);
+
+            return Ok(vm);
         }
 
         [HttpPost, Route("undo/{id}")]
@@ -121,7 +126,9 @@ namespace Aden.Web.Controllers
 
             uow.Complete();
 
-            return Ok(wi);
+            var vm = Mapper.Map<WorkItemViewModel>(wi);
+
+            return Ok(vm);
         }
 
     }

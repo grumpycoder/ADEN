@@ -28,10 +28,11 @@ namespace Aden.Core.Models
                 //TODO: Cleanup
                 if (WorkItemState == WorkItemState.Cancelled) return false;
 
+                if (Report.ReportState == ReportState.Complete || Report.ReportState == ReportState.CompleteWithError)
+                    return false;
+
                 var items = Report.WorkItems.OrderBy(x => x.Id).ToList();
-
                 var item = items.LastOrDefault();
-
                 if (item == null) return false;
 
                 if (item.WorkItemAction == WorkItemAction.Generate) return false;

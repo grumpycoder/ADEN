@@ -20,7 +20,7 @@ namespace Aden.Core.Models
         public byte[] SpecificationDocument { get; set; }
 
         public int FileSpecificationId { get; set; }
-        public virtual FileSpecification FileSpecification { get; set; }
+        public FileSpecification FileSpecification { get; set; }
 
         public void AddReport(Report report)
         {

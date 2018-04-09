@@ -323,9 +323,8 @@ $(function () {
             url: '/api/wi/complete/' + id,
             type: 'POST',
             success: function (data) {
-                console.log('data', data);
-                $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
-                $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
+                $gridCurrentAssignments.refresh();
+                $gridRetrievableAssignments.refresh();
                 $log.success(data.action + ' - ' + data.state);
             },
             error: function (err) {
@@ -345,7 +344,7 @@ $(function () {
             success: function (data) {
                 $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
                 $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
-                $log.success(data.action + ' - ' + data.state);
+                $log.success('Cancelled ' + data.action + ' - ' + data.state);
             },
             error: function (err) {
                 console.log('err', err);

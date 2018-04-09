@@ -106,6 +106,7 @@
                               c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
                               c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
                               c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                              c.Add().DataField("action");
                               c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
                           })
                           .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completedassignments/" + @Model.Username + "/")).Key("id")))
