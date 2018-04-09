@@ -55,14 +55,17 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
-        public ActionResult Assignments(string username)
+        public ActionResult Assignments(string view, string username)
         {
             var user = HttpContext.User.Identity;
 
             var userName = _userName;
+
+            var viewName = view == "x" ? "AssignmentsX" : "Assignments";
+
             if (!string.IsNullOrEmpty(username)) userName = username;
             var vm = new AssigmentsViewModel() { Username = user.Name };
-            return View(vm);
+            return View(viewName, vm);
         }
 
         public ActionResult WorkItemHistory(int reportId)
@@ -101,21 +104,9 @@ namespace Aden.Web.Controllers
             {
                 return PartialView("_FileSpecificationForm", model);
             }
-
             var spec = uow.FileSpecifications.GetById(model.Id);
-            //TODO: Use AutoMapper 
 
             Mapper.Map(model, spec);
-
-            //spec.FileName = model.FileName;
-            //spec.FileNumber = model.FileNumber;
-            //spec.Department = model.Department;
-            //spec.GenerationUserGroup = model.GenerationUserGroup;
-            //spec.ApprovalUserGroup = model.ApprovalUserGroup;
-            //spec.SubmissionUserGroup = model.SubmissionUserGroup;
-            //spec.FileNameFormat = model.FileNameFormat;
-            //spec.ReportAction = model.ReportAction;
-
             uow.Complete();
 
             return Content("success");
@@ -138,8 +129,8 @@ namespace Aden.Web.Controllers
             wi.Notes = model.Notes;
             wi.SetAction(WorkItemAction.SubmitWithError);
 
-            wi.Complete();
-            uow.Complete();
+            //wi.Complete();
+            //uow.Complete();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 

@@ -28,11 +28,6 @@
 
                     @(Html.DevExtreme().DataGrid().ID("grid")
                           .OnEditorPrepared("editorPrepared")
-                          //.Editing(e =>
-                          //{
-                          //    e.Mode(GridEditMode.Row);
-                          //    e.AllowUpdating(true);
-                          //})
                           .ShowRowLines(true)
                           .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
                           .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))

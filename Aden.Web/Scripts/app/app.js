@@ -1,4 +1,14 @@
-﻿
+﻿function OnWorkItemUpdateFormComplete(data) {
+    console.log('workitem complete');
+    if (data.responseText === 'success') {
+        $('#workItemModal').modal('hide');
+        $('#workItemContainer').html("");
+        $('#gridCurrentAssignments').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
+        $('#gridRetrievableAssignments').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
+        window.toastr.success('Saved ');
+    }
+}
+
 function OnSpecificationUpdateFormComplete(data) {
     if (data.responseText === 'success') {
         $('#editModal').modal('hide');
@@ -8,6 +18,38 @@ function OnSpecificationUpdateFormComplete(data) {
     }
 }
 
+function createAssignmentsGridActionButtons(container, options) {
+    var reportId = options.data.reportId;
+    var action = options.data.action;
+    var workItemId = options.data.id;
+
+    var lnk =
+        '<button class="btn btn-primary btn-grid" data-report-id="' +
+            reportId +
+            '" data-workitem-id="' +
+            workItemId +
+            '" data-workitem-action="' +
+            action +
+            '">' +
+            action +
+            '</button>&nbsp;';
+    if (action === 'Submit') {
+        lnk +=
+            '<a href="/EditWorkItem/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error>Submit With Errors</a>';
+    }
+
+    container.append(lnk);
+}
+
+function createGridCancelActionButtons(container, options) {
+    var action = options.data.action;
+    var workItemId = options.data.id;
+    var lnk = '';
+    if (options.data.canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '">Cancel ' + action + '</button>';
+    container.append(lnk);
+}
+
+
 function createReportDocumentLinks(container, options) {
     var documents = options.data.documents;
 
@@ -15,7 +57,7 @@ function createReportDocumentLinks(container, options) {
     documents.forEach(function (doc) {
         lnk += '<li>' +
             '<a href="#myModal" ' +
-            'data-document-viewer ' + 
+            'data-document-viewer ' +
             'data-doc-id="' + doc.id + '" ' +
             'data-url="/document/' + doc.id + '" ' +
             'data-toggle="modal" ' +
@@ -135,6 +177,9 @@ $(function () {
     $('body').tooltip({ selector: '[data-toggle=tooltip]' });
 
     var $grid = $('#grid').dxDataGrid('instance');
+    var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
+    var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
+
     var $log = window.toastr;
 
     $(document).on('click', '[data-waiver]', function (e) {
@@ -235,10 +280,6 @@ $(function () {
     $(document).on('click', '[data-edit]', function (e) {
         e.preventDefault();
         var url = $(this).attr("href");
-        //window.showBSModal({
-        //    remote: url
-        //});
-
         $.get(url,
             function (data) {
                 $('#editContainer').html(data);
@@ -251,8 +292,6 @@ $(function () {
         });
 
     });
-
-
 
     $(document).on('click', '[data-document-viewer]', function (e) {
         var $currentTarget = $(e.currentTarget);
@@ -274,5 +313,97 @@ $(function () {
         }).modal();
         return false;
     });
+
+    $(document).on('click', '[data-workitem-id]', function (e) {
+        e.preventDefault();
+        console.log('work item click');
+        var btn = $(this);
+        var id = btn.data('workitem-id');
+        $.ajax({
+            url: '/api/wi/complete/' + id,
+            type: 'POST',
+            success: function (data) {
+                console.log('data', data);
+                $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
+                $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
+                $log.success(data.action + ' - ' + data.state);
+            },
+            error: function (err) {
+                console.log('err', err);
+                $log.error('Something went wrong: ' + err.responseJSON.message);
+            }
+        });
+    });
+
+    $(document).on('click', 'button[data-cancel-workitem]', function (e) {
+        e.preventDefault();
+        var btn = $(this);
+        var id = btn.data('cancel-workitem-id');
+        $.ajax({
+            url: '/api/wi/undo/' + id,
+            type: 'POST',
+            success: function (data) {
+                $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
+                $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
+                $log.success(data.action + ' - ' + data.state);
+            },
+            error: function (err) {
+                console.log('err', err);
+                $log.error('Something went wrong: ' + err.responseJSON.message);
+            }
+        });
+
+    });
+
+    $(document).on('click', '[data-submit-error]', function (e) {
+        e.preventDefault();
+        var url = $(this).attr("href");
+        $.get(url, function (data) {
+            $('#workItemContainer').html(data);
+            $('#workItemModal').modal({ show: true });
+        });
+    });
+
+    $(document).on('submit', '#formSubmitWithError', function (e) {
+        e.preventDefault();
+        $('.modal-dialog').addClass('loader');
+
+        var formData = new FormData();
+        var files = document.getElementById("files").files;
+
+        formData.append("Notes", $("#Notes").val());
+        formData.append("Id", $("#Id").val());
+
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/saveworkitem',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $('#workItemModal').modal('hide');
+                $('#workItemContainer').html("");
+                $gridCurrentAssignments.refresh();
+                $gridRetrievableAssignments.refresh();
+                $log.success('Submitted errors');
+            },
+            error: function (error) {
+                console.log('error', error);
+                $log.error('Something went wrong. ' + error.resonseJson.message);
+                $('#workItemModal').modal('hide');
+                $('#workItemContainer').html("");
+            },
+            complete: function() {
+                $('.modal-dialog').removeClass('loader');
+            }
+        });
+    });
+
 
 });

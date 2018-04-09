@@ -44,8 +44,8 @@ namespace Aden.Web
 
             routes.MapRoute(
                 name: "AssignmentActions",
-                url: "assignments/{id}",
-                defaults: new { controller = "Home", action = "Assignments", id = UrlParameter.Optional }
+                url: "assignments/{view}/{id}",
+                defaults: new { controller = "Home", action = "Assignments", view = UrlParameter.Optional, id = UrlParameter.Optional }
             );
 
             routes.MapRoute(

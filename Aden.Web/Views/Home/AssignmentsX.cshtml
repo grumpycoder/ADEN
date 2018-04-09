@@ -1,0 +1,173 @@
+﻿@model AssigmentsViewModel
+
+@{
+    ViewBag.Title = "My Assignments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="content-header">
+    <div>
+        <ul class="breadcrumb pull-right">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ul>
+    </div>
+
+</section>
+
+@*<section class="content-header">
+        <h1>
+            Assignments
+            <small>Your current Aden report tasks</small>
+        </h1>
+
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ol>
+    </section>*@
+
+
+<section class="content">
+
+    @*<div class="row">
+            <div class="col-md-6">
+                <form action="/assignments" method="get" role="form">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            @Html.DropDownListFor(m => m.Username,
+                                new List<SelectListItem>()
+                                {
+                                    new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                                    new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                                    new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                                }, new { @class = "form-control" })
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Change</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </form>
+            </div>
+        </div>*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+
+                <div class="panel-heading">
+                    <span class="header">Current Assignments</span>
+                    <small> - Your active tasks to be completed</small>
+                </div>
+
+                <div class="panel-body">
+                    @(Html.DevExtreme()
+                          .DataGrid()
+                          .ID("gridCurrentAssignments")
+                          .ShowRowLines(true)
+                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                          .Columns(c =>
+                          {
+                              c.Add().DataField("fileName");
+                              c.Add().DataField("fileNumber");
+                              c.Add().DataField("dataYear");
+                              c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                              c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
+
+                          })
+                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/currentassignments/" + @Model.Username + "/")).Key("id")))
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-success">
+
+                <div class="panel-heading">
+                    <span class="header">Completed Actions</span>
+                    <small>Tasks you can undo until next action has been completed</small>
+                </div>
+
+                <div class="panel-body">
+                    @(Html.DevExtreme()
+                          .DataGrid()
+                          .ID("gridRetrievableAssignments")
+                          .ShowRowLines(true)
+                          .ShowBorders(true)
+                          .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                          .Columns(c =>
+                          {
+                              c.Add().DataField("fileName");
+                              c.Add().DataField("fileNumber");
+                              c.Add().DataField("dataYear");
+                              c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                              c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                              c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
+                          })
+                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completedassignments/" + @Model.Username + "/")).Key("id")))
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="workItemModal" tabindex="-1" role="dialog" aria-labelledby="WorkItemModal" aria-hidden="true">
+    <div id="workItemContainer">
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/app/app.js"></script>
+
+    <script type="text/javascript">
+
+        function updateComplete() {
+            console.log('update complete');
+        }
+
+        function UpdateSuccess(data) {
+            console.log('updatesuccess');
+            if (data !== "success") {
+                console.log('error', data);
+                $('#editContainer').html(data);
+                return;
+            }
+            $('#workItemModal').modal('hide');
+            $('#workItemContainer').html("");
+        }
+
+        function UpdateFailed(data) {
+            console.log('failed data', data);
+        }
+
+    </script>
+}
