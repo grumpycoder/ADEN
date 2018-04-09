@@ -4,47 +4,72 @@
 }
 
 <section class="content-header">
-    <div>
-        <ul class="breadcrumb pull-right">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">@ViewBag.CurrentView</li>
-        </ul>
-    </div>
+    <h1>
+        Reports
+        <small>Eden report generation and submission results</small>
+    </h1>
 
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Reports</li>
+    </ol>
 </section>
 
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="box box-default box-solid">
 
-                <div class="panel-heading">
-                    <span class="header"> Reports</span>
-                    <small>Eden report generation and submission results</small>
-                </div>
+                @*<div class="box-header">
+                        <h3 class="box-title">File Specifications</h3>
+                        <small>Administrative definitions of the Federal Specifications</small>
+                    </div>*@
 
-                <div class="panel-body">
-                    @*<input type="hidden" value="@ViewContext.RouteData.Values["id"]" id="filespec" />
-                        <input type="hidden" value="@ViewContext.RouteData.Values["datayear"]" id="datayear" />
-                        <input type="hidden" value="@ViewContext.RouteData.Values["view"]" id="view" />*@
-
-                    @(Html.DevExtreme()
-                          .DataGrid().ID("grid")
-                          .ShowRowLines(true)
-                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                          .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
-                          .Columns(c =>
-                          {
-                              c.Add().DataField("fileName");
-                              c.Add().DataField("fileNumber");
-                              c.Add().DataField("dataYear");
-                              c.Add().DataField("reportState");
-                              c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                              c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                              c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                              c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
-                          })
-                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/reports/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["id"])).Key("id")))
+                <div class="box-body">
+                    <input type="hidden" value="@ViewContext.RouteData.Values["id"]" id="filespec" />
+                    <input type="hidden" value="@ViewContext.RouteData.Values["datayear"]" id="datayear" />
+                    <table id="grid"
+                           data-detail-view="true"
+                           data-detail-formatter="detailFormatter"
+                           data-toggle="table"
+                           data-pagination=" true"
+                           data-page-size="5"
+                           data-page-list="[5,10,25,50]"
+                           data-pagination-first-text="First"
+                           data-pagination-pre-text="Previous"
+                           data-pagination-next-text="Next"
+                           data-pagination-last-text="Last"
+                           data-show-refresh="true"
+                           data-show-toggle="true"
+                           data-show-columns="true"
+                           data-show-pagination-switch="true"
+                           data-side-pagination="server"
+                           data-show-export="true"
+                           data-minimum-count-columns="2"
+                           data-search="true"
+                           data-search-on-enter-key="true"
+                           data-undefined-text=""
+                           data-filter-show-clear="true"
+                           data-filter-control="true"
+                           data-row-style="rowStyle">
+                        <thead>
+                            <tr>
+                                <th data-field="fileName" data-title="File Name" data-searchable="true" data-filter-control="input" data-align="center"></th>
+                                <th data-field="fileNumber" data-title="File Number" data-searchable="true" data-filter-control="input"></th>
+                                <th data-field="dataYear" data-title="Data Year" data-searchable="true" data-filter-control="input"></th>
+                                <th data-field="reportState" data-title="State" data-searchable="true" data-filter-control="input"></th>
+                                <th data-field="generatedDate" data-title="Generated" data-formatter="dateFormatterWithTime"></th>
+                                <th data-field="approvedDate" data-title="Approved" data-formatter="dateFormatterWithTime"></th>
+                                <th data-field="submittedDate" data-title="Submittted" data-formatter="dateFormatterWithTime"></th>
+                                <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
+                                @*<th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
+                                    <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
+                                    <th data-field="dataYear" data-filter-control="input">Data Year</th>
+                                    <th data-field="reportState" data-filter-control="input">State</th>
+                                    <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>*@
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
 
             </div>
@@ -92,6 +117,155 @@
 
 @section scripts
 {
-    <script src="~/Scripts/app/app.js"></script>
+    <script>
 
+
+        function rowStyle(row, index) {
+            var classes = ['active', 'success', 'info', 'warning', 'danger'];
+            if (row.reportStateId === 6) {
+                return {
+                    classes: classes[4]
+                };
+            }
+            if (row.reportStateId === 7) {
+                return {
+                    classes: classes[1]
+                };
+            }
+            if (moment().isSameOrAfter(row.dueDate)) {
+                return {
+                    classes: classes[3]
+                };
+            }
+            if (moment().add(14, 'days').isSameOrAfter(row.dueDate) && row.reportStateId !== 6) {
+                return {
+                    classes: classes[2]
+                };
+            }
+
+            return {};
+        }
+
+        function dateFormatterWithTime(value, row, index, field) {
+            if (value === null) return '';
+            return moment(value).format('MM/DD/YYYY hh:mm A');
+        }
+
+        function historyFormatter(value, row, index, field) {
+            var lnk = '<a href="#historyModal" data-target="#historyModal" data-toggle="historyModal" ' +
+                'data-url=/workitemhistory/' + row.id + ' data-history data-title="Work History">' +
+                '<i class="fa fa-history"></i></a>';
+            return lnk;
+        }
+
+        function actionsFormatter(value, row, index, field) {
+
+            var lnk = '';
+            if (row.reportState !== 1) {
+                lnk += '<a class="btn btn-default btn-sm" href="reports/' + row.fileNumber + '">Reports</a>';
+            } else {
+                lnk += '<button class="btn btn-default btn-sm" data-start data-filespec-id="' +
+                    value +
+                    '">Start</button>';
+                lnk += '<button class="btn btn-default btn-sm" data-waiver data-filespec-id="' +
+                    value +
+                    '">Waiver</button>';
+            }
+            return lnk;
+        }
+
+        function detailFormatter(index, row) {
+            var html = [];
+            html.push('<ul class="list-inline">');
+            row.documents.forEach(function (doc) {
+                html.push(
+                    '<li>' +
+                    '<a href="#myModal" data-target="#myModal" data-doc-id="' + doc.id + '" data-doc-title="' + doc.filename + '" data-toggle="modal" data-url="/document/' + doc.id + '">' +
+                    '<i class="glyphicon glyphicon-file"></i>' + doc.filename + '</a>' +
+                    '</li>');
+            });
+            if (row.documents.length === 0) {
+                html.push('<li>No documents</li>');
+            }
+            html.push('</ul>');
+            return html.join('');
+        }
+
+        $(function () {
+            console.log('ready');
+
+            var $table = $('#grid');
+
+            var filespec = $('#filespec').val();
+            var datayear = $('#datayear').val();
+            var options = $table.bootstrapTable('getOptions');
+
+            if (filespec !== '') {
+                options.url = '/api/reports/' + filespec + '/' + datayear;
+                options.filterControl = false;
+                options.showRefresh = false;
+                options.showToggle = false;
+                options.showColumns = false;
+                options.showPaginationSwitch = false;
+                options.search = false;
+                options.sidePagination = 'client';
+                $table.bootstrapTable('destroy').bootstrapTable({}, options);
+
+                $table.bootstrapTable('refreshOptions', options);
+                $table.bootstrapTable('refresh');
+            } else {
+                options.sidePagination = 'server';
+                options.url = '/api/reports/search';
+                $table.bootstrapTable('destroy').bootstrapTable({}, options);
+                $table.bootstrapTable('refreshOptions', options);
+                $table.bootstrapTable('refresh');
+            }
+
+            $(document).on('click', '[data-history]',
+                function (e) {
+                    e.preventDefault();
+                    var $currentTarget = $(e.currentTarget);
+                    var targetModal = $currentTarget.data('target');
+
+                    var remoteContent = $currentTarget.data('url');
+                    var title = $currentTarget.data('title');
+
+                    var modal = $(targetModal);
+                    var modalBody = $(targetModal + ' .modal-body');
+                    var modalTitle = $(targetModal + ' .modal-title');
+                    modalTitle.html(title);
+
+                    modal.on('show.bs.modal', function () {
+                        modalBody.load(remoteContent);
+                    }).modal();
+                    return false;
+                });
+
+            $(document).on('click', '[data-toggle="modal"]', function (e) {
+                var $currentTarget = $(e.currentTarget);
+                var targetModal = $currentTarget.data('target');
+
+                var remoteContent = $currentTarget.data('url');
+                var title = $currentTarget.data('doc-title');
+
+                var modal = $(targetModal);
+                var modalBody = $(targetModal + ' .modal-body');
+                var modalTitle = $(targetModal + ' .modal-title');
+
+                var id = $currentTarget.data('doc-id');
+
+                modalTitle.html(title);
+
+                modal.on('show.bs.modal', function () {
+                    var lnk = $(this).find('a[download]');
+                    lnk.attr('href', '/download/' + id);
+                    modalBody.load(remoteContent);
+                }).modal();
+                return false;
+            });
+
+
+
+        });
+    </script>
 }

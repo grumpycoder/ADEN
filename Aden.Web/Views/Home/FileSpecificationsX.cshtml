@@ -4,53 +4,70 @@
 }
 
 <section class="content-header">
-    <div>
-        <ul class="breadcrumb pull-right">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">@ViewBag.CurrentView</li>
-        </ul>
-    </div>
+    <h1>
+        File Specifications
+        <small>Administrative definitions of the Federal Specifications</small>
+    </h1>
 
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">File Specifications</li>
+    </ol>
 </section>
 
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="box box-default box-solid">
 
-                <div class="panel-heading">
-                    <span class="header">File Specifications</span>
-                    <small>Administrative definitions of the Federal Specifications</small>
-                </div>
+                @*<div class="box-header">
+                        <h3 class="box-title">File Specifications</h3>
+                        <small>Administrative definitions of the Federal Specifications</small>
+                    </div>*@
+
+                <div class="box-body">
 
 
-                <div class="panel-body">
+                    <table id="grid"
+                           data-url="/api/filespecifications/all"
+                           data-toggle="table"
+                           data-pagination="true"
+                           data-page-size="5"
+                           data-page-list="[5,10,25,50]"
+                           data-pagination-first-text="First"
+                           data-pagination-pre-text="Previous"
+                           data-pagination-next-text="Next"
+                           data-pagination-last-text="Last"
+                           data-show-refresh="true"
+                           data-show-toggle="true"
+                           data-show-columns="true"
+                           data-side-pagination="server"
+                           data-show-export="true"
+                           data-minimum-count-columns="2"
+                           data-show-pagination-switch="true"
+                           data-search="true"
+                           data-search-on-enter-key="true"
+                           data-undefined-text=""
+                           data-filter-show-clear="true"
+                           data-filter-control="true"
+                           data-row-style="rowStyle">
+                        <thead>
+                            <tr>
+                                <th data-field="id" data-formatter="editFormatter" data-align="center"></th>
+                                <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
+                                <th data-field="fileNumber" data-filter-control="input">File Number</th>
+                                <th data-field="isRetired" data-filter-control="input" data-formatter="checkboxFormatter">Retired?</th>
+                                <th data-field="fileNameFormat" data-filter-control="input">File Name</th>
+                                <th data-field="department" data-filter-control="input">Department</th>
+                                <th data-field="reportAction" data-filter-control="input">Report Action</th>
+                                <th data-field="generationUserGroup" data-filter-control="input">Generation Group</th>
+                                <th data-field="approvalUserGroup" data-filter-control="input">Approval Group</th>
+                                <th data-field="submissionUserGroup" data-filter-control="input">Submission Group</th>
+                                <th data-field="id" data-class="no-wrap" data-align="right" data-formatter="actionsFormatter"></th>
+                            </tr>
+                        </thead>
+                    </table>
 
-                    @(Html.DevExtreme().DataGrid().ID("grid")
-                          .OnEditorPrepared("editorPrepared")
-                          .ShowRowLines(true)
-                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                          .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
-                          .Columns(c =>
-                          {
-                              c.Add().DataField("fileName");
-                              c.Add().DataField("fileNumber");
-                              c.Add().DataField("isRetired").Caption("Retired?");
-                              c.Add().DataField("fileNameFormat");
-                              c.Add().DataField("department");
-                              c.Add().DataField("reportAction");
-                              c.Add().DataField("generationUserGroup");
-                              c.Add().DataField("approvalUserGroup");
-                              c.Add().DataField("submissionUserGroup");
-                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createFileSpecificationGridActionButtons(container, options);}"));
-                          })
-                          .Paging(paging => paging.PageSize(10)).Pager(pager =>
-                          {
-                              pager.ShowPageSizeSelector(true);
-                              pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
-                              pager.ShowInfo(true);
-                          })
-                          .DataSource(d => d.StaticJson().Url("/api/filespecifications").Key("id")))
                 </div>
 
             </div>
@@ -58,11 +75,201 @@
     </div>
 </section>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Report History</h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
     <div id="editContainer">
     </div>
 </div>
+
 @section scripts
 {
-    <script src="~/Scripts/app/app.js"></script>
+    <script type="text/javascript">
+
+        function rowStyle(row, index) {
+            var classes = ['active', 'success', 'info', 'warning', 'danger'];
+            if (row.reportStateId === 6) {
+                return {
+                    classes: classes[4]
+                };
+            }
+            if (row.reportStateId === 7) {
+                return {
+                    classes: classes[1]
+                };
+            }
+            if (moment().isSameOrAfter(row.dueDate)) {
+                return {
+                    classes: classes[3]
+                };
+            }
+            if (moment().add(14, 'days').isSameOrAfter(row.dueDate) && row.reportStateId !== 6) {
+                return {
+                    classes: classes[2]
+                };
+            }
+
+            return {};
+        }
+
+        function checkboxFormatter(value, row, index, field) {
+            if (value === true) {
+                //return '<div class="text-center"><i class="fa fa-check-circle"></i></div>';
+                return '<div>Yes</div>';
+            }
+
+            return '<div>No</div>';
+        }
+
+        function dateFormatter(value, row, index, field) {
+            return moment(value).format('MM/DD/YYYY');
+        }
+
+        function actionsFormatter(value, row, index, field) {
+            //console.log('row', row);
+            var lnk = '';
+            if (!row.isRetired) {
+                lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' +
+                    row.fileNumber +
+                    '/' +
+                    row.dataYear +
+                    '" data-retire data-filespec-id=' +
+                    row.id +
+                    '>Retire</a>&nbsp;';
+            }
+            if (row.isRetired) {
+                lnk += '<a class="btn btn-default btn-sm btn-grid" href="reports/' +
+                    row.fileNumber +
+                    '/' +
+                    row.dataYear +
+                    '" data-activate data-filespec-id=' +
+                    row.id +
+                    '>Activate</a>&nbsp;';
+            }
+            return lnk;
+        }
+
+        function editFormatter(value, row, index, field) {
+            var lnk = '<a href="/EditFileSpecification/' + row.id + '" data-edit data-id="' + row.id + '">Edit</a>';
+            return lnk;
+        }
+
+        var $table = $('#grid');
+
+        $(function() {
+            console.log('ready');
+
+            $('input').keyup(debounce(function() {
+                    var $this = $(this);
+                },
+                500));
+
+            $(document).on('click',
+                '[data-retire]',
+                function(e) {
+                    e.preventDefault();
+                    console.log('start');
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    $.ajax({
+                        url: '/api/filespecifications/retire/' + id,
+                        type: 'POST',
+                        success: function(data) {
+                            //play with data
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function(err) {
+                            console.log('err', err);
+                        }
+                    });
+                });
+
+
+            $(document).on('click',
+                '[data-activate]',
+                function (e) {
+                    e.preventDefault();
+                    console.log('start');
+                    var btn = $(this);
+                    var id = btn.data('filespec-id');
+                    $.ajax({
+                        url: '/api/filespecifications/activate/' + id,
+                        type: 'POST',
+                        success: function (data) {
+                            //play with data
+                            $table.bootstrapTable('refresh');
+                        },
+                        error: function (err) {
+                            console.log('err', err);
+                        }
+                    });
+                });
+
+            $(document).on('click',
+                '[data-edit]',
+                function(e) {
+                    e.preventDefault();
+                    var url = $(this).attr("href");
+                    $.get(url,
+                        function(data) {
+                            console.log('data', data);
+                            $('#editContainer').html(data);
+                            $('#editModal').modal({ show: true });
+                        });
+                });
+
+            $('body').tooltip({ selector: '[data-toggle=tooltip]' });
+
+            function debounce(fn, delay) {
+                var timer = null;
+                return function() {
+                    var context = this, args = arguments;
+                    clearTimeout(timer);
+                    timer = setTimeout(function() {
+                            fn.apply(context, args);
+                        },
+                        delay);
+                };
+            }
+
+
+        });
+
+        function updateComplete() {
+            console.log('update complete');
+        }
+
+        function UpdateSuccess(data) {
+            console.log('updatesuccess');
+            if (data !== "success") {
+                console.log('error', data);
+                $('#editContainer').html(data);
+                return;
+            }
+            $('#editModal').modal('hide');
+            $('#editContainer').html("");
+            $table.bootstrapTable('refresh');
+        }
+
+        function UpdateFailed(data) {
+            console.log('failed data', data);
+        }
+
+    </script>
 }
