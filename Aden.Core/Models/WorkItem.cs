@@ -116,13 +116,18 @@ namespace Aden.Core.Models
 
         public static WorkItem Create(WorkItemAction action, string group)
         {
-            var members = GroupHelper.GetGroupMembers("CohortAdminUsers").Select(m => m.EmailAddress).ToList();
-
+            List<string> members;
+            try
+            {
+                members = GroupHelper.GetGroupMembers("CohortAdminUsers").Select(m => m.EmailAddress).ToList();
+                if (!members.Any()) throw new Exception(string.Format("No members assigned to group {0}", group));
+            }
+            catch (ArgumentNullException e)
+            {
+                throw new Exception(string.Format("No group defined for {0}", group), e);
+            }
             var uow = new UnitOfWork(AdenContext.Create());
             var assignee = uow.WorkItems.GetUserWithLeastAssignments(members);
-
-            //TODO: Handle no members in group
-            assignee = "mlawrence@alsde.edu";
 
             var wi = new WorkItem(action, assignee);
             return wi;

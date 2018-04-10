@@ -30,7 +30,6 @@ namespace Aden.Web.Controllers
             //var limit = loadOptions.Take;
             var submissions = uow.Submissions.GetAllWithReportsPaged();
 
-
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
             return Ok(DataSourceLoader.Load(rows, loadOptions));
         }
