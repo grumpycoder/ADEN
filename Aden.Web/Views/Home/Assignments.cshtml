@@ -2,137 +2,114 @@
 
 @{
     ViewBag.Title = "My Assignments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="content-header">
-    <h1>
-        Assignments
-        <small>Your current Aden report tasks</small>
-    </h1>
 
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">@ViewBag.CurrentView</li>
-    </ol>
+<section class="content-header">
+    <div>
+        <ul class="breadcrumb pull-right">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ul>
+    </div>
+
 </section>
+
+@*<section class="content-header">
+        <h1>
+            Assignments
+            <small>Your current Aden report tasks</small>
+        </h1>
+
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ol>
+    </section>*@
 
 
 <section class="content">
-    @*<div class="row">
-        <div class="col-md-6">
-            <form action="/assignments" method="get" role="form">
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        @Html.DropDownListFor(m => m.Username,
-                            new List<SelectListItem>()
-                            {
-                                new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
-                                new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
-                                new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
-                            }, new { @class = "form-control" })
 
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit">Change</button>
-                        </span>
-                    </div><!-- /input-group -->
-                </div><!-- /.col-lg-6 -->
-            </form>
-        </div>
-    </div>*@
+    @*<div class="row">
+            <div class="col-md-6">
+                <form action="/assignments" method="get" role="form">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            @Html.DropDownListFor(m => m.Username,
+                                new List<SelectListItem>()
+                                {
+                                    new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
+                                    new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
+                                    new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
+                                }, new { @class = "form-control" })
+
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">Change</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div><!-- /.col-lg-6 -->
+                </form>
+            </div>
+        </div>*@
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-primary box-solid">
+            <div class="panel panel-primary">
 
-                <div class="box-header">
-                    <h3 class="box-title">Current Assignments</h3>
-                    <small>Your active tasks to be completed</small>
+                <div class="panel-heading">
+                    <span class="header">Current Assignments</span>
+                    <small> - Your active tasks to be completed</small>
                 </div>
 
-                <div class="box-body">
-                    <table class="table table-bordered table-responsive" id="gridWorkItems"
-                           data-id-field="id"
-                           data-show-refresh="true"
-                           data-url="/api/wi/currentassignments/@Model.Username/"
-                           data-toggle="table"
-                           data-side-pagination="client"
-                           data-undefined-text="">
-                        <thead>
-                        <tr>
-                            <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
-                            <th data-field="fileNumber">File Number</th>
-                            <th data-field="dataYear">Data Year</th>
-                            <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
-                            <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                            <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="actionsFormatter"></th>
-                        </tr>
-                        </thead>
-                    </table>
+                <div class="panel-body">
+                    @(Html.DevExtreme()
+                                  .DataGrid()
+                                  .ID("gridCurrentAssignments")
+                                  .ShowRowLines(true)
+                                  .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                  .Columns(c =>
+                                  {
+                                      c.Add().DataField("fileName");
+                                      c.Add().DataField("fileNumber");
+                                      c.Add().DataField("dataYear");
+                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                      c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
+
+                                  })
+                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/currentassignments/" + @Model.Username + "/")).Key("id")))
                 </div>
 
             </div>
         </div>
 
         <div class="col-md-12">
-            <div class="box box-warning box-solid">
+            <div class="panel panel-success">
 
-                <div class="box-header">
-                    <h3 class="box-title">Retrievable Actions</h3>
+                <div class="panel-heading">
+                    <span class="header">Completed Actions</span>
                     <small>Tasks you can undo until next action has been completed</small>
                 </div>
 
-                <div class="box-body">
-                    <table class="table table-bordered table-responsive" id="gridUndoWorkItems"
-                           data-url="/api/wi/completedassignments/@Model.Username/"
-                           data-id-field="id"
-                           data-show-refresh="true"
-                           data-toggle="table"
-                           data-side-pagination="client"
-                           data-undefined-text=""
-                           data-response-handler="retrieveAssignmentresponseHandler">
-                        <thead>
-                        <tr>
-                            <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
-                            <th data-field="fileNumber">File Number</th>
-                            <th data-field="dataYear">Data Year</th>
-                            <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
-                            <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                            <th data-field="action">Action</th>
-                            <th data-field="id" data-cell-style="text-nowrap" data-align="center" data-formatter="cancelActionsFormatter"></th>
-                        </tr>
-                        </thead>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="box box-default box-solid">
-
-                <div class="box-header">
-                    <h3 class="box-title">Completed Assignments</h3>
-                    <small>Tasks you can completed</small>
-                </div>
-
-                <div class="box-body">
-                    <table class="table table-bordered table-responsive" id="gridCompletedWorkItems"
-                           data-url="/api/wi/completedassignments/@Model.Username/"
-                           data-id-field="id"
-                           data-show-refresh="true"
-                           data-toggle="table"
-                           data-side-pagination="client"
-                           data-undefined-text="">
-                        <thead>
-                        <tr>
-                            <th data-field="fileName" data-formatter="fileNameFormatter">File Name</th>
-                            <th data-field="fileNumber">File Number</th>
-                            <th data-field="dataYear">Data Year</th>
-                            <th data-field="assignedDate" data-formatter="dateFormatterWithTime">Assigned Date</th>
-                            <th data-field="dueDate" data-formatter="dateFormatter">Due Date</th>
-                            <th data-field="action">Action</th>
-                        </tr>
-                        </thead>
-                    </table>
+                <div class="panel-body">
+                    @(Html.DevExtreme()
+                                  .DataGrid()
+                                  .ID("gridRetrievableAssignments")
+                                  .ShowRowLines(true)
+                                  .ShowBorders(true)
+                                  .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                  .Columns(c =>
+                                  {
+                                      c.Add().DataField("fileName");
+                                      c.Add().DataField("fileNumber");
+                                      c.Add().DataField("dataYear");
+                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                      c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                      c.Add().DataField("action");
+                                      c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
+                                  })
+                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completedassignments/" + @Model.Username + "/")).Key("id")))
                 </div>
 
             </div>
@@ -170,164 +147,9 @@
 
 @section scripts
 {
+    <script src="~/Scripts/app/app.js"></script>
+
     <script type="text/javascript">
-
-        function fileNameFormatter(value, row, index, field) {
-            var lnk = '<a href="reports/' + row.fileNumber + '/' + row.dataYear + '">' + row.fileName + '</a>';
-            return lnk;
-        }
-
-        function retrieveAssignmentresponseHandler(res) {
-            var wi = res.filter(function (item, idx) { return item.canCancel === true; });
-            return wi;
-        }
-
-        function dateFormatter(value, row, index, field) {
-            return moment(value).format('MM/DD/YYYY');
-        }
-
-        function dateFormatterWithTime(value, row, index, field) {
-            return moment(value).format('MM/DD/YYYY hh:mm A');
-        }
-
-        function actionsFormatter(value, row) {
-            console.log('row', row);
-            console.log('id', row.id);
-            var lnk =
-                '<button class="btn btn-primary btn-grid" data-report-id="' +
-                row.reportId +
-                '" data-workitem-id="' +
-                row.id +
-                '" data-workitem-action="' +
-                row.action +
-                '">' +
-                row.action +
-                '</button>&nbsp;';
-            if (row.action === 'Submit') {
-                lnk +=
-                    '<a href="/EditWorkItem/' + row.id + '" class="btn btn-danger btn-grid" data-edit-workitem-id="' + row.id +
-                    '" data-workitem-action="' + row.action + '">Submit With Errors</a>';
-            }
-            return lnk;
-        }
-
-        function cancelActionsFormatter(value, row) {
-            return '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + row.id + '">Cancel ' + row.action + '</button>';
-        }
-
-        var $table = $('#gridWorkItems');
-
-        $(function () {
-            console.log('ready');
-
-            function refreshGrids() {
-                $('#gridWorkItems').bootstrapTable('refresh');
-                $('#gridUndoWorkItems').bootstrapTable('refresh');
-                $('#gridCompletedWorkItems').bootstrapTable('refresh');
-            }
-
-            $(document).on('click',
-                '[data-workitem-id]',
-                function (e) {
-                    e.preventDefault();
-                    console.log('work item click');
-                    var btn = $(this);
-                    var id = btn.data('workitem-id');
-                    $.ajax({
-                        url: '/api/wi/complete/' + id,
-                        type: 'POST',
-                        success: function (data) {
-                            refreshGrids();
-                        },
-                        error: function (err) {
-                            console.log('err', err);
-                        }
-                    });
-                });
-
-            $(document).on('click', '[data-edit-workitem-id]', function (e) {
-                e.preventDefault();
-                var url = $(this).attr("href");
-                $.get(url, function (data) {
-                    $('#workItemContainer').html(data);
-                    $('#workItemModal').modal({ show: true });
-                });
-                //$.ajax({
-                //    url: '/api/wi/completewitherror/' + id,
-                //    type: 'POST',
-                //    success: function (data) {
-                //        console.log('data', data);
-                //        refreshGrids();
-                //    },
-                //    error: function (err) {
-                //        console.log('err', err);
-                //    }
-                //});
-            });
-
-            $(document).on('click',
-                'button[data-cancel-workitem]',
-                function (e) {
-                    e.preventDefault();
-                    console.log('cancel work item click');
-                    console.log('cancel');
-                    var btn = $(this);
-                    var id = btn.data('cancel-workitem-id');
-                    console.log('id', id);
-                    $.ajax({
-                        url: '/api/wi/undo/' + id,
-                        type: 'POST',
-                        success: function (data) {
-                            refreshGrids();
-                        },
-                        error: function (err) {
-                            console.log('err', err);
-                        }
-                    });
-
-                });
-
-            $(document).on('click', '#btnSubmit', function(e) {
-                e.preventDefault();
-                console.log('submit');
-
-                var formData = new FormData();
-                //var file = document.getElementById("Image").files[0];
-                var files = document.getElementById("Image").files;
-
-                formData.append("Notes", $("#Notes").val());
-                formData.append("Id", $("#Id").val());
-                //formData.append("Image", files);
-                //formData.append("files", file);
-
-                for (var i = 0; i < files.length; i++) {
-                    formData.append('files', files[i]);
-                }
-
-                console.log('form data', formData);
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("SaveWorkItem","Home")',
-                    data: formData,
-                    dataType: 'json',
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        console.log('response', response);
-                        $('#workItemModal').modal('hide');
-                        $('#workItemContainer').html("");
-                    },
-                    error: function (error) {
-                        console.log('error', error);
-                        $('#workItemModal').modal('hide');
-                        $('#workItemContainer').html("");
-                    }
-                });
-
-            });
-
-        });
-
 
         function updateComplete() {
             console.log('update complete');

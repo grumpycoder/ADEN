@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using Aden.Core.Data;
 using Aden.Core.Models;
@@ -23,7 +25,7 @@ namespace Aden.Web.Controllers
         [HttpGet, Route("{username}")]
         public object Get(string username)
         {
-            username = User.Identity.Name;
+            username = User.Identity.Name ?? username;
 
             var workitems = uow.WorkItems.GetActiveByUser(username);
             var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
@@ -58,7 +60,7 @@ namespace Aden.Web.Controllers
         {
             var workItems = uow.WorkItems.GetCompletedByUser(username);
 
-            var wi = Mapper.Map<List<WorkItemViewModel>>(workItems);
+            var wi = Mapper.Map<List<WorkItemViewModel>>(workItems.OrderByDescending(w => w.CanCancel).ThenByDescending(w => w.AssignedDate));
 
             return Ok(wi);
         }
@@ -72,17 +74,28 @@ namespace Aden.Web.Controllers
             if (wi.WorkItemAction == WorkItemAction.Generate)
             {
                 var result = uow.GenerateDocuments(wi.ReportId ?? 0);
-                if (result.Success)
-                {
-                    wi.Complete();
-                    uow.Complete();
-                    return Ok(result.Message);
-                }
-                return BadRequest(result.Message);
+                if (!result.Success) return BadRequest(result.Message);
+
+                wi.Complete();
+                uow.Complete();
+
+                var vm = Mapper.Map<WorkItemViewModel>(wi);
+                return Ok(vm);
+
             }
-            wi.Complete();
-            uow.Complete();
-            return Ok();
+
+            try
+            {
+                wi.Complete();
+                uow.Complete();
+                var vm = Mapper.Map<WorkItemViewModel>(wi);
+                return Ok(vm);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
         [HttpPost, Route("completewitherror/{id}")]
@@ -95,7 +108,9 @@ namespace Aden.Web.Controllers
 
             wi.Complete();
             uow.Complete();
-            return Ok("complete with error");
+            var vm = Mapper.Map<WorkItemViewModel>(wi);
+
+            return Ok(vm);
         }
 
         [HttpPost, Route("undo/{id}")]
@@ -111,7 +126,9 @@ namespace Aden.Web.Controllers
 
             uow.Complete();
 
-            return Ok(id);
+            var vm = Mapper.Map<WorkItemViewModel>(wi);
+
+            return Ok(vm);
         }
 
     }

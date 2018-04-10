@@ -25,46 +25,53 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
-        public ActionResult FileSpecifications()
+        public ActionResult FileSpecifications(string view)
+        {
+            var viewName = view == "x" ? "FileSpecificationsX" : "FileSpecifications";
+            return View(viewName);
+        }
+
+        [TrackViewName]
+        public ActionResult Submissions(string view)
         {
             var user = HttpContext.User.Identity;
 
             ViewBag.Message = "You are logged in: " + user.Name;
-            return View();
+
+            var viewName = view == "x" ? "SubmissionsX" : "Submissions";
+            return View(viewName);
         }
 
         [TrackViewName]
-        public ActionResult Submissions()
+        public ActionResult Reports(string view, string id = null, int datayear = 0)
         {
             var user = HttpContext.User.Identity;
 
             ViewBag.Message = "You are logged in: " + user.Name;
-            return View();
+
+            var viewName = view == "x" ? "ReportsX" : "Reports";
+
+            return View(viewName);
         }
 
         [TrackViewName]
-        public ActionResult Reports(string id = null, int datayear = 0)
-        {
-            var user = HttpContext.User.Identity;
-
-            ViewBag.Message = "You are logged in: " + user.Name;
-            return View();
-        }
-
-        [TrackViewName]
-        public ActionResult Assignments(string username)
+        public ActionResult Assignments(string view, string username)
         {
             var user = HttpContext.User.Identity;
 
             var userName = _userName;
+
+            var viewName = view == "x" ? "AssignmentsX" : "Assignments";
+
             if (!string.IsNullOrEmpty(username)) userName = username;
             var vm = new AssigmentsViewModel() { Username = user.Name };
-            return View(vm);
+            return View(viewName, vm);
         }
 
         public ActionResult WorkItemHistory(int reportId)
         {
             //var workItems = uow.WorkItems.GetHistoryByFileSpecification(id, datayear);
+
             var workItems = uow.WorkItems.GetHistoryByReport(reportId);
             return PartialView("_WorkItemHistory", workItems);
         }
@@ -95,23 +102,11 @@ namespace Aden.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("_FileSpecificationForm", model);
+                return PartialView("_FileSpecificationForm", model);
             }
-
             var spec = uow.FileSpecifications.GetById(model.Id);
-            //TODO: Use AutoMapper 
 
             Mapper.Map(model, spec);
-
-            //spec.FileName = model.FileName;
-            //spec.FileNumber = model.FileNumber;
-            //spec.Department = model.Department;
-            //spec.GenerationUserGroup = model.GenerationUserGroup;
-            //spec.ApprovalUserGroup = model.ApprovalUserGroup;
-            //spec.SubmissionUserGroup = model.SubmissionUserGroup;
-            //spec.FileNameFormat = model.FileNameFormat;
-            //spec.ReportAction = model.ReportAction;
-
             uow.Complete();
 
             return Content("success");
@@ -134,8 +129,8 @@ namespace Aden.Web.Controllers
             wi.Notes = model.Notes;
             wi.SetAction(WorkItemAction.SubmitWithError);
 
-            wi.Complete();
-            uow.Complete();
+            //wi.Complete();
+            //uow.Complete();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 

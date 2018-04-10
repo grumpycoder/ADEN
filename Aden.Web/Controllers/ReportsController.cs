@@ -27,10 +27,19 @@ namespace Aden.Web.Controllers
             return Ok(uow.Reports.GetByFileSpecificationNumber(filespecificationId));
         }
 
-        [HttpGet, Route("{filespecificationId}/{datayear}")]
-        public object Get(string filespecificationId, int datayear)
+        [HttpGet, Route("{datayear:int}")]
+        public object Get(int datayear)
         {
-            var reports = uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear);
+            var reports = uow.Reports.GetFileSpecificationsByDataYear(datayear);
+            var reportList = Mapper.Map<List<ReportViewModel>>(reports);
+            return Ok(reportList);
+        }
+
+        [HttpGet, Route("{datayear}/{filespecificationId}")]
+        public object Get(int datayear, string filespecificationId = null)
+        {
+            //var reports = uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear);
+            var reports = uow.Reports.GetFileSpecifications(datayear, filespecificationId);
 
             var reportList = Mapper.Map<List<ReportViewModel>>(reports);
             return Ok(reportList);

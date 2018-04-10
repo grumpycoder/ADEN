@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,8 +7,13 @@
     <title>@ViewBag.Title - ADEN</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
-    @Styles.Render("~/Content/lte")
+    @Styles.Render("~/Content/css")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/css/DevExtremeBundle")
+    @Scripts.Render("~/js/DevExtremeBundle")
 
 </head>
 <body>
@@ -27,7 +33,12 @@
                     <li>@Html.ActionLink("My Tasks", "Assignments", "Home")</li>
                     <li>@Html.ActionLink("Submissions", "Submissions", "Home")</li>
                     <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
-                    <li>@Html.ActionLink("File Specifications", "FileSpecifications", "Home")</li>
+                    <li>@Html.ActionLink("File Specifications Admin", "FileSpecifications", "Home")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <span class="navbar-text">Hello @User.Identity.GetUserName() !</span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -41,19 +52,24 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/lte")
-@Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
 
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+<script src="~/Scripts/app/bootstrap.model.wrapper.js"></script>
     @*@Scripts.Render("~/bundles/jquery")*@
     @*@Scripts.Render("~/bundles/jqueryval")
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
-@*@Scripts.Render("~/bundles/bootstrap")*@
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+        <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
 
 
-<!-- Latest compiled and minified JavaScript -->
+    <!-- Latest compiled and minified JavaScript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
     @RenderSection("scripts", required: false)

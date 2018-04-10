@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Aden.Core.Services;
 using Aden.Core.Helpers;
+using Aden.Core.Services;
 
 namespace Aden.Core.Models
 {
@@ -20,7 +20,7 @@ namespace Aden.Core.Models
         public List<ReportDocument> Documents { get; set; }
 
         public int SubmissionId { get; set; }
-        public virtual Submission Submission { get; set; }
+        public Submission Submission { get; set; }
 
         public ReportState ReportState { set; get; }
 
@@ -84,6 +84,8 @@ namespace Aden.Core.Models
         public void Waive()
         {
             ReportState = Submission.ReportState = ReportState.Waived;
+            DataYear = Submission.DataYear;
+
         }
     }
 }

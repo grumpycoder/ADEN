@@ -12,9 +12,16 @@ namespace Aden.Web
             routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
 
             routes.MapRoute(
+                name: "FileSpecificationActions",
+                url: "filespecifications/{view}",
+                defaults: new { controller = "Home", action = "FileSpecifications", id = UrlParameter.Optional }
+            );
+
+
+            routes.MapRoute(
                 name: "ReportActionsYear",
-                url: "reports/{id}/{datayear}",
-                defaults: new { controller = "Home", action = "Reports", id = UrlParameter.Optional, datayear = UrlParameter.Optional }
+                url: "reports/{view}/{id}/{datayear}",
+                defaults: new { controller = "Home", action = "Reports", view = UrlParameter.Optional, id = UrlParameter.Optional, datayear = UrlParameter.Optional }
             );
 
             routes.MapRoute(
@@ -37,15 +44,21 @@ namespace Aden.Web
 
             routes.MapRoute(
                 name: "AssignmentActions",
-                url: "assignments/{id}",
-                defaults: new { controller = "Home", action = "Assignments", id = UrlParameter.Optional }
+                url: "assignments/{view}/{id}",
+                defaults: new { controller = "Home", action = "Assignments", view = UrlParameter.Optional, id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
                 name: "SubmissionActions",
-                url: "assignments/{id}",
+                url: "submissions/{view}",
                 defaults: new { controller = "Home", action = "Submissions", id = UrlParameter.Optional }
             );
+
+            //routes.MapRoute(
+            //    name: "AssignmentActions",
+            //    url: "assignments/{id}",
+            //    defaults: new { controller = "Home", action = "Assignments", id = UrlParameter.Optional }
+            //);
 
             //routes.MapRoute(
             //    name: "WorkItemHistoryActions",

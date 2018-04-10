@@ -5,68 +5,63 @@
 }
 
 <section class="content-header">
-    <h1>
-        Submissions
-        <small>Eden report generation and submission results</small>
-    </h1>
+    @*<h1>
+            Submissions
+            <small>Eden report generation and submission results</small>
+        </h1>*@
 
-    <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">@ViewBag.CurrentView</li>
-    </ol>
+    <div>
+        <ul class="breadcrumb pull-right">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active">@ViewBag.CurrentView</li>
+        </ul>
+    </div>
+
 </section>
 
 
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-default box-solid">
 
-                @*<div class="box-header">
-                        <h3 class="box-title">File Specifications</h3>
-                        <small>Administrative definitions of the Federal Specifications</small>
-                    </div>*@
+            <div class="panel panel-default">
 
-                <div class="box-body">
-                    <table id="grid"
-                           data-url="/api/submissions"
-                           data-toggle="table"
-                           data-pagination="true"
-                           data-page-size="5"
-                           data-page-list="[5,10,25,50]"
-                           data-pagination-first-text="First"
-                           data-pagination-pre-text="Previous"
-                           data-pagination-next-text="Next"
-                           data-pagination-last-text="Last"
-                           data-show-refresh="true"
-                           data-show-toggle="true"
-                           data-show-columns="true"
-                           data-side-pagination="server"
-                           data-show-export="true"
-                           data-minimum-count-columns="2"
-                           data-show-pagination-switch="true"
-                           data-search="true"
-                           data-search-on-enter-key="true"
-                           data-undefined-text=""
-                           data-filter-show-clear="true"
-                           data-filter-control="true"
-                           data-row-style="rowStyle">
-                        <thead>
-                            <tr>
-                                <th data-field="id" data-formatter="historyFormatter" data-align="center"></th>
-                                <th data-field="fileName" data-searchable="true" data-filter-control="input">File Name</th>
-                                <th data-field="fileNumber" data-filter-control="input">FileNumber</th>
-                                <th data-field="isSEA" data-formatter="checkboxFormatter" data-align="center">SEA</th>
-                                <th data-field="isLEA" data-formatter="checkboxFormatter" data-align="center">LEA</th>
-                                <th data-field="isSCH" data-formatter="checkboxFormatter" data-align="center">SCH</th>
-                                <th data-field="dueDate" data-filter-control="input" data-formatter="dateFormatter">Due Date</th>
-                                <th data-field="dataYear" data-filter-control="input">Data Year</th>
-                                <th data-field="reportState" data-filter-control="input">State</th>
-                                <th data-field="specificationDocument" data-formatter="documentFormatter">Spec Doc</th>
-                                <th data-field="fileSpecificationId" data-class="no-wrap" data-align="center" data-formatter="actionsFormatter"></th>
-                            </tr>
-                        </thead>
-                    </table>
+                <div class="panel-heading">
+                    <span class="header">Submissions</span>
+                    <small>Eden report generation and submission results</small>
+                </div>
+
+                <div class="panel-body">
+
+                    @(Html.DevExtreme().DataGrid().ColumnAutoWidth(true).ID("grid")
+                                  .OnRowPrepared("rowPrepared").OnEditorPrepared("editorPrepared")
+                                  .ShowRowLines(true)
+                                  .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                  .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+                                  .Columns(cols =>
+                                  {
+                                      cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false)
+                                          .CellTemplate(@<text>
+                                            <a href="@Url.Action("workitemhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a>
+                                        </text>);
+                            cols.Add().DataField("fileName");
+                            cols.Add().DataField("fileNumber");
+                            cols.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                            cols.Add().DataField("dataYear");
+                            cols.Add().DataField("reportState");
+                            cols.Add().DataField("isSEA").Caption("SEA");
+                            cols.Add().DataField("isLEA").Caption("LEA");
+                            cols.Add().DataField("isSCH").Caption("SCH");
+                            cols.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createSubmissionGridActionButtons(container, options);}"));
+                        })
+                        .Paging(paging => paging.PageSize(10)).Pager(pager =>
+                        {
+                            pager.ShowPageSizeSelector(true);
+                            pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+                            pager.ShowInfo(true);
+                        })
+                        .DataSource(d => d.StaticJson().Url("/api/submissions/all").Key("id"))
+                    )
                 </div>
 
             </div>
@@ -74,31 +69,11 @@
     </div>
 </section>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Report History</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
-    <div id="editContainer">
-    </div>
-</div>
 
 @section scripts
 {
+    <script src="~/Scripts/app/app.js"></script>
+
     <script type="text/javascript">
 
         function rowStyle(row, index) {
@@ -182,120 +157,6 @@
 
         function documentFormatter(value, row, index, field) {
             return '<div class="text-center"><i class="fa fa-file"></i></div>';
-        }
-
-        var $table = $('#grid');
-
-        $(function() {
-            console.log('ready');
-
-            $('input').keyup(debounce(function() {
-                    var $this = $(this);
-                },
-                500));
-
-            $(document).on('click',
-                '[data-start]',
-                function(e) {
-                    e.preventDefault();
-                    console.log('start');
-                    var btn = $(this);
-                    var id = btn.data('filespec-id');
-                    $.ajax({
-                        url: '/api/reports/create/' + id,
-                        type: 'POST',
-                        success: function(data) {
-                            //play with data
-                            $table.bootstrapTable('refresh');
-                        },
-                        error: function (err) {
-                            debugger;
-                            console.log('err', err);
-                            toastr.error('Something went wrong: ' + err.responseJSON.message);
-                        }
-                    });
-                });
-
-            $(document).on('click',
-                '[data-waiver]',
-                function(e) {
-                    e.preventDefault();
-                    var btn = $(this);
-                    var id = btn.data('filespec-id');
-                    $.ajax({
-                        url: '/api/reports/waiver/' + id,
-                        type: 'POST',
-                        success: function(data) {
-                            //play with data
-                            $table.bootstrapTable('refresh');
-                        },
-                        error: function(err) {
-                            console.log('err', err);
-                        }
-                    });
-                });
-
-            $(document).on('click',
-                '[data-history]',
-                function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr('href');
-                    var title = $(this).data('title');
-                    $('.modal-title').html(title);
-                    $('.modal-body').load(url,
-                        function() {
-                            $('#myModal').modal({ show: true });
-                        });
-                });
-
-            $(document).on('click',
-                '[data-edit]',
-                function (e) {
-                    e.preventDefault();
-                    var url = $(this).attr("href");
-                    $.get(url, function (data) {
-                        console.log('data', data);
-                        $('#editContainer').html(data);
-                        $('#editModal').modal({ show: true });
-                    });
-                });
-
-            $('body').tooltip({ selector: '[data-toggle=tooltip]' });
-
-            function debounce(fn, delay) {
-                var timer = null;
-                return function() {
-                    var context = this, args = arguments;
-                    clearTimeout(timer);
-                    timer = setTimeout(function() {
-                            fn.apply(context, args);
-                        },
-                        delay);
-                };
-            }
-
-
-
-        });
-
-        function updateComplete() {
-            console.log('update complete');
-        }
-
-        function UpdateSuccess(data) {
-            console.log('updatesuccess');
-            if (data !== "success") {
-                console.log('error', data);
-                $('#editContainer').html(data);
-                return;
-            }
-            $('#editModal').modal('hide');
-            $('#editContainer').html("");
-            $table.bootstrapTable('refresh');
-        }
-
-        function UpdateFailed(data) {
-            console.log('failed data', data);
         }
 
     </script>

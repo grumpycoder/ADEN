@@ -8,6 +8,10 @@ namespace Aden.Web.ViewModels
 {
     public class WorkItemViewModel : IMapFrom<WorkItem>, IHaveCustomMappings
     {
+        public WorkItemViewModel()
+        {
+            //Files = new List<HttpPostedFileBase>();
+        }
         public int Id { get; set; }
         public int ReportId { get; set; }
         public int DataYear { get; set; }
@@ -24,7 +28,6 @@ namespace Aden.Web.ViewModels
         public DateTime? CompletedDate { get; set; }
 
         public string Notes { get; set; }
-
 
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {

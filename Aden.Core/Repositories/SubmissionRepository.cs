@@ -35,7 +35,7 @@ namespace Aden.Core.Repositories
 
         public Submission GetById(int id)
         {
-            return _context.Submissions.SingleOrDefault(x => x.Id == id);
+            return _context.Submissions.Include(s => s.FileSpecification).SingleOrDefault(x => x.Id == id);
         }
     }
 }

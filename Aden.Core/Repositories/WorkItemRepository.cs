@@ -64,13 +64,27 @@ namespace Aden.Core.Repositories
 
         public string GetUserWithLeastAssignments(IEnumerable<string> members)
         {
-            var assignee = _context.WorkItems.Where(u => members.Contains(u.AssignedUser)).GroupBy(u => u.AssignedUser).Select(n => new
-            {
-                n.Key,
-                Count = n.Count()
-            }).OrderBy(x => x.Count).FirstOrDefault();
+            var alreadyAssignedMembers = _context.WorkItems.AsNoTracking().Where(u => members.Contains(u.AssignedUser)).ToLookup(m => m.AssignedUser);
 
-            return assignee != null ? assignee.Key : string.Empty;
+            var firstAvailableMember = members.FirstOrDefault(x => !alreadyAssignedMembers.Contains(x));
+
+            if (firstAvailableMember != null) return firstAvailableMember;
+
+            //var assignee = _context.WorkItems.Where(u => members.Contains(u.AssignedUser)).GroupBy(u => u.AssignedUser).Select(n => new
+            //{
+            //    n.Key,
+            //    Count = n.Count()
+            //}).AsNoTracking().OrderBy(x => x.Count).FirstOrDefault();
+
+            var nextAvailable = _context.WorkItems.AsNoTracking()
+                .Where(u => members.Contains(u.AssignedUser)).ToList()
+                .GroupBy(u => u.AssignedUser).Select(n => new
+                {
+                    n.Key,
+                    Count = n.Count()
+                }).OrderBy(x => x.Count).FirstOrDefault();
+
+            return nextAvailable != null ? nextAvailable.Key : string.Empty;
         }
     }
 }

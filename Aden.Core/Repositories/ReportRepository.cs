@@ -15,6 +15,24 @@ namespace Aden.Core.Repositories
             _context = context;
         }
 
+        public IEnumerable<Report> GetFileSpecificationsByDataYear(int datayear)
+        {
+            return _context.Reports.Include(f => f.Submission).Include(r => r.Documents)
+                .Where(f => f.Submission.DataYear == datayear)
+                .OrderByDescending(x => x.Id)
+                .ToList();
+        }
+
+
+        public IEnumerable<Report> GetFileSpecifications(int datayear, string fileNumber = "")
+        {
+            return _context.Reports.Include(f => f.Submission).Include(r => r.Documents)
+                .Where(f => (f.Submission.FileSpecification.FileNumber == fileNumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(fileNumber))
+                .OrderByDescending(x => x.Id)
+                .ToList();
+        }
+
+
         public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber, int datayear)
         {
             return _context.Reports.Include(f => f.Submission).Include(r => r.Documents)
