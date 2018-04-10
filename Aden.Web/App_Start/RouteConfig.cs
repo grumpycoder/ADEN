@@ -9,6 +9,8 @@ namespace Aden.Web
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.LowercaseUrls = true;
+
             routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
 
             routes.MapRoute(
@@ -51,7 +53,7 @@ namespace Aden.Web
             routes.MapRoute(
                 name: "SubmissionActions",
                 url: "submissions/{view}",
-                defaults: new { controller = "Home", action = "Submissions", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "submissions", id = UrlParameter.Optional }
             );
 
             //routes.MapRoute(
