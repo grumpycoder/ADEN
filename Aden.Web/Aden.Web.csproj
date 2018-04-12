@@ -43,21 +43,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Alsde.Entity, Version=2018.3.1.6646, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Entity.2018.3.0\lib\net451\Alsde.Entity.dll</HintPath>
+    <Reference Include="Alsde.Entity, Version=2018.4.9.25674, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Entity.2018.4.3\lib\net451\Alsde.Entity.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Extensions, Version=2018.3.1.6646, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Extensions.2018.3.0\lib\net451\Alsde.Extensions.dll</HintPath>
+    <Reference Include="Alsde.Extensions, Version=2018.4.9.6677, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Extensions.2018.4.9.6677\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="ALSDE.IdemLib, Version=17.708.16704.614, Culture=neutral, PublicKeyToken=fa4115e8724c5de1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\ALSDE.IdemLib.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Security, Version=2018.3.2.6647, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Security.2018.3.1\lib\net451\Alsde.Security.dll</HintPath>
+    <Reference Include="Alsde.Security, Version=2018.4.17.6677, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Security.2018.4.17.6677\lib\net451\Alsde.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Services, Version=2018.3.1.6647, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Services.2018.3.0\lib\net451\Alsde.Services.dll</HintPath>
+    <Reference Include="Alsde.Services, Version=2018.4.16.6677, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Services.2018.4.16.6677\lib\net451\Alsde.Services.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
@@ -93,6 +93,9 @@
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

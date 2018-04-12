@@ -1,5 +1,7 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using Aden.Core.Data;
@@ -9,6 +11,7 @@ using Aden.Core.Services;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
 
 namespace Aden.Web.Controllers
 {
@@ -34,7 +37,12 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public ActionResult Submissions(string view)
         {
+
             var user = HttpContext.User.Identity;
+            var u = User;
+
+            var identity = ((ClaimsIdentity) User.Identity);
+            IEnumerable<Claim> claims = identity.Claims; 
 
             ViewBag.Message = "You are logged in: " + user.Name;
 

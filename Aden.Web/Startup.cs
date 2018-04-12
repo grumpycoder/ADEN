@@ -1,8 +1,6 @@
-﻿using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
-using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin.Security.Cookies;
 using Owin;
 
 [assembly: OwinStartup(typeof(Aden.Web.Startup))]
@@ -15,58 +13,25 @@ namespace Aden.Web
             ConfigureAuth(app);
         }
 
-
         private void ConfigureAuth(IAppBuilder app)
         {
-            var OAuthOptions = new OAuthAuthorizationServerOptions
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthServerProvider(),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Account/LoginCallback"),
+                Provider = new CookieAuthenticationProvider
+                {
+                    // Enables the application to validate the security stamp when the user logs in.
+                    // This is a security feature which is used when you change a password or add an external login to your account.  
+                    //OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<ApplicationUserManager, ApplicationUser>(
+                    //    validateInterval: TimeSpan.FromMinutes(30),
+                    //    regenerateIdentity: (manager, user) => user.GenerateUserIdentityAsync(manager))
+                }
+            });
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-                // Only do this for demo!!
-                AllowInsecureHttp = true
-            };
-            app.UseOAuthAuthorizationServer(OAuthOptions);
-            app.UseOAuthBearerAuthentication(
-                new OAuthBearerAuthenticationOptions());
         }
 
     }
 
-    public class ApplicationOAuthServerProvider
-        : OAuthAuthorizationServerProvider
-    {
-        public override async Task ValidateClientAuthentication(
-            OAuthValidateClientAuthenticationContext context)
-        {
-            // This call is required...
-            // but we're not using client authentication, so validate and move on...
-            await Task.FromResult(context.Validated());
-        }
-
-
-        public override async Task GrantResourceOwnerCredentials(
-            OAuthGrantResourceOwnerCredentialsContext context)
-        {
-            // DEMO ONLY: Pretend we are doing some sort of REAL checking here:
-            if (context.Password != "password")
-            {
-                context.SetError(
-                    "invalid_grant", "The user name or password is incorrect.");
-                context.Rejected();
-                return;
-            }
-
-            // Create or retrieve a ClaimsIdentity to represent the 
-            // Authenticated user:
-            ClaimsIdentity identity =
-                new ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new Claim("user_name", context.UserName));
-
-            // Identity info will ultimately be encoded into an Access Token
-            // as a result of this call:
-            context.Validated(identity);
-        }
-    }
 }

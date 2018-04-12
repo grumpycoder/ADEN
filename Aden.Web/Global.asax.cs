@@ -17,5 +17,6 @@ namespace Aden.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DevExtremeBundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
     }
 }
