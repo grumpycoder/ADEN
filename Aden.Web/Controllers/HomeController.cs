@@ -11,7 +11,6 @@ using Aden.Core.Services;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
 using AutoMapper;
-using Microsoft.AspNet.Identity;
 
 namespace Aden.Web.Controllers
 {
@@ -28,6 +27,7 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
+        [CustomAuthorize(Roles = "MarkAdenAppAdminUsers")]
         public ActionResult FileSpecifications(string view)
         {
             var viewName = view == "x" ? "FileSpecificationsX" : "FileSpecifications";
@@ -41,8 +41,8 @@ namespace Aden.Web.Controllers
             var user = HttpContext.User.Identity;
             var u = User;
 
-            var identity = ((ClaimsIdentity) User.Identity);
-            IEnumerable<Claim> claims = identity.Claims; 
+            var identity = ((ClaimsIdentity)User.Identity);
+            IEnumerable<Claim> claims = identity.Claims;
 
             ViewBag.Message = "You are logged in: " + user.Name;
 
@@ -166,6 +166,11 @@ namespace Aden.Web.Controllers
         }
 
         public ActionResult Error(string message)
+        {
+            return View();
+        }
+
+        public ActionResult Unauthorized()
         {
             return View();
         }

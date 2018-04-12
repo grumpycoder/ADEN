@@ -228,6 +228,7 @@
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SubmissionsController.cs" />
     <Compile Include="Controllers\WorkItemController.cs" />
+    <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\TrackViewName.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -513,6 +514,7 @@
     <Content Include="Views\Home\FileSpecificationsX.cshtml" />
     <Content Include="Views\Home\ReportsX.cshtml" />
     <Content Include="Views\Home\AssignmentsX.cshtml" />
+    <Content Include="Views\Home\Unauthorized.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
