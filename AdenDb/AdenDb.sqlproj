@@ -161,4 +161,7 @@
     <Build Include="Security\Aden.sql" />
     <Build Include="Security\Permissions.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="AdenDb.publish.xml" />
+  </ItemGroup>
 </Project>
