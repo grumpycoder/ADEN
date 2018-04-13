@@ -49,10 +49,6 @@
     <Reference Include="Alsde.Extensions, Version=2018.4.9.6677, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.4.9.6677\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ALSDE.IdemLib, Version=17.708.16704.614, Culture=neutral, PublicKeyToken=fa4115e8724c5de1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\ALSDE.IdemLib.dll</HintPath>
-    </Reference>
     <Reference Include="Alsde.Security, Version=2018.4.17.6677, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.4.17.6677\lib\net451\Alsde.Security.dll</HintPath>
     </Reference>
