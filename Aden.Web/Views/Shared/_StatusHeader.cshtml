@@ -1,0 +1,20 @@
+﻿
+<style>
+    .status-header {
+        cursor: pointer;
+    }
+     
+</style>
+<header class="status-header">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-1">
+                @DateTime.Now.ToString("ddd, dd MMM yyy")
+            </div>
+            <div class="col-md-1">
+                @DateTime.Now.ToString("h:mm tt")
+            </div>
+        </div>
+    </div>
+</header>
