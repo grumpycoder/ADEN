@@ -1,20 +1,68 @@
 ﻿
 <style>
-    .status-header {
+    .navbar-nav > li > a {
         cursor: pointer;
     }
-     
-</style>
-<header class="status-header">
-    <div class="container-fluid">
 
-        <div class="row">
-            <div class="col-md-1">
-                @DateTime.Now.ToString("ddd, dd MMM yyy")
-            </div>
-            <div class="col-md-1">
-                @DateTime.Now.ToString("h:mm tt")
-            </div>
+    .navbar.navbar-thin {
+        margin-bottom: 0;
+        border-bottom: none;
+    }
+
+    .navbar-thin {
+        min-height: 30px;
+    }
+        .navbar-thin .navbar-nav > li > a, .navbar-thin.navbar-brand {
+            padding-top: 5px;
+            padding-bottom: 0;
+            height: 30px;
+        }
+</style>
+
+<header>
+
+    <nav class="navbar navbar-inverse navbar-thin">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a><i class="fa fa-calendar"></i> @DateTime.Now.ToString("ddd, dd MMM yyy")</a>
+                </li>
+                <li>
+                    <a><i class="fa fa-clock-o"></i> @DateTime.Now.ToString("h:mm tt")</a>
+                </li>
+                <li>
+                    <a><i class="fa fa-globe"></i> Development (Webserver Name) Application Name</a>
+                </li>
+                <li>
+                    <a><i class="fa fa-database"></i> Development (Database Instance) Database Name</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-user"></i>
+                        @User.Identity.Name <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a id="aIdemMenuHome" class="aUserDetailsMenuItem"><i class="fa fa-home"></i> My Applications</a></li>
+                        <li><a id="aIdemMenuUserProfile" class="aUserDetailsMenuItem"><i class="fa fa-book"></i> User Profile</a></li>
+                        <li><a id="aIdemMenuEdDirPositions" class="aUserDetailsMenuItem"><i class="fa fa-university"></i> EdDir Positions</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">AIM Groups and Users</li>
+                        <li><a id="aIdemMenuRolesAndUsers" class="aUserDetailsMenuItem"><i class="fa fa-group"></i> Groups and Users</a></li>
+                        <li><a id="aIdemMenuUserMaintenance" class="aUserDetailsMenuItem"><i class="fa fa-user"></i> User Maintenance</a></li>
+                        <li><a id="aIdemMenuAppMembership" class="aUserDetailsMenuItem"><i class="fa fa-heartbeat"></i> App Members</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a id="aLogout" class="aUserDetailsMenuItem"><i class="fa fa-sign-out"></i> Logout</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>
+                        <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                </li>
+            </ul>
         </div>
-    </div>
+    </nav>
+
 </header>

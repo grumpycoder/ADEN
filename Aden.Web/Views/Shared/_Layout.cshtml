@@ -10,41 +10,18 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     @Styles.Render("~/Content/css")
-
+    <link href="~/Content/bootstrap-overrides.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/css/DevExtremeBundle")
     @Scripts.Render("~/js/DevExtremeBundle")
 
 </head>
 <body>
-    @Html.Partial("_StatusHeader")
 
-    <div class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @*@Html.ActionLink("ADEN", "FileSpecifications", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
-                <a href="/" class="navbar-brand"><i class="fa fa-home"></i></a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("My Tasks", "Assignments", "Home")</li>
-                    <li>@Html.ActionLink("Submissions", "Submissions", "Home")</li>
-                    <li>@Html.ActionLink("Reports", "Reports", "Home")</li>
-                    <li>@Html.ActionLink("File Specifications Admin", "FileSpecifications", "Home")</li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <span class="navbar-text">Hello @User.Identity.GetUserName() !</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    @Html.Partial("_StatusHeader")
+    @Html.Partial("_NavBar")
+
+
 
     <div class="container-fluid">
         @RenderBody()
