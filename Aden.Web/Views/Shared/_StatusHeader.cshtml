@@ -31,37 +31,19 @@
                     <a><i class="fa fa-clock-o"></i> @DateTime.Now.ToString("h:mm tt")</a>
                 </li>
                 <li>
-                    <a><i class="fa fa-globe"></i> Development (@Environment.MachineName) @Html.RenderApplicationName()</a>
+                    <a><i class="fa fa-globe"></i> @Html.RenderConfigurationValue("ENV") (@Environment.MachineName) @Html.RenderApplicationName()</a>
                 </li>
                 <li>
                     <a><i class="fa fa-database"></i> Development (@Html.RenderDataSource()) @Html.RenderDataName()</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-user"></i>
-                        @User.Identity.Name <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="https://devaim.alsde.edu/aim/ApplicationInventory.aspx"><i class="fa fa-home"></i> My Applications</a></li>
-                        <li><a href="https://devaim.alsde.edu/aim/UserProfile.aspx"><i class="fa fa-book"></i> User Profile</a></li>
-                        <li><a href="https://devaim.alsde.edu/aim/EdDirPositions.aspx"><i class="fa fa-university"></i> EdDir Positions</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li class="dropdown-header">AIM Groups and Users</li>
-                        <li><a href="https://devaim.alsde.edu/aim/Admin/RolesAndUsers.aspx"><i class="fa fa-group"></i> Groups and Users</a></li>
-                        <li><a href="https://devaim.alsde.edu/aim/Admin/UserMaintenance.aspx"><i class="fa fa-user"></i> User Maintenance</a></li>
-                        <li><a href="https://devaim.alsde.edu/aim/Alsde/AppMembership.aspx"><i class="fa fa-heartbeat"></i> App Members</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out"></i> Logout</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>
-                        <i class="fa fa-sign-out"></i> Logout
-                    </a>
-                </li>
-            </ul>
+            
+            @Html.UserNavBarMenuList("right")
+
+            @*<ul class="nav navbar-nav navbar-right">
+                    @Html.UserNavBarMenuList("right")
+              
+            </ul>*@
         </div>
     </nav>
 
