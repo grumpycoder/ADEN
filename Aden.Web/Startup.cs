@@ -18,6 +18,7 @@ namespace Aden.Web
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                CookieName = "Aden",
                 LoginPath = new PathString("/Account/LoginCallback"),
                 Provider = new CookieAuthenticationProvider
                 {

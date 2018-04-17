@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aden.Core", "Aden.Core\Aden
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "AdenDb", "AdenDb\AdenDb.sqlproj", "{5B1222BC-F3EE-4EEF-AF4D-8EFD16782FD7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsde.Security", "..\Alsde\Alsde.Security\Alsde.Security\Alsde.Security.csproj", "{9EAA3C53-B209-4B4F-854F-F33373F124D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{5B1222BC-F3EE-4EEF-AF4D-8EFD16782FD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B1222BC-F3EE-4EEF-AF4D-8EFD16782FD7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B1222BC-F3EE-4EEF-AF4D-8EFD16782FD7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -99,10 +99,10 @@ namespace Aden.Web.Helpers
             sb.AppendFormat("<li><a href='{0}aim/Index.aspx?Impersonate=0'><i class='fa fa-stop'></i> Stop Impersonating</a></li>", baseUrl);
             sb.Append("<li role='separator' class='divider'></li>");
 
-            sb.Append("<li><a href='#'><i class='fa fa-sign-out'></i> Logout</a></li>");
+            sb.Append("<li><a href='/account/signout'><i class='fa fa-sign-out'></i> Logout</a></li>");
             sb.Append("</ul>");
 
-            sb.Append("<li><a><i class='fa fa-sign-out'></i> Logout</a></li>");
+            sb.Append("<li><a href='/account/signout'><i class='fa fa-sign-out'></i> Logout</a></li>");
 
             sb.Append("</ul>");
 
