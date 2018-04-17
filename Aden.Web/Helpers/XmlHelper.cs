@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace Aden.Web.Helpers
@@ -29,6 +30,18 @@ namespace Aden.Web.Helpers
                 //throw new Exception(string.Format("Failed to deserialize to class {0}", typeof(T)), ex);
             }
             return null;
+        }
+
+    }
+
+    public static class AssemblyExtensions {
+
+        public static T GetAssemblyAttribute<T>(this System.Reflection.Assembly ass) where T : Attribute
+        {
+            object[] attributes = ass.GetCustomAttributes(typeof(T), false);
+            if (attributes == null || attributes.Length == 0)
+                return null;
+            return attributes.OfType<T>().SingleOrDefault();
         }
 
     }

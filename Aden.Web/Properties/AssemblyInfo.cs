@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Aden.Web")]
+[assembly: AssemblyTitle("Aden")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ALSDE")]
-[assembly: AssemblyProduct("Aden.Web")]
+[assembly: AssemblyProduct("Aden")]
 [assembly: AssemblyCopyright("Copyright © ALSDE 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2018.4.206.6678")]
-[assembly: AssemblyFileVersion("2018.4.206.6678")]
+[assembly: AssemblyVersion("2018.4.217.6682")]
+[assembly: AssemblyFileVersion("2018.4.217.6682")]
 
-[assembly: AssemblyInformationalVersion("2018.4.32")]
+[assembly: AssemblyInformationalVersion("2018.4.43")]
