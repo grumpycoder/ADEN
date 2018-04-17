@@ -7,21 +7,135 @@
     .navbar.navbar-thin {
         margin-bottom: 0;
         border-bottom: none;
+        border: 0 solid transparent;
+        border-radius: 0;
     }
 
     .navbar-thin {
         min-height: 30px;
     }
+
         .navbar-thin .navbar-nav > li > a, .navbar-thin.navbar-brand {
             padding-top: 5px;
             padding-bottom: 0;
             height: 30px;
         }
+
+
+    /* Green Navbar */
+    .navbar.bg-green {
+        background-color: #32FA32;
+        border-color: #32FA32;
+    }
+        /* Title */
+        .navbar.bg-green .navbar-brand {
+            color: #000;
+        }
+
+            .navbar.bg-green .navbar-brand:hover,
+            .navbar.bg-green .navbar-brand:focus {
+                color: #5E5E5E;
+            }
+
+
+        /* Link */
+        .navbar.bg-green .navbar-nav > li > a {
+            color: #000;
+        }
+
+    .navbar.bg-green .navbar-nav > li > a:hover,
+    .navbar.bg-green .navbar-nav > li > a:focus {
+        color: #55524f;
+        background-color: #eee
+    }
+
+    /* Blue Navbar */
+    .navbar.bg-blue {
+        background-color: #00FFFF;
+        border-color: #00FFFF;
+    }
+    /* Title */
+    .navbar.bg-green .navbar-brand {
+        color: #000;
+    }
+
+    .navbar.bg-blue .navbar-brand:hover,
+    .navbar.bg-blue .navbar-brand:focus {
+        color: #5E5E5E;
+    }
+
+
+    /* Link */
+    .navbar.bg-blue .navbar-nav > li > a {
+        color: #000;
+    }
+
+        .navbar.bg-blue .navbar-nav > li > a:hover,
+        .navbar.bg-blue .navbar-nav > li > a:focus {
+            color: #55524f;
+            background-color: #eee
+        }
+
+    /* Yellow Navbar */
+    .navbar.bg-yellow {
+        background-color: #FFFF00;
+        border-color: #FFFF00;
+    }
+    /* Title */
+    .navbar.bg-green .navbar-brand {
+        color: #000;
+    }
+
+    .navbar.bg-yellow .navbar-brand:hover,
+    .navbar.bg-yellow .navbar-brand:focus {
+        color: #5E5E5E;
+    }
+
+
+    /* Link */
+    .navbar.bg-yellow .navbar-nav > li > a {
+        color: #000;
+    }
+
+    .navbar.bg-yellow .navbar-nav > li > a:hover,
+    .navbar.bg-yellow .navbar-nav > li > a:focus {
+        color: #55524f;
+        background-color: #eee
+    }
+
+
+    /* White Navbar */
+    .navbar.bg-white {
+        background-color: #fff;
+        border-color: #fff;
+    }
+    /* Title */
+    .navbar.bg-green .navbar-brand {
+        color: #000;
+    }
+
+    .navbar.bg-white .navbar-brand:hover,
+    .navbar.bg-white .navbar-brand:focus {
+        color: #5E5E5E;
+    }
+
+
+    /* Link */
+    .navbar.bg-white .navbar-nav > li > a {
+        color: #000;
+    }
+
+    .navbar.bg-white .navbar-nav > li > a:hover,
+    .navbar.bg-white .navbar-nav > li > a:focus {
+        color: #55524f;
+        background-color: #eee
+    }
+
 </style>
 
 <header>
 
-    <nav class="navbar navbar-inverse navbar-thin">
+    <nav class="navbar navbar-inverse navbar-thin bg-white">
         <div class="container-fluid">
             <ul class="nav navbar-nav">
                 <li>
@@ -37,7 +151,7 @@
                     <a><i class="fa fa-database"></i> Development (@Html.RenderDataSource()) @Html.RenderDataName()</a>
                 </li>
             </ul>
-            
+
             @Html.UserNavBarMenuList("right")
 
         </div>
