@@ -24,10 +24,6 @@
                 </div>
 
                 <div class="panel-body">
-                    @*<input type="hidden" value="@ViewContext.RouteData.Values["id"]" id="filespec" />
-                        <input type="hidden" value="@ViewContext.RouteData.Values["datayear"]" id="datayear" />
-                        <input type="hidden" value="@ViewContext.RouteData.Values["view"]" id="view" />*@
-
                     @(Html.DevExtreme()
                                   .DataGrid().ID("grid")
                                   .ShowRowLines(true)
@@ -37,7 +33,7 @@
                                   {
                                       c.Add().DataField("fileName");
                                       c.Add().DataField("fileNumber");
-                                      c.Add().DataField("dataYear");
+                                      c.Add().DataField("displayDataYear").Caption("Data Year");
                                       c.Add().DataField("reportState");
                                       c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
                                       c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");

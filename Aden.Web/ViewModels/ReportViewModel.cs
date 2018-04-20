@@ -13,6 +13,12 @@ namespace Aden.Web.ViewModels
         public string FileName { get; set; }
         public string FileNumber { get; set; }
         public int DataYear { get; set; }
+
+        public string DisplayDataYear
+        {
+            get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
+        }
+
         public ReportState ReportStateId { get; set; }
         public string ReportState { get; set; }
         public int FileSpecificationId { get; set; }

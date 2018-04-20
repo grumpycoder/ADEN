@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Aden.Core.Models;
 using Aden.Web.Helpers;
 using AutoMapper;
@@ -15,6 +16,12 @@ namespace Aden.Web.ViewModels
         public int Id { get; set; }
         public int ReportId { get; set; }
         public int DataYear { get; set; }
+
+        [Display(Name = "Data Year")]
+        public string DisplayDataYear
+        {
+            get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
+        }
         public DateTime? AssignedDate { get; set; }
         public DateTime? DueDate { get; set; }
         public string State { get; set; }

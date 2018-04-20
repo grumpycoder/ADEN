@@ -13,6 +13,10 @@ namespace Aden.Web.ViewModels
         public int Id { get; set; }
         public DateTime? DueDate { get; set; }
         public int? DataYear { get; set; }
+        public string DisplayDataYear
+        {
+            get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
+        }
 
         public bool IsSEA { get; set; }
         public bool IsLEA { get; set; }
