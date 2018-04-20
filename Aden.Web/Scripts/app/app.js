@@ -100,7 +100,7 @@ function createSubmissionGridActionButtons(container, options) {
     var dataYear = options.data.dataYear;
 
     if (reportStateId !== 1) {
-        lnk = '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '">Reports</a>&nbsp;';
+        lnk = '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Reports</a>&nbsp;';
 
     }
     if (reportStateId >= 5) {

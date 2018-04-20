@@ -26,7 +26,7 @@ namespace Aden.Core.Repositories
 
         public IEnumerable<Report> GetFileSpecifications(int datayear, string fileNumber = "")
         {
-            return _context.Reports.Include(f => f.Submission).Include(r => r.Documents)
+            return _context.Reports.Include(f => f.Submission.FileSpecification).Include(r => r.Documents)
                 .Where(f => (f.Submission.FileSpecification.FileNumber == fileNumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(fileNumber))
                 .OrderByDescending(x => x.Id)
                 .ToList();

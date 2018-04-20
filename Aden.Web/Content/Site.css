@@ -33,6 +33,14 @@
         border-right-width: 1px;
     }
 
+.panel-heading > .panel-title {
+    font-size: 1.5em;
+}
+
+.panel-heading > .panel-subtitle {
+    font-size: 0.9em;
+}
+
 /*.panel-right {
     border: 0.05em solid lightgray;
     border-radius: 0.25em 0.25em;
@@ -47,7 +55,6 @@
 .panel-title a:visited {
     text-decoration: none;
 }*/
-
 .btn-grid {
     min-width: 85px;
 }
@@ -58,4 +65,12 @@
 
 .align-right {
     text-align: right;
+}
+
+
+/*Bootstrap Overrides*/
+
+* {
+    -ms-border-radius: 0 !important;
+    border-radius: 0 !important;
 }

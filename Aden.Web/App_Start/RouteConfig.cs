@@ -19,18 +19,23 @@ namespace Aden.Web
                 defaults: new { controller = "Home", action = "FileSpecifications", id = UrlParameter.Optional }
             );
 
-
             routes.MapRoute(
-                name: "ReportActionsYear",
-                url: "reports/{view}/{id}/{datayear}",
-                defaults: new { controller = "Home", action = "Reports", view = UrlParameter.Optional, id = UrlParameter.Optional, datayear = UrlParameter.Optional }
+                name: "ReportActionsByYear",
+                url: "reports/{datayear}",
+                defaults: new { controller = "Home", action = "Reports", datayear = UrlParameter.Optional }
             );
 
             routes.MapRoute(
                 name: "ReportActions",
-                url: "reports/{id}",
-                defaults: new { controller = "Home", action = "Reports", id = UrlParameter.Optional }
+                url: "reports/{datayear}/{filenumber}",
+                defaults: new { controller = "Home", action = "Reports", datayear = UrlParameter.Optional, filenumber = UrlParameter.Optional }
             );
+
+            //routes.MapRoute(
+            //    name: "ReportActions",
+            //    url: "reports/{id}",
+            //    defaults: new { controller = "Home", action = "Reports", id = UrlParameter.Optional }
+            //);
 
             routes.MapRoute(
                 name: "DocumentActions",

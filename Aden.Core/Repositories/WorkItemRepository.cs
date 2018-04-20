@@ -29,18 +29,18 @@ namespace Aden.Core.Repositories
 
         public WorkItem GetById(int id)
         {
-            return _context.WorkItems.Include(r => r.Report.Submission).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
+            return _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
         }
 
         public WorkItem GetByIdWithDetails(int id)
         {
-            return _context.WorkItems.Include(r => r.Report.Submission).Include(r => r.Report.Documents).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
+            return _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).Include(r => r.Report.Documents).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
         }
 
         public IEnumerable<WorkItem> GetActiveByUser(string username)
         {
             return _context.WorkItems
-                .Include(f => f.Report.Submission)
+                .Include(f => f.Report.Submission.FileSpecification)
                 .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.NotStarted).OrderBy(d => d.AssignedDate).ToList();
         }
 
@@ -64,17 +64,13 @@ namespace Aden.Core.Repositories
 
         public string GetUserWithLeastAssignments(IEnumerable<string> members)
         {
+            return "mlawrence@alsde.edu";
+
             var alreadyAssignedMembers = _context.WorkItems.AsNoTracking().Where(u => members.Contains(u.AssignedUser)).ToLookup(m => m.AssignedUser);
 
             var firstAvailableMember = members.FirstOrDefault(x => !alreadyAssignedMembers.Contains(x));
 
             if (firstAvailableMember != null) return firstAvailableMember;
-
-            //var assignee = _context.WorkItems.Where(u => members.Contains(u.AssignedUser)).GroupBy(u => u.AssignedUser).Select(n => new
-            //{
-            //    n.Key,
-            //    Count = n.Count()
-            //}).AsNoTracking().OrderBy(x => x.Count).FirstOrDefault();
 
             var nextAvailable = _context.WorkItems.AsNoTracking()
                 .Where(u => members.Contains(u.AssignedUser)).ToList()

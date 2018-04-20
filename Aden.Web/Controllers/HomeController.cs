@@ -18,7 +18,6 @@ namespace Aden.Web.Controllers
     public class HomeController : Controller
     {
         private readonly UnitOfWork uow;
-        private string _userName = "mlawrence@alsde.edu";
 
         public HomeController()
         {
@@ -67,11 +66,8 @@ namespace Aden.Web.Controllers
         {
             var user = HttpContext.User.Identity;
 
-            var userName = _userName;
-
             var viewName = view == "x" ? "AssignmentsX" : "Assignments";
 
-            if (!string.IsNullOrEmpty(username)) userName = username;
             var vm = new AssigmentsViewModel() { Username = user.Name };
             return View(viewName, vm);
         }

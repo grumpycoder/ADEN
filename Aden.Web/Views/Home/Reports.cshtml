@@ -19,8 +19,8 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">
-                    <span class="header"> Reports</span>
-                    <small>Eden report generation and submission results</small>
+                    <span class="panel-title"> Reports</span>
+                    <span class="panel-subtitle">Eden report generation and submission results</span>
                 </div>
 
                 <div class="panel-body">
@@ -44,7 +44,7 @@
                                       c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
                                       c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
                                   })
-                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/reports/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["id"])).Key("id")))
+                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/reports/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))
                 </div>
 
             </div>

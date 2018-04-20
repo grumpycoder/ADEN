@@ -31,8 +31,6 @@ namespace Aden.Web
             bundles.Add(new StyleBundle("~/Content/lte").Include(
                 "~/Content/bootstrap.css",
                 "~/Content/font-awesome.css",
-                "~/admin-lte/css/adminlte.css",
-                "~/admin-lte/css/skins/_all-skins.css",
                 "~/Content/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/lte").Include(
