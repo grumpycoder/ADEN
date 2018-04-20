@@ -387,6 +387,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="img\sde-logo-transparent-25.png" />
+    <Content Include="img\sde-logo-transparent-50.png" />
+    <Content Include="img\sde-logo-transparent-75.png" />
     <Content Include="js\angular-route.js" />
     <Content Include="js\angular-route.min.js" />
     <Content Include="js\angular.js" />
@@ -512,6 +515,7 @@
     <Content Include="Views\Home\Unauthorized.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_StatusHeader.cshtml" />
+    <Content Include="Views\Shared\_Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,24 @@
+﻿<style>
+    .blue-gradient {
+        background: -webkit-linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
+        background: -o-linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
+        background: linear-gradient(rgb(75, 99, 151),rgb(86, 121, 198)) !important;
+        color: #fff;
+    }
+
+    header .lead {
+        font-size: 1.8em;
+        vertical-align: middle;
+        font-weight: 700;
+    }
+</style>
+
+<header class="blue-gradient">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+            <img src="/img/sde-logo-transparent-25.png" alt="SDE Logo" />
+            <span class="lead">@Html.RenderApplicationName() - @Html.RenderApplicationDescription()</span>
+            </div>
+        </div>
+    </div></header>

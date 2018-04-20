@@ -40,9 +40,23 @@ namespace Aden.Web.Helpers
             {
                 var attr = memberInfo.Assembly.GetAssemblyAttribute<AssemblyTitleAttribute>();
 
-                return new MvcHtmlString(attr.Title ?? "Unknown");
+                return new MvcHtmlString(attr.Title ?? "No Application Title");
             }
-            return new MvcHtmlString("Unknown");
+            return new MvcHtmlString("No Application Title");
+        }
+
+        public static IHtmlString RenderApplicationDescription(this HtmlHelper htmlHelper)
+        {
+            var appInstance = htmlHelper.ViewContext.HttpContext.ApplicationInstance;
+
+            var memberInfo = appInstance.GetType().BaseType;
+            if (memberInfo != null)
+            {
+                var attr = memberInfo.Assembly.GetAssemblyAttribute<AssemblyDescriptionAttribute>();
+
+                return new MvcHtmlString(attr.Description ?? "No Application Description");
+            }
+            return new MvcHtmlString("No Application Description");
         }
 
         public static IHtmlString UserNavBarMenuList(this HtmlHelper htmlHelper, string position)
@@ -108,6 +122,8 @@ namespace Aden.Web.Helpers
 
             return MvcHtmlString.Create(sb.ToString());
         }
+
+
     }
 
 

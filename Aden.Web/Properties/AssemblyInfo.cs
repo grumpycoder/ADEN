@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Aden")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Alabama Data Exchange Network")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ALSDE")]
 [assembly: AssemblyProduct("Aden")]
@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2018.4.257.6682")]
-[assembly: AssemblyFileVersion("2018.4.257.6682")]
+[assembly: AssemblyVersion("2018.4.258.6685")]
+[assembly: AssemblyFileVersion("2018.4.258.6685")]
 
-[assembly: AssemblyInformationalVersion("2018.4.83")]
+[assembly: AssemblyInformationalVersion("2018.4.84")]
