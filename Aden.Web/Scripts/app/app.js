@@ -84,7 +84,7 @@ function createFileSpecificationGridActionButtons(container, options) {
         lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-retire data-filespec-id=' + filespecId + '><i class="fa fa-spinner fa-spin hidden"></i> Retire</a>&nbsp;';
     }
     if (isRetired) {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-activate data-filespec-id=' + filespecId + '>Activate</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-activate data-filespec-id=' + filespecId + '><i class="fa fa-spinner fa-spin hidden"></i> Activate</a>&nbsp;';
     }
     lnk += '<a class="btn btn-default btn-sm btn-grid" href="/EditFileSpecification/' + filespecId + '" data-edit data-id="' + filespecId + '">Edit</a>';
     container.append(lnk);
@@ -128,8 +128,8 @@ function rowPrepared(options) {
 
     var classes = [];
     classes = rowStyle(reportStateId, dueDate);
-    console.log('cell prepared classes', classes);
-    console.log('options', options);
+    //console.log('cell prepared classes', classes);
+    //console.log('options', options);
     classes = [];
 }
 
@@ -254,7 +254,6 @@ $(function () {
 
     $(document).on('click', '[data-retire]', function (e) {
         e.preventDefault();
-        console.log('retire');
         var btn = $(this);
         var id = btn.data('filespec-id');
 
@@ -279,9 +278,11 @@ $(function () {
 
     $(document).on('click', '[data-activate]', function (e) {
         e.preventDefault();
-        console.log('start');
         var btn = $(this);
         var id = btn.data('filespec-id');
+
+        toggleWorkingButton(btn);
+
         $.ajax({
             url: '/api/filespecifications/activate/' + id,
             type: 'POST',
@@ -293,6 +294,8 @@ $(function () {
                 console.log('err', err);
                 $log.error('Something went wrong: ' + err.message);
             }
+        }).always(function() {
+            toggleWorkingButton(btn);
         });
     });
 
