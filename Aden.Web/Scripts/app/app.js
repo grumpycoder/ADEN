@@ -107,13 +107,13 @@ function createSubmissionGridActionButtons(container, options) {
     }
     if (reportStateId === 1) {
         if (canStartReport) {
-            lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '>Start</button>&nbsp;';
+            lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</button>&nbsp;';
 
         } else {
             lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId +
-                ' disabled="true" data-toggle="tooltip" data-title="Missing action on specification" title="Missing action on specification" data-placement="left">Start</button>&nbsp;';
+                ' disabled="true" data-toggle="tooltip" data-title="Missing action on specification" title="Missing action on specification" data-placement="left"><i class="fa fa-spinner fa-spin hidden"></i> Start</button>&nbsp;';
         }
-        lnk += '<button class="btn btn-default btn-sm btn-grid" data-waiver data-submission-id=' + submissionId + '>Waiver</button>';
+        lnk += '<button class="btn btn-default btn-sm btn-grid" data-waiver data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Waiver</button>';
     }
     container.append(lnk);
 }
@@ -190,6 +190,8 @@ $(function () {
         e.preventDefault();
         var btn = $(this);
         var id = btn.data('submission-id');
+        toggleWorkingButton(btn);
+
         $.ajax({
             url: '/api/reports/waiver/' + id,
             type: 'POST',
@@ -200,6 +202,8 @@ $(function () {
             error: function (err) {
                 console.log('err', err);
             }
+        }).always(function () {
+            toggleWorkingButton(btn);
         });
     });
 
@@ -207,6 +211,9 @@ $(function () {
         e.preventDefault();
         var btn = $(this);
         var id = btn.data('submission-id');
+
+        toggleWorkingButton(btn);
+
         $.ajax({
             url: '/api/reports/create/' + id,
             type: 'POST',
@@ -218,6 +225,8 @@ $(function () {
                 console.log('err', err);
                 $log.error('Something went wrong: ' + err.responseJSON.message);
             }
+        }).always(function () {
+            toggleWorkingButton(btn);
         });
     });
 
@@ -250,7 +259,7 @@ $(function () {
         var id = btn.data('filespec-id');
 
         toggleWorkingButton(btn);
-        
+
         $.ajax({
             url: '/api/filespecifications/retire/' + id,
             type: 'POST',
@@ -265,7 +274,7 @@ $(function () {
         }).always(function () {
             toggleWorkingButton(btn);
         });
-        
+
     });
 
     $(document).on('click', '[data-activate]', function (e) {
@@ -408,7 +417,7 @@ $(function () {
                 $('#workItemModal').modal('hide');
                 $('#workItemContainer').html("");
             },
-            complete: function() {
+            complete: function () {
                 $('.modal-dialog').removeClass('loader');
             }
         });
