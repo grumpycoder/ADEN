@@ -49,7 +49,6 @@ function createGridCancelActionButtons(container, options) {
     container.append(lnk);
 }
 
-
 function createReportDocumentLinks(container, options) {
     var documents = options.data.documents;
 
@@ -82,7 +81,7 @@ function createFileSpecificationGridActionButtons(container, options) {
     var filespecId = options.data.id;
 
     if (!isRetired) {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-retire data-filespec-id=' + filespecId + '>Retire</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-retire data-filespec-id=' + filespecId + '><i class="fa fa-spinner fa-spin hidden"></i> Retire</a>&nbsp;';
     }
     if (isRetired) {
         lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + fileNumber + '/' + dataYear + '" data-activate data-filespec-id=' + filespecId + '>Activate</a>&nbsp;';
@@ -171,6 +170,11 @@ function rowStyle(reportStateId, dueDate) {
     return {};
 }
 
+function toggleWorkingButton(button) {
+    button.prop('disabled', !button.prop('disabled'));
+    button.find('i').toggleClass('hidden');
+}
+
 $(function () {
     console.log('ready');
 
@@ -244,18 +248,24 @@ $(function () {
         console.log('retire');
         var btn = $(this);
         var id = btn.data('filespec-id');
+
+        toggleWorkingButton(btn);
+        
         $.ajax({
             url: '/api/filespecifications/retire/' + id,
             type: 'POST',
             success: function (data) {
-                $grid.refresh().done(function (e) { console.log('done', e) });
+                $grid.refresh();
                 $log.success('Retired ' + data.fileNumber + ' - ' + data.fileName);
             },
             error: function (err) {
                 console.log('err', err);
                 $log.error('Something went wrong: ' + err.message);
             }
+        }).always(function () {
+            toggleWorkingButton(btn);
         });
+        
     });
 
     $(document).on('click', '[data-activate]', function (e) {
