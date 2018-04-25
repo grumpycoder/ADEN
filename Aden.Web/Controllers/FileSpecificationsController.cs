@@ -9,7 +9,7 @@ using DevExtreme.AspNet.Mvc;
 
 namespace Aden.Web.Controllers
 {
-    [System.Web.Http.RoutePrefix("api/filespecifications")]
+    [RoutePrefix("api/filespecifications")]
     public class FileSpecificationsController : ApiController
     {
         private readonly UnitOfWork uow;
@@ -20,7 +20,7 @@ namespace Aden.Web.Controllers
             uow = new UnitOfWork(context);
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public object Get(DataSourceLoadOptions loadOptions)
         {
             //return Ok(uow.FileSpecifications.GetAllWithReports());
@@ -38,7 +38,7 @@ namespace Aden.Web.Controllers
             //return Ok(s);
         }
 
-        [System.Web.Http.HttpGet, System.Web.Http.Route("all")]
+        [HttpGet, Route("all")]
         public object Get(string search = null, string order = null, int offset = 0, int limit = 10)
         {
             //return Ok(uow.FileSpecifications.GetAllWithReports());
@@ -54,7 +54,7 @@ namespace Aden.Web.Controllers
             return Ok(s);
         }
 
-        [System.Web.Http.HttpPost, System.Web.Http.Route("Update")]
+        [HttpPost, Route("Update")]
         public object Update(FileSpecificationEditViewModel model)
         {
             if (!ModelState.IsValid)
@@ -70,7 +70,7 @@ namespace Aden.Web.Controllers
             return Ok(model);
         }
 
-        [System.Web.Http.HttpPost, System.Web.Http.Route("retire/{id}")]
+        [HttpPost, Route("retire/{id}")]
         public object Retire(int id)
         {
             var spec = uow.FileSpecifications.GetById(id);
@@ -79,12 +79,14 @@ namespace Aden.Web.Controllers
 
             spec.Retire();
 
+            uow.Submissions.Delete(spec.Id);
+
             uow.Complete();
 
             return Ok(spec);
         }
 
-        [System.Web.Http.HttpPost, System.Web.Http.Route("activate/{id}")]
+        [HttpPost, Route("activate/{id}")]
         public object Activate(int id)
         {
             var spec = uow.FileSpecifications.GetById(id);

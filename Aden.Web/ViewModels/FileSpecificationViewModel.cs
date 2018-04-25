@@ -13,6 +13,11 @@ namespace Aden.Web.ViewModels
         public bool? IsRetired { get; set; }
         public string FileNameFormat { get; set; }
         public string ReportAction { get; set; }
+        public int? DataYear { get; set; }
+        public string DisplayDataYear
+        {
+            get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
+        }
 
         public string Department { get; set; }
         public string GenerationUserGroup { get; set; }

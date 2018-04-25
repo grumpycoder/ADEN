@@ -37,5 +37,23 @@ namespace Aden.Core.Repositories
         {
             return _context.Submissions.Include(s => s.FileSpecification).SingleOrDefault(x => x.Id == id);
         }
+
+        public void Delete(int fileSpecificationId)
+        {
+            var docs = _context.ReportDocuments.Where(d =>
+                d.Report.ReportState < ReportState.CompleteWithError && d.Report.Submission.FileSpecificationId == fileSpecificationId).Delete();
+
+            var wi = _context.WorkItems.Where(w =>
+                w.Report.Submission.FileSpecificationId == fileSpecificationId &&
+                w.Report.ReportState < ReportState.CompleteWithError).Delete();
+
+            var reports = _context.Reports.Where(r =>
+                r.Submission.FileSpecificationId == fileSpecificationId &&
+                r.Submission.ReportState < ReportState.CompleteWithError).Delete();
+
+            var submissions = _context.Submissions.Where(s =>
+                s.FileSpecificationId == fileSpecificationId && s.ReportState < ReportState.CompleteWithError).Delete();
+
+        }
     }
 }

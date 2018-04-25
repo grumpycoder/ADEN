@@ -10,6 +10,7 @@ namespace Aden.Core.Models
         public bool? IsRetired { get; set; }
         public string FileNameFormat { get; set; }
         public string ReportAction { get; set; }
+        public int DataYear { get; set; }
 
         public string Department { get; set; }
         public string GenerationUserGroup { get; set; }
