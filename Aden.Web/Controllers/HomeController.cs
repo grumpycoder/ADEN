@@ -128,13 +128,13 @@ namespace Aden.Web.Controllers
         [HttpPost]
         public ActionResult SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase[] files)
         {
-
+            //TODO: Refactor this to webapi controller
             var wi = uow.WorkItems.GetById(model.Id);
             wi.Notes = model.Notes;
             wi.SetAction(WorkItemAction.SubmitWithError);
 
-            //wi.Complete();
-            //uow.Complete();
+            wi.Complete();
+            uow.Complete();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 
