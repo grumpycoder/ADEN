@@ -26,6 +26,7 @@ namespace Aden.Web.ViewModels
         public string FileName { get; set; }
 
         public string ReportState { get; set; }
+        public string ReportStateKey { get; set; }
         public ReportState ReportStateId { get; set; }
 
         public int? MostRecentReportId { get; set; }
@@ -50,6 +51,7 @@ namespace Aden.Web.ViewModels
                 .ForMember(d => d.MostRecentReportId, opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
                 .ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
                 .ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName()))
+                .ForMember(d => d.ReportStateKey, opt => opt.MapFrom(s => s.ReportState.GetShortName()))
                 ;
         }
 

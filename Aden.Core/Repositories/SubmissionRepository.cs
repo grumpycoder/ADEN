@@ -21,7 +21,7 @@ namespace Aden.Core.Repositories
             var submissions = _context.Submissions
                 .Where(x => (string.IsNullOrEmpty(search)) || (x.FileSpecification.FileName.Contains(search) || x.FileSpecification.FileNumber.Contains(search) || x.FileSpecification.FileNumber.Contains(search)))
                 .Include(r => r.Reports).Include(r => r.FileSpecification)
-                .OrderBy(x => x.Id).Skip(offset).AsQueryable();
+                .OrderBy(x => x.DueDate).ThenByDescending(x => x.Id).Skip(offset).AsQueryable();
             if (limit > 0) submissions = submissions.Take(limit);
 
             return submissions.ToList();

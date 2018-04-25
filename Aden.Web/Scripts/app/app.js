@@ -118,19 +118,11 @@ function createSubmissionGridActionButtons(container, options) {
     container.append(lnk);
 }
 
-function rowPrepared(options) {
-    var reportStateId = 0;
-    var dueDate = window.moment();
-    if (options.data !== undefined) {
-        reportStateId = options.data.reportStateId;
-        dueDate = options.data.dueDate;
+function rowPrepared(row) {
+    if (row.rowType === 'data') {
+        var css = rowStyle(row.data.reportStateKey, row.data.dueDate);
+        row.rowElement.addClass(css);
     }
-
-    var classes = [];
-    classes = rowStyle(reportStateId, dueDate);
-    //console.log('cell prepared classes', classes);
-    //console.log('options', options);
-    classes = [];
 }
 
 function editorPrepared(info) {
@@ -140,34 +132,40 @@ function editorPrepared(info) {
     }
 }
 
-function rowStyle(reportStateId, dueDate) {
+function onInit() {
+    console.log('oninit');
+}
+
+function gridContentReady() {
+    $("table[role='grid']").each(function (idx, elm) {
+        $(elm).addClass('table');
+    });
+}
+
+function rowStyle(reportState, dueDate) {
     var classes = ['active', 'success', 'info', 'warning', 'danger'];
     var $moment = window.moment();
 
-    console.log($moment.add(14, 'days'));
+    //TODO: What to do about CompletedWithError
 
-    if (reportStateId === 6) {
-        return {
-            classes: classes[4]
-        };
-    }
-    if (reportStateId === 7) {
-        return {
-            classes: classes[1]
-        };
-    }
-    if ($moment.isSameOrAfter(dueDate)) {
-        return {
-            classes: classes[3]
-        };
-    }
-    if ($moment.add(14, 'days').isSameOrAfter(dueDate) && reportStateId !== 6) {
-        return {
-            classes: classes[2]
-        };
+    if (reportState === 'Completed' || reportState === 'Waived') {
+        return classes[1];
     }
 
-    return {};
+    if (reportState === 'CompleteWithErrors') {
+        console.log('complete with errors');
+        return classes[2];
+    }
+
+    if (reportState !== 'Completed' && $moment.isSameOrAfter(dueDate)) {
+        return classes[4];
+    }
+
+    if (reportState !== 'Completed' && $moment.add(14, 'days').isSameOrAfter(dueDate)) {
+        return classes[3];
+    }
+
+    return '';
 }
 
 function toggleWorkingButton(button) {
@@ -177,6 +175,7 @@ function toggleWorkingButton(button) {
 
 $(function () {
     console.log('ready');
+
 
     $('body').tooltip({ selector: '[data-toggle=tooltip]' });
 
@@ -294,7 +293,7 @@ $(function () {
                 console.log('err', err);
                 $log.error('Something went wrong: ' + err.message);
             }
-        }).always(function() {
+        }).always(function () {
             toggleWorkingButton(btn);
         });
     });
