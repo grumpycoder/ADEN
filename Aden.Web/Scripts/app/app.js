@@ -23,6 +23,7 @@ function createAssignmentsGridActionButtons(container, options) {
     var reportId = options.data.reportId;
     var action = options.data.action;
     var workItemId = options.data.id;
+    console.log('options', options.data);
 
     var lnk =
         '<button class="btn btn-primary btn-grid" data-report-id="' +
@@ -34,6 +35,10 @@ function createAssignmentsGridActionButtons(container, options) {
             '"><i class="fa fa-spinner fa-spin hidden"></i> ' +
             action +
             '</button>&nbsp;';
+
+    if (action !== 'Generate') {
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Reports</a>&nbsp;';
+    }
     if (action === 'Submit') {
         lnk +=
             '<a href="/EditWorkItem/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Submit With Errors</a>';
