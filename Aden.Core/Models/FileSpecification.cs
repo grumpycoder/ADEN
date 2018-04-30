@@ -11,8 +11,12 @@ namespace Aden.Core.Models
         public string FileNameFormat { get; set; }
         public string ReportAction { get; set; }
         public int DataYear { get; set; }
+        public string DataGroups { get; set; }
+        public string Application { get; set; }
+        public string Collection { get; set; }
+        public string DataSource { get; set; }
 
-        public string Department { get; set; }
+        public string Section { get; set; }
         public string GenerationUserGroup { get; set; }
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }

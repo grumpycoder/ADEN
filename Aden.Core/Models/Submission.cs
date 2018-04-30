@@ -7,6 +7,8 @@ namespace Aden.Core.Models
     {
         public int Id { get; set; }
         public DateTime? DueDate { get; set; }
+        public DateTime? SubmissionDate { get; set; }
+
         public int? DataYear { get; set; }
 
         public bool IsSEA { get; set; }

@@ -14,7 +14,7 @@ namespace Aden.Web.ViewModels
         [Display(Name = "File Name")]
         public string FileName { get; set; }
 
-        public string Department { get; set; }
+        public string Section { get; set; }
         [Display(Name = "Generation User Group")]
         public string GenerationUserGroup { get; set; }
         [Display(Name = "Approval User Group")]
@@ -33,7 +33,7 @@ namespace Aden.Web.ViewModels
             configuration.CreateMap<FileSpecification, FileSpecificationEditViewModel>()
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileName))
                 .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileNumber))
-                .ForMember(d => d.Department, opt => opt.MapFrom(s => s.Department))
+                .ForMember(d => d.Section, opt => opt.MapFrom(s => s.Section))
                 .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(s => s.GenerationUserGroup))
                 .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(s => s.ApprovalUserGroup))
                 .ForMember(d => d.SubmissionUserGroup, opt => opt.MapFrom(s => s.SubmissionUserGroup))
