@@ -15,6 +15,12 @@ namespace Aden.Web.ViewModels
         public string FileName { get; set; }
 
         public string Section { get; set; }
+        [Display(Name = "Data Groups")]
+        public string DataGroups { get; set; }
+        public string Application { get; set; }
+        public string Collection { get; set; }
+        public string DataSource { get; set; }
+
         [Display(Name = "Generation User Group")]
         public string GenerationUserGroup { get; set; }
         [Display(Name = "Approval User Group")]
@@ -34,6 +40,10 @@ namespace Aden.Web.ViewModels
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileName))
                 .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileNumber))
                 .ForMember(d => d.Section, opt => opt.MapFrom(s => s.Section))
+                .ForMember(d => d.Application, opt => opt.MapFrom(s => s.Application))
+                .ForMember(d => d.DataGroups, opt => opt.MapFrom(s => s.DataGroups))
+                .ForMember(d => d.Collection, opt => opt.MapFrom(s => s.Collection))
+                .ForMember(d => d.DataSource, opt => opt.MapFrom(s => s.DataSource))
                 .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(s => s.GenerationUserGroup))
                 .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(s => s.ApprovalUserGroup))
                 .ForMember(d => d.SubmissionUserGroup, opt => opt.MapFrom(s => s.SubmissionUserGroup))

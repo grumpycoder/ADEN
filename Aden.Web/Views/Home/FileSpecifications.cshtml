@@ -33,15 +33,19 @@
                                   .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
                                   .Columns(c =>
                                   {
-                                      c.Add().DataField("fileName");
                                       c.Add().DataField("fileNumber");
+                                      c.Add().DataField("fileName").HidingPriority(2);
                                       c.Add().DataField("isRetired").Caption("Retired?");
-                                      c.Add().DataField("fileNameFormat");
-                                      c.Add().DataField("department");
-                                      c.Add().DataField("reportAction");
-                                      c.Add().DataField("generationUserGroup");
-                                      c.Add().DataField("approvalUserGroup");
-                                      c.Add().DataField("submissionUserGroup");
+                                      c.Add().DataField("fileNameFormat").HidingPriority(3);
+                                      c.Add().DataField("section");
+                                      c.Add().DataField("dataGroups").HidingPriority(2);
+                                      c.Add().DataField("reportAction").HidingPriority(4);
+                                      c.Add().DataField("application").HidingPriority(4);
+                                      c.Add().DataField("collection").HidingPriority(4);
+                                      c.Add().DataField("dataSource").HidingPriority(4);
+                                      c.Add().DataField("generationUserGroup").HidingPriority(1);
+                                      c.Add().DataField("approvalUserGroup").HidingPriority(1);
+                                      c.Add().DataField("submissionUserGroup").HidingPriority(1);
                                       c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createFileSpecificationGridActionButtons(container, options);}"));
                                   })
                                   .Paging(paging => paging.PageSize(10)).Pager(pager =>

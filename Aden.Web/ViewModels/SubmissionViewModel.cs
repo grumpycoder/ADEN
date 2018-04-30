@@ -12,7 +12,15 @@ namespace Aden.Web.ViewModels
     {
         public int Id { get; set; }
         public DateTime? DueDate { get; set; }
+        public DateTime? SubmissionDate { get; set; }
+        public string Section { get; set; }
+        public string DataGroups { get; set; }
+        public string Application { get; set; }
+        public string Collection { get; set; }
+        public string DataSource { get; set; }
+
         public int? DataYear { get; set; }
+
         public string DisplayDataYear
         {
             get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
@@ -48,6 +56,11 @@ namespace Aden.Web.ViewModels
             configuration.CreateMap<Submission, SubmissionViewModel>()
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileSpecification.FileName))
                 .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileSpecification.FileNumber))
+                .ForMember(d => d.Section, opt => opt.MapFrom(s => s.FileSpecification.Section))
+                .ForMember(d => d.DataGroups, opt => opt.MapFrom(s => s.FileSpecification.DataGroups))
+                .ForMember(d => d.Application, opt => opt.MapFrom(s => s.FileSpecification.Application))
+                .ForMember(d => d.Collection, opt => opt.MapFrom(s => s.FileSpecification.Collection))
+                .ForMember(d => d.DataSource, opt => opt.MapFrom(s => s.FileSpecification.DataSource))
                 .ForMember(d => d.MostRecentReportId, opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
                 .ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
                 .ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName()))

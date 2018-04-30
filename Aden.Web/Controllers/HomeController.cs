@@ -14,7 +14,7 @@ using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly UnitOfWork uow;
@@ -26,7 +26,7 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
-        [CustomAuthorize(Roles = "MarkAdenAppAdminUsers")]
+        //[CustomAuthorize(Roles = "MarkAdenAppAdminUsers")]
         public ActionResult FileSpecifications(string view)
         {
             var viewName = view == "x" ? "FileSpecificationsX" : "FileSpecifications";

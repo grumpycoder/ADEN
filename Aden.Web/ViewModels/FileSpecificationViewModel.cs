@@ -19,7 +19,13 @@ namespace Aden.Web.ViewModels
             get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
         }
 
-        public string Department { get; set; }
+        public string Section { get; set; }
+        public string DataGroups { get; set; }
+        public string Application { get; set; }
+        public string Collection { get; set; }
+        public string DataSource { get; set; }
+
+
         public string GenerationUserGroup { get; set; }
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }
