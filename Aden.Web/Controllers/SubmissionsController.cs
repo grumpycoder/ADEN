@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Web.Http;
 using Aden.Core.Data;
 using Aden.Core.Repositories;
@@ -7,6 +8,7 @@ using Aden.Web.ViewModels;
 using AutoMapper;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace Aden.Web.Controllers
 {
@@ -24,11 +26,15 @@ namespace Aden.Web.Controllers
         [HttpGet, Route("all")]
         public object GetPaged(DataSourceLoadOptions loadOptions)
         {
-            //var submissions = uow.Submissions.GetAllWithReports();
-            //var order = loadOptions.Sort.ToString();
-            //var offset = loadOptions.Skip;
-            //var limit = loadOptions.Take;
-            var submissions = uow.Submissions.GetAllWithReportsPaged();
+            //TODO: Remove and refactor to login callback if necessary after AIM groups resolved
+            var identity = ((ClaimsIdentity)User.Identity);
+            IEnumerable<Claim> claims = identity.Claims;
+            claims = new List<Claim> { new Claim("Section", "Federal Programs") };
+            var user = new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+
+            var section = (from c in user.Claims where c.Type == "Section" select c.Value).SingleOrDefault();
+            var submissions = uow.Submissions.GetAllBySectionWithReportsPaged(section);
+            //var submissions = uow.Submissions.GetAllWithReportsPaged();
 
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
             return Ok(DataSourceLoader.Load(rows, loadOptions));

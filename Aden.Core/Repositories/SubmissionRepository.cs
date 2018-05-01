@@ -16,6 +16,17 @@ namespace Aden.Core.Repositories
             _context = context;
         }
 
+        public IEnumerable<Submission> GetAllBySectionWithReportsPaged(string section, string search = null, string order = null, int offset = 0, int limit = 0)
+        {
+            var submissions = _context.Submissions
+                .Where(x => (string.IsNullOrEmpty(section) || x.FileSpecification.Section == section) && (string.IsNullOrEmpty(search)) || (x.FileSpecification.FileName.Contains(search) || x.FileSpecification.FileNumber.Contains(search) || x.FileSpecification.FileNumber.Contains(search)))
+                .Include(r => r.Reports).Include(r => r.FileSpecification)
+                .OrderBy(x => x.DueDate).ThenByDescending(x => x.Id).Skip(offset).AsQueryable();
+            if (limit > 0) submissions = submissions.Take(limit);
+
+            return submissions.ToList();
+        }
+
         public IEnumerable<Submission> GetAllWithReportsPaged(string search = null, string order = null, int offset = 0, int limit = 0)
         {
             var submissions = _context.Submissions
