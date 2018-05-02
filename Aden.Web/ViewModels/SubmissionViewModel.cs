@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Web;
 using Aden.Core.Models;
 using Aden.Web.Helpers;
 using AutoMapper;
@@ -51,6 +53,21 @@ namespace Aden.Web.ViewModels
             get { return !string.IsNullOrEmpty(FileSpecification.ReportAction); }
         }
 
+        public bool HasAdmin
+        {
+            get
+            {
+                foreach (var claim in (HttpContext.Current.User as ClaimsPrincipal).Claims)
+                {
+                    if (claim.Type.Contains("Admin"))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
             configuration.CreateMap<Submission, SubmissionViewModel>()
@@ -68,6 +85,7 @@ namespace Aden.Web.ViewModels
                 ;
         }
 
-
     }
+
+
 }

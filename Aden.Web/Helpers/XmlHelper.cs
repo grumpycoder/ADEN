@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 
 namespace Aden.Web.Helpers
@@ -34,7 +35,8 @@ namespace Aden.Web.Helpers
 
     }
 
-    public static class AssemblyExtensions {
+    public static class AssemblyExtensions
+    {
 
         public static T GetAssemblyAttribute<T>(this System.Reflection.Assembly ass) where T : Attribute
         {
@@ -44,6 +46,14 @@ namespace Aden.Web.Helpers
             return attributes.OfType<T>().SingleOrDefault();
         }
 
+    }
+
+    public static class SplitCamelCaseExtension
+    {
+        public static string SplitCamelCase(this string str)
+        {
+            return Regex.Replace(Regex.Replace(str, @"(\P{Ll})(\P{Ll}\p{Ll})", "$1 $2"), @"(\p{Ll})(\P{Ll})", "$1 $2");
+        }
     }
 
 }

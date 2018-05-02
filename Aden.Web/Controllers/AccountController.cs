@@ -1,21 +1,36 @@
 ﻿using System.Configuration;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Web.Mvc;
+using Aden.Web.Helpers;
 using Alsde.Security.Identity;
 
 namespace Aden.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly string AccessKey = "34C3A440-B8A8-4235-88AE-EDD2FA2991BC";
+        private readonly string accessKey = ConfigurationManager.AppSettings["TPA_AccessKey"];
 
         //Callback url from TPA login
         public ActionResult LoginCallback(string token)
         {
             var url = ConfigurationManager.AppSettings["WebServiceUrl"];
-            var tokenKey = new TokenKey(token, AccessKey);
+            var tokenKey = new TokenKey(token, accessKey);
 
             var identity = IdentityManager.TokenSignin(url, tokenKey);
+
+            // Add custom claims to User to store Section information
+            var claims = identity.Claims.ToList();
+            var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));
+
+            var section = claim.Value.SplitCamelCase().Split(' ').ToList();
+            var idxSection = section.IndexOf("Section");
+            var idxApp = section.IndexOf("App");
+
+            var sectionName = string.Join(" ", section.Skip(idxApp + 1).Take(idxSection - idxApp - 1).ToList());
+
+            identity.AddClaim(new Claim("Section", sectionName));
 
             return RedirectToAction("Submissions", "Home");
 

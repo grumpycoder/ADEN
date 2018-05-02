@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using Aden.Core.Data;
@@ -14,7 +12,7 @@ using AutoMapper;
 
 namespace Aden.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly UnitOfWork uow;
@@ -24,9 +22,9 @@ namespace Aden.Web.Controllers
             var context = AdenContext.Create();
             uow = new UnitOfWork(context);
         }
-
+        //TODO: Remove hardcoded roles, these will change 
         [TrackViewName]
-        //[CustomAuthorize(Roles = "MarkAdenAppAdminUsers")]
+        [CustomAuthorize(Roles = "MarkAdenAppAdminUsers")]
         public ActionResult FileSpecifications(string view)
         {
             var viewName = view == "x" ? "FileSpecificationsX" : "FileSpecifications";
@@ -36,15 +34,6 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public ActionResult Submissions(string view)
         {
-
-            var user = HttpContext.User.Identity;
-            var u = User;
-
-            var identity = ((ClaimsIdentity)User.Identity);
-            IEnumerable<Claim> claims = identity.Claims;
-
-            ViewBag.Message = "You are logged in: " + user.Name;
-
             var viewName = view == "x" ? "SubmissionsX" : "Submissions";
             return View(viewName);
         }

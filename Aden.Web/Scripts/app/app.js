@@ -23,8 +23,7 @@ function createAssignmentsGridActionButtons(container, options) {
     var reportId = options.data.reportId;
     var action = options.data.action;
     var workItemId = options.data.id;
-    console.log('options', options.data);
-
+   
     var lnk =
         '<button class="btn btn-primary btn-grid" data-report-id="' +
             reportId +
