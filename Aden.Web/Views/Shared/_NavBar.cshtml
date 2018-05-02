@@ -21,9 +21,12 @@
             <li>
                 <a href="@Url.Action("Submissions", "Home")"><i class="fa fa-file-archive-o"></i> Submissions</a>
             </li>
-            <li>
-                <a href="@Url.Action("FileSpecifications", "Home")"><i class="fa fa-cog"></i> File Specifications Admin</a>
-            </li>
+            @if (User.IsInRole("MarkAdenAppGlobalAdministrators"))
+            {
+                <li>
+                    <a href="@Url.Action("FileSpecifications", "Home")"><i class="fa fa-cog"></i> File Specifications Admin</a>
+                </li>
+            }
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
