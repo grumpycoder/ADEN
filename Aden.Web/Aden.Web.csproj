@@ -49,6 +49,9 @@
     <Reference Include="Alsde.Extensions, Version=2018.4.9.6677, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.4.9.6677\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Alsde.Security, Version=2018.4.17.6677, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Security.2018.4.17.6677\lib\net451\Alsde.Security.dll</HintPath>
+    </Reference>
     <Reference Include="Alsde.Services, Version=2018.4.16.6677, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Services.2018.4.16.6677\lib\net451\Alsde.Services.dll</HintPath>
     </Reference>
@@ -228,11 +231,8 @@
     </Compile>
     <Compile Include="Helpers\AssemblyExtensions.cs" />
     <Compile Include="Helpers\BoolHtmlHelper.cs" />
-    <Compile Include="Helpers\DataTableHelper.cs" />
-    <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\StringExtension.cs" />
-    <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -522,10 +522,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Alsde\Alsde.Security\Alsde.Security\Alsde.Security.csproj">
-      <Project>{9eaa3c53-b209-4b4f-854f-f33373f124d6}</Project>
-      <Name>Alsde.Security</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Aden.Core\Aden.Core.csproj">
       <Project>{F7E51D12-2AC6-462B-B229-196A1D3CE50F}</Project>
       <Name>Aden.Core</Name>

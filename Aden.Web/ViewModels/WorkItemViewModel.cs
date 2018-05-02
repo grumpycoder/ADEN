@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Aden.Core.Helpers;
 using Aden.Core.Models;
 using Aden.Web.Helpers;
 using AutoMapper;

@@ -76,6 +76,16 @@ namespace Aden.Core.Helpers
                    ?? val.ToString();
         }
 
+        public static string GetShortName(this Enum val)
+        {
+            return val.GetType()
+                       .GetMember(val.ToString())
+                       .FirstOrDefault()
+                       .GetCustomAttribute<DisplayAttribute>(false)
+                       .ShortName
+                   ?? val.ToString();
+        }
+
         public static T Next<T>(this T src) where T : struct
         {
             if (!typeof(T).IsEnum) throw new ArgumentException(string.Format("Argumnent {0} is not an Enum", typeof(T).FullName));
