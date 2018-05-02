@@ -81,6 +81,7 @@ $(function() {
         e.preventDefault();
         var btn = $(this);
         var id = btn.data('cancel-workitem-id');
+        window.$toggleWorkingButton(btn);
         $.ajax({
             url: '/api/wi/undo/' + id,
             type: 'POST',
@@ -88,10 +89,12 @@ $(function() {
                 $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
                 $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
                 window.$log.success('Cancelled ' + data.action + ' - ' + data.state);
+                window.$toggleWorkingButton(btn);
             },
             error: function (err) {
                 console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
+                window.$toggleWorkingButton(btn);
             }
         });
 
@@ -131,6 +134,6 @@ function createGridCancelActionButtons(container, options) {
     var action = options.data.action;
     var workItemId = options.data.id;
     var lnk = '';
-    if (options.data.canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '">Cancel ' + action + '</button>';
+    if (options.data.canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '"><i class="fa fa-spinner fa-spin hidden"></i> Cancel ' + action + '</button>';
     container.append(lnk);
 }
