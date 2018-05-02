@@ -36,7 +36,7 @@ function createAssignmentsGridActionButtons(container, options) {
             '</button>&nbsp;';
 
     if (action !== 'Generate') {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Reports</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
     }
     if (action === 'Submit') {
         lnk +=
