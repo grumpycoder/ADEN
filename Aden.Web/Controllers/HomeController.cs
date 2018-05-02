@@ -25,46 +25,33 @@ namespace Aden.Web.Controllers
         //TODO: Remove hardcoded roles, these will change 
         [TrackViewName]
         [CustomAuthorize(Roles = "MarkAdenAppAdminUsers")]
-        public ActionResult FileSpecifications(string view)
+        public ActionResult FileSpecifications()
         {
-            var viewName = view == "x" ? "FileSpecificationsX" : "FileSpecifications";
-            return View(viewName);
+            return View();
         }
 
         [TrackViewName]
-        public ActionResult Submissions(string view)
+        public ActionResult Submissions()
         {
-            var viewName = view == "x" ? "SubmissionsX" : "Submissions";
-            return View(viewName);
+            return View();
         }
 
         [TrackViewName]
-        public ActionResult Reports(string view, string id = null, int datayear = 0)
+        public ActionResult Reports(string id = null, int datayear = 0)
         {
-            var user = HttpContext.User.Identity;
-
-            ViewBag.Message = "You are logged in: " + user.Name;
-
-            var viewName = view == "x" ? "ReportsX" : "Reports";
-
-            return View(viewName);
+            return View();
         }
 
         [TrackViewName]
         public ActionResult Assignments(string view, string username)
         {
             var user = HttpContext.User.Identity;
-
-            var viewName = view == "x" ? "AssignmentsX" : "Assignments";
-
             var vm = new AssigmentsViewModel() { Username = user.Name };
-            return View(viewName, vm);
+            return View(vm);
         }
 
         public ActionResult WorkItemHistory(int reportId)
         {
-            //var workItems = uow.WorkItems.GetHistoryByFileSpecification(id, datayear);
-
             var workItems = uow.WorkItems.GetHistoryByReport(reportId);
             return PartialView("_WorkItemHistory", workItems);
         }
@@ -160,19 +147,5 @@ namespace Aden.Web.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase files)
-        //{
-        //    var wi = uow.WorkItems.GetById(model.Id);
-
-        //    wi.Notes = model.Notes;
-
-        //    var file = files;
-        //    var InputFileName = Path.GetFileName(file.FileName);
-        //    var ServerSavePath = Path.Combine(Server.MapPath("~/App_Data/") + InputFileName);
-        //    //Save file to server folder  
-        //    file.SaveAs(ServerSavePath);
-        //    return Content("success");
-        //}
     }
 }

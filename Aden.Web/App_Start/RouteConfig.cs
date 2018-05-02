@@ -14,12 +14,6 @@ namespace Aden.Web
             routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
 
             routes.MapRoute(
-                name: "FileSpecificationActions",
-                url: "filespecifications/{view}",
-                defaults: new { controller = "Home", action = "FileSpecifications", id = UrlParameter.Optional }
-            );
-
-            routes.MapRoute(
                 name: "ReportActionsByYear",
                 url: "reports/{datayear}",
                 defaults: new { controller = "Home", action = "Reports", datayear = UrlParameter.Optional }
@@ -30,12 +24,6 @@ namespace Aden.Web
                 url: "reports/{datayear}/{filenumber}",
                 defaults: new { controller = "Home", action = "Reports", datayear = UrlParameter.Optional, filenumber = UrlParameter.Optional }
             );
-
-            //routes.MapRoute(
-            //    name: "ReportActions",
-            //    url: "reports/{id}",
-            //    defaults: new { controller = "Home", action = "Reports", id = UrlParameter.Optional }
-            //);
 
             routes.MapRoute(
                 name: "DocumentActions",
@@ -48,30 +36,6 @@ namespace Aden.Web
                 url: "download/{id}",
                 defaults: new { controller = "Home", action = "Download" }
             );
-
-            routes.MapRoute(
-                name: "AssignmentActions",
-                url: "assignments/{view}/{id}",
-                defaults: new { controller = "Home", action = "Assignments", view = UrlParameter.Optional, id = UrlParameter.Optional }
-            );
-
-            routes.MapRoute(
-                name: "SubmissionActions",
-                url: "submissions/{view}",
-                defaults: new { controller = "Home", action = "submissions", id = UrlParameter.Optional }
-            );
-
-            //routes.MapRoute(
-            //    name: "AssignmentActions",
-            //    url: "assignments/{id}",
-            //    defaults: new { controller = "Home", action = "Assignments", id = UrlParameter.Optional }
-            //);
-
-            //routes.MapRoute(
-            //    name: "WorkItemHistoryActions",
-            //    url: "workitemhistory/{datayear}/{id}",
-            //    defaults: new { controller = "Home", action = "WorkItemHistory", id = UrlParameter.Optional }
-            //);
 
             routes.MapRoute(
                 name: "WorkItemHistoryActions",

@@ -509,11 +509,7 @@
     <Content Include="Views\Home\Submissions.cshtml" />
     <Content Include="Views\Shared\_LayoutLte.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
-    <Content Include="Views\Home\SubmissionsX.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\FileSpecificationsX.cshtml" />
-    <Content Include="Views\Home\ReportsX.cshtml" />
-    <Content Include="Views\Home\AssignmentsX.cshtml" />
     <Content Include="Views\Home\Unauthorized.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_StatusHeader.cshtml" />
