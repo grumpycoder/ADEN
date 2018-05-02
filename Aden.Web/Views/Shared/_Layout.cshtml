@@ -5,10 +5,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - ADEN</title>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     @Styles.Render("~/Content/css")
-    <link href="~/Content/bootstrap-overrides.css" rel="stylesheet" />
     @Scripts.Render("~/bundles/jquery")
     @Styles.Render("~/css/DevExtremeBundle")
     @Scripts.Render("~/js/DevExtremeBundle")
@@ -26,15 +24,14 @@
 
     @Html.Partial("_Footer")
 
-
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryval")
 
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    @*@Scripts.Render("~/bundles/jqueryval")*@
 
-    <script src="~/Scripts/app/bootstrap.model.wrapper.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+
+    <script src="~/js/app/bootstrap.model.wrapper.js"></script>
 
 
     @RenderSection("scripts", required: false)

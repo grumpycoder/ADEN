@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using Aden.Core.Helpers;
 using Aden.Core.Models;
-using Aden.Web.Helpers;
 using AutoMapper;
 using Heroic.AutoMapper;
 
@@ -35,6 +34,7 @@ namespace Aden.Web.ViewModels
         public bool CanCancel { get; set; }
         public DateTime? CompletedDate { get; set; }
 
+        [Required]
         public string Notes { get; set; }
 
         public void CreateMappings(IMapperConfigurationExpression configuration)

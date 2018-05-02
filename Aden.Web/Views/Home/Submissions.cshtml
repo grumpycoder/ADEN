@@ -31,7 +31,7 @@
                 <div class="panel-body">
                     @(Html.DevExtreme().DataGrid()
                            .ColumnAutoWidth(true).ID("grid")
-                           .OnEditorPrepared("editorPrepared").OnContentReady("gridContentReady").OnInitialized("onInit").OnRowPrepared("rowPrepared")
+                           .OnEditorPrepared("editorPrepared").OnContentReady("gridContentReady").OnRowPrepared("rowPrepared")
                            .ShowRowLines(true).ShowBorders(true)
                            .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
                            .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
@@ -72,7 +72,7 @@
 
 @section scripts
 {
-    <script src="~/Scripts/app/app.js"></script>
-
+    <script src="~/js/app/app.js"></script>
+    <script src="~/js/app/submission.js"></script>
 
 }

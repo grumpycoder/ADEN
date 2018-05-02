@@ -104,13 +104,18 @@ namespace Aden.Web.Controllers
         [HttpPost]
         public ActionResult SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase[] files)
         {
+
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_WorkItemForm", model);
+            }
             //TODO: Refactor this to webapi controller
             var wi = uow.WorkItems.GetById(model.Id);
             wi.Notes = model.Notes;
             wi.SetAction(WorkItemAction.SubmitWithError);
 
             wi.Complete();
-            uow.Complete();
+            //uow.Complete();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 

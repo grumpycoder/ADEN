@@ -259,6 +259,8 @@
     <Content Include="Content\sandstone.bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="css\dx.android5.light.css" />
     <Content Include="css\dx.carmine.compact.css" />
     <Content Include="css\dx.carmine.css" />
@@ -305,6 +307,8 @@
     <Content Include="css\icons\dxicons.woff" />
     <Content Include="css\icons\dxiconsios.ttf" />
     <Content Include="css\icons\dxiconsios.woff" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -379,8 +383,12 @@
     <Content Include="js\vectormap-utils\dx.vectormaputils.debug.js" />
     <Content Include="js\vectormap-utils\dx.vectormaputils.js" />
     <Content Include="js\vectormap-utils\dx.vectormaputils.node.js" />
-    <Content Include="Scripts\app\app.js" />
-    <Content Include="Scripts\app\bootstrap.model.wrapper.js" />
+    <Content Include="js\app\app.js" />
+    <Content Include="js\app\assignments.js" />
+    <Content Include="js\app\bootstrap.model.wrapper.js" />
+    <Content Include="js\app\fileSpecfication.js" />
+    <Content Include="js\app\reports.js" />
+    <Content Include="js\app\submission.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -406,6 +414,8 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -428,7 +438,6 @@
     <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
     <Content Include="Views\Home\_WorkItemForm.cshtml" />
     <Content Include="Views\Home\Submissions.cshtml" />
-    <Content Include="Views\Shared\_LayoutLte.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Unauthorized.cshtml" />

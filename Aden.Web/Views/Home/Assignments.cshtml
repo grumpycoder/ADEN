@@ -16,42 +16,7 @@
 
 </section>
 
-@*<section class="content-header">
-        <h1>
-            Assignments
-            <small>Your current Aden report tasks</small>
-        </h1>
-
-        <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">@ViewBag.CurrentView</li>
-        </ol>
-    </section>*@
-
-
 <section class="content">
-
-    @*<div class="row">
-            <div class="col-md-6">
-                <form action="/assignments" method="get" role="form">
-                    <div class="col-lg-6">
-                        <div class="input-group">
-                            @Html.DropDownListFor(m => m.Username,
-                                new List<SelectListItem>()
-                                {
-                                    new SelectListItem() {Text = "mlawrence", Value = "mlawrence@alsde.edu"},
-                                    new SelectListItem() {Text = "jking", Value = "jking@alsde.edu"},
-                                    new SelectListItem() {Text = "mkong", Value = "mkong@alsde.edu"}
-                                }, new { @class = "form-control" })
-
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">Change</button>
-                            </span>
-                        </div><!-- /input-group -->
-                    </div><!-- /.col-lg-6 -->
-                </form>
-            </div>
-        </div>*@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-primary">
@@ -63,21 +28,21 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                                  .DataGrid()
-                                  .ID("gridCurrentAssignments")
-                                  .ShowRowLines(true)
-                                  .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                                  .Columns(c =>
-                                  {
-                                      c.Add().DataField("fileName");
-                                      c.Add().DataField("fileNumber");
-                                      c.Add().DataField("displayDataYear").Caption("Data Year");
-                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
-                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                                      c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
+                                                  .DataGrid()
+                                                  .ID("gridCurrentAssignments")
+                                                  .ShowRowLines(true)
+                                                  .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                                  .Columns(c =>
+                                                  {
+                                                      c.Add().DataField("fileName");
+                                                      c.Add().DataField("fileNumber");
+                                                      c.Add().DataField("displayDataYear").Caption("Data Year");
+                                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                                      c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
 
-                                  })
-                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/currentassignments/" + @Model.Username + "/")).Key("id")))
+                                                  })
+                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/currentassignments/" + @Model.Username + "/")).Key("id")))
                 </div>
 
             </div>
@@ -93,23 +58,23 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                                  .DataGrid()
-                                  .ID("gridRetrievableAssignments")
-                                  .ShowRowLines(true)
-                                  .ShowBorders(true)
-                                  .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                                  .Columns(c =>
-                                  {
-                                      c.Add().DataField("fileName");
-                                      c.Add().DataField("fileNumber");
-                                      c.Add().DataField("displayDataYear").Caption("Data Year");
-                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
-                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                                      c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                                      c.Add().DataField("action");
-                                      c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
-                                  })
-                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completedassignments/" + @Model.Username + "/")).Key("id")))
+                                                  .DataGrid()
+                                                  .ID("gridRetrievableAssignments")
+                                                  .ShowRowLines(true)
+                                                  .ShowBorders(true)
+                                                  .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                                  .Columns(c =>
+                                                  {
+                                                      c.Add().DataField("fileName");
+                                                      c.Add().DataField("fileNumber");
+                                                      c.Add().DataField("displayDataYear").Caption("Data Year");
+                                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                                      c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                                      c.Add().DataField("action");
+                                                      c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
+                                                  })
+                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completedassignments/" + @Model.Username + "/")).Key("id")))
                 </div>
 
             </div>
@@ -147,7 +112,14 @@
 
 @section scripts
 {
-    <script src="~/Scripts/app/app.js"></script>
+    @*@Scripts.Render("~/bundles/jqueryval")*@
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <script src="~/js/app/app.js"></script>
+    <script src="~/js/app/assignments.js"></script>
 
     <script type="text/javascript">
 
