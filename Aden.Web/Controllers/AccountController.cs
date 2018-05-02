@@ -24,12 +24,13 @@ namespace Aden.Web.Controllers
             var claims = identity.Claims.ToList();
             var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));
 
+            if (claim == null) return RedirectToAction("Submissions", "Home");
+
             var section = claim.Value.SplitCamelCase().Split(' ').ToList();
             var idxSection = section.IndexOf("Section");
             var idxApp = section.IndexOf("App");
 
             var sectionName = string.Join(" ", section.Skip(idxApp + 1).Take(idxSection - idxApp - 1).ToList());
-
             identity.AddClaim(new Claim("Section", sectionName));
 
             return RedirectToAction("Submissions", "Home");

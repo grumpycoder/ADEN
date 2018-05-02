@@ -99,18 +99,21 @@ function createSubmissionGridActionButtons(container, options) {
     var lnk = '';
     var reportStateId = options.data.reportStateId;
     var canStartReport = options.data.canStartReport;
+    var hasAdmin = options.data.hasAdmin;
     var submissionId = options.data.id;
     var fileNumber = options.data.fileNumber;
     var dataYear = options.data.dataYear;
+
+    console.log('data', options.data);
 
     if (reportStateId !== 1) {
         lnk = '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Reports</a>&nbsp;';
 
     }
-    if (reportStateId >= 5) {
+    if (reportStateId >= 5 && hasAdmin) {
         lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '>ReOpen</button>';
     }
-    if (reportStateId === 1) {
+    if (reportStateId === 1 && hasAdmin) {
         if (canStartReport) {
             lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</button>&nbsp;';
 

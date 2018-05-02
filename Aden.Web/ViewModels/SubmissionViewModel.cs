@@ -57,14 +57,8 @@ namespace Aden.Web.ViewModels
         {
             get
             {
-                foreach (var claim in (HttpContext.Current.User as ClaimsPrincipal).Claims)
-                {
-                    if (claim.Type.Contains("Admin"))
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains("MarkAdenAppAdministrators"));
+                return claim != null;
             }
         }
 
