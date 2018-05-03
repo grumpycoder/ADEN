@@ -119,7 +119,8 @@ namespace Aden.Core.Models
             List<string> members;
             try
             {
-                members = GroupHelper.GetGroupMembers("CohortAdminUsers").Select(m => m.EmailAddress).ToList();
+                //members = GroupHelper.GetGroupMembers("CohortAdminUsers").Select(m => m.EmailAddress).ToList();
+                members = GroupHelper.GetGroupMembers(group).Select(m => m.EmailAddress).ToList();
                 if (!members.Any()) throw new Exception(string.Format("No members assigned to group {0}", group));
             }
             catch (ArgumentNullException e)
