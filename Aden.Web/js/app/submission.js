@@ -75,21 +75,21 @@ $(function () {
 
 function createSubmissionGridActionButtons(container, options) {
     var lnk = '';
-    var reportStateId = options.data.reportStateId;
+    var submissionStateId = options.data.submissionStateId;
     var canStartReport = options.data.canStartReport;
     var hasAdmin = options.data.hasAdmin;
     var submissionId = options.data.id;
     var fileNumber = options.data.fileNumber;
     var dataYear = options.data.dataYear;
 
-    if (reportStateId !== 1) {
+    if (submissionStateId !== 1) {
         lnk = '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Reports</a>&nbsp;';
 
     }
-    if (reportStateId >= 5 && hasAdmin) {
+    if (submissionStateId >= 5 && hasAdmin) {
         lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '>ReOpen</button>';
     }
-    if (reportStateId === 1 && hasAdmin) {
+    if (submissionStateId === 1 && hasAdmin) {
         if (canStartReport) {
             lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</button>&nbsp;';
 
@@ -102,26 +102,26 @@ function createSubmissionGridActionButtons(container, options) {
     container.append(lnk);
 }
 
-function rowStyle(reportState, dueDate) {
+function rowStyle(submissionState, dueDate) {
     var classes = ['active', 'success', 'info', 'warning', 'danger'];
     var $moment = window.moment();
 
     //TODO: What to do about CompletedWithError
 
-    if (reportState === 'Completed' || reportState === 'Waived') {
+    if (submissionState === 'Completed' || submissionState === 'Waived') {
         return classes[1];
     }
 
-    if (reportState === 'CompleteWithErrors') {
+    if (submissionState === 'CompleteWithErrors') {
         console.log('complete with errors');
         return classes[2];
     }
 
-    if (reportState !== 'Completed' && $moment.isSameOrAfter(dueDate)) {
+    if (submissionState !== 'Completed' && $moment.isSameOrAfter(dueDate)) {
         return classes[4];
     }
 
-    if (reportState !== 'Completed' && $moment.add(14, 'days').isSameOrAfter(dueDate)) {
+    if (submissionState !== 'Completed' && $moment.add(14, 'days').isSameOrAfter(dueDate)) {
         return classes[3];
     }
 
@@ -130,7 +130,7 @@ function rowStyle(reportState, dueDate) {
 
 function rowPrepared(row) {
     if (row.rowType === 'data') {
-        var css = rowStyle(row.data.reportStateKey, row.data.dueDate);
+        var css = rowStyle(row.data.submissionStateKey, row.data.dueDate);
         row.rowElement.addClass(css);
     }
 }

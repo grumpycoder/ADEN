@@ -35,8 +35,8 @@ namespace Aden.Web.ViewModels
         {
             configuration.CreateMap<FileSpecification, FileSpecificationViewModel>()
                 //.ForMember(d => d.MostRecentReportId, opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
-                //.ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
-                //.ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName()))
+                //.ForMember(d => d.SubmissionStateId, opt => opt.MapFrom(s => s.SubmissionState))
+                //.ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState.GetDisplayName()))
                 ;
 
         }

@@ -15,7 +15,7 @@ namespace Aden.Core.Models
         public bool IsLEA { get; set; }
         public bool IsSCH { get; set; }
 
-        public ReportState ReportState { get; set; }
+        public SubmissionState SubmissionState { get; set; }
 
         public virtual List<Report> Reports { get; set; }
 

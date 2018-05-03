@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Web;
 using Aden.Core.Helpers;
 using Aden.Core.Models;
-using Aden.Web.Helpers;
 using AutoMapper;
 using Heroic.AutoMapper;
 
@@ -36,9 +35,9 @@ namespace Aden.Web.ViewModels
         public string FileNumber { get; set; }
         public string FileName { get; set; }
 
-        public string ReportState { get; set; }
-        public string ReportStateKey { get; set; }
-        public ReportState ReportStateId { get; set; }
+        public string SubmissionState { get; set; }
+        public string SubmissionStateKey { get; set; }
+        public SubmissionState SubmissionStateId { get; set; }
 
         public int? MostRecentReportId { get; set; }
 
@@ -74,9 +73,9 @@ namespace Aden.Web.ViewModels
                 .ForMember(d => d.Collection, opt => opt.MapFrom(s => s.FileSpecification.Collection))
                 .ForMember(d => d.DataSource, opt => opt.MapFrom(s => s.FileSpecification.DataSource))
                 .ForMember(d => d.MostRecentReportId, opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
-                .ForMember(d => d.ReportStateId, opt => opt.MapFrom(s => s.ReportState))
-                .ForMember(d => d.ReportState, opt => opt.MapFrom(s => s.ReportState.GetDisplayName()))
-                .ForMember(d => d.ReportStateKey, opt => opt.MapFrom(s => s.ReportState.GetShortName()))
+                .ForMember(d => d.SubmissionStateId, opt => opt.MapFrom(s => s.SubmissionState))
+                .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState.GetDisplayName()))
+                .ForMember(d => d.SubmissionStateKey, opt => opt.MapFrom(s => s.SubmissionState.GetShortName()))
                 ;
         }
 

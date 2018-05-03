@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Aden.Core</RootNamespace>
     <AssemblyName>Aden.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,6 +71,7 @@
     <Compile Include="Models\ReportLevel.cs" />
     <Compile Include="Models\ReportState.cs" />
     <Compile Include="Models\Submission.cs" />
+    <Compile Include="Models\SubmissionState.cs" />
     <Compile Include="Models\WorkItem.cs" />
     <Compile Include="Models\WorkItemAction.cs" />
     <Compile Include="Models\WorkItemState.cs" />

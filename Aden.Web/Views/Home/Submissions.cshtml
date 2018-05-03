@@ -40,6 +40,7 @@
                                cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false).CellTemplate(@<text><a href="@Url.Action("workitemhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a></text>).HidingPriority(12);
                                cols.Add().DataField("fileNumber");
                                cols.Add().DataField("fileName").HidingPriority(4);
+                               cols.Add().DataField("submissionState");
                                cols.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
                                cols.Add().DataField("displayDataYear").Caption("Data Year").HidingPriority(6);
                                cols.Add().DataField("section").HidingPriority(5);

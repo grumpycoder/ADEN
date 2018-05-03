@@ -60,10 +60,10 @@ namespace Aden.Core.Repositories
 
             var reports = _context.Reports.Where(r =>
                 r.Submission.FileSpecificationId == fileSpecificationId &&
-                r.Submission.ReportState < ReportState.CompleteWithError).Delete();
+                r.Submission.SubmissionState < SubmissionState.CompleteWithError).Delete();
 
             var submissions = _context.Submissions.Where(s =>
-                s.FileSpecificationId == fileSpecificationId && s.ReportState < ReportState.CompleteWithError).Delete();
+                s.FileSpecificationId == fileSpecificationId && s.SubmissionState < SubmissionState.CompleteWithError).Delete();
 
         }
     }

@@ -78,12 +78,14 @@ namespace Aden.Core.Models
             AddWorkItem(wi);
 
             //TODO: Does this belong here
-            ReportState = Submission.ReportState = ReportState.AssignedForGeneration;
+            ReportState = ReportState.AssignedForGeneration;
+            Submission.SubmissionState = SubmissionState.AssignedForGeneration;
         }
 
         public void Waive()
         {
-            ReportState = Submission.ReportState = ReportState.Waived;
+            ReportState = ReportState.Waived;
+            Submission.SubmissionState = SubmissionState.Waived;
             DataYear = Submission.DataYear;
 
         }
