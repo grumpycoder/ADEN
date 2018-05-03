@@ -31,6 +31,7 @@ namespace Aden.Web
                       "~/Content/bootstrap-overrides.css",
                       "~/Content/font-awesome.css",
                       "~/Content/toastr.css",
+                      "~/Content/loader.css",
                       "~/Content/site.css"));
 
         }

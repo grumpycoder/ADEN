@@ -1,9 +1,4 @@
-﻿<style>
-    nav.navbar {
-        -ms-border-radius: 0;
-        border-radius: 0;
-    }
-</style>
+﻿
 <nav class="navbar navbar-default">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -11,26 +6,26 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a href="/" class="navbar-brand"><i class="fa fa-home"></i></a>
+        <a href="/" class="navbar-brand"><i class="fa fa-home" role="navigation"></i></a>
     </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
             <li>
-                <a href="@Url.Action("Assignments", "Home")"><i class="fa fa-tasks"></i> Assignments</a>
+                <a href="@Url.Action("Assignments", "Home")" role="navigation"><i class="fa fa-tasks"></i> Assignments</a>
             </li>
             <li>
-                <a href="@Url.Action("Submissions", "Home")"><i class="fa fa-file-archive-o"></i> Submissions</a>
+                <a href="@Url.Action("Submissions", "Home")" role="navigation"><i class="fa fa-file-archive-o"></i> Submissions</a>
             </li>
             @if (User.IsInRole("MarkAdenAppGlobalAdministrators"))
             {
                 <li>
-                    <a href="@Url.Action("FileSpecifications", "Home")"><i class="fa fa-cog"></i> File Specifications Admin</a>
+                    <a href="@Url.Action("FileSpecifications", "Home")" role="navigation"><i class="fa fa-cog"></i> File Specifications Admin</a>
                 </li>
             }
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
-                <a href="https://ap.alsde.edu/ADEN/EDFacts.aspx" target="_blank" rel="noopener"><i class="fa fa-history"></i> Previous Reports</a>
+                <a href="https://ap.alsde.edu/ADEN/EDFacts.aspx" target="_blank" rel="noopener"><i class="fa fa-history" role="navigation"></i> Previous Reports</a>
             </li>
         </ul>
     </div>

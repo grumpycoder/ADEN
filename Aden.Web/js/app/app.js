@@ -1,4 +1,21 @@
 ﻿// Global Functions
+window.onbeforeunload = function () {
+    console.log('before unload');
+    $('.container-fluid').hide();
+    //$('.loadericon').show();
+    $('.loading').show();
+};
+
+window.onBeforeSend = function() {
+}
+
+window.onloadstart = function () {
+}
+
+
+$(document).on('click', '[role="navigation"]', function (e) {
+    
+});
 
 window.$log = window.toastr;
 
@@ -22,9 +39,11 @@ function gridContentReady() {
 }
 
 
-$(function() {
+$(function () {
     console.log('application ready');
     $('body').tooltip({ selector: '[data-toggle=tooltip]' });
+    $('.container-fluid').show();
+    $('.loading').hide();
 });
 
 //function toggleWorkingButton(button) {
@@ -205,252 +224,252 @@ $(function() {
 
 //    $('body').tooltip({ selector: '[data-toggle=tooltip]' });
 
-    //var $grid = $('#grid').dxDataGrid('instance');
-    //var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
-    //var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
+//var $grid = $('#grid').dxDataGrid('instance');
+//var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
+//var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
 
-    //var $log = window.toastr;
+//var $log = window.toastr;
 
-    //$(document).on('click', '[data-waiver1]', function (e) {
-    //    e.preventDefault();
-    //    var btn = $(this);
-    //    var id = btn.data('submission-id');
-    //    toggleWorkingButton(btn);
+//$(document).on('click', '[data-waiver1]', function (e) {
+//    e.preventDefault();
+//    var btn = $(this);
+//    var id = btn.data('submission-id');
+//    toggleWorkingButton(btn);
 
-    //    $.ajax({
-    //        url: '/api/reports/waiver/' + id,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            $log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
-    //            $grid.refresh().done(function (e) { console.log('done', e) });
-    //        },
-    //        error: function (err) {
-    //            console.log('err', err);
-    //        }
-    //    }).always(function () {
-    //        toggleWorkingButton(btn);
-    //    });
-    //});
+//    $.ajax({
+//        url: '/api/reports/waiver/' + id,
+//        type: 'POST',
+//        success: function (data) {
+//            $log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
+//            $grid.refresh().done(function (e) { console.log('done', e) });
+//        },
+//        error: function (err) {
+//            console.log('err', err);
+//        }
+//    }).always(function () {
+//        toggleWorkingButton(btn);
+//    });
+//});
 
-    //$(document).on('click', '[data-start1]', function (e) {
-    //    e.preventDefault();
-    //    var btn = $(this);
-    //    var id = btn.data('submission-id');
+//$(document).on('click', '[data-start1]', function (e) {
+//    e.preventDefault();
+//    var btn = $(this);
+//    var id = btn.data('submission-id');
 
-    //    toggleWorkingButton(btn);
+//    toggleWorkingButton(btn);
 
-    //    $.ajax({
-    //        url: '/api/reports/create/' + id,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            $grid.refresh().done(function (e) { console.log('done', e) });
-    //            $log.success('Created assignment');
-    //        },
-    //        error: function (err) {
-    //            console.log('err', err);
-    //            $log.error('Something went wrong: ' + err.responseJSON.message);
-    //        }
-    //    }).always(function () {
-    //        toggleWorkingButton(btn);
-    //    });
-    //});
+//    $.ajax({
+//        url: '/api/reports/create/' + id,
+//        type: 'POST',
+//        success: function (data) {
+//            $grid.refresh().done(function (e) { console.log('done', e) });
+//            $log.success('Created assignment');
+//        },
+//        error: function (err) {
+//            console.log('err', err);
+//            $log.error('Something went wrong: ' + err.responseJSON.message);
+//        }
+//    }).always(function () {
+//        toggleWorkingButton(btn);
+//    });
+//});
 
-    //$(document).on('click', '[data-history]', function (e) {
-    //    e.preventDefault();
-    //    var url = $(this).attr('href');
-    //    var title = $(this).data('title');
-    //    $.ajax({
-    //        url: url,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            window.showBSModal({
-    //                title: title,
-    //                body: data,
-    //                size: "lg"
-    //            });
-    //        },
-    //        error: function (err) {
-    //            console.log('err', err);
-    //            $log.error('Error showing history');
-    //        }
-    //    });
+//$(document).on('click', '[data-history]', function (e) {
+//    e.preventDefault();
+//    var url = $(this).attr('href');
+//    var title = $(this).data('title');
+//    $.ajax({
+//        url: url,
+//        type: 'POST',
+//        success: function (data) {
+//            window.showBSModal({
+//                title: title,
+//                body: data,
+//                size: "lg"
+//            });
+//        },
+//        error: function (err) {
+//            console.log('err', err);
+//            $log.error('Error showing history');
+//        }
+//    });
 
-    //});
+//});
 
-    //$(document).on('click', '[data-retire]', function (e) {
-    //    e.preventDefault();
-    //    var btn = $(this);
-    //    var id = btn.data('filespec-id');
+//$(document).on('click', '[data-retire]', function (e) {
+//    e.preventDefault();
+//    var btn = $(this);
+//    var id = btn.data('filespec-id');
 
-    //    toggleWorkingButton(btn);
+//    toggleWorkingButton(btn);
 
-    //    $.ajax({
-    //        url: '/api/filespecifications/retire/' + id,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            $grid.refresh();
-    //            $log.success('Retired ' + data.fileNumber + ' - ' + data.fileName);
-    //        },
-    //        error: function (err) {
-    //            console.log('err', err);
-    //            $log.error('Something went wrong: ' + err.message);
-    //        }
-    //    }).always(function () {
-    //        toggleWorkingButton(btn);
-    //    });
+//    $.ajax({
+//        url: '/api/filespecifications/retire/' + id,
+//        type: 'POST',
+//        success: function (data) {
+//            $grid.refresh();
+//            $log.success('Retired ' + data.fileNumber + ' - ' + data.fileName);
+//        },
+//        error: function (err) {
+//            console.log('err', err);
+//            $log.error('Something went wrong: ' + err.message);
+//        }
+//    }).always(function () {
+//        toggleWorkingButton(btn);
+//    });
 
-    //});
+//});
 
-    //$(document).on('click', '[data-activate]', function (e) {
-    //    e.preventDefault();
-    //    var btn = $(this);
-    //    var id = btn.data('filespec-id');
+//$(document).on('click', '[data-activate]', function (e) {
+//    e.preventDefault();
+//    var btn = $(this);
+//    var id = btn.data('filespec-id');
 
-    //    toggleWorkingButton(btn);
+//    toggleWorkingButton(btn);
 
-    //    $.ajax({
-    //        url: '/api/filespecifications/activate/' + id,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            $grid.refresh().done(function (e) { console.log('done', e) });
-    //            $log.success('Activated ' + data.fileNumber + ' - ' + data.fileName);
-    //        },
-    //        error: function (err) {
-    //            console.log('err', err);
-    //            $log.error('Something went wrong: ' + err.message);
-    //        }
-    //    }).always(function () {
-    //        toggleWorkingButton(btn);
-    //    });
-    //});
+//    $.ajax({
+//        url: '/api/filespecifications/activate/' + id,
+//        type: 'POST',
+//        success: function (data) {
+//            $grid.refresh().done(function (e) { console.log('done', e) });
+//            $log.success('Activated ' + data.fileNumber + ' - ' + data.fileName);
+//        },
+//        error: function (err) {
+//            console.log('err', err);
+//            $log.error('Something went wrong: ' + err.message);
+//        }
+//    }).always(function () {
+//        toggleWorkingButton(btn);
+//    });
+//});
 
-    //$(document).on('click', '[data-edit]', function (e) {
-    //    e.preventDefault();
-    //    var url = $(this).attr("href");
-    //    $.get(url,
-    //        function (data) {
-    //            $('#editContainer').html(data);
-    //            $('#editModal').modal({ show: true });
-    //        });
+//$(document).on('click', '[data-edit]', function (e) {
+//    e.preventDefault();
+//    var url = $(this).attr("href");
+//    $.get(url,
+//        function (data) {
+//            $('#editContainer').html(data);
+//            $('#editModal').modal({ show: true });
+//        });
 
-    //    $(document).on('click', '#saveEditSpecificationForm', function (e) {
-    //        e.preventDefault();
-    //        console.log('save');
-    //    });
+//    $(document).on('click', '#saveEditSpecificationForm', function (e) {
+//        e.preventDefault();
+//        console.log('save');
+//    });
 
-    //});
+//});
 
-    //$(document).on('click', '[data-document-viewer]', function (e) {
-    //    var $currentTarget = $(e.currentTarget);
-    //    var targetModal = $currentTarget.data('target');
-    //    var $modal = $(targetModal);
+//$(document).on('click', '[data-document-viewer]', function (e) {
+//    var $currentTarget = $(e.currentTarget);
+//    var targetModal = $currentTarget.data('target');
+//    var $modal = $(targetModal);
 
-    //    var remoteContent = $currentTarget.data('url');
-    //    var title = $currentTarget.data('doc-title');
-    //    var id = $currentTarget.data('doc-id');
+//    var remoteContent = $currentTarget.data('url');
+//    var title = $currentTarget.data('doc-title');
+//    var id = $currentTarget.data('doc-id');
 
-    //    var modalBody = $(targetModal + ' .modal-body');
-    //    var modalTitle = $(targetModal + ' .modal-title');
+//    var modalBody = $(targetModal + ' .modal-body');
+//    var modalTitle = $(targetModal + ' .modal-title');
 
-    //    modalTitle.html(title);
-    //    $modal.on('show.bs.modal', function () {
-    //        var lnk = $(this).find('a[download]');
-    //        lnk.attr('href', '/download/' + id);
-    //        modalBody.load(remoteContent);
-    //    }).modal();
-    //    return false;
-    //});
+//    modalTitle.html(title);
+//    $modal.on('show.bs.modal', function () {
+//        var lnk = $(this).find('a[download]');
+//        lnk.attr('href', '/download/' + id);
+//        modalBody.load(remoteContent);
+//    }).modal();
+//    return false;
+//});
 
-    //$(document).on('click', '[data-workitem-id]', function (e) {
-    //    e.preventDefault();
-    //    console.log('work item click');
-    //    var btn = $(this);
-    //    var id = btn.data('workitem-id');
-    //    toggleWorkingButton(btn);
-    //    $.ajax({
-    //        url: '/api/wi/complete/' + id,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            $gridCurrentAssignments.refresh();
-    //            $gridRetrievableAssignments.refresh();
-    //            $log.success(data.action + ' - ' + data.state);
-    //        },
-    //        error: function (err) {
-    //            console.log('err', err);
-    //            $log.error('Something went wrong: ' + err.responseJSON.message);
-    //        }
-    //    });
-    //});
+//$(document).on('click', '[data-workitem-id]', function (e) {
+//    e.preventDefault();
+//    console.log('work item click');
+//    var btn = $(this);
+//    var id = btn.data('workitem-id');
+//    toggleWorkingButton(btn);
+//    $.ajax({
+//        url: '/api/wi/complete/' + id,
+//        type: 'POST',
+//        success: function (data) {
+//            $gridCurrentAssignments.refresh();
+//            $gridRetrievableAssignments.refresh();
+//            $log.success(data.action + ' - ' + data.state);
+//        },
+//        error: function (err) {
+//            console.log('err', err);
+//            $log.error('Something went wrong: ' + err.responseJSON.message);
+//        }
+//    });
+//});
 
-    //$(document).on('click', 'button[data-cancel-workitem]', function (e) {
-    //    e.preventDefault();
-    //    var btn = $(this);
-    //    var id = btn.data('cancel-workitem-id');
-    //    $.ajax({
-    //        url: '/api/wi/undo/' + id,
-    //        type: 'POST',
-    //        success: function (data) {
-    //            $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
-    //            $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
-    //            $log.success('Cancelled ' + data.action + ' - ' + data.state);
-    //        },
-    //        error: function (err) {
-    //            console.log('err', err);
-    //            $log.error('Something went wrong: ' + err.responseJSON.message);
-    //        }
-    //    });
+//$(document).on('click', 'button[data-cancel-workitem]', function (e) {
+//    e.preventDefault();
+//    var btn = $(this);
+//    var id = btn.data('cancel-workitem-id');
+//    $.ajax({
+//        url: '/api/wi/undo/' + id,
+//        type: 'POST',
+//        success: function (data) {
+//            $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
+//            $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
+//            $log.success('Cancelled ' + data.action + ' - ' + data.state);
+//        },
+//        error: function (err) {
+//            console.log('err', err);
+//            $log.error('Something went wrong: ' + err.responseJSON.message);
+//        }
+//    });
 
-    //});
+//});
 
-    //$(document).on('click', '[data-submit-error]', function (e) {
-    //    e.preventDefault();
-    //    var url = $(this).attr("href");
-    //    $.get(url, function (data) {
-    //        $('#workItemContainer').html(data);
-    //        $('#workItemModal').modal({ show: true });
-    //    });
-    //});
+//$(document).on('click', '[data-submit-error]', function (e) {
+//    e.preventDefault();
+//    var url = $(this).attr("href");
+//    $.get(url, function (data) {
+//        $('#workItemContainer').html(data);
+//        $('#workItemModal').modal({ show: true });
+//    });
+//});
 
-    //$(document).on('submit', '#formSubmitWithError', function (e) {
-    //    e.preventDefault();
-    //    $('.modal-dialog').addClass('loader');
+//$(document).on('submit', '#formSubmitWithError', function (e) {
+//    e.preventDefault();
+//    $('.modal-dialog').addClass('loader');
 
-    //    var formData = new FormData();
-    //    var files = document.getElementById("files").files;
+//    var formData = new FormData();
+//    var files = document.getElementById("files").files;
 
-    //    formData.append("Notes", $("#Notes").val());
-    //    formData.append("Id", $("#Id").val());
+//    formData.append("Notes", $("#Notes").val());
+//    formData.append("Id", $("#Id").val());
 
-    //    if (files.length > 0) {
-    //        for (var i = 0; i < files.length; i++) {
-    //            formData.append('files', files[i]);
-    //        }
-    //    }
+//    if (files.length > 0) {
+//        for (var i = 0; i < files.length; i++) {
+//            formData.append('files', files[i]);
+//        }
+//    }
 
-    //    $.ajax({
-    //        type: "POST",
-    //        url: '/saveworkitem',
-    //        data: formData,
-    //        contentType: false,
-    //        processData: false,
-    //        success: function (response) {
-    //            $('#workItemModal').modal('hide');
-    //            $('#workItemContainer').html("");
-    //            $gridCurrentAssignments.refresh();
-    //            $gridRetrievableAssignments.refresh();
-    //            $log.success('Submitted errors');
-    //        },
-    //        error: function (error) {
-    //            console.log('error', error);
-    //            $log.error('Something went wrong. ' + error.resonseJson.message);
-    //            $('#workItemModal').modal('hide');
-    //            $('#workItemContainer').html("");
-    //        },
-    //        complete: function () {
-    //            $('.modal-dialog').removeClass('loader');
-    //        }
-    //    });
-    //});
+//    $.ajax({
+//        type: "POST",
+//        url: '/saveworkitem',
+//        data: formData,
+//        contentType: false,
+//        processData: false,
+//        success: function (response) {
+//            $('#workItemModal').modal('hide');
+//            $('#workItemContainer').html("");
+//            $gridCurrentAssignments.refresh();
+//            $gridRetrievableAssignments.refresh();
+//            $log.success('Submitted errors');
+//        },
+//        error: function (error) {
+//            console.log('error', error);
+//            $log.error('Something went wrong. ' + error.resonseJson.message);
+//            $('#workItemModal').modal('hide');
+//            $('#workItemContainer').html("");
+//        },
+//        complete: function () {
+//            $('.modal-dialog').removeClass('loader');
+//        }
+//    });
+//});
 
 
 //});
