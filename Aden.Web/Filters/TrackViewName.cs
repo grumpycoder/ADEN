@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
+using Aden.Web.Helpers;
 
 namespace Aden.Web.Filters
 {
@@ -17,7 +18,7 @@ namespace Aden.Web.Filters
                 {
                     viewName = filterContext.ActionDescriptor.ActionName;
                 }
-                view.ViewBag.CurrentView = viewName;
+                view.ViewBag.CurrentView = viewName.ToTitleCase();
             }
         }
     }

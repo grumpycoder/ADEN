@@ -135,6 +135,10 @@ header .lead {
     border-radius: 0 !important;
 }
 
+.navbar {
+    margin-bottom: 10px;
+}
+
 nav.navbar {
     -ms-border-radius: 0;
     border-radius: 0;
