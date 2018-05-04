@@ -24,7 +24,7 @@ namespace Aden.Web.Controllers
         public object Get(DataSourceLoadOptions loadOptions)
         {
             //return Ok(uow.FileSpecifications.GetAllWithReports());
-            //var specs = uow.FileSpecifications.GetAllWithReportsPaged(search, order, offset, limit);
+            //var specs = uow.FileSpecifications.GetWithReportsPaged(search, order, offset, limit);
             var specs = uow.FileSpecifications.GetAllWithReports();
 
             var vm = Mapper.Map<List<FileSpecificationViewModel>>(specs);

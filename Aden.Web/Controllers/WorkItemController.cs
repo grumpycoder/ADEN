@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Aden.Core.Data;
 using Aden.Core.Models;
@@ -23,13 +24,13 @@ namespace Aden.Web.Controllers
         }
 
         [HttpGet, Route("{username}")]
-        public object Get(string username)
+        public async Task<object> Get(string username)
         {
             username = User.Identity.Name ?? username;
 
-            var workitems = uow.WorkItems.GetActiveByUser(username);
-            var completedWorkItems = uow.WorkItems.GetCompletedByUser(username);
-            var retrievableWorkItems = uow.WorkItems.GetCompletedByUser(username);
+            var workitems = await uow.WorkItems.GetActiveAsync(username);
+            var completedWorkItems = await uow.WorkItems.GetCompletedAsync(username);
+            var retrievableWorkItems = await uow.WorkItems.GetCompletedAsync(username);
 
             var wi = Mapper.Map<List<WorkItemViewModel>>(workitems);
             var wi2 = Mapper.Map<List<WorkItemViewModel>>(completedWorkItems);
@@ -45,20 +46,20 @@ namespace Aden.Web.Controllers
 
         }
 
-        [HttpGet, Route("currentassignments/{username}")]
-        public object CurrentAssignments(string username)
+        [HttpGet, Route("current/{username}")]
+        public async Task<object> Current(string username)
         {
-            var workitems = uow.WorkItems.GetActiveByUser(username);
+            var workitems = await uow.WorkItems.GetActiveAsync(username);
 
             var wi = Mapper.Map<List<WorkItemViewModel>>(workitems);
 
             return Ok(wi);
         }
 
-        [HttpGet, Route("completedassignments/{username}")]
-        public object CompletedAssignments(string username)
+        [HttpGet, Route("completed/{username}")]
+        public async Task<object> Completed(string username)
         {
-            var workItems = uow.WorkItems.GetCompletedByUser(username);
+            var workItems = await uow.WorkItems.GetCompletedAsync(username);
 
             var wi = Mapper.Map<List<WorkItemViewModel>>(workItems.OrderByDescending(w => w.CanCancel).ThenByDescending(w => w.AssignedDate));
 
@@ -66,11 +67,12 @@ namespace Aden.Web.Controllers
         }
 
         [HttpPost, Route("complete/{id}")]
-        public object Complete(int id)
+        public async Task<object> Complete(int id)
         {
-            var wi = uow.WorkItems.GetById(id);
+            var wi = await uow.WorkItems.GetByIdAsync(id);
             if (wi == null) return NotFound();
 
+            //TODO: Remove logic from controller
             if (wi.WorkItemAction == WorkItemAction.Generate)
             {
                 var result = uow.GenerateDocuments(wi.ReportId ?? 0);
@@ -81,13 +83,12 @@ namespace Aden.Web.Controllers
 
                 var vm = Mapper.Map<WorkItemViewModel>(wi);
                 return Ok(vm);
-
             }
 
             try
             {
                 wi.Complete();
-                uow.Complete();
+                await uow.CompleteAsync();
                 var vm = Mapper.Map<WorkItemViewModel>(wi);
                 return Ok(vm);
             }
@@ -114,9 +115,9 @@ namespace Aden.Web.Controllers
         }
 
         [HttpPost, Route("undo/{id}")]
-        public object Undo(int id)
+        public async Task<object> Undo(int id)
         {
-            var wi = uow.WorkItems.GetByIdWithDetails(id);
+            var wi = await uow.WorkItems.GetByIdAsync(id);
             if (wi == null) return NotFound();
 
             wi.Report.CancelWorkItems();

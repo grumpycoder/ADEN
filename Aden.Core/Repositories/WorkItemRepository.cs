@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Aden.Core.Data;
 using Aden.Core.Models;
 
@@ -15,6 +16,52 @@ namespace Aden.Core.Repositories
             _context = context;
         }
 
+
+        public async Task<IEnumerable<WorkItem>> GetActiveAsync(string username)
+        {
+            return await _context.WorkItems
+                .Include(f => f.Report.Submission.FileSpecification)
+                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.NotStarted).OrderBy(d => d.AssignedDate).ToListAsync();
+        }
+
+        public IEnumerable<WorkItem> GetActiveByUser(string username)
+        {
+            return _context.WorkItems
+                .Include(f => f.Report.Submission.FileSpecification)
+                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.NotStarted).OrderBy(d => d.AssignedDate).ToList();
+        }
+
+
+        public async Task<IEnumerable<WorkItem>> GetCompletedAsync(string username)
+        {
+            var workItems = _context.WorkItems
+                .Include(f => f.Report.Submission).Include(r => r.Report.WorkItems).AsQueryable();
+
+            return await workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToListAsync();
+        }
+
+        public IEnumerable<WorkItem> GetCompleted(string username)
+        {
+            var workItems = _context.WorkItems
+                .Include(f => f.Report.Submission).Include(r => r.Report.WorkItems).AsQueryable();
+
+            return workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToList();
+        }
+
+
+        public async Task<WorkItem> GetByIdAsync(int id)
+        {
+            return await _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).Include(r => r.Report.WorkItems).SingleOrDefaultAsync(w => w.Id == id);
+        }
+
+
+        public WorkItem GetById(int id)
+        {
+            return _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
+        }
+
+
+
         public IEnumerable<WorkItem> GetAll()
         {
             return _context.WorkItems.ToList();
@@ -27,22 +74,11 @@ namespace Aden.Core.Repositories
                             .Where(u => u.AssignedUser == username).ToList();
         }
 
-        public WorkItem GetById(int id)
-        {
-            return _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
-        }
-
         public WorkItem GetByIdWithDetails(int id)
         {
             return _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).Include(r => r.Report.Documents).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
         }
 
-        public IEnumerable<WorkItem> GetActiveByUser(string username)
-        {
-            return _context.WorkItems
-                .Include(f => f.Report.Submission.FileSpecification)
-                .Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.NotStarted).OrderBy(d => d.AssignedDate).ToList();
-        }
 
         public IEnumerable<WorkItem> GetCompletedByUser(string username)
         {
@@ -51,6 +87,9 @@ namespace Aden.Core.Repositories
 
             return workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToList();
         }
+
+
+        //TODO: Verify methods needed 
 
         public IEnumerable<WorkItem> GetHistoryByFileSpecification(int submissionId, int dataYear)
         {

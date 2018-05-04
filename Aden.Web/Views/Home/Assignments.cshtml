@@ -42,7 +42,7 @@
                                                       c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
 
                                                   })
-                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/currentassignments/" + @Model.Username + "/")).Key("id")))
+                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/current/" + @Model.Username + "/")).Key("id")))
                 </div>
 
             </div>
@@ -74,7 +74,7 @@
                                                       c.Add().DataField("action");
                                                       c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
                                                   })
-                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completedassignments/" + @Model.Username + "/")).Key("id")))
+                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completed/" + @Model.Username + "/")).Key("id")))
                 </div>
 
             </div>

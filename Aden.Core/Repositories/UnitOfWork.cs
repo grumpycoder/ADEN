@@ -28,6 +28,36 @@ namespace Aden.Core.Repositories
             Submissions = new SubmissionRepository(context);
         }
 
+        public async Task<OperationResult> GenerateDocumentsAsync(int reportId)
+        {
+            var report = await _context.Reports.Include(r => r.Submission).Include(r => r.Documents).SingleOrDefaultAsync(r => r.Id == reportId);
+
+            if (report == null) return new OperationResult("Unable to generate document. Report not found", false);
+
+            if (report.Submission.IsSCH)
+            {
+                var dataTable = ExecuteDocumentCreation(report.Submission, "SCH");
+                var file = dataTable.ToCSVBytes();
+                report.CreateDocument(file, ReportLevel.SCH);
+            }
+            if (report.Submission.IsLEA)
+            {
+                var dataTable = ExecuteDocumentCreation(report.Submission, "LEA");
+                var file = dataTable.ToCSVBytes();
+                report.CreateDocument(file, ReportLevel.LEA);
+            }
+            if (report.Submission.IsSEA)
+            {
+                var dataTable = ExecuteDocumentCreation(report.Submission, "SEA");
+                var file = dataTable.ToCSVBytes();
+                report.CreateDocument(file, ReportLevel.SEA);
+            }
+
+            await CompleteAsync();
+
+            return new OperationResult("Documents created successfully");
+        }
+
         public OperationResult GenerateDocuments(int reportId)
         {
             var report = _context.Reports.Include(r => r.Submission).Include(r => r.Documents).SingleOrDefault(r => r.Id == reportId);

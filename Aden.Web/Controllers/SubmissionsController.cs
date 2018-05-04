@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Aden.Core.Data;
 using Aden.Core.Repositories;
@@ -27,25 +28,25 @@ namespace Aden.Web.Controllers
         }
 
         [HttpGet, Route("all")]
-        public object GetPaged(DataSourceLoadOptions loadOptions)
+        public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            var claim = (User as ClaimsPrincipal).Claims.Where(c => c.Type == "Section").Select(c => c.Value)
+            var claim = ((ClaimsPrincipal)User).Claims.Where(c => c.Type == "Section").Select(c => c.Value)
                 .SingleOrDefault();
 
             var isGlobalAdmin = User.IsInRole(globalAdministrators);
 
-            var submissions = uow.Submissions.GetAllBySectionWithReportsPaged(!isGlobalAdmin ? claim : string.Empty);
+            var submissions = await uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? claim : string.Empty);
 
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
             return Ok(DataSourceLoader.Load(rows, loadOptions));
         }
 
         [HttpGet]
-        public object Get(string search = null, string order = null, int offset = 0, int limit = 10)
+        public async Task<object> Get(string search = null, string order = null, int offset = 0, int limit = 10)
         {
 
-            var submissions = uow.Submissions.GetAllWithReportsPaged(search, order, offset, limit);
-            var totalRows = uow.Submissions.GetAllWithReportsPaged(search);
+            var submissions = await uow.Submissions.GetWithReportsPagedAsync(search, order, offset, limit);
+            var totalRows = await uow.Submissions.GetWithReportsPagedAsync(search);
 
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
             var vm = new

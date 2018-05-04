@@ -17,7 +17,17 @@ namespace Aden.Core.Repositories
             _context = context;
         }
 
-        public IEnumerable<Submission> GetAllBySectionWithReportsPaged(string section, string search = null, string order = null, int offset = 0, int limit = 0)
+        public async Task<Submission> GetByIdAsync(int id)
+        {
+            return await _context.Submissions.Include(s => s.FileSpecification).SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public Submission GetById(int id)
+        {
+            return _context.Submissions.Include(s => s.FileSpecification).SingleOrDefault(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<Submission>> GetBySectionWithReportsAsync(string section, string search = null, string order = null, int offset = 0, int limit = 0)
         {
             var submissions = _context.Submissions
                 .Where(x => (string.IsNullOrEmpty(section) || x.FileSpecification.Section == section) && (string.IsNullOrEmpty(search)) || (x.FileSpecification.FileName.Contains(search) || x.FileSpecification.FileNumber.Contains(search) || x.FileSpecification.FileNumber.Contains(search)))
@@ -25,10 +35,21 @@ namespace Aden.Core.Repositories
                 .OrderBy(x => x.DueDate).ThenByDescending(x => x.Id).Skip(offset).AsQueryable();
             if (limit > 0) submissions = submissions.Take(limit);
 
-            return submissions.ToList();
+            return await submissions.ToListAsync();
         }
 
-        public IEnumerable<Submission> GetAllWithReportsPaged(string search = null, string order = null, int offset = 0, int limit = 0)
+        public async Task<IEnumerable<Submission>> GetWithReportsPagedAsync(string search = null, string order = null, int offset = 0, int limit = 0)
+        {
+            var submissions = _context.Submissions
+                .Where(x => (string.IsNullOrEmpty(search)) || (x.FileSpecification.FileName.Contains(search) || x.FileSpecification.FileNumber.Contains(search) || x.FileSpecification.FileNumber.Contains(search)))
+                .Include(r => r.Reports).Include(r => r.FileSpecification)
+                .OrderBy(x => x.DueDate).ThenByDescending(x => x.Id).Skip(offset).AsQueryable();
+            if (limit > 0) submissions = submissions.Take(limit);
+
+            return await submissions.ToListAsync();
+        }
+
+        public IEnumerable<Submission> GetWithReportsPaged(string search = null, string order = null, int offset = 0, int limit = 0)
         {
             var submissions = _context.Submissions
                 .Where(x => (string.IsNullOrEmpty(search)) || (x.FileSpecification.FileName.Contains(search) || x.FileSpecification.FileNumber.Contains(search) || x.FileSpecification.FileNumber.Contains(search)))
@@ -39,20 +60,22 @@ namespace Aden.Core.Repositories
             return submissions.ToList();
         }
 
-        public IEnumerable<Submission> GetAllWithReports()
+        public async Task DeleteAsync(int fileSpecificationId)
         {
-            var submissions = _context.Submissions.Include(r => r.Reports).IncludeFilter(r => r.Reports.Where(x => x.DataYear == r.DataYear)).ToList();
-            return submissions.ToList();
-        }
+            var docs = await _context.ReportDocuments.Where(d =>
+                d.Report.ReportState < ReportState.CompleteWithError && d.Report.Submission.FileSpecificationId == fileSpecificationId).DeleteAsync();
 
-        public Submission GetById(int id)
-        {
-            return _context.Submissions.Include(s => s.FileSpecification).SingleOrDefault(x => x.Id == id);
-        }
+            var wi = await _context.WorkItems.Where(w =>
+                w.Report.Submission.FileSpecificationId == fileSpecificationId &&
+                w.Report.ReportState < ReportState.CompleteWithError).DeleteAsync();
 
-        public async Task<Submission> GetByIdAsync(int id)
-        {
-            return await _context.Submissions.Include(s => s.FileSpecification).SingleOrDefaultAsync(x => x.Id == id);
+            var reports = await _context.Reports.Where(r =>
+                r.Submission.FileSpecificationId == fileSpecificationId &&
+                r.Submission.SubmissionState < SubmissionState.CompleteWithError).DeleteAsync();
+
+            var submissions = await _context.Submissions.Where(s =>
+                s.FileSpecificationId == fileSpecificationId && s.SubmissionState < SubmissionState.CompleteWithError).DeleteAsync();
+
         }
 
         public void Delete(int fileSpecificationId)
