@@ -80,6 +80,7 @@ namespace Aden.Core.Repositories
 
         public void Delete(int fileSpecificationId)
         {
+            //TODO: Need a check on deleting if active work item
             var docs = _context.ReportDocuments.Where(d =>
                 d.Report.ReportState < ReportState.CompleteWithError && d.Report.Submission.FileSpecificationId == fileSpecificationId).Delete();
 

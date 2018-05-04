@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Aden.Core.Data;
 using Aden.Core.Repositories;
@@ -21,39 +21,44 @@ namespace Aden.Web.Controllers
         }
 
         [HttpGet]
-        public object Get(DataSourceLoadOptions loadOptions)
+        public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            //return Ok(uow.FileSpecifications.GetAllWithReports());
-            //var specs = uow.FileSpecifications.GetWithReportsPaged(search, order, offset, limit);
-            var specs = uow.FileSpecifications.GetAllWithReports();
-
+            var specs = await uow.FileSpecifications.GetAllAsync();
             var vm = Mapper.Map<List<FileSpecificationViewModel>>(specs);
             return Ok(vm);
-
-            //var s = new
-            //{
-            //    Total = totalRows.Count(),
-            //    Rows = si
-            //};
-            //return Ok(s);
         }
 
-        [HttpGet, Route("all")]
-        public object Get(string search = null, string order = null, int offset = 0, int limit = 10)
+        [HttpPost, Route("retire/{id}")]
+        public async Task<object> Retire(int id)
         {
-            //return Ok(uow.FileSpecifications.GetAllWithReports());
-            var specs = uow.FileSpecifications.GetAllWithReportsPaged(search, order, offset, limit);
-            var totalRows = uow.FileSpecifications.GetAllWithReportsPaged(search);
+            var spec = await uow.FileSpecifications.GetByIdAsync(id);
 
-            var si = Mapper.Map<List<FileSpecificationViewModel>>(specs);
-            var s = new
-            {
-                Total = totalRows.Count(),
-                Rows = si
-            };
-            return Ok(s);
+            if (spec == null) return NotFound();
+
+            spec.Retire();
+
+            uow.Submissions.Delete(spec.Id);
+
+            await uow.CompleteAsync();
+
+            return Ok(spec);
         }
 
+        [HttpPost, Route("activate/{id}")]
+        public async Task<object> Activate(int id)
+        {
+            var spec = await uow.FileSpecifications.GetByIdAsync(id);
+
+            if (spec == null) return NotFound();
+
+            spec.Activate();
+
+            await uow.CompleteAsync();
+
+            return Ok(spec);
+        }
+
+        //TODO: Needs implementation on edit view modal
         [HttpPost, Route("Update")]
         public object Update(FileSpecificationEditViewModel model)
         {
@@ -70,34 +75,5 @@ namespace Aden.Web.Controllers
             return Ok(model);
         }
 
-        [HttpPost, Route("retire/{id}")]
-        public object Retire(int id)
-        {
-            var spec = uow.FileSpecifications.GetById(id);
-
-            if (spec == null) return NotFound();
-
-            spec.Retire();
-
-            uow.Submissions.Delete(spec.Id);
-
-            uow.Complete();
-
-            return Ok(spec);
-        }
-
-        [HttpPost, Route("activate/{id}")]
-        public object Activate(int id)
-        {
-            var spec = uow.FileSpecifications.GetById(id);
-
-            if (spec == null) return NotFound();
-
-            spec.Activate();
-
-            uow.Complete();
-
-            return Ok(spec);
-        }
     }
 }
