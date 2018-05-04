@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Aden.Core.Data;
 using Aden.Core.Helpers;
 using Aden.Core.Models;
@@ -78,6 +79,11 @@ namespace Aden.Core.Repositories
         public void Complete()
         {
             _context.SaveChanges();
+        }
+
+        public async Task CompleteAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

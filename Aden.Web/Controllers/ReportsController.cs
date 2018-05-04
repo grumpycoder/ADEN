@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using Aden.Core.Data;
 using Aden.Core.Models;
@@ -62,9 +63,9 @@ namespace Aden.Web.Controllers
         }
 
         [HttpPost, Route("create/{submissionid}")]
-        public object Create(int submissionid)
+        public async Task<object> Create(int submissionid)
         {
-            var submission = uow.Submissions.GetById(submissionid);
+            var submission = await uow.Submissions.GetByIdAsync(submissionid);
 
             if (submission == null) return NotFound();
 
@@ -73,7 +74,7 @@ namespace Aden.Web.Controllers
                 var report = Report.Create(submission);
                 submission.AddReport(report);
                 report.StartNewWork();
-                uow.Complete();
+                await uow.CompleteAsync();
                 return Ok();
             }
             catch (Exception e)

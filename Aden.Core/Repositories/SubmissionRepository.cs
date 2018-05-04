@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Aden.Core.Data;
 using Aden.Core.Models;
 using Z.EntityFramework.Plus;
@@ -47,6 +48,11 @@ namespace Aden.Core.Repositories
         public Submission GetById(int id)
         {
             return _context.Submissions.Include(s => s.FileSpecification).SingleOrDefault(x => x.Id == id);
+        }
+
+        public async Task<Submission> GetByIdAsync(int id)
+        {
+            return await _context.Submissions.Include(s => s.FileSpecification).SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public void Delete(int fileSpecificationId)

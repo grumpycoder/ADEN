@@ -16,14 +16,15 @@ namespace Aden.Core.Services
 
         public static void SendWorkNotification(WorkItem workItem)
         {
-            var client = new SmtpClient();
-            var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser);
-            message.Subject = string.Format("{0} {1} Assigned", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
-            var bodyText = string.Format("You have been assigned a {0} task for {1} to be completed by {2}", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName, workItem.Report.Submission.DueDate);
-
-            message.Body = bodyText;
             try
             {
+                var client = new SmtpClient();
+                var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser);
+                message.Subject = string.Format("{0} {1} Assigned", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
+                var bodyText = string.Format("You have been assigned a {0} task for {1} to be completed by {2}", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName, workItem.Report.Submission.DueDate);
+
+                message.Body = bodyText;
+
                 client.Send(message);
             }
             catch (Exception e)
