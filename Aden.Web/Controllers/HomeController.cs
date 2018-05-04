@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Aden.Core.Data;
@@ -13,7 +14,7 @@ using AutoMapper;
 namespace Aden.Web.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : AsyncController
     {
         private readonly UnitOfWork uow;
 
@@ -45,26 +46,24 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public ActionResult Assignments(string view, string username)
         {
-            var user = HttpContext.User.Identity;
-            var vm = new AssigmentsViewModel() { Username = user.Name };
-            return View(vm);
+            return View((object)User.Identity.Name);
         }
 
-        public ActionResult WorkItemHistory(int reportId)
+        public async Task<ActionResult> WorkHistory(int reportId)
         {
-            var workItems = uow.WorkItems.GetHistoryByReport(reportId);
-            return PartialView("_WorkItemHistory", workItems);
+            var workItems = await uow.WorkItems.GetHistoryAsync(reportId);
+            return PartialView("_WorkHistory", workItems);
         }
 
-        public ActionResult Document(int id)
+        public async Task<ActionResult> Document(int id)
         {
-            var document = uow.Documents.GetById(id);
+            var document = await uow.Documents.GetByIdAsync(id);
             return PartialView(document);
         }
 
-        public FileResult Download(int id)
+        public async Task<FileResult> Download(int id)
         {
-            var document = uow.Documents.GetById(id);
+            var document = await uow.Documents.GetByIdAsync(id);
             return File(document.FileData, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
         }
 
@@ -78,44 +77,45 @@ namespace Aden.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveSpecification(FileSpecificationEditViewModel model)
+        public async Task<ActionResult> SaveSpecification(FileSpecificationEditViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return PartialView("_FileSpecificationForm", model);
             }
-            var spec = uow.FileSpecifications.GetById(model.Id);
+            var spec = await uow.FileSpecifications.GetByIdAsync(model.Id);
 
             Mapper.Map(model, spec);
-            uow.Complete();
+            await uow.CompleteAsync();
 
             return Content("success");
 
         }
 
-        public ActionResult EditWorkItem(int id)
+        public async Task<ActionResult> EditWorkItem(int id)
         {
-            var wi = uow.WorkItems.GetById(id);
+            var wi = await uow.WorkItems.GetByIdAsync(id);
 
             var model = Mapper.Map<WorkItemViewModel>(wi);
             return PartialView("_WorkItemForm", model);
         }
 
         [HttpPost]
-        public ActionResult SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase[] files)
+        public async Task<ActionResult> SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase[] files)
         {
-
+            //TODO: Cleanup SaveWorkItem method
             if (!ModelState.IsValid)
             {
                 return PartialView("_WorkItemForm", model);
             }
             //TODO: Refactor this to webapi controller
-            var wi = uow.WorkItems.GetById(model.Id);
+            var wi = await uow.WorkItems.GetByIdAsync(model.Id);
             wi.Notes = model.Notes;
             wi.SetAction(WorkItemAction.SubmitWithError);
 
             wi.Complete();
-            //uow.Complete();
+            //TODO: Uncomment to save to database
+            //await uow.CompleteAsync();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 

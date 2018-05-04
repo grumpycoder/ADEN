@@ -434,7 +434,7 @@
     <Content Include="Views\Home\FileSpecifications.cshtml" />
     <Content Include="Views\Home\Reports.cshtml" />
     <Content Include="Views\Home\Assignments.cshtml" />
-    <Content Include="Views\Home\_WorkItemHistory.cshtml" />
+    <Content Include="Views\Home\_WorkHistory.cshtml" />
     <Content Include="Views\Home\Document.cshtml" />
     <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
     <Content Include="Views\Home\_WorkItemForm.cshtml" />

@@ -60,6 +60,16 @@ namespace Aden.Core.Repositories
             return _context.WorkItems.Include(r => r.Report.Submission.FileSpecification).Include(r => r.Report.WorkItems).SingleOrDefault(w => w.Id == id);
         }
 
+        public async Task<IEnumerable<WorkItem>> GetHistoryAsync(int reportId)
+        {
+            return await _context.WorkItems.Where(w => w.ReportId == reportId).OrderByDescending(d => d.Id).ToListAsync();
+        }
+
+        public IEnumerable<WorkItem> GetHistory(int reportId)
+        {
+            return _context.WorkItems.Where(w => w.ReportId == reportId).OrderByDescending(d => d.Id).ToList();
+        }
+
 
 
         public IEnumerable<WorkItem> GetAll()
@@ -89,6 +99,7 @@ namespace Aden.Core.Repositories
         }
 
 
+
         //TODO: Verify methods needed 
 
         public IEnumerable<WorkItem> GetHistoryByFileSpecification(int submissionId, int dataYear)
@@ -96,10 +107,6 @@ namespace Aden.Core.Repositories
             return _context.WorkItems.Where(w => w.Report.SubmissionId == submissionId && w.Report.DataYear == dataYear).OrderByDescending(d => d.Id).ToList();
         }
 
-        public IEnumerable<WorkItem> GetHistoryByReport(int reportId)
-        {
-            return _context.WorkItems.Where(w => w.ReportId == reportId).OrderByDescending(d => d.Id).ToList();
-        }
 
         public string GetUserWithLeastAssignments(IEnumerable<string> members)
         {

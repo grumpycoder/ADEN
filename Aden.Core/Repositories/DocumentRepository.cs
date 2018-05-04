@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Aden.Core.Data;
 using Aden.Core.Models;
 
@@ -14,14 +16,20 @@ namespace Aden.Core.Repositories
             _context = context;
         }
 
-        public IEnumerable<ReportDocument> GetByReportId(int id)
+        public async Task<ReportDocument> GetByIdAsync(int id)
         {
-            return _context.ReportDocuments.Where(r => r.ReportId == id).ToList();
+            return await _context.ReportDocuments.SingleOrDefaultAsync(r => r.Id == id);
         }
 
         public ReportDocument GetById(int id)
         {
             return _context.ReportDocuments.SingleOrDefault(r => r.Id == id);
+        }
+
+
+        public IEnumerable<ReportDocument> GetByReportId(int id)
+        {
+            return _context.ReportDocuments.Where(r => r.ReportId == id).ToList();
         }
 
         public void DeleteReportDocuments(int reportId)

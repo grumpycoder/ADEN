@@ -16,12 +16,9 @@ namespace Aden.Core.Repositories
             _context = context;
         }
 
-
         public async Task<IEnumerable<FileSpecification>> GetAllAsync()
         {
             return await _context.FileSpecifications.ToListAsync();
-            //var specs = await _context.FileSpecifications.ToListAsync();
-            //return specs.ToList();
         }
 
         public IEnumerable<FileSpecification> GetAll()
