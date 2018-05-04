@@ -119,12 +119,13 @@ function createAssignmentsGridActionButtons(container, options) {
             action +
             '</button>&nbsp;';
 
-    if (action !== 'Generate') {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
-    }
     if (action === 'Submit') {
         lnk +=
-            '<a href="/EditWorkItem/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Submit With Errors</a>';
+            '<a href="/EditWorkItem/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Errors</a>&nbsp;';
+    }
+
+    if (action !== 'Generate') {
+        lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
     }
 
     container.append(lnk);
