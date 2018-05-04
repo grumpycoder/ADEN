@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Aden.Core.Data;
 using Aden.Core.Models;
 
@@ -15,16 +16,7 @@ namespace Aden.Core.Repositories
             _context = context;
         }
 
-        public IEnumerable<Report> GetFileSpecificationsByDataYear(int datayear)
-        {
-            return _context.Reports.Include(f => f.Submission).Include(r => r.Documents)
-                .Where(f => f.Submission.DataYear == datayear)
-                .OrderByDescending(x => x.Id)
-                .ToList();
-        }
-
-
-        public IEnumerable<Report> GetFileSpecifications(int datayear, string fileNumber = "")
+        public IEnumerable<Report> GetByFileSpecification(int datayear, string fileNumber = "")
         {
             return _context.Reports.Include(f => f.Submission.FileSpecification).Include(r => r.Documents)
                 .Where(f => (f.Submission.FileSpecification.FileNumber == fileNumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(fileNumber))
@@ -32,21 +24,12 @@ namespace Aden.Core.Repositories
                 .ToList();
         }
 
-
-        public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber, int datayear)
+        public async Task<IEnumerable<Report>> GetByFileSpecificationAsync(int datayear, string fileNumber = "")
         {
-            return _context.Reports.Include(f => f.Submission).Include(r => r.Documents)
+            return await _context.Reports.Include(f => f.Submission.FileSpecification).Include(r => r.Documents)
                 .Where(f => (f.Submission.FileSpecification.FileNumber == fileNumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(fileNumber))
                 .OrderByDescending(x => x.Id)
-                .ToList();
-        }
-
-
-        public IEnumerable<Report> GetByFileSpecificationNumber(string fileNumber)
-        {
-
-            return _context.Reports.Include(f => f.Submission).Include(r => r.Documents).OrderByDescending(x => x.Id)
-                .Where(f => (f.Submission.FileSpecification.FileNumber == fileNumber) || string.IsNullOrEmpty(fileNumber)).ToList();
+                .ToListAsync();
         }
 
         public IEnumerable<Report> GetByFileSpecificationNumberPaged(string search, string order, int offset, int limit)

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Aden.Core.Data;
@@ -22,44 +21,20 @@ namespace Aden.Web.Controllers
             uow = new UnitOfWork(context);
         }
 
-        //[HttpGet, Route("{filespecificationId}")]
-        //public object Get(string filespecificationId = null)
-        //{
-        //    return Ok(uow.Reports.GetByFileSpecificationNumber(filespecificationId));
-        //}
-
         [HttpGet, Route("{datayear:int}")]
-        public object Get(int datayear)
+        public async Task<object> Get(int datayear)
         {
-            var reports = uow.Reports.GetFileSpecificationsByDataYear(datayear);
+            var reports = await uow.Reports.GetByFileSpecificationAsync(datayear);
             var reportList = Mapper.Map<List<ReportViewModel>>(reports);
             return Ok(reportList);
         }
 
         [HttpGet, Route("{datayear:int}/{filenumber}")]
-        public object Get(int datayear, string filenumber)
+        public async Task<object> Get(int datayear, string filenumber)
         {
-            //var reports = uow.Reports.GetByFileSpecificationNumber(filespecificationId, datayear);
-            var reports = uow.Reports.GetFileSpecifications(datayear, filenumber);
-
+            var reports = await uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
             var reportList = Mapper.Map<List<ReportViewModel>>(reports);
             return Ok(reportList);
-        }
-
-        [HttpGet, Route("search")]
-        public object Search(string search = null, string order = "asc", int offset = 0, int limit = 10)
-        {
-            var reports = uow.Reports.GetByFileSpecificationNumberPaged(search, order, offset, limit);
-            var totalRows = uow.FileSpecifications.GetAllWithReportsPaged(search);
-
-            var reportList = Mapper.Map<List<ReportViewModel>>(reports);
-
-            var s = new
-            {
-                Total = totalRows.Count(),
-                Rows = reportList
-            };
-            return Ok(s);
         }
 
         [HttpPost, Route("create/{submissionid}")]
