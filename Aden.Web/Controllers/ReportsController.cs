@@ -84,9 +84,9 @@ namespace Aden.Web.Controllers
         }
 
         [HttpPost, Route("waiver/{submissionid}")]
-        public object Waiver(int submissionid)
+        public async Task<object> Waiver(int submissionid)
         {
-            var submission = uow.Submissions.GetById(submissionid);
+            var submission = await uow.Submissions.GetByIdAsync(submissionid);
 
             if (submission == null) return NotFound();
 
@@ -95,7 +95,7 @@ namespace Aden.Web.Controllers
 
             report.Waive();
 
-            uow.Complete();
+            await uow.CompleteAsync();
 
             return Ok();
         }
