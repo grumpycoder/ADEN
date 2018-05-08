@@ -35,7 +35,7 @@ namespace Aden.Core.Repositories
         public async Task<IEnumerable<WorkItem>> GetCompletedAsync(string username)
         {
             var workItems = _context.WorkItems
-                .Include(f => f.Report.Submission).Include(r => r.Report.WorkItems).AsQueryable();
+                .Include(f => f.Report.Submission.FileSpecification).Include(r => r.Report.WorkItems).AsQueryable();
 
             return await workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToListAsync();
         }

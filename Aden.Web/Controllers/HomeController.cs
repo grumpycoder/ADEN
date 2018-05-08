@@ -92,7 +92,7 @@ namespace Aden.Web.Controllers
 
         }
 
-        public async Task<ActionResult> EditWorkItem(int id)
+        public async Task<ActionResult> UploadErrorReport(int id)
         {
             var wi = await uow.WorkItems.GetByIdAsync(id);
 
@@ -101,7 +101,7 @@ namespace Aden.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> SaveWorkItem(WorkItemViewModel model, HttpPostedFileBase[] files)
+        public async Task<ActionResult> SaveErrorReport(WorkItemViewModel model, HttpPostedFileBase[] files)
         {
             //TODO: Cleanup SaveWorkItem method
             if (!ModelState.IsValid)

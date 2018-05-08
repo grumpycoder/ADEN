@@ -34,11 +34,11 @@
                                                                   .Columns(c =>
                                                                   {
                                                                       c.Add().DataField("fileName");
-                                                                      c.Add().DataField("fileNumber");
-                                                                      c.Add().DataField("displayDataYear").Caption("Data Year");
-                                                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
-                                                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                                                                      c.Add().CssClass("btn-cell").CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
+                                                                      c.Add().DataField("fileNumber").Width(100);
+                                                                      c.Add().DataField("displayDataYear").Width(100).Caption("Data Year");
+                                                                      c.Add().DataField("assignedDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                                                      c.Add().DataField("dueDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                                                      c.Add().CssClass("btn-cell").Alignment(HorizontalAlignment.Center).AllowResizing(true).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
 
                                                                   })
                                                                   .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/current/" + @Model + "/")).Key("id")))
@@ -109,6 +109,11 @@
     </div>
 </div>
 
+
+<div class="modal fade" id="errorUploadModal" tabindex="-1" role="dialog" aria-labelledby="errorUploadModal" aria-hidden="true">
+    <div id="errorUploadModalContainer">
+    </div>
+</div>
 
 <div class="modal fade" id="fileUploadModal" tabindex="-1" role="dialog" aria-labelledby="fileUploadModal" aria-hidden="true">
     <div id="fileUploadModalContainer">

@@ -47,6 +47,46 @@ $(function () {
         });
     });
 
+    $(document).on('click', '#btnSubmitErrorReportForm', function (e) {
+        e.preventDefault();
+        console.log('submit error');
+        var formData = new FormData();
+        var files = document.getElementById("files").files;
+
+        formData.append("Notes", $("#submission-notes").val());
+        formData.append("Id", $("#Id").val());
+
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/saveworkitem',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $('#errorUploadModal').modal('hide');
+                $('#errorUploadModalContainer').html("");
+                $gridCurrentAssignments.refresh();
+                $gridRetrievableAssignments.refresh();
+                window.$log.success('Submitted errors');
+            },
+            error: function (error) {
+                console.log('error', error);
+                window.$log.error('Something went wrong. ' + error.resonseJson.message);
+                $('#errorUploadModal').modal('hide');
+                $('#errorUploadModalContainer').html("");
+            },
+            complete: function () {
+                $('.modal-dialog').removeClass('loader');
+            }
+        });
+    });
+
     $(document).on('click', '#btnSubmitReportForm', function (e) {
             e.preventDefault();
             console.log('submit');
@@ -120,10 +160,11 @@ $(function () {
 
     $(document).on('click', '[data-submit-error]', function (e) {
         e.preventDefault();
+        console.log('upload error');
         var url = $(this).attr("href");
         $.get(url, function (data) {
-            $('#workItemContainer').html(data);
-            $('#workItemModal').modal({ show: true });
+            $('#errorUploadModalContainer').html(data);
+            $('#errorUploadModal').modal({ show: true });
         });
     });
 
@@ -163,8 +204,7 @@ function createAssignmentsGridActionButtons(container, options) {
     if (action === 'Generate' && isManualUpload === true) {
         lnk += '<a class="btn btn-primary btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>';
     }
-
-    if (action !== 'Generate') {
+    else{
         lnk +=
             '<button class="btn btn-success btn-grid" data-report-id="' +
             reportId +
@@ -177,17 +217,19 @@ function createAssignmentsGridActionButtons(container, options) {
             '</button>&nbsp;';
     }
 
+    //Show Error opton link if work item in Submit mode
     if (action === 'Submit') {
         lnk +=
-            '<a href="/EditWorkItem/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Errors</a>&nbsp;';
+            '<a href="/UploadErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Errors</a>&nbsp;';
     }
-
+    //Show Report Link if already documents generated 
     if (action !== 'Generate') {
         lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
     }
     
     container.append(lnk);
 }
+
 
 function createGridCancelActionButtons(container, options) {
     var action = options.data.action;
