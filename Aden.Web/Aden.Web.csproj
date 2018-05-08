@@ -246,6 +246,7 @@
     <Compile Include="ViewModels\ReportDocumentViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
     <Compile Include="ViewModels\SubmissionViewModel.cs" />
+    <Compile Include="ViewModels\ReportUploadViewModel.cs" />
     <Compile Include="ViewModels\WorkItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

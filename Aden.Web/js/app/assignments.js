@@ -47,52 +47,45 @@ $(function () {
         });
     });
 
-    $(document).on('submit', '#formSubmitReport', function (e) {
-        e.preventDefault();
-        $('.modal-dialog').addClass('loader');
+    $(document).on('click', '#btnSubmitReportForm', function (e) {
+            e.preventDefault();
+            console.log('submit');
+            var formData = new FormData();
+            var files = document.getElementById("files").files;
 
-        //window.$log.success('Submitted report');
-        //$('#fileUploadModal').modal('hide')
-        //$('#fileUploadModalContainer').html("");
-        //$gridCurrentAssignments.refresh();
-        //$gridRetrievableAssignments.refresh();
+            formData.append("Notes", $("#Notes").val());
+            formData.append("Id", $("#Id").val());
 
-        var formData = new FormData();
-        var files = document.getElementById("files").files;
-
-        formData.append("Notes", $("#Notes").val());
-        formData.append("Id", $("#Id").val());
-
-        if (files.length > 0) {
-            for (var i = 0; i < files.length; i++) {
-                formData.append('files', files[i]);
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
+                }
             }
-        }
 
-        $.ajax({
-            type: "POST",
-            url: '/savereport',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                $('#fileUploadModal').modal('hide');
-                $('#fileUploadModalContainer').html("");
-                $gridCurrentAssignments.refresh();
-                $gridRetrievableAssignments.refresh();
-                window.$log.success('Submitted report');
-            },
-            error: function (error) {
-                console.log('error', error);
-                window.$log.error('Something went wrong. ' + error.resonseJson.message);
-                $('#workItemModal').modal('hide');
-                $('#workItemContainer').html("");
-            },
-            complete: function () {
-                $('.modal-dialog').removeClass('loader');
-            }
+            $.ajax({
+                type: "POST",
+                url: '/savereport',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $('#fileUploadModal').modal('hide');
+                    $('#fileUploadModalContainer').html("");
+                    $gridCurrentAssignments.refresh();
+                    $gridRetrievableAssignments.refresh();
+                    window.$log.success('Submitted report');
+                },
+                error: function (error) {
+                    console.log('error', error);
+                    window.$log.error('Something went wrong. ' +error.resonseJson.message);
+                    $('#workItemModal').modal('hide');
+                    $('#workItemContainer').html("");
+                },
+                complete: function () {
+                    $('.modal-dialog').removeClass('loader');
+                }
+            });
         });
-    });
 
     $(document).on('click', '[data-workitem-id]', function (e) {
         e.preventDefault();
@@ -154,7 +147,6 @@ $(function () {
                 window.$toggleWorkingButton(btn);
             }
         });
-
     });
 
 
@@ -169,7 +161,7 @@ function createAssignmentsGridActionButtons(container, options) {
     var lnk = '';
 
     if (action === 'Generate' && isManualUpload === true) {
-        lnk += '<a class="btn btn-primary btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>'; 
+        lnk += '<a class="btn btn-primary btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>';
     }
 
     if (action !== 'Generate') {
@@ -193,8 +185,7 @@ function createAssignmentsGridActionButtons(container, options) {
     if (action !== 'Generate') {
         lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
     }
-
-
+    
     container.append(lnk);
 }
 

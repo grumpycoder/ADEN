@@ -146,14 +146,14 @@ namespace Aden.Web.Controllers
         {
             var wi = await uow.WorkItems.GetByIdAsync(id);
 
-            var model = Mapper.Map<WorkItemViewModel>(wi);
+            var model = Mapper.Map<ReportUploadViewModel>(wi);
             return PartialView("_ReportUploadForm", model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> SaveReport(WorkItemViewModel model, HttpPostedFileBase[] files)
+        public async Task<ActionResult> SaveReport(ReportUploadViewModel model, HttpPostedFileBase[] files)
         {
-            //TODO: Cleanup SaveWorkItem method
+            //TODO: Cleanup SaveReport method
             if (!ModelState.IsValid)
             {
                 return PartialView("_ReportUploadForm", model);
