@@ -1,8 +1,8 @@
 ﻿// assignments.js
 
-$(function() {
+$(function () {
     console.log('assignments ready');
-    
+
     var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
     var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
 
@@ -47,6 +47,53 @@ $(function() {
         });
     });
 
+    $(document).on('submit', '#formSubmitReport', function (e) {
+        e.preventDefault();
+        $('.modal-dialog').addClass('loader');
+
+        //window.$log.success('Submitted report');
+        //$('#fileUploadModal').modal('hide')
+        //$('#fileUploadModalContainer').html("");
+        //$gridCurrentAssignments.refresh();
+        //$gridRetrievableAssignments.refresh();
+
+        var formData = new FormData();
+        var files = document.getElementById("files").files;
+
+        formData.append("Notes", $("#Notes").val());
+        formData.append("Id", $("#Id").val());
+
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '/savereport',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $('#fileUploadModal').modal('hide');
+                $('#fileUploadModalContainer').html("");
+                $gridCurrentAssignments.refresh();
+                $gridRetrievableAssignments.refresh();
+                window.$log.success('Submitted report');
+            },
+            error: function (error) {
+                console.log('error', error);
+                window.$log.error('Something went wrong. ' + error.resonseJson.message);
+                $('#workItemModal').modal('hide');
+                $('#workItemContainer').html("");
+            },
+            complete: function () {
+                $('.modal-dialog').removeClass('loader');
+            }
+        });
+    });
+
     $(document).on('click', '[data-workitem-id]', function (e) {
         e.preventDefault();
         console.log('work item click');
@@ -65,6 +112,16 @@ $(function() {
                 console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
             }
+        });
+    });
+
+    $(document).on('click', '[data-upload-report]', function (e) {
+        e.preventDefault();
+        console.log('upload report');
+        var url = $(this).attr("href");
+        $.get(url, function (data) {
+            $('#fileUploadModalContainer').html(data);
+            $('#fileUploadModal').modal({ show: true });
         });
     });
 
@@ -107,9 +164,17 @@ function createAssignmentsGridActionButtons(container, options) {
     var reportId = options.data.reportId;
     var action = options.data.action;
     var workItemId = options.data.id;
+    var isManualUpload = options.data.isManualUpload;
 
-    var lnk =
-        '<button class="btn btn-primary btn-grid" data-report-id="' +
+    var lnk = '';
+
+    if (action === 'Generate' && isManualUpload === true) {
+        lnk += '<a class="btn btn-primary btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>'; 
+    }
+
+    if (action !== 'Generate') {
+        lnk +=
+            '<button class="btn btn-success btn-grid" data-report-id="' +
             reportId +
             '" data-workitem-id="' +
             workItemId +
@@ -118,6 +183,7 @@ function createAssignmentsGridActionButtons(container, options) {
             '"><i class="fa fa-spinner fa-spin hidden"></i> ' +
             action +
             '</button>&nbsp;';
+    }
 
     if (action === 'Submit') {
         lnk +=
@@ -127,6 +193,7 @@ function createAssignmentsGridActionButtons(container, options) {
     if (action !== 'Generate') {
         lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
     }
+
 
     container.append(lnk);
 }

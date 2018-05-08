@@ -142,6 +142,49 @@ namespace Aden.Web.Controllers
             return Content("success");
         }
 
+        public async Task<ActionResult> UploadReport(int id)
+        {
+            var wi = await uow.WorkItems.GetByIdAsync(id);
+
+            var model = Mapper.Map<WorkItemViewModel>(wi);
+            return PartialView("_ReportUploadForm", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SaveReport(WorkItemViewModel model, HttpPostedFileBase[] files)
+        {
+            //TODO: Cleanup SaveWorkItem method
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_ReportUploadForm", model);
+            }
+            //TODO: Refactor this to webapi controller
+            var wi = await uow.WorkItems.GetByIdAsync(model.Id);
+
+            foreach (var f in files)
+            {
+                //Checking file is available to save.  
+                if (f == null) continue;
+                var reportLevel = ReportLevel.SCH;
+                if (f.FileName.ToLower().Contains("SCH")) reportLevel = ReportLevel.SCH;
+                if (f.FileName.ToLower().Contains("LEA")) reportLevel = ReportLevel.LEA;
+                if (f.FileName.ToLower().Contains("SEA")) reportLevel = ReportLevel.SEA;
+
+                var version = await uow.Documents.GetNextAvailableVersion(wi.Report.SubmissionId, reportLevel);
+
+                BinaryReader br = new BinaryReader(f.InputStream);
+                byte[] data = br.ReadBytes((f.ContentLength));
+                var doc = ReportDocument.Create(f.FileName, version, reportLevel, data);
+                wi.Report.Documents.Add(doc);
+
+            }
+
+            wi.Complete();
+            await uow.CompleteAsync();
+
+            return Content("success");
+        }
+
         public ActionResult Error(string message)
         {
             return View();

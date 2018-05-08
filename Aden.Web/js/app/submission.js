@@ -87,7 +87,7 @@ function createSubmissionGridActionButtons(container, options) {
 
     }
     if (submissionStateId >= 5 && hasAdmin) {
-        lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '>ReOpen</button>';
+        lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</button>';
     }
     if (submissionStateId === 1 && hasAdmin) {
         if (canStartReport) {

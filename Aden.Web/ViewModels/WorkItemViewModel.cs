@@ -13,6 +13,7 @@ namespace Aden.Web.ViewModels
         {
             //Files = new List<HttpPostedFileBase>();
         }
+
         public int Id { get; set; }
         public int ReportId { get; set; }
         public int DataYear { get; set; }
@@ -22,10 +23,13 @@ namespace Aden.Web.ViewModels
         {
             get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
         }
+
         public DateTime? AssignedDate { get; set; }
         public DateTime? DueDate { get; set; }
         public string State { get; set; }
         public string Action { get; set; }
+        public string ReportAction { get; set; }
+
         public WorkItemAction WorkItemActionId { get; set; }
 
         public string FileName { get; set; }
@@ -33,6 +37,12 @@ namespace Aden.Web.ViewModels
 
         public bool CanCancel { get; set; }
         public DateTime? CompletedDate { get; set; }
+
+        public bool IsManualUpload
+        {
+            get { return ReportAction == "Manual"; }
+        }
+
 
         [Required]
         public string Notes { get; set; }
@@ -47,6 +57,7 @@ namespace Aden.Web.ViewModels
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileName))
                 .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileNumber))
                 .ForMember(d => d.WorkItemActionId, opt => opt.MapFrom(s => s.WorkItemAction))
+                .ForMember(d => d.ReportAction, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.ReportAction))
                 .ForMember(d => d.Action, opt => opt.MapFrom(s => s.WorkItemAction.GetDisplayName()));
         }
     }

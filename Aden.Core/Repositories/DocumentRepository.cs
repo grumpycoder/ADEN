@@ -26,10 +26,25 @@ namespace Aden.Core.Repositories
             return _context.ReportDocuments.SingleOrDefault(r => r.Id == id);
         }
 
-
-        public IEnumerable<ReportDocument> GetByReportId(int id)
+        public async Task<IEnumerable<ReportDocument>> GetBySubmissionIdAsync(int submissionId)
         {
-            return _context.ReportDocuments.Where(r => r.ReportId == id).ToList();
+            return await _context.ReportDocuments.Where(d => d.Report.SubmissionId == submissionId).ToListAsync();
+        }
+
+        public async Task<int> GetNextAvailableVersion(int submissionId, ReportLevel reportLevel)
+        {
+            var version = 0;
+            version = await _context.ReportDocuments.Where(d => d.Report.SubmissionId == submissionId && d.ReportLevel == reportLevel).MaxAsync(x => x.Version);
+            //var version = 0;
+            //if (Documents.Any(d => d.ReportLevel == reportLevel)) version = Documents.Max(x => x.Version);
+
+            return version + 1;
+            //return _context.ReportDocuments.Where(d => d.Report.SubmissionId == submissionId).ToList();
+        }
+
+        public IEnumerable<ReportDocument> GetBySubmissionId(int submissionId)
+        {
+            return _context.ReportDocuments.Where(d => d.Report.SubmissionId == submissionId).ToList();
         }
 
         public void DeleteReportDocuments(int reportId)
@@ -37,5 +52,14 @@ namespace Aden.Core.Repositories
             var documents = _context.ReportDocuments.Where(r => r.ReportId == reportId).ToList();
             _context.ReportDocuments.RemoveRange(documents);
         }
+
+        //TODO: Remove if not needed
+        public IEnumerable<ReportDocument> GetByReportId(int id)
+        {
+            return _context.ReportDocuments.Where(r => r.ReportId == id).ToList();
+        }
+
+
+
     }
 }
