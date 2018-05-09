@@ -27,21 +27,21 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                                                                  .DataGrid()
-                                                                  .ID("gridCurrentAssignments")
-                                                                  .ShowRowLines(true)
-                                                                  .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                                                                  .Columns(c =>
-                                                                  {
-                                                                      c.Add().DataField("fileName");
-                                                                      c.Add().DataField("fileNumber").Width(100);
-                                                                      c.Add().DataField("displayDataYear").Width(100).Caption("Data Year");
-                                                                      c.Add().DataField("assignedDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
-                                                                      c.Add().DataField("dueDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                                                                      c.Add().CssClass("btn-cell").Alignment(HorizontalAlignment.Center).AllowResizing(true).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
+                                                                          .DataGrid()
+                                                                          .ID("gridCurrentAssignments")
+                                                                          .ShowRowLines(true)
+                                                                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                                                          .Columns(c =>
+                                                                          {
+                                                                              c.Add().DataField("fileName");
+                                                                              c.Add().DataField("fileNumber").Width(100);
+                                                                              c.Add().DataField("displayDataYear").Width(100).Caption("Data Year");
+                                                                              c.Add().DataField("assignedDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                                                              c.Add().DataField("dueDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                                                              c.Add().CssClass("btn-cell").Alignment(HorizontalAlignment.Center).AllowResizing(true).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
 
-                                                                  })
-                                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/current/" + @Model + "/")).Key("id")))
+                                                                          })
+                                                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/current/" + @Model + "/")).Key("id")))
                 </div>
 
             </div>
@@ -57,23 +57,23 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                                                                  .DataGrid()
-                                                                  .ID("gridRetrievableAssignments")
-                                                                  .ShowRowLines(true)
-                                                                  .ShowBorders(true)
-                                                                  .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                                                                  .Columns(c =>
-                                                                  {
-                                                                      c.Add().DataField("fileName");
-                                                                      c.Add().DataField("fileNumber");
-                                                                      c.Add().DataField("displayDataYear").Caption("Data Year");
-                                                                      c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
-                                                                      c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                                                                      c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                                                                      c.Add().DataField("action");
-                                                                      c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
-                                                                  })
-                                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completed/" + @Model + "/")).Key("id")))
+                                                                          .DataGrid()
+                                                                          .ID("gridRetrievableAssignments")
+                                                                          .ShowRowLines(true)
+                                                                          .ShowBorders(true)
+                                                                          .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                                                          .Columns(c =>
+                                                                          {
+                                                                              c.Add().DataField("fileName");
+                                                                              c.Add().DataField("fileNumber");
+                                                                              c.Add().DataField("displayDataYear").Caption("Data Year");
+                                                                              c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                                                              c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                                                              c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                                                              c.Add().DataField("action");
+                                                                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
+                                                                          })
+                                                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completed/" + @Model + "/")).Key("id")))
                 </div>
 
             </div>
@@ -84,59 +84,11 @@
 
 
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div id="modalContainer">
     </div>
 </div>
 
-<div class="modal fade" id="workItemModal" tabindex="-1" role="dialog" aria-labelledby="WorkItemModal" aria-hidden="true">
-    <div id="workItemContainer">
-    </div>
-</div>
-
-
-<div class="modal fade" id="errorUploadModal" tabindex="-1" role="dialog" aria-labelledby="errorUploadModal" aria-hidden="true">
-    <div id="errorUploadModalContainer">
-    </div>
-</div>
-
-<div class="modal fade" id="fileUploadModal" tabindex="-1" role="dialog" aria-labelledby="fileUploadModal" aria-hidden="true">
-    <div id="fileUploadModalContainer">
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="uploadModalLabel">Document</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 @section scripts
 {
@@ -148,27 +100,5 @@
 
     <script src="~/js/app/app.js"></script>
     <script src="~/js/app/assignments.js"></script>
-
-    <script type="text/javascript">
-
-        function updateComplete() {
-            console.log('update complete');
-        }
-
-        function UpdateSuccess(data) {
-            console.log('updatesuccess');
-            if (data !== "success") {
-                console.log('error', data);
-                $('#editContainer').html(data);
-                return;
-            }
-            $('#workItemModal').modal('hide');
-            $('#workItemContainer').html("");
-        }
-
-        function UpdateFailed(data) {
-            console.log('failed data', data);
-        }
-
-    </script>
+    
 }

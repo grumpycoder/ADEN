@@ -6,9 +6,51 @@ $(function () {
     var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
     var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
 
-    $(document).on('submit', '#formSubmitWithError', function (e) {
+    $(document).on('click', '#btnSubmitErrorReportForm', function (e) {
         e.preventDefault();
-        $('.modal-dialog').addClass('loader2');
+
+        window.$showModalWorking();
+
+        var formData = new FormData();
+        var files = document.getElementById("files").files;
+
+        formData.append("Notes", $("#submission-notes").val());
+        formData.append("Id", $("#Id").val());
+
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+        }
+        
+        $.ajax({
+            type: "POST",
+            url: '/SaveErrorReport',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                $gridCurrentAssignments.refresh();
+                $gridRetrievableAssignments.refresh();
+                window.$log.success('Submitted errors');
+            },
+            error: function (error) {
+                console.log('error', error);
+                window.$log.error('Something went wrong. ' + error.resonseJson.message);
+            },
+            complete: function () {
+                $('.modalContainer').html('');
+                $('.modal').modal('hide');
+
+                window.$hideModalWorking();
+            }
+        });
+    });
+
+    $(document).on('click', '#btnSubmitReportForm', function (e) {
+        e.preventDefault();
+
+        window.$showModalWorking();
 
         var formData = new FormData();
         var files = document.getElementById("files").files;
@@ -24,108 +66,27 @@ $(function () {
 
         $.ajax({
             type: "POST",
-            url: '/saveworkitem',
+            url: '/SaveReport',
             data: formData,
             contentType: false,
             processData: false,
             success: function (response) {
-                $('#workItemModal').modal('hide');
-                $('#workItemContainer').html("");
                 $gridCurrentAssignments.refresh();
                 $gridRetrievableAssignments.refresh();
-                window.$log.success('Submitted errors');
+                window.$log.success('Submitted report');
             },
             error: function (error) {
                 console.log('error', error);
                 window.$log.error('Something went wrong. ' + error.resonseJson.message);
-                $('#workItemModal').modal('hide');
-                $('#workItemContainer').html("");
             },
             complete: function () {
-                $('.modal-dialog').removeClass('loader');
+                $('.modalContainer').html('');
+                $('.modal').modal('hide');
+
+                window.$hideModalWorking();
             }
         });
     });
-
-    $(document).on('click', '#btnSubmitErrorReportForm', function (e) {
-        e.preventDefault();
-        console.log('submit error');
-        var formData = new FormData();
-        var files = document.getElementById("files").files;
-
-        formData.append("Notes", $("#submission-notes").val());
-        formData.append("Id", $("#Id").val());
-
-        if (files.length > 0) {
-            for (var i = 0; i < files.length; i++) {
-                formData.append('files', files[i]);
-            }
-        }
-
-        $.ajax({
-            type: "POST",
-            url: '/saveworkitem',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                $('#errorUploadModal').modal('hide');
-                $('#errorUploadModalContainer').html("");
-                $gridCurrentAssignments.refresh();
-                $gridRetrievableAssignments.refresh();
-                window.$log.success('Submitted errors');
-            },
-            error: function (error) {
-                console.log('error', error);
-                window.$log.error('Something went wrong. ' + error.resonseJson.message);
-                $('#errorUploadModal').modal('hide');
-                $('#errorUploadModalContainer').html("");
-            },
-            complete: function () {
-                $('.modal-dialog').removeClass('loader');
-            }
-        });
-    });
-
-    $(document).on('click', '#btnSubmitReportForm', function (e) {
-            e.preventDefault();
-            console.log('submit');
-            var formData = new FormData();
-            var files = document.getElementById("files").files;
-
-            formData.append("Notes", $("#Notes").val());
-            formData.append("Id", $("#Id").val());
-
-            if (files.length > 0) {
-                for (var i = 0; i < files.length; i++) {
-                    formData.append('files', files[i]);
-                }
-            }
-
-            $.ajax({
-                type: "POST",
-                url: '/savereport',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    $('#fileUploadModal').modal('hide');
-                    $('#fileUploadModalContainer').html("");
-                    $gridCurrentAssignments.refresh();
-                    $gridRetrievableAssignments.refresh();
-                    window.$log.success('Submitted report');
-                },
-                error: function (error) {
-                    console.log('error', error);
-                    window.$log.error('Something went wrong. ' +error.resonseJson.message);
-                    $('#workItemModal').modal('hide');
-                    $('#workItemContainer').html("");
-                },
-                complete: function () {
-                    $('.modal-dialog').removeClass('loader');
-                }
-            });
-        });
 
     $(document).on('click', '[data-workitem-id]', function (e) {
         e.preventDefault();
@@ -153,8 +114,8 @@ $(function () {
         console.log('upload report');
         var url = $(this).attr("href");
         $.get(url, function (data) {
-            $('#fileUploadModalContainer').html(data);
-            $('#fileUploadModal').modal({ show: true });
+            $('#modalContainer').html(data);
+            $('.modal').modal({ show: true });
         });
     });
 
@@ -163,8 +124,8 @@ $(function () {
         console.log('upload error');
         var url = $(this).attr("href");
         $.get(url, function (data) {
-            $('#errorUploadModalContainer').html(data);
-            $('#errorUploadModal').modal({ show: true });
+            $('#modalContainer').html(data);
+            $('.modal').modal({ show: true });
         });
     });
 
@@ -204,7 +165,7 @@ function createAssignmentsGridActionButtons(container, options) {
     if (action === 'Generate' && isManualUpload === true) {
         lnk += '<a class="btn btn-primary btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>';
     }
-    else{
+    else {
         lnk +=
             '<button class="btn btn-success btn-grid" data-report-id="' +
             reportId +
@@ -226,7 +187,7 @@ function createAssignmentsGridActionButtons(container, options) {
     if (action !== 'Generate') {
         lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
     }
-    
+
     container.append(lnk);
 }
 

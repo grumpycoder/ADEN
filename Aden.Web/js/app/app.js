@@ -2,8 +2,9 @@
 window.onbeforeunload = function () {
     console.log('before unload');
     $('.container-fluid').hide();
-    //$('.loadericon').show();
     $('.loading').show();
+
+    //$.LoadingOverlay("show", { image: '', fontawesome: 'fa fa-cog fa-spin' });
 };
 
 window.onBeforeSend = function() {
@@ -20,10 +21,18 @@ $(document).on('click', '[role="navigation"]', function (e) {
 window.$log = window.toastr;
 
 window.$toggleWorkingButton = function (button) {
-    button.prop('disabled', !button.prop('disabled'));
-    button.find('i').toggleClass('hidden');
+    button.LoadingOverlay('show',
+        { image: '', fontawesome: 'fa fa-cog fa-spin' });
 }
 
+window.$showModalWorking = function () {
+    $('.modal-content').LoadingOverlay('show',
+        { image: '', fontawesome: 'fa fa-cog fa-spin' });
+}
+
+window.$hideModalWorking = function () {
+    $('.modal-content').LoadingOverlay('hide');
+}
 
 function editorPrepared(info) {
     if (info.parentType === 'filterRow' && info.editorName === "dxSelectBox") {

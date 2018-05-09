@@ -34,7 +34,10 @@ namespace Aden.Core.Repositories
         public async Task<int> GetNextAvailableVersion(int submissionId, ReportLevel reportLevel)
         {
             var version = 0;
-            version = await _context.ReportDocuments.Where(d => d.Report.SubmissionId == submissionId && d.ReportLevel == reportLevel).MaxAsync(x => x.Version);
+            var hasDocuments = await _context.ReportDocuments.AnyAsync(d => d.Report.SubmissionId == submissionId && d.ReportLevel == reportLevel);
+
+            if (hasDocuments) version = await _context.ReportDocuments.Where(d => d.Report.SubmissionId == submissionId && d.ReportLevel == reportLevel).MaxAsync(x => x.Version);
+
             //var version = 0;
             //if (Documents.Any(d => d.ReportLevel == reportLevel)) version = Documents.Max(x => x.Version);
 

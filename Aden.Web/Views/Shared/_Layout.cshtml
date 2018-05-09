@@ -17,18 +17,18 @@
     @Html.Partial("_StatusHeader")
     @Html.Partial("_Header")
     @Html.Partial("_NavBar")
-    
-<div class="loading">
-    <div>
-        <div class="c1"></div>
-        <div class="c2"></div>
-        <div class="c3"></div>
-        <div class="c4"></div>
+
+    <div class="loading">
+        <div>
+            <div class="c1"></div>
+            <div class="c2"></div>
+            <div class="c3"></div>
+            <div class="c4"></div>
+        </div>
+        <span>loading</span>
     </div>
-    <span>loading</span>
-</div>
-    
-<div class="container-fluid">
+
+    <div class="container-fluid">
 
         @RenderBody()
     </div>
@@ -37,6 +37,7 @@
 
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/js/app/bootstrap.model.wrapper.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.3/dist/loadingoverlay.min.js"></script>
     @RenderSection("scripts", required: false)
 
 </body>

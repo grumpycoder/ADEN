@@ -114,8 +114,7 @@ namespace Aden.Web.Controllers
             wi.SetAction(WorkItemAction.SubmitWithError);
 
             wi.Complete();
-            //TODO: Uncomment to save to database
-            //await uow.CompleteAsync();
+            await uow.CompleteAsync();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 
