@@ -8,7 +8,7 @@ $(function () {
 
     $(document).on('submit', '#formSubmitWithError', function (e) {
         e.preventDefault();
-        $('.modal-dialog').addClass('loader');
+        $('.modal-dialog').addClass('loader2');
 
         var formData = new FormData();
         var files = document.getElementById("files").files;
