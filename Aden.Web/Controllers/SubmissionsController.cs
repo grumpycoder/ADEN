@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Aden.Core.Data;
+using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Web.ViewModels;
 using AutoMapper;
@@ -30,15 +31,16 @@ namespace Aden.Web.Controllers
         [HttpGet, Route("all")]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            var claim = ((ClaimsPrincipal)User).Claims.Where(c => c.Type == "Section").Select(c => c.Value)
-                .SingleOrDefault();
-
             var isGlobalAdmin = User.IsInRole(globalAdministrators);
 
-            var submissions = await uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? claim : string.Empty);
+            var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section").Value;
+
+            var submissions = await uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);
 
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
+
             return Ok(DataSourceLoader.Load(rows, loadOptions));
+
         }
 
         [HttpGet]

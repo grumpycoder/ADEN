@@ -27,7 +27,7 @@ namespace Aden.Core.Repositories
             return _context.Submissions.Include(s => s.FileSpecification).SingleOrDefault(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Submission>> GetBySectionWithReportsAsync(string section, string search = null, string order = null, int offset = 0, int limit = 0)
+        public async Task<IEnumerable<Submission>> GetBySectionWithReportsAsync(string section = null, string search = null, string order = null, int offset = 0, int limit = 0)
         {
             var submissions = _context.Submissions
                 .Where(x => (string.IsNullOrEmpty(section) || x.FileSpecification.Section == section) && (string.IsNullOrEmpty(search)) || (x.FileSpecification.FileName.Contains(search) || x.FileSpecification.FileNumber.Contains(search) || x.FileSpecification.FileNumber.Contains(search)))
