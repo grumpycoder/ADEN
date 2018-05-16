@@ -138,6 +138,10 @@ namespace Aden.Core.Models
             {
                 throw new Exception(e.Message);
             }
+            catch (Exception ex)
+            {
+                throw new Exception($"{group} Group not defined or no members assigned. "); 
+            }
 
         }
 
