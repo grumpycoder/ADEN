@@ -1,6 +1,6 @@
 ﻿// submission.js
 $(function () {
-    console.log('submission ready'); 
+    console.log('submission ready');
     var $grid = $('#grid').dxDataGrid('instance');
 
     $(document).on('click', '[data-waiver]', function (e) {
@@ -8,22 +8,23 @@ $(function () {
         var btn = $(this);
         var id = btn.data('submission-id');
         
-
         window.$toggleWorkingButton(btn);
 
         $.ajax({
             url: '/api/reports/waiver/' + id,
             type: 'POST',
-            success: function (data) {
-                $log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
+        })
+            .done(function () {
                 $grid.refresh().done(function (e) { console.log('done', e) });
-            },
-            error: function (err) {
+                $log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
+            })
+            .fail(function (err) {
                 console.log('err', err);
-            }
-        }).always(function () {
-            window.$toggleWorkingButton(btn);
-        });
+                window.$log.error('Something went wrong: ' + err.responseJSON.message);
+            })
+            .always(function () {
+                window.$toggleWorkingButton(btn, 'off');
+            });;
     });
 
     $(document).on('click', '[data-start]', function (e) {
@@ -36,17 +37,18 @@ $(function () {
         $.ajax({
             url: '/api/reports/create/' + id,
             type: 'POST',
-            success: function (data) {
+        })
+            .done(function () {
                 $grid.refresh().done(function (e) { console.log('done', e) });
                 window.$log.success('Created assignment');
-            },
-            error: function (err) {
+            })
+            .fail(function (err) {
                 console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
-            }
-        }).always(function () {
-            window.$toggleWorkingButton(btn);
-        });
+            })
+            .always(function () {
+                window.$toggleWorkingButton(btn, 'off');
+            });;
     });
 
     $(document).on('click', '[data-history]', function (e) {

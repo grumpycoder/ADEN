@@ -7,7 +7,7 @@ window.onbeforeunload = function () {
     //$.LoadingOverlay("show", { image: '', fontawesome: 'fa fa-cog fa-spin' });
 };
 
-window.onBeforeSend = function() {
+window.onBeforeSend = function () {
 }
 
 window.onloadstart = function () {
@@ -15,14 +15,18 @@ window.onloadstart = function () {
 
 
 $(document).on('click', '[role="navigation"]', function (e) {
-    
+
 });
 
 window.$log = window.toastr;
 
-window.$toggleWorkingButton = function (button) {
-    button.LoadingOverlay('show',
-        { image: '', fontawesome: 'fa fa-cog fa-spin' });
+window.$toggleWorkingButton = function (button, status) {
+    if (status === 'off') {
+        button.LoadingOverlay('hide');
+    } else {
+        button.LoadingOverlay('show',
+            { image: '', fontawesome: 'fa fa-cog fa-spin' });
+    }
 }
 
 window.$showModalWorking = function () {

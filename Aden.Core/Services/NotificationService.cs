@@ -86,6 +86,7 @@ namespace Aden.Core.Services
 
             using (var client = new SmtpClient())
             {
+                //TODO: Replace with helpdesk email address and add notes to who to assign to
                 using (var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser))
                 {
                     message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());

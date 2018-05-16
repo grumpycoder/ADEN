@@ -33,7 +33,7 @@ namespace Aden.Web.Controllers
         {
             var isGlobalAdmin = User.IsInRole(globalAdministrators);
 
-            var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section").Value;
+            var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 
             var submissions = await uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);
 
