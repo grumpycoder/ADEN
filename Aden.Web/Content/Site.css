@@ -166,6 +166,9 @@ nav.navbar {
         height: 30px;
     }
 
+    .navbar-thin > a.navbar-brand    {
+        height:30px;
+    }
 
 /* Blue Navbar */
 .navbar.bg-blue {
@@ -330,3 +333,16 @@ nav.navbar {
             color: #55524f;
             background-color: #eee
         }
+
+@media (max-width: 767px) {
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+        color: #000;
+    }
+}
+
+@media (max-width: 767px) {
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #55524f;
+        background-color: #eee;
+    }
+}
