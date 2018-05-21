@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <AssemblyVersion>2018.5.21.6716</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,9 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ALSDE.Core.4, Version=4.0.0.0, Culture=neutral, PublicKeyToken=9c039b0383290564, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\ALSDE.Core.4.dll</HintPath>
+    <Reference Include="ALSDE.Core.4, Version=2018.5.21.6716, Culture=neutral, PublicKeyToken=9c039b0383290564, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.Core.4.2018.5.21.6716\lib\net40\ALSDE.Core.4.dll</HintPath>
     </Reference>
     <Reference Include="ALSDE.IdemLib, Version=16.624.59864.654, Culture=neutral, PublicKeyToken=fa4115e8724c5de1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -96,9 +96,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="bin\ALSDE.Core.4.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="bin\ALSDE.IdemLib.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

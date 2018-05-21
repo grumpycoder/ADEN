@@ -136,11 +136,11 @@ namespace Aden.Core.Models
             }
             catch (ArgumentNullException e)
             {
-                throw new Exception(e.Message);
+                throw new Exception(e.Message, e);
             }
             catch (Exception ex)
             {
-                throw new Exception($"{group} Group not defined or no members assigned. "); 
+                throw new Exception($"{group} Group not defined or no members assigned. ", ex); 
             }
 
         }

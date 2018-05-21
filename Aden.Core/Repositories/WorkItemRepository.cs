@@ -110,8 +110,6 @@ namespace Aden.Core.Repositories
 
         public string GetUserWithLeastAssignments(IEnumerable<string> members)
         {
-            //return "mlawrence@alsde.edu";
-
             var alreadyAssignedMembers = _context.WorkItems.AsNoTracking().Where(u => members.Contains(u.AssignedUser)).ToLookup(m => m.AssignedUser);
 
             var firstAvailableMember = members.FirstOrDefault(x => !alreadyAssignedMembers.Contains(x));
