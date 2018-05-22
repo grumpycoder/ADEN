@@ -24,7 +24,7 @@
     <UseGlobalApplicationHostFile />
     <ApplicationVersion>57.0.56.6636</ApplicationVersion>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2018.5.21.6716</AssemblyVersion>
+    <AssemblyVersion>2018.5.22.6717</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,8 +47,8 @@
     <Reference Include="Alsde.Entity, Version=2018.4.9.25674, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Entity.2018.4.3\lib\net451\Alsde.Entity.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Extensions, Version=2018.4.9.6677, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Extensions.2018.4.9.6677\lib\net451\Alsde.Extensions.dll</HintPath>
+    <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2018.4.17.6677, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.4.17.6677\lib\net451\Alsde.Security.dll</HintPath>
@@ -232,10 +232,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\AssemblyExtensions.cs" />
     <Compile Include="Helpers\BoolHtmlHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
-    <Compile Include="Helpers\StringExtension.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
