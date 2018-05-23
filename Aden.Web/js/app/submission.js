@@ -7,7 +7,7 @@ $(function () {
         e.preventDefault();
         var btn = $(this);
         var id = btn.data('submission-id');
-        
+
         window.$toggleWorkingButton(btn);
 
         $.ajax({
@@ -63,6 +63,74 @@ $(function () {
                     title: title,
                     body: data,
                     size: "lg"
+                });
+            },
+            error: function (err) {
+                console.log('err', err);
+                window.$log.error('Error showing history');
+            }
+        });
+
+    });
+
+    $(document).on('click', '[data-reassign]', function (e) {
+        e.preventDefault();
+        var id = $(this).data('workitem-id');
+        var url = $(this).attr('href') + '/' + id;
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                window.showBSModal({
+                    title: 'Reassign Task',
+                    body: data,
+                    size: "lg",
+                    actions: [
+                        {
+                            label: 'Cancel',
+                            cssClass: 'btn-default',
+                            onClick: function (e) {
+                                console.log('e', e);
+                                $(e.target).parents('.modal').modal('hide');
+                                $('body').removeClass('modal-open');
+                                //modal-open class is added on body so it has to be removed
+
+                                $('.modal-backdrop').remove();
+                                //need to remove div with modal-backdrop class
+                            }
+                        },
+                        {
+                            label: 'Save',
+                            cssClass: 'btn-primary',
+                            onClick: function (e) {
+                                var formData = $('form').serialize();
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/api/wi/reassign',
+                                    data: model = formData,
+                                }).done(function (data) {
+                                    console.log('data', data);
+                                    window.$log.success('Reassigned task');
+                                }).fail(function (err) {
+                                    console.log('error', error);
+                                    window.$log.error('Failed to reassign task. ' + error);
+                                }).always(function () {
+                                    console.log('always');
+                                    $('.modalContainer').html('');
+                                    $('.modal').modal('hide');
+                                    window.$hideModalWorking();
+                                });
+
+                                $(e.target).parents('.modal').modal('hide');
+                                $('body').removeClass('modal-open');
+                                //modal-open class is added on body so it has to be removed
+
+                                $('.modal-backdrop').remove();
+                                //need to remove div with modal-backdrop class
+                            }
+                        }
+                    ]
                 });
             },
             error: function (err) {

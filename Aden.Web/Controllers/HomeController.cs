@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -51,8 +52,24 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> WorkHistory(int reportId)
         {
+            var isAdministrator = ((ClaimsPrincipal)User).Claims.Where(c => c.Value.ToLower().Contains("administrator")).Count() > 0;
+            
+            ViewBag.IsSectionAdmin = isAdministrator; 
             var workItems = await uow.WorkItems.GetHistoryAsync(reportId);
             return PartialView("_WorkHistory", workItems);
+        }
+
+        public async Task<ActionResult> Reassign(int workItemId)
+        {
+            var workItem = await uow.WorkItems.GetByIdAsync(workItemId);
+            var model = new ReassignmentViewModel()
+            {
+                WorkItemId = workItem.Id,
+                AssignedUser = workItem.AssignedUser,
+                WorkItemAction = workItem.WorkItemAction.ToString()
+            }; 
+
+            return PartialView("_WorkItemReassignment", model);
         }
 
         public async Task<ActionResult> Document(int id)

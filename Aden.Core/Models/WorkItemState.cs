@@ -9,6 +9,8 @@ namespace Aden.Core.Models
         [Display(Name = "Cancelled")]
         Cancelled = 2,
         [Display(Name = "Complete")]
-        Completed = 3
+        Completed = 3,
+        [Display(Name = "Reassigned")]
+        Reassigned = 3
     }
 }

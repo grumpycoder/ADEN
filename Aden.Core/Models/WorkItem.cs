@@ -109,6 +109,16 @@ namespace Aden.Core.Models
             }
         }
 
+        public WorkItem Reassign(string assignedUser)
+        {
+            var wi = Create(WorkItemAction, assignedUser, true);
+            wi.Report = Report;
+            Report.AddWorkItem(wi);
+
+            WorkItemState = WorkItemState.Reassigned;
+
+            return wi;
+        }
 
         private WorkItem(WorkItemAction action, string assignee)
         {
@@ -118,18 +128,26 @@ namespace Aden.Core.Models
             WorkItemState = WorkItemState.NotStarted;
         }
 
-        public static WorkItem Create(WorkItemAction action, string group)
+        public static WorkItem Create(WorkItemAction action, string assignment, bool isIndividual = false)
         {
             try
             {
-                var groupMembers = GroupHelper.GetGroupMembers(group);
-
-                if (groupMembers == null) throw new Exception(string.Format("No group {0} defined or no members assigned", group));
-
-                var members = groupMembers.Select(m => m.EmailAddress).ToList();
-
                 var uow = new UnitOfWork(AdenContext.Create());
-                var assignee = uow.WorkItems.GetUserWithLeastAssignments(members);
+                var assignee = string.Empty;
+
+                if (isIndividual)
+                {
+                    assignee = assignment;
+                }
+                else
+                {
+                    var groupMembers = GroupHelper.GetGroupMembers(assignment);
+
+                    if (groupMembers == null) throw new Exception(string.Format("No group {0} defined or no members assigned", assignment));
+
+                    var members = groupMembers.Select(m => m.EmailAddress).ToList();
+                    assignee = uow.WorkItems.GetUserWithLeastAssignments(members);
+                }
 
                 var wi = new WorkItem(action, assignee);
                 return wi;
@@ -140,7 +158,11 @@ namespace Aden.Core.Models
             }
             catch (Exception ex)
             {
-                throw new Exception($"{group} Group not defined or no members assigned. ", ex); 
+                if (ex.InnerException.Message.Contains("Login failed"))
+                {
+                    throw new Exception($"User unable to connect to database. ", ex);
+                }
+                throw new Exception($"{assignment} Group not defined or no members assigned. ", ex);
             }
 
         }

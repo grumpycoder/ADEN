@@ -132,5 +132,19 @@ namespace Aden.Web.Controllers
             return Ok(vm);
         }
 
+
+        [HttpPost, Route("reassign")]
+        public async Task<object> Reassign([FromBody]ReassignmentViewModel model)
+        {
+            var wi = await uow.WorkItems.GetByIdAsync(model.WorkItemId);
+            if (wi == null) return NotFound();
+
+            wi = wi.Reassign(model.AssignedUser);
+
+            await uow.CompleteAsync();
+
+            return Ok(wi);
+        }
+
     }
 }

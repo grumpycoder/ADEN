@@ -40,7 +40,7 @@ namespace Aden.Web.Controllers
         [HttpPost, Route("create/{submissionid}")]
         public async Task<object> Create(int submissionid)
         {
-            var submission = await uow.Submissions.GetByIdAsync(submissionid);
+            var submission = uow.Submissions.GetById(submissionid);
 
             if (submission == null) return NotFound();
 

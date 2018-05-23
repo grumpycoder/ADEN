@@ -44,6 +44,12 @@ namespace Aden.Web
             );
 
             routes.MapRoute(
+              name: "WorkReassignmentActions",
+              url: "reassign/{workItemId}",
+              defaults: new { controller = "Home", action = "Reassign", workItemId = UrlParameter.Optional }
+          );
+
+            routes.MapRoute(
                 name: "EditFileSpecificationsActions",
                 url: "editfilespecification/{id}",
                 defaults: new { controller = "Home", action = "EditFileSpecification", Id = UrlParameter.Optional }

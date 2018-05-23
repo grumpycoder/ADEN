@@ -24,7 +24,7 @@
     <UseGlobalApplicationHostFile />
     <ApplicationVersion>57.0.56.6636</ApplicationVersion>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2018.5.22.6717</AssemblyVersion>
+    <AssemblyVersion>2018.5.23.6718</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -244,6 +244,7 @@
     <Compile Include="ViewModels\AssigmentsViewModel.cs" />
     <Compile Include="ViewModels\FileSpecificationEditViewModel.cs" />
     <Compile Include="ViewModels\FileSpecificationViewModel.cs" />
+    <Compile Include="ViewModels\ReassignmentViewModel.cs" />
     <Compile Include="ViewModels\ReportDocumentViewModel.cs" />
     <Compile Include="ViewModels\ReportViewModel.cs" />
     <Compile Include="ViewModels\SubmissionViewModel.cs" />
@@ -449,6 +450,7 @@
     <Content Include="Views\Shared\_StatusHeader.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Home\_ReportUploadForm.cshtml" />
+    <Content Include="Views\Home\_WorkItemReassignment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

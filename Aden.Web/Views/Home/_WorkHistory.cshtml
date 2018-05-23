@@ -6,6 +6,9 @@
 }
 else
 {
+    <pre>
+@ViewBag.IsSectionAdmin
+</pre>
     <table class="table table-bordered table-striped">
         <tr>
             <td>Action</td>
@@ -13,6 +16,7 @@ else
             <td>Completed Date</td>
             <td>Assigned User</td>
             <td>State</td>
+            <td></td>
         </tr>
         @foreach (var item in Model)
         {
@@ -23,6 +27,12 @@ else
                 <td>@item.CompletedDate</td>
                 <td>@item.AssignedUser</td>
                 <td>@item.WorkItemState.GetDisplayName()</td>
+                <td>
+                    @if (ViewBag.IsSectionAdmin && item.WorkItemState != WorkItemState.Completed)
+                    {
+                        <a href="@Url.Action("Reassign")" class="btn btn-default" data-reassign data-workitem-id="@item.Id">Reassign</a>
+                    }
+                </td>
             </tr>
         }
     </table>

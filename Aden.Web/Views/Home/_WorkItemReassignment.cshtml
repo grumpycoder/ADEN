@@ -1,0 +1,18 @@
+﻿@model ReassignmentViewModel
+
+<form id="reassignForm" name="reassignForm" role="form">
+    @Html.HiddenFor(m => m.WorkItemId)
+
+    <dl>
+        <dt>Current Assignment</dt>
+        <dd>@Model.AssignedUser</dd>
+
+        <dt>Current Action</dt>
+        <dd>@Model.WorkItemAction</dd>
+    </dl>
+
+    <div>
+        <label class="control-label" for="assignedUser">Reassign To</label>
+        <input type="text" name="assignedUser" class="form-control" value="@Model.AssignedUser" />
+    </div>
+</form>

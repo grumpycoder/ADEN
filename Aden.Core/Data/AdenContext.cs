@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data.Entity;
 using System.Diagnostics;
 using Aden.Core.Data.EntityConfigurations;
@@ -11,13 +12,15 @@ namespace Aden.Core.Data
         public AdenContext()
             : base("AdenContext")
         {
-            Database.Log = msg => Debug.WriteLine(msg);
+            //Database.Log = msg => Debug.WriteLine(msg);
             Database.SetInitializer<AdenContext>(null);
         }
 
         public static AdenContext Create()
         {
-            return new AdenContext();
+            var context = new AdenContext();
+            context.Database.Connection.ConnectionString = ConfigurationManager.ConnectionStrings["AdenContext"].ConnectionString;
+            return context;
         }
 
         public DbSet<Report> Reports { get; set; }
