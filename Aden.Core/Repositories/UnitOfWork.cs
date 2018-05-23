@@ -9,7 +9,7 @@ using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private readonly AdenContext _context;
         public FileSpecificationRepository FileSpecifications { get; set; }
