@@ -6,7 +6,7 @@ namespace Aden.Core.Repositories
     {
         DocumentRepository Documents { get; set; }
         IFileSpecificationRepository FileSpecifications { get; set; }
-        ReportRepository Reports { get; set; }
+        IReportRepository Reports { get; set; }
         SubmissionRepository Submissions { get; set; }
         WorkItemRepository WorkItems { get; set; }
 

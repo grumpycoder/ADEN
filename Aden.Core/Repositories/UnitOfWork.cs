@@ -13,16 +13,16 @@ namespace Aden.Core.Repositories
     {
         private readonly AdenContext _context;
         public IFileSpecificationRepository FileSpecifications { get; set; }
-        public ReportRepository Reports { get; set; }
+        public IReportRepository Reports { get; set; }
         public WorkItemRepository WorkItems { get; set; }
         public DocumentRepository Documents { get; set; }
         public SubmissionRepository Submissions { get; set; }
 
-        public UnitOfWork(AdenContext context, IFileSpecificationRepository fileSpecificationRepository)
+        public UnitOfWork(AdenContext context, IFileSpecificationRepository fileSpecificationRepository, IReportRepository reportRepository)
         {
             _context = context;
             FileSpecifications = fileSpecificationRepository;
-            Reports = new ReportRepository(context);
+            Reports = reportRepository;
             WorkItems = new WorkItemRepository(context);
             Documents = new DocumentRepository(context);
             Submissions = new SubmissionRepository(context);
