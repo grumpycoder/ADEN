@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Aden.Core.Repositories;
+using Aden.Web.ViewModels;
+using AutoMapper;
+using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Mvc;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Aden.Core.Data;
-using Aden.Core.Models;
-using Aden.Core.Repositories;
-using Aden.Web.ViewModels;
-using AutoMapper;
-using DevExtreme.AspNet.Data;
-using DevExtreme.AspNet.Mvc;
 
 namespace Aden.Web.Controllers
 {
