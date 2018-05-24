@@ -1,12 +1,11 @@
-﻿using Aden.Core.Repositories;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Aden.Core.Repositories
 {
     public interface IUnitOfWork
     {
         DocumentRepository Documents { get; set; }
-        FileSpecificationRepository FileSpecifications { get; set; }
+        IFileSpecificationRepository FileSpecifications { get; set; }
         ReportRepository Reports { get; set; }
         SubmissionRepository Submissions { get; set; }
         WorkItemRepository WorkItems { get; set; }

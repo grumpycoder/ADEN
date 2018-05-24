@@ -1,27 +1,27 @@
-﻿using System.Data;
+﻿using Aden.Core.Data;
+using Aden.Core.Helpers;
+using Aden.Core.Models;
+using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Aden.Core.Data;
-using Aden.Core.Helpers;
-using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AdenContext _context;
-        public FileSpecificationRepository FileSpecifications { get; set; }
+        public IFileSpecificationRepository FileSpecifications { get; set; }
         public ReportRepository Reports { get; set; }
         public WorkItemRepository WorkItems { get; set; }
         public DocumentRepository Documents { get; set; }
         public SubmissionRepository Submissions { get; set; }
 
-        public UnitOfWork(AdenContext context)
+        public UnitOfWork(AdenContext context, IFileSpecificationRepository fileSpecificationRepository)
         {
             _context = context;
-            FileSpecifications = new FileSpecificationRepository(context);
+            FileSpecifications = fileSpecificationRepository;
             Reports = new ReportRepository(context);
             WorkItems = new WorkItemRepository(context);
             Documents = new DocumentRepository(context);

@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Aden.Core.Repositories;
+using ALSDE.Idem;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Aden.Core.Data;
-using Aden.Core.Repositories;
-using ALSDE.Idem;
 
 namespace Aden.Core.Models
 {
@@ -49,8 +48,10 @@ namespace Aden.Core.Models
 
 
 
-        private WorkItem()
+        private static IUnitOfWork _uow;
+        private WorkItem(IUnitOfWork uow)
         {
+            _uow = uow;
         }
 
         public void Complete()
@@ -116,7 +117,7 @@ namespace Aden.Core.Models
         //    Report.AddWorkItem(wi);
 
         //    WorkItemState = WorkItemState.Reassigned;
-            
+
         //    return wi;
         //}
 
@@ -132,7 +133,7 @@ namespace Aden.Core.Models
         {
             try
             {
-                var uow = new UnitOfWork(AdenContext.Create());
+
                 var assignee = string.Empty;
 
                 if (isIndividual)
@@ -146,7 +147,8 @@ namespace Aden.Core.Models
                     if (groupMembers == null) throw new Exception(string.Format("No group {0} defined or no members assigned", assignment));
 
                     var members = groupMembers.Select(m => m.EmailAddress).ToList();
-                    assignee = uow.WorkItems.GetUserWithLeastAssignments(members);
+                    //TODO: This doesn't belong here. Coupled to data source. Should not reference uow
+                    assignee = _uow.WorkItems.GetUserWithLeastAssignments(members);
                 }
 
                 var wi = new WorkItem(action, assignee);
