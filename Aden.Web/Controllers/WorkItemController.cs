@@ -136,10 +136,10 @@ namespace Aden.Web.Controllers
         [HttpPost, Route("reassign")]
         public async Task<object> Reassign([FromBody]ReassignmentViewModel model)
         {
-            var wi = await uow.WorkItems.GetByIdAsync(model.WorkItemId);
-            if (wi == null) return NotFound();
+            var workItem = await uow.WorkItems.GetByIdAsync(model.WorkItemId);
+            if (workItem == null) return NotFound();
 
-            wi = wi.Reassign(model.AssignedUser);
+            var wi = workItem.Report.ReassignWorkItem(workItem, model.AssignedUser);
 
             await uow.CompleteAsync();
 

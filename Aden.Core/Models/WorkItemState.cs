@@ -11,6 +11,6 @@ namespace Aden.Core.Models
         [Display(Name = "Complete")]
         Completed = 3,
         [Display(Name = "Reassigned")]
-        Reassigned = 3
+        Reassigned = 4
     }
 }

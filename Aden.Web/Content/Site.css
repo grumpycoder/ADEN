@@ -128,7 +128,7 @@ header .lead {
 }
 
 
-/*Bootstrap Overrides*/
+/* Bootstrap Overrides */
 
 * {
     -ms-border-radius: 0 !important;
@@ -169,6 +169,9 @@ nav.navbar {
     .navbar-thin > a.navbar-brand    {
         height:30px;
     }
+
+
+/* End Bootstrap Overrides */ 
 
 /* Blue Navbar */
 .navbar.bg-blue {

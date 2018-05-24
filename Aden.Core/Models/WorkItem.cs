@@ -109,16 +109,16 @@ namespace Aden.Core.Models
             }
         }
 
-        public WorkItem Reassign(string assignedUser)
-        {
-            var wi = Create(WorkItemAction, assignedUser, true);
-            wi.Report = Report;
-            Report.AddWorkItem(wi);
+        //public WorkItem Reassign(string assignedUser)
+        //{
+        //    var wi = Create(WorkItemAction, assignedUser, true);
+        //    wi.Report = Report;
+        //    Report.AddWorkItem(wi);
 
-            WorkItemState = WorkItemState.Reassigned;
-
-            return wi;
-        }
+        //    WorkItemState = WorkItemState.Reassigned;
+            
+        //    return wi;
+        //}
 
         private WorkItem(WorkItemAction action, string assignee)
         {

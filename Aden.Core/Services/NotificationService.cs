@@ -19,7 +19,7 @@ namespace Aden.Core.Services
             try
             {
                 var client = new SmtpClient();
-                var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser);
+                var message = new MailMessage("noreply@alsde.edu", workItem.AssignedUser);
                 message.Subject = string.Format("{0} {1} Assigned", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
                 var bodyText = string.Format("You have been assigned a {0} task for {1} to be completed by {2}", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName, workItem.Report.Submission.DueDate);
 
@@ -37,10 +37,32 @@ namespace Aden.Core.Services
         public static void SendCancelWorkNotification(WorkItem workItem)
         {
             var client = new SmtpClient();
-            var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser);
+            var message = new MailMessage("noreply@alsde.edu", workItem.AssignedUser);
 
             message.Subject = string.Format("{0} {1} Assignment cancelled", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
             var bodyText = string.Format("You're assignment of {0} task for {1} has been cancelled", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName);
+
+            message.Body = bodyText;
+
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception e)
+            {
+                //TODO: Log sending error and queue message
+                Debug.WriteLine("Error sending email message", e);
+            }
+
+        }
+
+        public static void SendReassignmentWorkNotification(WorkItem workItem)
+        {
+            var client = new SmtpClient();
+            var message = new MailMessage("noreply@alsde.edu", workItem.AssignedUser);
+
+            message.Subject = string.Format("{0} {1} Assignment reassingned", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
+            var bodyText = string.Format("You're assignment of {0} task for {1} has been ressigned", workItem.WorkItemAction.GetDisplayName(), workItem.Report.Submission.FileSpecification.FileName);
 
             message.Body = bodyText;
 
@@ -60,7 +82,7 @@ namespace Aden.Core.Services
         {
             using (var client = new SmtpClient())
             {
-                using (var message = new MailMessage("noreplay@alsde.edu", workItem.AssignedUser))
+                using (var message = new MailMessage("noreply@alsde.edu", workItem.AssignedUser))
                 {
                     message.Subject = string.Format("{0} {1} Submission Error", workItem.Report.Submission.FileSpecification.FileName, workItem.WorkItemAction.GetDisplayName());
                     var bodyText = string.Format("{0} submission has generated an error. {1}", workItem.Report.Submission.FileSpecification.FileName, Environment.NewLine);

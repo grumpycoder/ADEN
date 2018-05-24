@@ -17,15 +17,21 @@ namespace Aden.Web.Controllers
     [RoutePrefix("api/submissions")]
     public class SubmissionsController : ApiController
     {
-        private readonly UnitOfWork uow;
+        private readonly IUnitOfWork uow;
 
         private readonly string globalAdministrators =
             ConfigurationManager.AppSettings["GlobalAdministratorsGroupName"];
 
         public SubmissionsController()
         {
-            var context = AdenContext.Create();
-            uow = new UnitOfWork(context);
+            uow = new UnitOfWork(AdenContext.Create());
+        }
+
+        public SubmissionsController(IUnitOfWork unitOfWork)
+        {
+            //var context = AdenContext.Create();
+            uow = new UnitOfWork(AdenContext.Create());
+            //uow = unitOfWork; 
         }
 
         [HttpGet, Route("all")]

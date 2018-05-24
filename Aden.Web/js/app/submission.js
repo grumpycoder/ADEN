@@ -62,7 +62,7 @@ $(function () {
                 window.showBSModal({
                     title: title,
                     body: data,
-                    size: "lg"
+                    size: "large"
                 });
             },
             error: function (err) {

@@ -6,9 +6,6 @@
 }
 else
 {
-    <pre>
-@ViewBag.IsSectionAdmin
-</pre>
     <table class="table table-bordered table-striped">
         <tr>
             <td>Action</td>
@@ -23,12 +20,12 @@ else
             <tr>
 
                 <td>@item.WorkItemAction.GetDisplayName()</td>
-                <td>@item.AssignedDate</td>
+                <td>@item.AssignedDate.ToString("MM/dd/yyyy hh:mm AA")</td>
                 <td>@item.CompletedDate</td>
                 <td>@item.AssignedUser</td>
                 <td>@item.WorkItemState.GetDisplayName()</td>
                 <td>
-                    @if (ViewBag.IsSectionAdmin && item.WorkItemState != WorkItemState.Completed)
+                    @if (ViewBag.IsSectionAdmin && item.WorkItemState == WorkItemState.NotStarted)
                     {
                         <a href="@Url.Action("Reassign")" class="btn btn-default" data-reassign data-workitem-id="@item.Id">Reassign</a>
                     }

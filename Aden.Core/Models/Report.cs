@@ -49,6 +49,19 @@ namespace Aden.Core.Models
             NotificationService.SendWorkNotification(workItem);
         }
 
+        public WorkItem ReassignWorkItem(WorkItem workItem, string assignee)
+        {
+
+            var wi = WorkItem.Create(workItem.WorkItemAction, assignee, true);
+            AddWorkItem(wi);
+            
+
+            workItem.WorkItemState = WorkItemState.Reassigned;
+
+            NotificationService.SendReassignmentWorkNotification(workItem);
+            return wi;
+        }
+
         public void CreateDocument(byte[] file, ReportLevel reportLevel)
         {
             var version = 0;
