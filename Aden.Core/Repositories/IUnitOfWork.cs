@@ -4,7 +4,7 @@ namespace Aden.Core.Repositories
 {
     public interface IUnitOfWork
     {
-        DocumentRepository Documents { get; set; }
+        IDocumentRepository Documents { get; set; }
         IFileSpecificationRepository FileSpecifications { get; set; }
         IReportRepository Reports { get; set; }
         ISubmissionRepository Submissions { get; set; }

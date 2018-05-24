@@ -7,7 +7,7 @@ using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
-    public class DocumentRepository
+    public class DocumentRepository : IDocumentRepository
     {
         private readonly AdenContext _context;
 
