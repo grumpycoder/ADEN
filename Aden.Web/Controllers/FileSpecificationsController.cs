@@ -1,29 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web.Http;
-using Aden.Core.Data;
-using Aden.Core.Repositories;
+﻿using Aden.Core.Repositories;
 using Aden.Web.ViewModels;
 using AutoMapper;
 using DevExtreme.AspNet.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace Aden.Web.Controllers
 {
     [RoutePrefix("api/filespecifications")]
     public class FileSpecificationsController : ApiController
     {
-        private readonly UnitOfWork uow;
+        private readonly IUnitOfWork _uow;
 
-        public FileSpecificationsController()
+        public FileSpecificationsController(IUnitOfWork uow)
         {
-            var context = AdenContext.Create();
-            uow = new UnitOfWork(context);
+            _uow = uow;
         }
 
         [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            var specs = await uow.FileSpecifications.GetAllAsync();
+            var specs = await _uow.FileSpecifications.GetAllAsync();
             var vm = Mapper.Map<List<FileSpecificationViewModel>>(specs);
             return Ok(vm);
         }
@@ -31,15 +29,15 @@ namespace Aden.Web.Controllers
         [HttpPost, Route("retire/{id}")]
         public async Task<object> Retire(int id)
         {
-            var spec = await uow.FileSpecifications.GetByIdAsync(id);
+            var spec = await _uow.FileSpecifications.GetByIdAsync(id);
 
             if (spec == null) return NotFound();
 
             spec.Retire();
 
-            uow.Submissions.Delete(spec.Id);
+            _uow.Submissions.Delete(spec.Id);
 
-            await uow.CompleteAsync();
+            await _uow.CompleteAsync();
 
             return Ok(spec);
         }
@@ -47,13 +45,13 @@ namespace Aden.Web.Controllers
         [HttpPost, Route("activate/{id}")]
         public async Task<object> Activate(int id)
         {
-            var spec = await uow.FileSpecifications.GetByIdAsync(id);
+            var spec = await _uow.FileSpecifications.GetByIdAsync(id);
 
             if (spec == null) return NotFound();
 
             spec.Activate();
 
-            await uow.CompleteAsync();
+            await _uow.CompleteAsync();
 
             return Ok(spec);
         }
@@ -66,11 +64,11 @@ namespace Aden.Web.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var spec = uow.FileSpecifications.GetById(model.Id);
+            var spec = _uow.FileSpecifications.GetById(model.Id);
 
             Mapper.Map(model, spec);
 
-            uow.Complete();
+            _uow.Complete();
 
             return Ok(model);
         }
