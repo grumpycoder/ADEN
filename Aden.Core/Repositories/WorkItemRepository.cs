@@ -7,7 +7,7 @@ using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
-    public class WorkItemRepository
+    public class WorkItemRepository : IWorkItemRepository
     {
         private readonly AdenContext _context;
 

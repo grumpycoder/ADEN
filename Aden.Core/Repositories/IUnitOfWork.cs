@@ -7,8 +7,8 @@ namespace Aden.Core.Repositories
         DocumentRepository Documents { get; set; }
         IFileSpecificationRepository FileSpecifications { get; set; }
         IReportRepository Reports { get; set; }
-        SubmissionRepository Submissions { get; set; }
-        WorkItemRepository WorkItems { get; set; }
+        ISubmissionRepository Submissions { get; set; }
+        IWorkItemRepository WorkItems { get; set; }
 
         void Complete();
         Task CompleteAsync();

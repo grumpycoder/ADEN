@@ -8,7 +8,7 @@ using Z.EntityFramework.Plus;
 
 namespace Aden.Core.Repositories
 {
-    public class SubmissionRepository
+    public class SubmissionRepository : ISubmissionRepository
     {
         private readonly AdenContext _context;
 

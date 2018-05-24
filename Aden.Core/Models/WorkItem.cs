@@ -54,6 +54,11 @@ namespace Aden.Core.Models
             _uow = uow;
         }
 
+        private WorkItem()
+        {
+
+        }
+
         public void Complete()
         {
             CompletedDate = DateTime.Now;

@@ -66,6 +66,8 @@ namespace Aden.Web.App_Start
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             kernel.Bind<IFileSpecificationRepository>().To<FileSpecificationRepository>();
             kernel.Bind<IReportRepository>().To<ReportRepository>();
+            kernel.Bind<ISubmissionRepository>().To<SubmissionRepository>();
+            kernel.Bind<IWorkItemRepository>().To<WorkItemRepository>();
 
         }
     }

@@ -86,7 +86,9 @@
     <Compile Include="Repositories\FileSpecificationRepository.cs" />
     <Compile Include="Repositories\IFileSpecificationRepository.cs" />
     <Compile Include="Repositories\IReportRepository.cs" />
+    <Compile Include="Repositories\ISubmissionRepository.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
+    <Compile Include="Repositories\IWorkItemRepository.cs" />
     <Compile Include="Repositories\OperationResult.cs" />
     <Compile Include="Repositories\ReportRepository.cs" />
     <Compile Include="Repositories\SubmissionRepository.cs" />
