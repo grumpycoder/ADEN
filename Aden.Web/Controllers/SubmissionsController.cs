@@ -17,21 +17,14 @@ namespace Aden.Web.Controllers
     [RoutePrefix("api/submissions")]
     public class SubmissionsController : ApiController
     {
-        private readonly IUnitOfWork uow;
+        private readonly IUnitOfWork _uow;
 
         private readonly string globalAdministrators =
             ConfigurationManager.AppSettings["GlobalAdministratorsGroupName"];
 
-        public SubmissionsController()
+        public SubmissionsController(IUnitOfWork uow)
         {
-            uow = new UnitOfWork(AdenContext.Create());
-        }
-
-        public SubmissionsController(IUnitOfWork unitOfWork)
-        {
-            //var context = AdenContext.Create();
-            uow = new UnitOfWork(AdenContext.Create());
-            //uow = unitOfWork; 
+            _uow = uow;
         }
 
         [HttpGet, Route("all")]
@@ -41,7 +34,7 @@ namespace Aden.Web.Controllers
 
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 
-            var submissions = await uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);
+            var submissions = await _uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);
 
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
 
@@ -53,8 +46,8 @@ namespace Aden.Web.Controllers
         public async Task<object> Get(string search = null, string order = null, int offset = 0, int limit = 10)
         {
 
-            var submissions = await uow.Submissions.GetWithReportsPagedAsync(search, order, offset, limit);
-            var totalRows = await uow.Submissions.GetWithReportsPagedAsync(search);
+            var submissions = await _uow.Submissions.GetWithReportsPagedAsync(search, order, offset, limit);
+            var totalRows = await _uow.Submissions.GetWithReportsPagedAsync(search);
 
             var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
             var vm = new
