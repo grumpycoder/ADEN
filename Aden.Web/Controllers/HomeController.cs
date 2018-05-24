@@ -1,28 +1,26 @@
-﻿using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Aden.Core.Data;
-using Aden.Core.Models;
+﻿using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
 using AutoMapper;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Aden.Web.Controllers
 {
     [Authorize]
     public class HomeController : AsyncController
     {
-        private readonly UnitOfWork uow;
+        private readonly IUnitOfWork _uow;
 
-        public HomeController()
+        public HomeController(IUnitOfWork uow)
         {
-            var context = AdenContext.Create();
-            uow = new UnitOfWork(context);
+            _uow = uow;
         }
         //TODO: Remove hardcoded roles, these will change 
         [TrackViewName]
@@ -53,40 +51,40 @@ namespace Aden.Web.Controllers
         public async Task<ActionResult> WorkHistory(int reportId)
         {
             var isAdministrator = ((ClaimsPrincipal)User).Claims.Where(c => c.Value.ToLower().Contains("administrator")).Count() > 0;
-            
-            ViewBag.IsSectionAdmin = isAdministrator; 
-            var workItems = await uow.WorkItems.GetHistoryAsync(reportId);
+
+            ViewBag.IsSectionAdmin = isAdministrator;
+            var workItems = await _uow.WorkItems.GetHistoryAsync(reportId);
             return PartialView("_WorkHistory", workItems);
         }
 
         public async Task<ActionResult> Reassign(int workItemId)
         {
-            var workItem = await uow.WorkItems.GetByIdAsync(workItemId);
+            var workItem = await _uow.WorkItems.GetByIdAsync(workItemId);
             var model = new ReassignmentViewModel()
             {
                 WorkItemId = workItem.Id,
                 AssignedUser = workItem.AssignedUser,
                 WorkItemAction = workItem.WorkItemAction.ToString()
-            }; 
+            };
 
             return PartialView("_WorkItemReassignment", model);
         }
 
         public async Task<ActionResult> Document(int id)
         {
-            var document = await uow.Documents.GetByIdAsync(id);
+            var document = await _uow.Documents.GetByIdAsync(id);
             return PartialView(document);
         }
 
         public async Task<FileResult> Download(int id)
         {
-            var document = await uow.Documents.GetByIdAsync(id);
+            var document = await _uow.Documents.GetByIdAsync(id);
             return File(document.FileData, System.Net.Mime.MediaTypeNames.Application.Octet, document.Filename);
         }
 
         public ActionResult EditFileSpecification(int id)
         {
-            var spec = uow.FileSpecifications.GetById(id);
+            var spec = _uow.FileSpecifications.GetById(id);
 
             var model = Mapper.Map<FileSpecificationEditViewModel>(spec);
             return PartialView("_FileSpecificationForm", model);
@@ -100,10 +98,10 @@ namespace Aden.Web.Controllers
             {
                 return PartialView("_FileSpecificationForm", model);
             }
-            var spec = await uow.FileSpecifications.GetByIdAsync(model.Id);
+            var spec = await _uow.FileSpecifications.GetByIdAsync(model.Id);
 
             Mapper.Map(model, spec);
-            await uow.CompleteAsync();
+            await _uow.CompleteAsync();
 
             return Content("success");
 
@@ -111,7 +109,7 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> UploadErrorReport(int id)
         {
-            var wi = await uow.WorkItems.GetByIdAsync(id);
+            var wi = await _uow.WorkItems.GetByIdAsync(id);
 
             var model = Mapper.Map<WorkItemViewModel>(wi);
             return PartialView("_WorkItemForm", model);
@@ -126,12 +124,12 @@ namespace Aden.Web.Controllers
                 return PartialView("_WorkItemForm", model);
             }
             //TODO: Refactor this to webapi controller
-            var wi = await uow.WorkItems.GetByIdAsync(model.Id);
+            var wi = await _uow.WorkItems.GetByIdAsync(model.Id);
             wi.Notes = model.Notes;
             wi.SetAction(WorkItemAction.SubmitWithError);
 
             wi.Complete();
-            await uow.CompleteAsync();
+            await _uow.CompleteAsync();
 
             var next = wi.Report.WorkItems.LastOrDefault();
 
@@ -160,7 +158,7 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> UploadReport(int id)
         {
-            var wi = await uow.WorkItems.GetByIdAsync(id);
+            var wi = await _uow.WorkItems.GetByIdAsync(id);
 
             var model = Mapper.Map<ReportUploadViewModel>(wi);
             return PartialView("_ReportUploadForm", model);
@@ -175,7 +173,7 @@ namespace Aden.Web.Controllers
                 return PartialView("_ReportUploadForm", model);
             }
             //TODO: Refactor this to webapi controller
-            var wi = await uow.WorkItems.GetByIdAsync(model.Id);
+            var wi = await _uow.WorkItems.GetByIdAsync(model.Id);
 
             foreach (var f in files)
             {
@@ -186,7 +184,7 @@ namespace Aden.Web.Controllers
                 if (f.FileName.ToLower().Contains("LEA")) reportLevel = ReportLevel.LEA;
                 if (f.FileName.ToLower().Contains("SEA")) reportLevel = ReportLevel.SEA;
 
-                var version = await uow.Documents.GetNextAvailableVersion(wi.Report.SubmissionId, reportLevel);
+                var version = await _uow.Documents.GetNextAvailableVersion(wi.Report.SubmissionId, reportLevel);
 
                 BinaryReader br = new BinaryReader(f.InputStream);
                 byte[] data = br.ReadBytes((f.ContentLength));
@@ -196,7 +194,7 @@ namespace Aden.Web.Controllers
             }
 
             wi.Complete();
-            await uow.CompleteAsync();
+            await _uow.CompleteAsync();
 
             return Content("success");
         }
