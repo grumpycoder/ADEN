@@ -30,7 +30,7 @@ namespace Aden.Core.Repositories
             Documents = documentRepository;
         }
 
-
+        //TODO: This is a hack because of architecture of workitem class create method
         public UnitOfWork()
         {
             _context = new AdenContext();

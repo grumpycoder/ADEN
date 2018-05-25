@@ -56,7 +56,7 @@ namespace Aden.Core.Models
 
         private WorkItem()
         {
-
+            if (_uow == null) _uow = new UnitOfWork();
         }
 
         public void Complete()
@@ -129,25 +129,23 @@ namespace Aden.Core.Models
             {
 
                 var assignee = string.Empty;
+                var members = new List<string>();
 
-                if (isIndividual)
-                {
-                    assignee = assignment;
-                }
-                else
+                if (isIndividual) assignee = assignment;
+                if (!isIndividual)
                 {
                     var groupMembers = GroupHelper.GetGroupMembers(assignment);
 
                     if (groupMembers == null) throw new Exception(string.Format("No group {0} defined or no members assigned", assignment));
 
-                    var members = groupMembers.Select(m => m.EmailAddress).ToList();
-                    //TODO: This doesn't belong here. Coupled to data source. Should not reference uow
-                    if(_uow == null)
-                    {
-                        _uow = new UnitOfWork();
-                    }
-                    assignee = _uow.WorkItems.GetUserWithLeastAssignments(members);
+                    members = groupMembers.Select(m => m.EmailAddress).ToList();
                 }
+
+                var workItem = new WorkItem();
+
+                //TODO: This doesn't belong here. Coupled to data source. Should not reference uow or group helper
+
+                assignee = isIndividual ? assignee : _uow.WorkItems.GetUserWithLeastAssignments(members);
 
                 var wi = new WorkItem(action, assignee);
                 return wi;
