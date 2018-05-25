@@ -30,6 +30,17 @@ namespace Aden.Core.Repositories
             Documents = documentRepository;
         }
 
+
+        public UnitOfWork()
+        {
+            _context = new AdenContext();
+            FileSpecifications = new FileSpecificationRepository(_context);
+            Reports = new ReportRepository(_context);
+            Submissions = new SubmissionRepository(_context);
+            WorkItems = new WorkItemRepository(_context);
+            Documents = new DocumentRepository(_context);
+        }
+
         public async Task<OperationResult> GenerateDocumentsAsync(int reportId)
         {
             var report = await _context.Reports.Include(r => r.Submission).Include(r => r.Documents).SingleOrDefaultAsync(r => r.Id == reportId);

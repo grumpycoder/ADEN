@@ -115,17 +115,6 @@ namespace Aden.Core.Models
             }
         }
 
-        //public WorkItem Reassign(string assignedUser)
-        //{
-        //    var wi = Create(WorkItemAction, assignedUser, true);
-        //    wi.Report = Report;
-        //    Report.AddWorkItem(wi);
-
-        //    WorkItemState = WorkItemState.Reassigned;
-
-        //    return wi;
-        //}
-
         private WorkItem(WorkItemAction action, string assignee)
         {
             WorkItemAction = action;
@@ -153,6 +142,10 @@ namespace Aden.Core.Models
 
                     var members = groupMembers.Select(m => m.EmailAddress).ToList();
                     //TODO: This doesn't belong here. Coupled to data source. Should not reference uow
+                    if(_uow == null)
+                    {
+                        _uow = new UnitOfWork();
+                    }
                     assignee = _uow.WorkItems.GetUserWithLeastAssignments(members);
                 }
 
