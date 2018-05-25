@@ -11,6 +11,7 @@ namespace Aden.Web.App_Start
     using Ninject.Web.Common.WebHost;
     using System;
     using System.Web;
+    using WebApiContrib.IoC.Ninject;
 
     public static class NinjectWebCommon
     {
@@ -47,6 +48,9 @@ namespace Aden.Web.App_Start
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
                 RegisterServices(kernel);
+
+                System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
+
                 return kernel;
             }
             catch
