@@ -1,4 +1,5 @@
-﻿using Aden.Core.Models;
+﻿using Aden.Core.Dtos;
+using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
 using Aden.Web.Filters;
@@ -86,13 +87,13 @@ namespace Aden.Web.Controllers
         {
             var spec = _uow.FileSpecifications.GetById(id);
 
-            var model = Mapper.Map<FileSpecificationEditViewModel>(spec);
+            var model = Mapper.Map<FileSpecificationDto>(spec);
             return PartialView("_FileSpecificationForm", model);
 
         }
 
         [HttpPost]
-        public async Task<ActionResult> SaveSpecification(FileSpecificationEditViewModel model)
+        public async Task<ActionResult> Update(FileSpecificationDto model)
         {
             if (!ModelState.IsValid)
             {

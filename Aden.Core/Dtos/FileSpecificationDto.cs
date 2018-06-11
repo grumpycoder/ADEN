@@ -28,7 +28,7 @@ namespace Aden.Core.Dtos
         public string SubmissionUserGroup { get; set; }
         public void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap<FileSpecification, FileSpecificationDto>();
+            configuration.CreateMap<FileSpecification, FileSpecificationDto>().ReverseMap();
         }
     }
 }

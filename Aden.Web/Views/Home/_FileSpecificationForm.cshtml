@@ -1,4 +1,4 @@
-﻿@model FileSpecificationEditViewModel
+﻿@model FileSpecificationDto
 <style>
     /* BEGIN: Check box in Button Styles */
     .checkbox .btn,
@@ -18,7 +18,7 @@
     /* END: Check box in Button Styles */
 </style>
 <div id="specificationUpdateForm">
-    @using (Ajax.BeginForm("SaveSpecification", "Home", null,
+    @using (Ajax.BeginForm("Update", "Home", null,
         new AjaxOptions { UpdateTargetId = "specificationUpdateForm", HttpMethod = "Post", InsertionMode = InsertionMode.Replace, OnComplete = "OnSpecificationUpdateFormComplete" },
         new { role = "form" }))
     {
