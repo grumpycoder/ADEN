@@ -25,7 +25,7 @@ $(function () {
         
         $.ajax({
             type: "POST",
-            url: '/SaveErrorReport',
+            url: '/ErrorReport',
             data: formData,
             contentType: false,
             processData: false,
@@ -181,7 +181,7 @@ function createAssignmentsGridActionButtons(container, options) {
     //Show Error opton link if work item in Submit mode
     if (action === 'Submit') {
         lnk +=
-            '<a href="/UploadErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Errors</a>&nbsp;';
+            '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Errors</a>&nbsp;';
     }
     //Show Report Link if already documents generated 
     if (action !== 'Generate') {

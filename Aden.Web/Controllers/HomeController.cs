@@ -108,16 +108,16 @@ namespace Aden.Web.Controllers
 
         }
 
-        public async Task<ActionResult> UploadErrorReport(int id)
+        public async Task<ActionResult> ErrorReport(int id)
         {
             var wi = await _uow.WorkItems.GetByIdAsync(id);
 
-            var model = Mapper.Map<WorkItemViewModel>(wi);
+            var model = Mapper.Map<WorkItemDto>(wi);
             return PartialView("_WorkItemForm", model);
         }
 
         [HttpPost]
-        public async Task<ActionResult> SaveErrorReport(WorkItemViewModel model, HttpPostedFileBase[] files)
+        public async Task<ActionResult> ErrorReport(WorkItemDto model, HttpPostedFileBase[] files)
         {
             //TODO: Cleanup SaveWorkItem method
             if (!ModelState.IsValid)

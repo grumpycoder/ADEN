@@ -11,7 +11,7 @@ namespace Aden.Web
 
             routes.LowercaseUrls = true;
 
-            routes.MapRoute("HomeActions", "{action}", new { controller = "Home"});
+            routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
 
             routes.MapRoute(
                 name: "ReportActionsByYear",
@@ -63,8 +63,8 @@ namespace Aden.Web
 
             routes.MapRoute(
                 name: "UploadErrorReportActions",
-                url: "uploaderrorreport/{id}",
-                defaults: new { controller = "Home", action = "UploadErrorReport", Id = UrlParameter.Optional }
+                url: "errorreport/{id}",
+                defaults: new { controller = "Home", action = "ErrorReport", Id = UrlParameter.Optional }
             );
 
             routes.MapRoute(
