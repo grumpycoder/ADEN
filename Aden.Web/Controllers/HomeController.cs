@@ -161,7 +161,7 @@ namespace Aden.Web.Controllers
         {
             var wi = await _uow.WorkItems.GetByIdAsync(id);
 
-            var model = Mapper.Map<ReportUploadViewModel>(wi);
+            var model = Mapper.Map<ReportUploadDto>(wi);
             return PartialView("_ReportUploadForm", model);
         }
 
