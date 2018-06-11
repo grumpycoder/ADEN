@@ -1,8 +1,8 @@
 ﻿using Aden.Core.Models;
 using Aden.Core.Repositories;
+using Aden.Core.Services;
 using Aden.Web.ViewModels;
 using AutoMapper;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -13,10 +13,12 @@ namespace Aden.Web.Controllers
     public class ReportsController : ApiController
     {
         private readonly IUnitOfWork _uow;
+        private readonly IMembershipService _service;
 
-        public ReportsController(IUnitOfWork uow)
+        public ReportsController(IUnitOfWork uow, IMembershipService service)
         {
             _uow = uow;
+            _service = service;
         }
 
         [HttpGet, Route("{datayear:int}")]
@@ -39,34 +41,44 @@ namespace Aden.Web.Controllers
         public async Task<object> Create(int submissionid)
         {
             var submission = _uow.Submissions.GetById(submissionid);
-
             if (submission == null) return NotFound();
 
-            try
-            {
-                var report = Report.Create(submission);
-                submission.AddReport(report);
-                report.StartNewWork();
-                await _uow.CompleteAsync();
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            var reportOrError = Report.Create(submission);
+            if (reportOrError.IsFailure) return BadRequest(reportOrError.Error);
+
+            submission.AddReport(reportOrError.Value);
+
+            var groupMembers = _service.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
+            if (groupMembers.IsFailure) return BadRequest(groupMembers.Error);
+
+            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(groupMembers.Value);
+
+            if (string.IsNullOrWhiteSpace(assignee)) return BadRequest("No user to assign work item");
+
+            var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
+            if (workItem.IsFailure) return BadRequest(workItem.Error);
+
+            reportOrError.Value.ReportState = ReportState.AssignedForGeneration;
+            submission.SubmissionState = SubmissionState.AssignedForGeneration;
+
+            reportOrError.Value.AddWorkItem(workItem.Value);
+            await _uow.CompleteAsync();
+            return Ok();
+
         }
 
         [HttpPost, Route("waiver/{submissionid}")]
         public async Task<object> Waiver(int submissionid)
         {
             var submission = await _uow.Submissions.GetByIdAsync(submissionid);
-
             if (submission == null) return NotFound();
 
-            var report = new Report();
-            submission.AddReport(report);
+            var reportOrError = Report.Create(submission);
+            if (reportOrError.IsFailure) return BadRequest(reportOrError.Error);
 
-            report.Waive();
+            submission.AddReport(reportOrError.Value);
+
+            reportOrError.Value.Waive();
 
             await _uow.CompleteAsync();
 

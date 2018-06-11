@@ -1,5 +1,6 @@
 ﻿using Aden.Core.Repositories;
 using ALSDE.Idem;
+using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,13 +79,13 @@ namespace Aden.Core.Models
                     Report.GeneratedUser = AssignedUser;
                     Report.ReportState = ReportState.AssignedForReview;
                     Report.Submission.SubmissionState = SubmissionState.AssignedForReview;
-                    wi = WorkItem.Create(WorkItemAction.Review, Report.Submission.FileSpecification.GenerationUserGroup);
+                    wi = WorkItem.Create(WorkItemAction.Review, Report.Submission.FileSpecification.GenerationUserGroup).Value;
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.Review:
                     Report.ReportState = ReportState.AwaitingApproval;
                     Report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
-                    wi = WorkItem.Create(WorkItemAction.Approve, Report.Submission.FileSpecification.ApprovalUserGroup);
+                    wi = WorkItem.Create(WorkItemAction.Approve, Report.Submission.FileSpecification.ApprovalUserGroup).Value;
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.Approve:
@@ -92,7 +93,7 @@ namespace Aden.Core.Models
                     Report.ApprovedUser = AssignedUser;
                     Report.ReportState = ReportState.AssignedForSubmission;
                     Report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
-                    wi = WorkItem.Create(WorkItemAction.Submit, Report.Submission.FileSpecification.SubmissionUserGroup);
+                    wi = WorkItem.Create(WorkItemAction.Submit, Report.Submission.FileSpecification.SubmissionUserGroup).Value;
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.SubmitWithError:
@@ -100,7 +101,7 @@ namespace Aden.Core.Models
                     Report.SubmittedUser = AssignedUser;
                     Report.ReportState = ReportState.CompleteWithError;
                     Report.Submission.SubmissionState = SubmissionState.CompleteWithError;
-                    wi = WorkItem.Create(WorkItemAction.ReviewError, Report.Submission.FileSpecification.ApprovalUserGroup);
+                    wi = WorkItem.Create(WorkItemAction.ReviewError, Report.Submission.FileSpecification.ApprovalUserGroup).Value;
                     Report.AddWorkItem(wi);
                     break;
                 case WorkItemAction.Submit:
@@ -123,8 +124,51 @@ namespace Aden.Core.Models
             WorkItemState = WorkItemState.NotStarted;
         }
 
+
+        public static Result<WorkItem> Create(WorkItemAction action, string assignee)
+        {
+            if (string.IsNullOrWhiteSpace(assignee)) return Result.Fail<WorkItem>("Assignee should not be empty");
+
+            var workItem = new WorkItem(action, assignee);
+
+            return Result.Ok(workItem);
+        }
+
+        //public static Result<WorkItem> Create(WorkItemAction action, string groupName)
+        //{
+        //    if (string.IsNullOrWhiteSpace(groupName)) return Result.Fail<WorkItem>("Assignment Group should not be empty");
+
+        //    var memberOrError = GetAssigneeFromGroup(groupName);
+
+        //    if (memberOrError.IsFailure) return Result.Fail<WorkItem>(memberOrError.Value);
+
+        //    var workItem = new WorkItem(action, memberOrError.Value);
+
+        //    return Result.Ok(workItem);
+        //}
+
+        private static Result<string> GetAssigneeFromGroup(string groupName)
+        {
+            if (string.IsNullOrWhiteSpace(groupName)) return Result.Fail<string>("Group Name should not be empty");
+
+            var groupMembers = GroupHelper.GetGroupMembers(groupName);
+
+            if (groupMembers == null) return Result.Fail<string>($"No members defined for group {groupName}");
+
+            var members = groupMembers.Select(m => m.EmailAddress).ToList();
+
+            //var assignmentService = new AssignmentService();
+            //Result<string> assigneeOrError = assignmentService.GetAssigneeFromMemberList(members);
+
+            //if (assigneeOrError.IsFailure) return Result.Fail<string>(assigneeOrError.Value);
+
+            //return Result.Ok(assigneeOrError.Value);
+            return Result.Ok<string>("AssigneeTest");
+        }
+
         public static WorkItem Create(WorkItemAction action, string assignment, bool isIndividual = false)
         {
+
             try
             {
 

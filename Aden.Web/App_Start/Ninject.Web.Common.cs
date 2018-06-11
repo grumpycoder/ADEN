@@ -1,3 +1,5 @@
+using Aden.Core.Services;
+
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Aden.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Aden.Web.App_Start.NinjectWebCommon), "Stop")]
 
@@ -73,6 +75,7 @@ namespace Aden.Web.App_Start
             kernel.Bind<ISubmissionRepository>().To<SubmissionRepository>();
             kernel.Bind<IWorkItemRepository>().To<WorkItemRepository>();
             kernel.Bind<IDocumentRepository>().To<DocumentRepository>();
+            kernel.Bind<IMembershipService>().To<MembershipService>();
 
         }
     }

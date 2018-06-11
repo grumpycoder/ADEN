@@ -39,6 +39,9 @@
     <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="CSharpFunctionalExtensions, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSharpFunctionalExtensions.1.10.0\lib\net461\CSharpFunctionalExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -111,6 +114,8 @@
     <Compile Include="Repositories\SubmissionRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Repositories\WorkItemRepository.cs" />
+    <Compile Include="Services\AssignmentService.cs" />
+    <Compile Include="Services\MembershipService.cs" />
     <Compile Include="Services\NotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -122,12 +127,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\ALSDE.IdemLib.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Alsde\Alsde.Adcc\Main\ALSDE.Core.4.csproj">
-      <Project>{a31914ce-f2c2-4294-b941-90f4785e5e02}</Project>
-      <Name>ALSDE.Core.4</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

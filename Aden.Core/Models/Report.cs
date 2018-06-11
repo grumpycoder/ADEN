@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Aden.Core.Helpers;
 using Aden.Core.Services;
+using CSharpFunctionalExtensions;
 
 namespace Aden.Core.Models
 {
@@ -26,18 +27,27 @@ namespace Aden.Core.Models
 
         public List<WorkItem> WorkItems { set; get; }
 
-        public Report()
+        private Report()
         {
             WorkItems = new List<WorkItem>();
             Documents = new List<ReportDocument>();
         }
 
-        public static Report Create(Submission submission)
+        private Report(int? dataYear, ReportState reportState): this()
         {
-            if (string.IsNullOrEmpty(submission.FileSpecification.ReportAction)) throw new Exception("No action defined to generate report");
+            DataYear = dataYear;
+            ReportState = reportState; 
+        }
 
-            var report = new Report { DataYear = submission.DataYear, ReportState = ReportState.NotStarted };
-            return report;
+        public static Result<Report> Create(Submission submission)
+        {
+            if (submission == null) return Result.Fail<Report>("Submission should not be empty");
+
+            if(string.IsNullOrWhiteSpace(submission.FileSpecification.ReportAction)) return Result.Fail<Report>("No report action defined");
+
+            if (submission.DataYear == null) return Result.Fail<Report>("No data year defined on file specification.");
+
+            return Result.Ok<Report>(new Report(submission.DataYear, ReportState.NotStarted)); 
         }
 
         public void AddWorkItem(WorkItem workItem)
@@ -54,7 +64,7 @@ namespace Aden.Core.Models
 
             var wi = WorkItem.Create(workItem.WorkItemAction, assignee, true);
             AddWorkItem(wi);
-            
+
 
             workItem.WorkItemState = WorkItemState.Reassigned;
 
@@ -88,7 +98,7 @@ namespace Aden.Core.Models
         public void StartNewWork()
         {
             var wi = WorkItem.Create(WorkItemAction.Generate, Submission.FileSpecification.GenerationUserGroup);
-            AddWorkItem(wi);
+            AddWorkItem(wi.Value);
 
             //TODO: Does this belong here
             ReportState = ReportState.AssignedForGeneration;

@@ -44,11 +44,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ALSDE.Core.4, Version=2018.5.21.6716, Culture=neutral, PublicKeyToken=9c039b0383290564, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.Core.4.2018.5.21.6716\lib\net40\ALSDE.Core.4.dll</HintPath>
+    </Reference>
     <Reference Include="Alsde.Entity, Version=2018.4.9.25674, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Entity.2018.4.3\lib\net451\Alsde.Entity.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="ALSDE.IdemLib, Version=16.624.59864.654, Culture=neutral, PublicKeyToken=fa4115e8724c5de1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Aden.Core\bin\ALSDE.IdemLib.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2018.4.17.6677, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.4.17.6677\lib\net451\Alsde.Security.dll</HintPath>
@@ -63,6 +70,9 @@
     </Reference>
     <Reference Include="AutoMapper.EF6, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.EF6.1.1.1\lib\net45\AutoMapper.EF6.dll</HintPath>
+    </Reference>
+    <Reference Include="CSharpFunctionalExtensions, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CSharpFunctionalExtensions.1.10.0\lib\net461\CSharpFunctionalExtensions.dll</HintPath>
     </Reference>
     <Reference Include="DelegateDecompiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
       <HintPath>..\packages\DelegateDecompiler.0.23.0\lib\net40-client\DelegateDecompiler.dll</HintPath>
