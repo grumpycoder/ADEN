@@ -82,6 +82,8 @@
     <Compile Include="Data\EntityConfigurations\WorkItemConfiguration.cs" />
     <Compile Include="Dtos\AssignmentDto.cs" />
     <Compile Include="Dtos\FileSpecificationDto.cs" />
+    <Compile Include="Dtos\ReportDocumentDto.cs" />
+    <Compile Include="Dtos\ReportDto.cs" />
     <Compile Include="Dtos\SubmissionDto.cs" />
     <Compile Include="Dtos\UpdateFileSpecificationDto.cs" />
     <Compile Include="Dtos\WorkItemDto.cs" />
