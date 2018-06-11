@@ -66,7 +66,7 @@ $(function () {
 
         $.ajax({
             type: "POST",
-            url: '/SaveReport',
+            url: '/UploadReport',
             data: formData,
             contentType: false,
             processData: false,

@@ -166,7 +166,7 @@ namespace Aden.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> SaveReport(ReportUploadViewModel model, HttpPostedFileBase[] files)
+        public async Task<ActionResult> UploadReport(ReportUploadDto model, HttpPostedFileBase[] files)
         {
             //TODO: Cleanup SaveReport method
             if (!ModelState.IsValid)
