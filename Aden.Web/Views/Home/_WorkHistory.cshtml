@@ -1,4 +1,6 @@
-﻿@model IEnumerable<WorkItem>
+﻿@using System.Linq
+@using Aden.Core.Models
+@model System.Collections.Generic.IEnumerable<WorkItemHistoryDto>
 
 @if (!Model.Any())
 {
@@ -19,11 +21,11 @@ else
         {
             <tr>
 
-                <td>@item.WorkItemAction.GetDisplayName()</td>
-                <td>@item.AssignedDate.ToString("MM/dd/yyyy hh:mm AA")</td>
+                <td>@item.Action</td>
+                <td>@item.AssignedDate</td>
                 <td>@item.CompletedDate</td>
                 <td>@item.AssignedUser</td>
-                <td>@item.WorkItemState.GetDisplayName()</td>
+                <td>@item.WorkItemState</td>
                 <td>
                     @if (ViewBag.IsSectionAdmin && item.WorkItemState == WorkItemState.NotStarted)
                     {

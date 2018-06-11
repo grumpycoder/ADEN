@@ -5,6 +5,7 @@ using Aden.Core.Services;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
 using AutoMapper;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -55,7 +56,10 @@ namespace Aden.Web.Controllers
 
             ViewBag.IsSectionAdmin = isAdministrator;
             var workItems = await _uow.WorkItems.GetHistoryAsync(reportId);
-            return PartialView("_WorkHistory", workItems);
+
+            var list = Mapper.Map<List<WorkItemHistoryDto>>(workItems);
+
+            return PartialView("_WorkHistory", list);
         }
 
         public async Task<ActionResult> Reassign(int workItemId)
