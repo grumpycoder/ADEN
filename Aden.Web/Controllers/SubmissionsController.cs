@@ -1,4 +1,5 @@
-﻿using Aden.Core.Repositories;
+﻿using Aden.Core.Dtos;
+using Aden.Core.Repositories;
 using Aden.Web.ViewModels;
 using AutoMapper;
 using DevExtreme.AspNet.Data;
@@ -34,7 +35,7 @@ namespace Aden.Web.Controllers
 
             var submissions = await _uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);
 
-            var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
+            var rows = Mapper.Map<List<SubmissionDto>>(submissions);
 
             return Ok(DataSourceLoader.Load(rows, loadOptions));
 

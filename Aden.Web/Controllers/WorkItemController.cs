@@ -1,4 +1,5 @@
-﻿using Aden.Core.Models;
+﻿using Aden.Core.Dtos;
+using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Web.ViewModels;
 using AutoMapper;
@@ -30,9 +31,9 @@ namespace Aden.Web.Controllers
             var completedWorkItems = await _uow.WorkItems.GetCompletedAsync(username);
             var retrievableWorkItems = await _uow.WorkItems.GetCompletedAsync(username);
 
-            var wi = Mapper.Map<List<WorkItemViewModel>>(workitems);
-            var wi2 = Mapper.Map<List<WorkItemViewModel>>(completedWorkItems);
-            var wi3 = Mapper.Map<List<WorkItemViewModel>>(retrievableWorkItems);
+            var wi = Mapper.Map<List<WorkItemDto>>(workitems);
+            var wi2 = Mapper.Map<List<WorkItemDto>>(completedWorkItems);
+            var wi3 = Mapper.Map<List<WorkItemDto>>(retrievableWorkItems);
 
             var s = new
             {
@@ -49,7 +50,7 @@ namespace Aden.Web.Controllers
         {
             var workitems = await _uow.WorkItems.GetActiveAsync(username);
 
-            var wi = Mapper.Map<List<WorkItemViewModel>>(workitems);
+            var wi = Mapper.Map<List<WorkItemDto>>(workitems);
 
             return Ok(wi);
         }
@@ -59,7 +60,7 @@ namespace Aden.Web.Controllers
         {
             var workItems = await _uow.WorkItems.GetCompletedAsync(username);
 
-            var wi = Mapper.Map<List<WorkItemViewModel>>(workItems.OrderByDescending(w => w.CanCancel).ThenByDescending(w => w.AssignedDate));
+            var wi = Mapper.Map<List<WorkItemDto>>(workItems.OrderByDescending(w => w.CanCancel).ThenByDescending(w => w.AssignedDate));
 
             return Ok(wi);
         }

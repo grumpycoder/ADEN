@@ -5,6 +5,7 @@ using DevExtreme.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Aden.Core.Dtos;
 
 namespace Aden.Web.Controllers
 {
@@ -22,7 +23,7 @@ namespace Aden.Web.Controllers
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
             var specs = await _uow.FileSpecifications.GetAllAsync();
-            var vm = Mapper.Map<List<FileSpecificationViewModel>>(specs);
+            var vm = Mapper.Map<List<FileSpecificationDto>>(specs);
             return Ok(vm);
         }
 
