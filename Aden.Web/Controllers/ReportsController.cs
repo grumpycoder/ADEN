@@ -2,7 +2,6 @@
 using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
-using Aden.Web.ViewModels;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ namespace Aden.Web.Controllers
         public async Task<object> Get(int datayear)
         {
             var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear);
-            var reportList = Mapper.Map<List<ReportViewModel>>(reports);
+            var reportList = Mapper.Map<List<ReportDto>>(reports);
             return Ok(reportList);
         }
 

@@ -117,6 +117,7 @@
     <Compile Include="Repositories\UnitOfWork.cs" />
     <Compile Include="Repositories\WorkItemRepository.cs" />
     <Compile Include="Services\AssignmentService.cs" />
+    <Compile Include="Services\IMembershipService.cs" />
     <Compile Include="Services\MembershipService.cs" />
     <Compile Include="Services\NotificationService.cs" />
   </ItemGroup>

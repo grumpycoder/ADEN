@@ -71,24 +71,25 @@ namespace Aden.Web.Controllers
             var wi = await _uow.WorkItems.GetByIdAsync(id);
             if (wi == null) return NotFound();
 
+
             //TODO: Remove logic from controller
             if (wi.WorkItemAction == WorkItemAction.Generate)
             {
                 var result = _uow.GenerateDocuments(wi.ReportId ?? 0);
-                if (!result.Success) return BadRequest(result.Message);
+                if (result.IsFailure) return BadRequest(result.Error);
 
-                wi.Complete();
+                wi.Finish();
                 _uow.Complete();
 
-                var vm = Mapper.Map<WorkItemViewModel>(wi);
+                var vm = Mapper.Map<WorkItemDto>(wi);
                 return Ok(vm);
             }
 
             try
             {
-                wi.Complete();
+                wi.Finish();
                 await _uow.CompleteAsync();
-                var vm = Mapper.Map<WorkItemViewModel>(wi);
+                var vm = Mapper.Map<WorkItemDto>(wi);
                 return Ok(vm);
             }
             catch (Exception e)
@@ -106,7 +107,7 @@ namespace Aden.Web.Controllers
 
             wi.SetAction(WorkItemAction.SubmitWithError);
 
-            wi.Complete();
+            wi.Finish();
             _uow.Complete();
             var vm = Mapper.Map<WorkItemViewModel>(wi);
 

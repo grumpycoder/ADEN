@@ -128,7 +128,7 @@ namespace Aden.Web.Controllers
             wi.Notes = model.Notes;
             wi.SetAction(WorkItemAction.SubmitWithError);
 
-            wi.Complete();
+            wi.Finish();
             await _uow.CompleteAsync();
 
             var next = wi.Report.WorkItems.LastOrDefault();
@@ -193,7 +193,7 @@ namespace Aden.Web.Controllers
 
             }
 
-            wi.Complete();
+            wi.Finish();
             await _uow.CompleteAsync();
 
             return Content("success");

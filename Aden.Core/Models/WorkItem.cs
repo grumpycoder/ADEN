@@ -60,7 +60,7 @@ namespace Aden.Core.Models
             if (_uow == null) _uow = new UnitOfWork();
         }
 
-        public void Complete()
+        public void Finish()
         {
             CompletedDate = DateTime.Now;
             WorkItemState = WorkItemState.Completed;

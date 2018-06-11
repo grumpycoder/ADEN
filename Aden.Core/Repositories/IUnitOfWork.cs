@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using CSharpFunctionalExtensions;
+using System.Threading.Tasks;
 
 namespace Aden.Core.Repositories
 {
@@ -12,7 +13,7 @@ namespace Aden.Core.Repositories
 
         void Complete();
         Task CompleteAsync();
-        OperationResult GenerateDocuments(int reportId);
+        Result GenerateDocuments(int reportId);
         Task<OperationResult> GenerateDocumentsAsync(int reportId);
     }
 }

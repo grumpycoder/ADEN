@@ -1,6 +1,7 @@
 ﻿using Aden.Core.Data;
 using Aden.Core.Helpers;
 using Aden.Core.Models;
+using CSharpFunctionalExtensions;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
@@ -71,11 +72,12 @@ namespace Aden.Core.Repositories
             return new OperationResult("Documents created successfully");
         }
 
-        public OperationResult GenerateDocuments(int reportId)
+        public Result GenerateDocuments(int reportId)
         {
             var report = _context.Reports.Include(r => r.Submission).Include(r => r.Documents).SingleOrDefault(r => r.Id == reportId);
 
-            if (report == null) return new OperationResult("Unable to generate document. Report not found", false);
+            //TODO: Error handling creating documents
+            if (report == null) return Result.Fail("Unable to generate document. Report not found");
 
             if (report.Submission.IsSCH)
             {
@@ -99,7 +101,7 @@ namespace Aden.Core.Repositories
 
             Complete();
 
-            return new OperationResult("Documents created successfully");
+            return Result.Ok();
         }
 
         private DataTable ExecuteDocumentCreation(Submission submission, string reportLevel)

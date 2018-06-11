@@ -5,11 +5,6 @@ using System.Linq;
 
 namespace Aden.Core.Services
 {
-    public interface IMembershipService
-    {
-        Result<List<string>> GetGroupMembers(string groupName);
-    }
-
     public class MembershipService : IMembershipService
     {
 
