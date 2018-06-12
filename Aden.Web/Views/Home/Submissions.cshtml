@@ -1,6 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-
-@{
+﻿@{
     ViewBag.Title = "Submissions";
 }
 
@@ -60,7 +58,7 @@
     pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
     pager.ShowInfo(true);
 })
-.DataSource(d => d.StaticJson().Url("/api/submissions/all").Key("id"))
+.DataSource(d => d.StaticJson().Url("/api/submission").Key("id"))
                     )
 
                 </div>

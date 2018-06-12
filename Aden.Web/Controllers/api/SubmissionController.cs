@@ -1,6 +1,5 @@
 ﻿using Aden.Core.Dtos;
 using Aden.Core.Repositories;
-using Aden.Web.ViewModels;
 using AutoMapper;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
@@ -11,25 +10,25 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace Aden.Web.Controllers
+namespace Aden.Web.Controllers.api
 {
-    [RoutePrefix("api/submissions")]
-    public class SubmissionsController : ApiController
+    [RoutePrefix("api/submission")]
+    public class SubmissionController : ApiController
     {
         private readonly IUnitOfWork _uow;
 
-        private readonly string globalAdministrators =
+        private readonly string _globalAdministrators =
             ConfigurationManager.AppSettings["GlobalAdministratorsGroupName"];
 
-        public SubmissionsController(IUnitOfWork uow)
+        public SubmissionController(IUnitOfWork uow)
         {
             _uow = uow;
         }
 
-        [HttpGet, Route("all")]
+        [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            var isGlobalAdmin = User.IsInRole(globalAdministrators);
+            var isGlobalAdmin = User.IsInRole(_globalAdministrators);
 
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 
@@ -40,23 +39,5 @@ namespace Aden.Web.Controllers
             return Ok(DataSourceLoader.Load(rows, loadOptions));
 
         }
-
-        [HttpGet]
-        public async Task<object> Get(string search = null, string order = null, int offset = 0, int limit = 10)
-        {
-
-            var submissions = await _uow.Submissions.GetWithReportsPagedAsync(search, order, offset, limit);
-            var totalRows = await _uow.Submissions.GetWithReportsPagedAsync(search);
-
-            var rows = Mapper.Map<List<SubmissionViewModel>>(submissions);
-            var vm = new
-            {
-                Total = totalRows.Count(),
-                Rows = rows
-            };
-            return Ok(vm);
-        }
-
-
     }
 }

@@ -18,7 +18,7 @@ namespace Aden.Web.Controllers.api
             _uow = uow;
         }
 
-        [System.Web.Http.HttpGet]
+        [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
             var specs = await _uow.FileSpecifications.GetAllAsync();

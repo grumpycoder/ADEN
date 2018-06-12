@@ -252,9 +252,9 @@
     <Compile Include="Components\MVCHelpers.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
+    <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Controllers\SubmissionsController.cs" />
     <Compile Include="Controllers\WorkItemController.cs" />
     <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\TrackViewName.cs" />
