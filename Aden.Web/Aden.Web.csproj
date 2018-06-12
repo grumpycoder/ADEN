@@ -251,13 +251,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Components\MVCHelpers.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\FileSpecificationsController.cs" />
+    <Compile Include="Controllers\api\FileSpecificationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SubmissionsController.cs" />
     <Compile Include="Controllers\WorkItemController.cs" />
     <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\TrackViewName.cs" />
+    <Compile Include="Filters\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -354,6 +355,7 @@
     <Content Include="js\angular-route.min.js" />
     <Content Include="js\angular.js" />
     <Content Include="js\angular.min.js" />
+    <Content Include="js\jquery.validate.custom.js" />
     <Content Include="js\aspnet\dx.aspnet.data.js" />
     <Content Include="js\aspnet\dx.aspnet.mvc.js" />
     <Content Include="js\cldr.js" />
@@ -469,7 +471,6 @@
     <Content Include="Views\Home\Assignments.cshtml" />
     <Content Include="Views\Home\_WorkHistory.cshtml" />
     <Content Include="Views\Home\Document.cshtml" />
-    <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
     <Content Include="Views\Home\_WorkItemForm.cshtml" />
     <Content Include="Views\Home\Submissions.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
@@ -480,6 +481,7 @@
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Home\_ReportUploadForm.cshtml" />
     <Content Include="Views\Home\_WorkItemReassignment.cshtml" />
+    <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

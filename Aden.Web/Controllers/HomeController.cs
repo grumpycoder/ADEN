@@ -91,24 +91,8 @@ namespace Aden.Web.Controllers
         {
             var spec = _uow.FileSpecifications.GetById(id);
 
-            var model = Mapper.Map<FileSpecificationDto>(spec);
+            var model = Mapper.Map<UpdateFileSpecificationDto>(spec);
             return PartialView("_FileSpecificationForm", model);
-
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Update(FileSpecificationDto model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return PartialView("_FileSpecificationForm", model);
-            }
-            var spec = await _uow.FileSpecifications.GetByIdAsync(model.Id);
-
-            Mapper.Map(model, spec);
-            await _uow.CompleteAsync();
-
-            return Content("success");
 
         }
 

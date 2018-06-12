@@ -1,5 +1,4 @@
 ﻿//fileSpecification.js
-
 $(function () {
     console.log('file specification ready');
 
@@ -13,12 +12,6 @@ $(function () {
                 $('#editContainer').html(data);
                 $('#editModal').modal({ show: true });
             });
-
-        $(document).on('click', '#saveEditSpecificationForm', function (e) {
-            e.preventDefault();
-            console.log('save');
-        });
-
     });
 
     $(document).on('click', '[data-retire]', function (e) {
@@ -29,7 +22,7 @@ $(function () {
         window.$toggleWorkingButton(btn);
 
         $.ajax({
-            url: '/api/filespecifications/retire/' + id,
+            url: '/api/filespecification/retire/' + id,
             type: 'POST',
             success: function (data) {
                 $grid.refresh();
@@ -53,7 +46,7 @@ $(function () {
         window.$toggleWorkingButton(btn);
 
         $.ajax({
-            url: '/api/filespecifications/activate/' + id,
+            url: '/api/filespecification/activate/' + id,
             type: 'POST',
             success: function (data) {
                 $grid.refresh().done(function (e) { console.log('done', e) });
@@ -68,7 +61,32 @@ $(function () {
         });
     });
 
+    $(document).on('submit', 'form', (function (e) {
+        e.preventDefault();
+        var form = $('form');
+        var url = '/api/filespecification/' + $('#Id').val();
 
+
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: $('form').serialize(),
+            success: function (msg) {
+                $('#editModal').modal('hide');
+                $('#editContainer').html("");
+                $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
+                window.toastr.success('Saved ');
+            },
+            error: function (err) {
+                var validationErrors = JSON.parse(err.responseText);
+                $.each(validationErrors.modelState, function (i, ival) {
+                    window.remoteErrors(form, i, ival);
+                });
+            }
+
+        });
+
+    }));
 });
 
 function createFileSpecificationGridActionButtons(container, options) {
@@ -88,13 +106,4 @@ function createFileSpecificationGridActionButtons(container, options) {
     container.append(lnk);
 }
 
-
-function OnSpecificationUpdateFormComplete(data) {
-    if (data.responseText === 'success') {
-        $('#editModal').modal('hide');
-        $('#editContainer').html("");
-        $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
-        window.toastr.success('Saved ');
-    }
-}
 

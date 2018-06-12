@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Aden.Core.Data;
+using Aden.Core.Models;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Aden.Core.Data;
-using Aden.Core.Models;
 using Z.EntityFramework.Plus;
 
 namespace Aden.Core.Repositories
@@ -81,6 +81,7 @@ namespace Aden.Core.Repositories
         public void Delete(int fileSpecificationId)
         {
             //TODO: Need a check on deleting if active work item
+            //TODO: Only delete records in active data year
             var docs = _context.ReportDocuments.Where(d =>
                 d.Report.ReportState < ReportState.CompleteWithError && d.Report.Submission.FileSpecificationId == fileSpecificationId).Delete();
 

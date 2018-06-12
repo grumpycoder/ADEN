@@ -1,9 +1,10 @@
-﻿using System.Linq;
+﻿using Aden.Web.Filters;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace Aden.Web
 {
@@ -24,6 +25,8 @@ namespace Aden.Web
 
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
+
+            config.Filters.Add(new ValidateModelAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
