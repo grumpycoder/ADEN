@@ -88,28 +88,28 @@ $(function () {
 
     $(document).on('click', '#btnSubmitReportForm', function (e) {
         e.preventDefault();
+        var id = $('#Id').val();
+        var url = '/api/assignment/submitreport/' + id;
 
         window.$showModalWorking();
-
         var formData = new FormData();
-        var files = document.getElementById("files").files;
+        var fileInput = $('#files').get(0);
+        var files = fileInput.files; 
 
-        formData.append("Notes", $("#Notes").val());
-        formData.append("Id", $("#Id").val());
-
-        if (files.length > 0) {
-            for (var i = 0; i < files.length; i++) {
-                formData.append('files', files[i]);
-            }
+        for (var i = 0; i < files.length; i++) {
+            formData.append(files[i].name, files[i]);
         }
+
 
         $.ajax({
             type: "POST",
-            url: '/UploadReport',
+            url: url,
             data: formData,
+            dataType: 'json',
             contentType: false,
             processData: false,
             success: function (response) {
+                console.log('response', response);
                 $gridCurrentAssignments.refresh();
                 $gridRetrievableAssignments.refresh();
                 window.$log.success('Submitted report');

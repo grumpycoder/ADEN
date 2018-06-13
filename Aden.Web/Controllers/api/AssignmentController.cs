@@ -3,6 +3,7 @@ using Aden.Core.Models;
 using Aden.Core.Repositories;
 using AutoMapper;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -22,6 +23,7 @@ namespace Aden.Web.Controllers.api
         [HttpGet]
         public async Task<object> Get()
         {
+            //TODO: Uncomment
             var id = "mlawrence@alsde.edu"; // User.Identity.Name ?? id;
 
             var workitems = await _uow.WorkItems.GetActiveAsync(id);
@@ -100,6 +102,69 @@ namespace Aden.Web.Controllers.api
         {
             //TODO: Fix files missing in model
             return Ok();
+        }
+
+        [HttpPost, Route("submitreport/{id}")]
+        public async Task<object> SubmitReport(int id)
+        {
+            //get work item
+            var workItem = await _uow.WorkItems.GetByIdAsync(id);
+
+            //get report
+            var report = workItem.Report;
+
+            //Retrieve file from file parameter
+            foreach (string filename in HttpContext.Current.Request.Files)
+            {
+                var f = HttpContext.Current.Request.Files[filename];
+
+                //Checking file is available to save.  
+                if (f == null) continue;
+
+                var reportLevel = ReportLevel.SCH;
+                if (f.FileName.ToLower().Contains("SCH")) reportLevel = ReportLevel.SCH;
+                if (f.FileName.ToLower().Contains("LEA")) reportLevel = ReportLevel.LEA;
+                if (f.FileName.ToLower().Contains("SEA")) reportLevel = ReportLevel.SEA;
+
+                //TODO: Refactor this
+                var version = await _uow.Documents.GetNextAvailableVersion(report.SubmissionId, reportLevel);
+
+                BinaryReader br = new BinaryReader(f.InputStream);
+                byte[] data = br.ReadBytes((f.ContentLength));
+                var doc = ReportDocument.Create(f.FileName, version, reportLevel, data);
+
+                //attach report documents
+                report.Documents.Add(doc);
+            }
+
+            //finish work item
+            workItem.Finish();
+
+            //What's the next work
+            var next = WorkItem.Next(workItem);
+            if (next == WorkItemAction.Nothing)
+            {
+                report.SetState(next);
+                report.Submission.SetState(next);
+                await _uow.CompleteAsync();
+                return Ok();
+            }
+
+            //TODO: Get assignee
+            var nextWorkItem = WorkItem.Create(next, "mlawrence@alsde.edu");
+
+
+            //TODO: Set ReportState and SubmissionState
+            report.SetState(next);
+            report.Submission.SetState(next);
+
+            report.WorkItems.Add(nextWorkItem);
+
+            await _uow.CompleteAsync();
+            //save changes
+
+            var dto = Mapper.Map<WorkItemDto>(workItem);
+            return Ok(dto);
         }
     }
 
