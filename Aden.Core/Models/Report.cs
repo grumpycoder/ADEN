@@ -73,6 +73,12 @@ namespace Aden.Core.Models
             }
         }
 
+        public void Waive()
+        {
+            ReportState = ReportState.Waived;
+        }
+
+
         //REFACTOR BELOW
 
         //public static Result<Report> Create(Submission submission)
@@ -142,13 +148,6 @@ namespace Aden.Core.Models
             //Submission.SubmissionState = SubmissionState.AssignedForGeneration;
         }
 
-        public void Waive()
-        {
-            ReportState = ReportState.Waived;
-            Submission.SubmissionState = SubmissionState.Waived;
-            DataYear = Submission.DataYear;
-
-        }
 
 
     }

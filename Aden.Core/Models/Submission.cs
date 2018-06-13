@@ -61,5 +61,11 @@ namespace Aden.Core.Models
             }
 
         }
+
+        public void Waive()
+        {
+            SubmissionState = SubmissionState.Waived;
+        }
+
     }
 }

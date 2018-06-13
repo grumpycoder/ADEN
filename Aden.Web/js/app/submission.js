@@ -11,11 +11,11 @@ $(function () {
         window.$toggleWorkingButton(btn);
 
         $.ajax({
-            url: '/api/reports/waiver/' + id,
-            type: 'POST',
+            url: '/api/report/waiver/' + id,
+            type: 'POST'
         })
-            .done(function () {
-                $grid.refresh().done(function (e) { console.log('done', e) });
+            .done(function (data) {
+                $grid.refresh().done(function (e) { });
                 $log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
             })
             .fail(function (err) {

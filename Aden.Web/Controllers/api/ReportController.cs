@@ -1,5 +1,7 @@
-﻿using Aden.Core.Models;
+﻿using Aden.Core.Dtos;
+using Aden.Core.Models;
 using Aden.Core.Repositories;
+using AutoMapper;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -35,6 +37,26 @@ namespace Aden.Web.Controllers.api
             await _uow.CompleteAsync();
 
             return Ok(report);
+        }
+
+        [HttpPost, Route("waiver/{id}")]
+        public async Task<object> Waiver(int id)
+        {
+            var submission = await _uow.Submissions.GetByIdAsync(id);
+            if (submission == null) return NotFound();
+
+            var report = Report.Create(submission.DataYear);
+
+            submission.Reports.Add(report);
+
+            submission.Waive();
+            report.Waive();
+
+            await _uow.CompleteAsync();
+
+            var dto = Mapper.Map<ReportDto>(report);
+
+            return Ok(dto);
         }
     }
 }
