@@ -4,6 +4,7 @@ using Aden.Core.Repositories;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace Aden.Web.Controllers.api
@@ -93,5 +94,18 @@ namespace Aden.Web.Controllers.api
 
             return Ok(newWorkItem);
         }
+
+        [HttpPost, Route("submiterror/{id}")]
+        public async Task<object> SubmitError(int id, ErrorReportDto model)
+        {
+            //TODO: Fix files missing in model
+            return Ok();
+        }
+    }
+
+    public class ErrorReportDto
+    {
+        public string Note { get; set; }
+        public HttpPostedFileBase[] Files { get; set; }
     }
 }

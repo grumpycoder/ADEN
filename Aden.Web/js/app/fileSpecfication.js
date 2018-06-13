@@ -58,7 +58,8 @@ $(function () {
             }
         }).always(function () {
             window.$toggleWorkingButton(btn);
-        });
+            });
+
     });
 
     $(document).on('submit', 'form', (function (e) {
