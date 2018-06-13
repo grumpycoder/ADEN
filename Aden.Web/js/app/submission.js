@@ -35,7 +35,7 @@ $(function () {
         window.$toggleWorkingButton(btn);
 
         $.ajax({
-            url: '/api/reports/create/' + id,
+            url: '/api/report/create/' + id,
             type: 'POST',
         })
             .done(function () {

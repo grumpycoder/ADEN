@@ -1,5 +1,4 @@
-﻿using Aden.Core.Repositories;
-using ALSDE.Idem;
+﻿using ALSDE.Idem;
 using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ namespace Aden.Core.Models
     public class WorkItem
     {
         public int Id { get; set; }
-        public int? ReportId { get; set; }
+        public int ReportId { get; set; }
         public string AssignedUser { get; set; }
         public DateTime AssignedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
@@ -25,6 +24,7 @@ namespace Aden.Core.Models
         {
             get
             {
+                return true;
                 //TODO: Cleanup
                 if (WorkItemState == WorkItemState.Cancelled) return false;
 
@@ -47,73 +47,103 @@ namespace Aden.Core.Models
             }
         }
 
+        private WorkItem() { }
 
-
-        private static IUnitOfWork _uow;
-        private WorkItem(IUnitOfWork uow)
+        private WorkItem(WorkItemState state, string assignee)
         {
-            _uow = uow;
+            AssignedUser = assignee;
+            WorkItemState = state;
         }
 
-        private WorkItem()
+        public static WorkItem Create(WorkItemAction action, string assignee)
         {
-            if (_uow == null) _uow = new UnitOfWork();
+            return new WorkItem(action, assignee);
         }
 
         public void Finish()
         {
             CompletedDate = DateTime.Now;
             WorkItemState = WorkItemState.Completed;
-            CreateNextWorkItem(WorkItemAction);
         }
+
+        public static WorkItemAction Next(WorkItem workItem)
+        {
+            switch (workItem.WorkItemAction)
+            {
+                case WorkItemAction.Generate:
+                    return WorkItemAction.Review;
+                case WorkItemAction.Review:
+                    return WorkItemAction.Approve;
+                case WorkItemAction.Approve:
+                    return WorkItemAction.Submit;
+                case WorkItemAction.SubmitWithError:
+                    return WorkItemAction.ReviewError;
+                case WorkItemAction.ReviewError:
+                    return WorkItemAction.Generate;
+                case WorkItemAction.Submit:
+                    return WorkItemAction.Nothing;
+                default:
+                    return WorkItemAction.Nothing;
+            }
+
+        }
+
+        public void Cancel()
+        {
+            WorkItemState = WorkItemState.Cancelled;
+            CompletedDate = DateTime.Now;
+        }
+
+        //REFACTOR BELOW 
+
 
         private void CreateNextWorkItem(WorkItemAction currentWorkItem)
         {
             WorkItem wi;
 
             //TODO: Refactor to factory method
-            switch (currentWorkItem)
-            {
-                case WorkItemAction.Generate:
-                    Report.GeneratedDate = DateTime.Now;
-                    Report.GeneratedUser = AssignedUser;
-                    Report.ReportState = ReportState.AssignedForReview;
-                    Report.Submission.SubmissionState = SubmissionState.AssignedForReview;
-                    wi = WorkItem.Create(WorkItemAction.Review, Report.Submission.FileSpecification.GenerationUserGroup).Value;
-                    Report.AddWorkItem(wi);
-                    break;
-                case WorkItemAction.Review:
-                    Report.ReportState = ReportState.AwaitingApproval;
-                    Report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
-                    wi = WorkItem.Create(WorkItemAction.Approve, Report.Submission.FileSpecification.ApprovalUserGroup).Value;
-                    Report.AddWorkItem(wi);
-                    break;
-                case WorkItemAction.Approve:
-                    Report.ApprovedDate = DateTime.Now;
-                    Report.ApprovedUser = AssignedUser;
-                    Report.ReportState = ReportState.AssignedForSubmission;
-                    Report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
-                    wi = WorkItem.Create(WorkItemAction.Submit, Report.Submission.FileSpecification.SubmissionUserGroup).Value;
-                    Report.AddWorkItem(wi);
-                    break;
-                case WorkItemAction.SubmitWithError:
-                    Report.SubmittedDate = DateTime.Now;
-                    Report.SubmittedUser = AssignedUser;
-                    Report.ReportState = ReportState.CompleteWithError;
-                    Report.Submission.SubmissionState = SubmissionState.CompleteWithError;
-                    wi = WorkItem.Create(WorkItemAction.ReviewError, Report.Submission.FileSpecification.ApprovalUserGroup).Value;
-                    Report.AddWorkItem(wi);
-                    break;
-                case WorkItemAction.Submit:
-                    Report.SubmittedDate = DateTime.Now;
-                    Report.SubmittedUser = AssignedUser;
-                    Report.ReportState = ReportState.Complete;
-                    Report.Submission.SubmissionState = SubmissionState.Complete;
-                    break;
-                case WorkItemAction.ReviewError:
-                    Report.StartNewWork();
-                    break;
-            }
+            //switch (currentWorkItem)
+            //{
+            //    case WorkItemAction.Generate:
+            //        Report.GeneratedDate = DateTime.Now;
+            //        Report.GeneratedUser = AssignedUser;
+            //        Report.ReportState = ReportState.AssignedForReview;
+            //        Report.Submission.SubmissionState = SubmissionState.AssignedForReview;
+            //        wi = WorkItem.Create(WorkItemAction.Review, Report.Submission.FileSpecification.GenerationUserGroup);
+            //        Report.AddWorkItem(wi);
+            //        break;
+            //    case WorkItemAction.Review:
+            //        Report.ReportState = ReportState.AwaitingApproval;
+            //        Report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
+            //        wi = WorkItem.Create(WorkItemAction.Approve, Report.Submission.FileSpecification.ApprovalUserGroup);
+            //        Report.AddWorkItem(wi);
+            //        break;
+            //    case WorkItemAction.Approve:
+            //        Report.ApprovedDate = DateTime.Now;
+            //        Report.ApprovedUser = AssignedUser;
+            //        Report.ReportState = ReportState.AssignedForSubmission;
+            //        Report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
+            //        wi = WorkItem.Create(WorkItemAction.Submit, Report.Submission.FileSpecification.SubmissionUserGroup);
+            //        Report.AddWorkItem(wi);
+            //        break;
+            //    case WorkItemAction.SubmitWithError:
+            //        Report.SubmittedDate = DateTime.Now;
+            //        Report.SubmittedUser = AssignedUser;
+            //        Report.ReportState = ReportState.CompleteWithError;
+            //        Report.Submission.SubmissionState = SubmissionState.CompleteWithError;
+            //        wi = WorkItem.Create(WorkItemAction.ReviewError, Report.Submission.FileSpecification.ApprovalUserGroup);
+            //        Report.AddWorkItem(wi);
+            //        break;
+            //    case WorkItemAction.Submit:
+            //        Report.SubmittedDate = DateTime.Now;
+            //        Report.SubmittedUser = AssignedUser;
+            //        Report.ReportState = ReportState.Complete;
+            //        Report.Submission.SubmissionState = SubmissionState.Complete;
+            //        break;
+            //    case WorkItemAction.ReviewError:
+            //        Report.StartNewWork();
+            //        break;
+            //}
         }
 
         private WorkItem(WorkItemAction action, string assignee)
@@ -125,14 +155,14 @@ namespace Aden.Core.Models
         }
 
 
-        public static Result<WorkItem> Create(WorkItemAction action, string assignee)
-        {
-            if (string.IsNullOrWhiteSpace(assignee)) return Result.Fail<WorkItem>("Assignee should not be empty");
+        //public static Result<WorkItem> Create(WorkItemAction action, string assignee)
+        //{
+        //    if (string.IsNullOrWhiteSpace(assignee)) return Result.Fail<WorkItem>("Assignee should not be empty");
 
-            var workItem = new WorkItem(action, assignee);
+        //    var workItem = new WorkItem(action, assignee);
 
-            return Result.Ok(workItem);
-        }
+        //    return Result.Ok(workItem);
+        //}
 
         //public static Result<WorkItem> Create(WorkItemAction action, string groupName)
         //{
@@ -166,54 +196,49 @@ namespace Aden.Core.Models
             return Result.Ok<string>("AssigneeTest");
         }
 
-        public static WorkItem Create(WorkItemAction action, string assignment, bool isIndividual = false)
-        {
+        //public static WorkItem Create(WorkItemAction action, string assignment, bool isIndividual = false)
+        //{
 
-            try
-            {
+        //try
+        //{
 
-                var assignee = string.Empty;
-                var members = new List<string>();
+        //    var assignee = string.Empty;
+        //    var members = new List<string>();
 
-                if (isIndividual) assignee = assignment;
-                if (!isIndividual)
-                {
-                    var groupMembers = GroupHelper.GetGroupMembers(assignment);
+        //    if (isIndividual) assignee = assignment;
+        //    if (!isIndividual)
+        //    {
+        //        var groupMembers = GroupHelper.GetGroupMembers(assignment);
 
-                    if (groupMembers == null) throw new Exception(string.Format("No group {0} defined or no members assigned", assignment));
+        //        if (groupMembers == null) throw new Exception(string.Format("No group {0} defined or no members assigned", assignment));
 
-                    members = groupMembers.Select(m => m.EmailAddress).ToList();
-                }
+        //        members = groupMembers.Select(m => m.EmailAddress).ToList();
+        //    }
 
-                var workItem = new WorkItem();
+        //    //var workItem = new WorkItem();
 
-                //TODO: This doesn't belong here. Coupled to data source. Should not reference uow or group helper
+        //    ////TODO: This doesn't belong here. Coupled to data source. Should not reference uow or group helper
 
-                assignee = isIndividual ? assignee : _uow.WorkItems.GetUserWithLeastAssignments(members);
+        //    //assignee = isIndividual ? assignee : _uow.WorkItems.GetUserWithLeastAssignments(members);
 
-                var wi = new WorkItem(action, assignee);
-                return wi;
-            }
-            catch (ArgumentNullException e)
-            {
-                throw new Exception(e.Message, e);
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException.Message.Contains("Login failed"))
-                {
-                    throw new Exception($"User unable to connect to database. ", ex);
-                }
-                throw new Exception($"{assignment} Group not defined or no members assigned. ", ex);
-            }
+        //    var wi = new WorkItem(action, assignee);
+        //    return wi;
+        //}
+        //catch (ArgumentNullException e)
+        //{
+        //    throw new Exception(e.Message, e);
+        //}
+        //catch (Exception ex)
+        //{
+        //    if (ex.InnerException.Message.Contains("Login failed"))
+        //    {
+        //        throw new Exception($"User unable to connect to database. ", ex);
+        //    }
+        //    throw new Exception($"{assignment} Group not defined or no members assigned. ", ex);
+        //}
 
-        }
+        //}
 
-        public void Cancel()
-        {
-            WorkItemState = WorkItemState.Cancelled;
-            CompletedDate = DateTime.Now;
-        }
 
 
         private static T GetNext<T>(IEnumerable<T> list, T current)
@@ -244,5 +269,7 @@ namespace Aden.Core.Models
         {
             WorkItemAction = action;
         }
+
+
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Aden.Core.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
@@ -9,5 +9,7 @@ namespace Aden.Core.Repositories
         IEnumerable<Report> GetByFileSpecification(int datayear, string fileNumber = "");
         Task<IEnumerable<Report>> GetByFileSpecificationAsync(int datayear, string fileNumber = "");
         IEnumerable<Report> GetByFileSpecificationNumberPaged(string search, string order, int offset, int limit);
+        Report GetById(int id);
+        Task<Report> GetByIdAsync(int id);
     }
 }

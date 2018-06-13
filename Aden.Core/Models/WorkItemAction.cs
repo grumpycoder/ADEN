@@ -15,6 +15,8 @@ namespace Aden.Core.Models
         [Display(Name = "Submit With Error")]
         SubmitWithError = 5,
         [Display(Name = "Review Error")]
-        ReviewError = 6
+        ReviewError = 6,
+
+        Nothing = 0
     }
 }

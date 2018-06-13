@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Aden.Core.Helpers;
+﻿using Aden.Core.Helpers;
 using Aden.Core.Services;
 using CSharpFunctionalExtensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Aden.Core.Models
 {
@@ -33,22 +33,58 @@ namespace Aden.Core.Models
             Documents = new List<ReportDocument>();
         }
 
-        private Report(int? dataYear, ReportState reportState): this()
+        private Report(int? dataYear) : this()
         {
             DataYear = dataYear;
-            ReportState = reportState; 
+            ReportState = ReportState.NotStarted;
         }
 
-        public static Result<Report> Create(Submission submission)
+        public static Report Create(int datayear)
         {
-            if (submission == null) return Result.Fail<Report>("Submission should not be empty");
-
-            if(string.IsNullOrWhiteSpace(submission.FileSpecification.ReportAction)) return Result.Fail<Report>("No report action defined");
-
-            if (submission.DataYear == null) return Result.Fail<Report>("No data year defined on file specification.");
-
-            return Result.Ok<Report>(new Report(submission.DataYear, ReportState.NotStarted)); 
+            var report = new Report(datayear);
+            return report;
         }
+
+        public void SetState(WorkItemAction action)
+        {
+            switch (action)
+            {
+                case WorkItemAction.Generate:
+                    ReportState = ReportState.AssignedForGeneration;
+                    break;
+                case WorkItemAction.Review:
+                    ReportState = ReportState.AssignedForReview;
+                    break;
+                case WorkItemAction.Approve:
+                    ReportState = ReportState.AwaitingApproval;
+                    break;
+                case WorkItemAction.Submit:
+                    ReportState = ReportState.AssignedForSubmission;
+                    break;
+                case WorkItemAction.SubmitWithError:
+                    ReportState = ReportState.CompleteWithError;
+                    break;
+                case WorkItemAction.ReviewError:
+                    ReportState = ReportState.NotStarted;
+                    break;
+                case WorkItemAction.Nothing:
+                    ReportState = ReportState.Complete;
+                    break;
+            }
+        }
+
+        //REFACTOR BELOW
+
+        //public static Result<Report> Create(Submission submission)
+        //{
+        //    if (submission == null) return Result.Fail<Report>("Submission should not be empty");
+
+        //    if (string.IsNullOrWhiteSpace(submission.FileSpecification.ReportAction)) return Result.Fail<Report>("No report action defined");
+
+        //    if (submission.DataYear == null) return Result.Fail<Report>("No data year defined on file specification.");
+
+        //    return Result.Ok<Report>(new Report(submission.DataYear, ReportState.NotStarted));
+        //}
 
         public void AddWorkItem(WorkItem workItem)
         {
@@ -62,14 +98,15 @@ namespace Aden.Core.Models
         public WorkItem ReassignWorkItem(WorkItem workItem, string assignee)
         {
 
-            var wi = WorkItem.Create(workItem.WorkItemAction, assignee, true);
-            AddWorkItem(wi);
+            //var wi = WorkItem.Create(workItem.WorkItemAction, assignee, true);
+            //AddWorkItem(wi);
 
 
-            workItem.WorkItemState = WorkItemState.Reassigned;
+            //workItem.WorkItemState = WorkItemState.Reassigned;
 
-            NotificationService.SendReassignmentWorkNotification(workItem);
-            return wi;
+            //NotificationService.SendReassignmentWorkNotification(workItem);
+            //return wi;
+            return workItem;
         }
 
         public void CreateDocument(byte[] file, ReportLevel reportLevel)
@@ -97,12 +134,12 @@ namespace Aden.Core.Models
 
         public void StartNewWork()
         {
-            var wi = WorkItem.Create(WorkItemAction.Generate, Submission.FileSpecification.GenerationUserGroup);
-            AddWorkItem(wi.Value);
+            //var wi = WorkItem.Create(WorkItemAction.Generate, Submission.FileSpecification.GenerationUserGroup);
+            //AddWorkItem(wi.Value);
 
-            //TODO: Does this belong here
-            ReportState = ReportState.AssignedForGeneration;
-            Submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            ////TODO: Does this belong here
+            //ReportState = ReportState.AssignedForGeneration;
+            //Submission.SubmissionState = SubmissionState.AssignedForGeneration;
         }
 
         public void Waive()
@@ -112,5 +149,7 @@ namespace Aden.Core.Models
             DataYear = Submission.DataYear;
 
         }
+
+
     }
 }

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Aden.Core.Data;
+using Aden.Core.Models;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Aden.Core.Data;
-using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
@@ -47,6 +47,16 @@ namespace Aden.Core.Repositories
 
             return reports.ToList();
 
+        }
+
+        public Report GetById(int id)
+        {
+            return _context.Reports.Find(id);
+        }
+
+        public async Task<Report> GetByIdAsync(int id)
+        {
+            return await _context.Reports.FindAsync(id);
         }
     }
 }

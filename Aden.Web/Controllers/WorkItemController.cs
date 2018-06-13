@@ -75,7 +75,7 @@ namespace Aden.Web.Controllers
             //TODO: Remove logic from controller
             if (wi.WorkItemAction == WorkItemAction.Generate)
             {
-                var result = _uow.GenerateDocuments(wi.ReportId ?? 0);
+                var result = _uow.GenerateDocuments(wi.ReportId);
                 if (result.IsFailure) return BadRequest(result.Error);
 
                 wi.Finish();
@@ -123,7 +123,7 @@ namespace Aden.Web.Controllers
             wi.Report.CancelWorkItems();
             wi.Report.StartNewWork();
 
-            _uow.Documents.DeleteReportDocuments(wi.ReportId ?? 0);
+            _uow.Documents.DeleteReportDocuments(wi.ReportId);
 
             _uow.Complete();
 

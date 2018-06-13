@@ -22,7 +22,7 @@ $(function () {
                 formData.append('files', files[i]);
             }
         }
-        
+
         $.ajax({
             type: "POST",
             url: '/ErrorReport',
@@ -93,9 +93,11 @@ $(function () {
         console.log('work item click');
         var btn = $(this);
         var id = btn.data('workitem-id');
+        var url = '/api/assignment/complete/' + id;
+
         window.$toggleWorkingButton(btn);
         $.ajax({
-            url: '/api/wi/complete/' + id,
+            url: url,
             type: 'POST',
             success: function (data) {
                 $gridCurrentAssignments.refresh();
@@ -105,6 +107,29 @@ $(function () {
             error: function (err) {
                 console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
+            }
+        });
+    });
+
+    $(document).on('click', 'button[data-cancel-workitem]', function (e) {
+        e.preventDefault();
+        var btn = $(this);
+        var id = btn.data('cancel-workitem-id');
+        var url = '/api/assignment/cancel/' + id;
+        window.$toggleWorkingButton(btn);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (data) {
+                $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
+                $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
+                window.$log.success('Cancelled ' + data.action + ' - ' + data.state);
+                window.$toggleWorkingButton(btn);
+            },
+            error: function (err) {
+                console.log('err', err);
+                window.$log.error('Something went wrong: ' + err.responseJSON.message);
+                window.$toggleWorkingButton(btn);
             }
         });
     });
@@ -126,28 +151,6 @@ $(function () {
         $.get(url, function (data) {
             $('#modalContainer').html(data);
             $('.modal').modal({ show: true });
-        });
-    });
-
-    $(document).on('click', 'button[data-cancel-workitem]', function (e) {
-        e.preventDefault();
-        var btn = $(this);
-        var id = btn.data('cancel-workitem-id');
-        window.$toggleWorkingButton(btn);
-        $.ajax({
-            url: '/api/wi/undo/' + id,
-            type: 'POST',
-            success: function (data) {
-                $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
-                $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
-                window.$log.success('Cancelled ' + data.action + ' - ' + data.state);
-                window.$toggleWorkingButton(btn);
-            },
-            error: function (err) {
-                console.log('err', err);
-                window.$log.error('Something went wrong: ' + err.responseJSON.message);
-                window.$toggleWorkingButton(btn);
-            }
         });
     });
 

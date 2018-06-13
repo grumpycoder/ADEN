@@ -1,5 +1,4 @@
 ﻿using Aden.Core.Dtos;
-using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
 using AutoMapper;
@@ -43,26 +42,26 @@ namespace Aden.Web.Controllers
             var submission = _uow.Submissions.GetById(submissionid);
             if (submission == null) return NotFound();
 
-            var reportOrError = Report.Create(submission);
-            if (reportOrError.IsFailure) return BadRequest(reportOrError.Error);
+            //var reportOrError = Report.Create(submission);
+            //if (reportOrError.IsFailure) return BadRequest(reportOrError.Error);
 
-            submission.AddReport(reportOrError.Value);
+            //submission.AddReport(reportOrError.Value);
 
-            var groupMembers = _service.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
-            if (groupMembers.IsFailure) return BadRequest(groupMembers.Error);
+            //var groupMembers = _service.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
+            //if (groupMembers.IsFailure) return BadRequest(groupMembers.Error);
 
-            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(groupMembers.Value);
+            //var assignee = _uow.WorkItems.GetUserWithLeastAssignments(groupMembers.Value);
 
-            if (string.IsNullOrWhiteSpace(assignee)) return BadRequest("No user to assign work item");
+            //if (string.IsNullOrWhiteSpace(assignee)) return BadRequest("No user to assign work item");
 
-            var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
-            if (workItem.IsFailure) return BadRequest(workItem.Error);
+            //var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
+            //if (workItem.IsFailure) return BadRequest(workItem.Error);
 
-            reportOrError.Value.ReportState = ReportState.AssignedForGeneration;
-            submission.SubmissionState = SubmissionState.AssignedForGeneration;
+            //reportOrError.Value.ReportState = ReportState.AssignedForGeneration;
+            //submission.SubmissionState = SubmissionState.AssignedForGeneration;
 
-            reportOrError.Value.AddWorkItem(workItem.Value);
-            await _uow.CompleteAsync();
+            //reportOrError.Value.AddWorkItem(workItem.Value);
+            //await _uow.CompleteAsync();
             return Ok();
 
         }
@@ -73,14 +72,14 @@ namespace Aden.Web.Controllers
             var submission = await _uow.Submissions.GetByIdAsync(submissionid);
             if (submission == null) return NotFound();
 
-            var reportOrError = Report.Create(submission);
-            if (reportOrError.IsFailure) return BadRequest(reportOrError.Error);
+            //var reportOrError = Report.Create(submission);
+            //if (reportOrError.IsFailure) return BadRequest(reportOrError.Error);
 
-            submission.AddReport(reportOrError.Value);
+            //submission.AddReport(reportOrError.Value);
 
-            reportOrError.Value.Waive();
+            //reportOrError.Value.Waive();
 
-            await _uow.CompleteAsync();
+            //await _uow.CompleteAsync();
 
             return Ok();
         }
