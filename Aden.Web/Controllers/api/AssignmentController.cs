@@ -98,9 +98,25 @@ namespace Aden.Web.Controllers.api
         }
 
         [HttpPost, Route("submiterror/{id}")]
-        public async Task<object> SubmitError(int id, ErrorReportDto model)
+        //[HttpPost, Route("submiterror")]
+        public object SubmitError(int id, ErrorReportDto model)
+        //public object SubmitError([FromBody]string note)
         {
             //TODO: Fix files missing in model
+            //Retrieve file from file parameter
+            foreach (string filename in HttpContext.Current.Request.Files)
+            {
+                var f = HttpContext.Current.Request.Files[filename];
+
+                //Checking file is available to save.  
+                if (f == null) continue;
+
+                BinaryReader br = new BinaryReader(f.InputStream);
+                byte[] data = br.ReadBytes((f.ContentLength));
+
+                //attach images to email message
+
+            }
             return Ok();
         }
 
@@ -171,6 +187,6 @@ namespace Aden.Web.Controllers.api
     public class ErrorReportDto
     {
         public string Note { get; set; }
-        public HttpPostedFileBase[] Files { get; set; }
+        //public HttpPostedFileBase[] Files { get; set; }
     }
 }
