@@ -57,6 +57,7 @@ namespace Aden.Core.Models
                     break;
                 case WorkItemAction.Nothing:
                     SubmissionState = SubmissionState.Complete;
+                    SubmissionDate = DateTime.Now;
                     break;
             }
 

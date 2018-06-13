@@ -54,12 +54,14 @@ namespace Aden.Core.Models
                     break;
                 case WorkItemAction.Review:
                     ReportState = ReportState.AssignedForReview;
+                    GeneratedDate = DateTime.Now;
                     break;
                 case WorkItemAction.Approve:
                     ReportState = ReportState.AwaitingApproval;
                     break;
                 case WorkItemAction.Submit:
                     ReportState = ReportState.AssignedForSubmission;
+                    ApprovedDate = DateTime.Now;
                     break;
                 case WorkItemAction.SubmitWithError:
                     ReportState = ReportState.CompleteWithError;
@@ -69,6 +71,7 @@ namespace Aden.Core.Models
                     break;
                 case WorkItemAction.Nothing:
                     ReportState = ReportState.Complete;
+                    SubmittedDate = DateTime.Now;
                     break;
             }
         }
