@@ -252,6 +252,7 @@
     <Compile Include="Components\MVCHelpers.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\api\AssignmentController.cs" />
+    <Compile Include="Controllers\api\ErrorReportController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
     <Compile Include="Controllers\api\ReportController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
@@ -487,6 +488,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ErrorReport\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

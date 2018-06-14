@@ -5,126 +5,48 @@ $(function () {
 
     var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
     var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
-
-    //$(document).on('click', '#btnSubmitErrorReportForm', function (e) {
-    //    e.preventDefault();
-
-    //    window.$showModalWorking();
-
-    //    var formData = new FormData();
-    //    var files = document.getElementById("files").files;
-
-    //    formData.append("Notes", $("#submission-notes").val());
-    //    formData.append("Id", $("#Id").val());
-
-    //    if (files.length > 0) {
-    //        for (var i = 0; i < files.length; i++) {
-    //            formData.append('files', files[i]);
-    //        }
-    //    }
-
-    //    $.ajax({
-    //        type: "POST",
-    //        url: '/ErrorReport',
-    //        data: formData,
-    //        contentType: false,
-    //        processData: false,
-    //        success: function (response) {
-    //            $gridCurrentAssignments.refresh();
-    //            $gridRetrievableAssignments.refresh();
-    //            window.$log.success('Submitted errors');
-    //        },
-    //        error: function (error) {
-    //            console.log('error', error);
-    //            window.$log.error('Something went wrong. ' + error.resonseJson.message);
-    //        },
-    //        complete: function () {
-    //            $('.modalContainer').html('');
-    //            $('.modal').modal('hide');
-
-    //            window.$hideModalWorking();
-    //        }
-    //    });
-    //});
-
+    
     $(document).on('click', '#btnSubmitErrorReportForm', function (e) {
         e.preventDefault();
-        var id = $('#Id').val();
-        var url = '/api/assignment/submiterror/' + id; 
-
         window.$showModalWorking();
-        var fileInput = $('#files').get(0);
-        var files = fileInput.files;
 
+        var id = $('#Id').val();
+        var url = '/assignment/submiterror/';
+        console.log(id);
         var formData = new FormData();
+        formData.append('Id', id);
+        formData.append('Note', $('#note').val());
 
-        formData.append('note', $('#note').val());
-        debugger;
+        var files = document.getElementById('files').files; 
+        if (files.length > 0) {
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]); 
+            }
+        }
 
-      
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log('response', response);
+                $gridCurrentAssignments.refresh();
+                $gridRetrievableAssignments.refresh();
+                window.$log.success('Submitted report');
+            },
+            error: function (error) {
+                console.log('error', error);
+                window.$log.error('Something went wrong. ' + error.resonseJson.message);
+            },
+            complete: function () {
+                $('.modalContainer').html('');
+                $('.modal').modal('hide');
 
-        $.post(url, { '': {'note': 'Test', 'files': files[0] } });
-        //$.post(url, $('form'));
-
-        //$.ajax({
-        //    type: 'POST', 
-        //    url: url, 
-        //    data: $('form').serialize(), 
-        //    contentType: false, 
-        //    processData: false
-        //});
-
-        //var formData = new FormData();
-        //var fileInput = $('#files').get(0);
-        //var files = fileInput.files;
-
-        //for (var i = 0; i < files.length; i++) {
-        //    formData.append(files[i].name, files[i]);
-        //}
-        //var f = $('form').serialize();
-
-        //console.log(f);
-        //console.log(JSON.stringify(f));
-        //var form = new FormData();
-        //form.append('note', $('#note').val());
-
-        //var fileInput = $('#files').get(0);
-        //var files = fileInput.files;
-        ////for (var i = 0; i < files.length; i++) {
-        ////    form.append(files[i].name, files[i]);
-        ////    formData.append("files", files[i]);
-        ////}
-        //var fd = new FormData($('form'));
-        //fd.append("files", files[0]);
-
-        //debugger;
-        //$.post(url, { data: fd }); 
-        //$.post(url, { "": $('#note').val() }); 
-
-        //$.ajax({
-        //    type: "POST",
-        //    url: url,
-        //    data: JSON.stringify(fd),
-        //    //dataType: 'json',
-        //    //contentType: false,
-        //    //processData: false,
-        //    success: function (response) {
-        //        console.log('response', response);
-        //        $gridCurrentAssignments.refresh();
-        //        $gridRetrievableAssignments.refresh();
-        //        window.$log.success('Submitted report');
-        //    },
-        //    error: function (error) {
-        //        console.log('error', error);
-        //        window.$log.error('Something went wrong. ' + error.resonseJson.message);
-        //    },
-        //    complete: function () {
-        //        $('.modalContainer').html('');
-        //        $('.modal').modal('hide');
-
-        //        window.$hideModalWorking();
-        //    }
-        //});
+                window.$hideModalWorking();
+            }
+        });
 
     });
 
@@ -141,8 +63,7 @@ $(function () {
         for (var i = 0; i < files.length; i++) {
             formData.append(files[i].name, files[i]);
         }
-
-
+        
         $.ajax({
             type: "POST",
             url: url,

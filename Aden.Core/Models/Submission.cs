@@ -51,9 +51,11 @@ namespace Aden.Core.Models
                     break;
                 case WorkItemAction.SubmitWithError:
                     SubmissionState = SubmissionState.CompleteWithError;
+                    SubmissionDate = DateTime.Now;
                     break;
                 case WorkItemAction.ReviewError:
-                    SubmissionState = SubmissionState.NotStarted;
+                    SubmissionState = SubmissionState.CompleteWithError;
+                    SubmissionDate = DateTime.Now;
                     break;
                 case WorkItemAction.Nothing:
                     SubmissionState = SubmissionState.Complete;
