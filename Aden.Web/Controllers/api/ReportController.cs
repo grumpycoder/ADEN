@@ -14,11 +14,13 @@ namespace Aden.Web.Controllers.api
     {
         private readonly IUnitOfWork _uow;
         private readonly INotificationService _notificationService;
+        private readonly IMembershipService _membershipService;
 
-        public ReportController(IUnitOfWork uow, INotificationService notificationService)
+        public ReportController(IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
         {
             _uow = uow;
             _notificationService = notificationService;
+            _membershipService = membershipService;
         }
 
         [HttpGet, Route("{datayear:int}/{filenumber}")]
@@ -39,8 +41,14 @@ namespace Aden.Web.Controllers.api
             var report = Report.Create(submission.DataYear);
 
             submission.Reports.Add(report);
-            //TODO: Find assignee from group
-            var workItem = WorkItem.Create(WorkItemAction.Generate, "mlawrence@alsde.edu");
+
+            //Get assignee
+            var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
+            if (members.IsFailure) return BadRequest(members.Error);
+
+            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
+
+            var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
 
             report.WorkItems.Add(workItem);
             report.SetState(workItem.WorkItemAction);
@@ -48,7 +56,6 @@ namespace Aden.Web.Controllers.api
 
             await _uow.CompleteAsync();
 
-            //TODO: Send work notification 
             _notificationService.SendWorkNotification(workItem);
 
             var dto = Mapper.Map<ReportDto>(report);

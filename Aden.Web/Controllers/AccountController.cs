@@ -1,10 +1,10 @@
-﻿using System.Configuration;
+﻿using Alsde.Extensions;
+using Alsde.Security.Identity;
+using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Web.Mvc;
-using Alsde.Extensions;
-using Alsde.Security.Identity;
 
 namespace Aden.Web.Controllers
 {
@@ -49,12 +49,12 @@ namespace Aden.Web.Controllers
             var env = ConfigurationManager.AppSettings["ASPNET_ENV"].ToLower();
             var viewKey = ConfigurationManager.AppSettings["ALSDE_AIM_ApplicationViewKey"];
 
-            //TODO: Refacto magic string out
+            //TODO: Refactor magic string out of signout
             sb.AppendFormat("http://devaim.alsde.edu/aim/applicationinventory.aspx?logout={0}", viewKey);
 
             if (HttpContext.Request.IsSecureConnection) sb.Replace("http", "https");
 
-            //TODO: Refactor to utility class maybe
+            //TODO: Refactor to utility or factory class 
             switch (env)
             {
                 case "test":

@@ -13,11 +13,13 @@ namespace Aden.Web.Controllers.api
         // GET: ErrorReport
         private readonly IUnitOfWork _uow;
         private readonly INotificationService _notificationService;
+        private readonly IMembershipService _membershipService;
 
-        public ErrorReportController(IUnitOfWork uow, INotificationService notificationService)
+        public ErrorReportController(IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
         {
             _uow = uow;
             _notificationService = notificationService;
+            _membershipService = membershipService;
         }
 
         [HttpPost, Route("assignment/submiterror")]
@@ -33,7 +35,13 @@ namespace Aden.Web.Controllers.api
 
             var report = await _uow.Reports.GetByIdAsync(workItem.ReportId);
 
-            var nextWorkItem = WorkItem.Create(WorkItemAction.ReviewError, "mlawrence@alsde.edu");
+            //Get assignee
+            var members = _membershipService.GetGroupMembers(report.Submission.FileSpecification.GenerationUserGroup);
+            if (members.IsFailure) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
+
+            var nextWorkItem = WorkItem.Create(WorkItemAction.ReviewError, assignee);
 
             report.SetState(nextWorkItem.WorkItemAction);
             report.Submission.SetState(nextWorkItem.WorkItemAction);

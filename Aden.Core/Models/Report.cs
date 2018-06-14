@@ -1,6 +1,4 @@
 ﻿using Aden.Core.Helpers;
-using Aden.Core.Services;
-using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,43 +81,6 @@ namespace Aden.Core.Models
             ReportState = ReportState.Waived;
         }
 
-
-        //REFACTOR BELOW
-
-        //public static Result<Report> Create(Submission submission)
-        //{
-        //    if (submission == null) return Result.Fail<Report>("Submission should not be empty");
-
-        //    if (string.IsNullOrWhiteSpace(submission.FileSpecification.ReportAction)) return Result.Fail<Report>("No report action defined");
-
-        //    if (submission.DataYear == null) return Result.Fail<Report>("No data year defined on file specification.");
-
-        //    return Result.Ok<Report>(new Report(submission.DataYear, ReportState.NotStarted));
-        //}
-
-        public void AddWorkItem(WorkItem workItem)
-        {
-            //TODO: Throw error is uncompleted work item exists
-            WorkItems.Add(workItem);
-            workItem.Report = this;
-            //Send notification
-            NotificationService.SendWorkNotification(workItem);
-        }
-
-        public WorkItem ReassignWorkItem(WorkItem workItem, string assignee)
-        {
-
-            //var wi = WorkItem.Create(workItem.WorkItemAction, assignee, true);
-            //AddWorkItem(wi);
-
-
-            //workItem.WorkItemState = WorkItemState.Reassigned;
-
-            //NotificationService.SendReassignmentWorkNotification(workItem);
-            //return wi;
-            return workItem;
-        }
-
         public void CreateDocument(byte[] file, ReportLevel reportLevel)
         {
             var version = 0;
@@ -131,29 +92,6 @@ namespace Aden.Core.Models
             var doc = ReportDocument.Create(filename, version, reportLevel, file);
             Documents.Add(doc);
         }
-
-        public void CancelWorkItems()
-        {
-            foreach (var workItem in WorkItems.Where(i => i.WorkItemState == WorkItemState.NotStarted))
-            {
-                workItem.Cancel();
-                //Send notification
-                NotificationService.SendCancelWorkNotification(workItem);
-            }
-
-        }
-
-        public void StartNewWork()
-        {
-            //var wi = WorkItem.Create(WorkItemAction.Generate, Submission.FileSpecification.GenerationUserGroup);
-            //AddWorkItem(wi.Value);
-
-            ////TODO: Does this belong here
-            //ReportState = ReportState.AssignedForGeneration;
-            //Submission.SubmissionState = SubmissionState.AssignedForGeneration;
-        }
-
-
 
     }
 }

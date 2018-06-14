@@ -50,7 +50,7 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> WorkHistory(int reportId)
         {
-            //TODO: refactor
+            //TODO: refactor isAdministrator variable from claims
             var isAdministrator = ((ClaimsPrincipal)User).Claims.Where(c => c.Value.ToLower().Contains("administrator")).Count() > 0;
 
             ViewBag.IsSectionAdmin = isAdministrator;
@@ -64,13 +64,8 @@ namespace Aden.Web.Controllers
         public async Task<ActionResult> Reassign(int workItemId)
         {
             var workItem = await _uow.WorkItems.GetByIdAsync(workItemId);
-            //TODO: Refactor to Automapper
-            var dto = new ReassignmentDto()
-            {
-                WorkItemId = workItem.Id,
-                AssignedUser = workItem.AssignedUser,
-                WorkItemAction = workItem.WorkItemAction.ToString()
-            };
+
+            var dto = Mapper.Map<ReassignmentDto>(workItem);
 
             return PartialView("_WorkItemReassignment", dto);
         }
@@ -111,42 +106,7 @@ namespace Aden.Web.Controllers
             var model = Mapper.Map<ReportUploadDto>(wi);
             return PartialView("_ReportUploadForm", model);
         }
-
-        [HttpPost]
-        public async Task<ActionResult> UploadReport(ReportUploadDto model, HttpPostedFileBase[] files)
-        {
-            //TODO: Cleanup SaveReport method
-            if (!ModelState.IsValid)
-            {
-                return PartialView("_ReportUploadForm", model);
-            }
-            //TODO: Refactor this to webapi controller
-            var wi = await _uow.WorkItems.GetByIdAsync(model.Id);
-
-            foreach (var f in files)
-            {
-                //Checking file is available to save.  
-                if (f == null) continue;
-                var reportLevel = ReportLevel.SCH;
-                if (f.FileName.ToLower().Contains("SCH")) reportLevel = ReportLevel.SCH;
-                if (f.FileName.ToLower().Contains("LEA")) reportLevel = ReportLevel.LEA;
-                if (f.FileName.ToLower().Contains("SEA")) reportLevel = ReportLevel.SEA;
-
-                var version = await _uow.Documents.GetNextAvailableVersion(wi.Report.SubmissionId, reportLevel);
-
-                BinaryReader br = new BinaryReader(f.InputStream);
-                byte[] data = br.ReadBytes((f.ContentLength));
-                var doc = ReportDocument.Create(f.FileName, version, reportLevel, data);
-                wi.Report.Documents.Add(doc);
-
-            }
-
-            wi.Finish();
-            await _uow.CompleteAsync();
-
-            return Content("success");
-        }
-
+        
         public ActionResult Error(string message)
         {
             return View();

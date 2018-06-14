@@ -175,7 +175,7 @@ function rowStyle(submissionState, dueDate) {
     var classes = ['active', 'success', 'info', 'warning', 'danger'];
     var $moment = window.moment();
 
-    //TODO: What to do about CompletedWithError
+    //TODO: What to do about CompletedWithError color
 
     if (submissionState === 'Completed' || submissionState === 'Waived') {
         return classes[1];

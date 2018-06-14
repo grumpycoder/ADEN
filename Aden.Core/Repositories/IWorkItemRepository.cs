@@ -18,7 +18,6 @@ namespace Aden.Core.Repositories
         IEnumerable<WorkItem> GetCompletedByUser(string username);
         IEnumerable<WorkItem> GetHistory(int reportId);
         Task<IEnumerable<WorkItem>> GetHistoryAsync(int reportId);
-        IEnumerable<WorkItem> GetHistoryByFileSpecification(int submissionId, int dataYear);
         string GetUserWithLeastAssignments(IEnumerable<string> members);
     }
 }

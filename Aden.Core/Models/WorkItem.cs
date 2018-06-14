@@ -1,6 +1,4 @@
-﻿using ALSDE.Idem;
-using CSharpFunctionalExtensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,10 +46,12 @@ namespace Aden.Core.Models
 
         private WorkItem() { }
 
-        private WorkItem(WorkItemState state, string assignee)
+        private WorkItem(WorkItemAction action, string assignee)
         {
+            WorkItemAction = action;
             AssignedUser = assignee;
-            WorkItemState = state;
+            AssignedDate = DateTime.Now;
+            WorkItemState = WorkItemState.NotStarted;
         }
 
         public static WorkItem Create(WorkItemAction action, string assignee)
@@ -97,152 +97,6 @@ namespace Aden.Core.Models
             AssignedUser = assignee;
         }
 
-        //REFACTOR BELOW 
-
-
-        private void CreateNextWorkItem(WorkItemAction currentWorkItem)
-        {
-            WorkItem wi;
-
-            //TODO: Refactor to factory method
-            //switch (currentWorkItem)
-            //{
-            //    case WorkItemAction.Generate:
-            //        Report.GeneratedDate = DateTime.Now;
-            //        Report.GeneratedUser = AssignedUser;
-            //        Report.ReportState = ReportState.AssignedForReview;
-            //        Report.Submission.SubmissionState = SubmissionState.AssignedForReview;
-            //        wi = WorkItem.Create(WorkItemAction.Review, Report.Submission.FileSpecification.GenerationUserGroup);
-            //        Report.AddWorkItem(wi);
-            //        break;
-            //    case WorkItemAction.Review:
-            //        Report.ReportState = ReportState.AwaitingApproval;
-            //        Report.Submission.SubmissionState = SubmissionState.AwaitingApproval;
-            //        wi = WorkItem.Create(WorkItemAction.Approve, Report.Submission.FileSpecification.ApprovalUserGroup);
-            //        Report.AddWorkItem(wi);
-            //        break;
-            //    case WorkItemAction.Approve:
-            //        Report.ApprovedDate = DateTime.Now;
-            //        Report.ApprovedUser = AssignedUser;
-            //        Report.ReportState = ReportState.AssignedForSubmission;
-            //        Report.Submission.SubmissionState = SubmissionState.AssignedForSubmission;
-            //        wi = WorkItem.Create(WorkItemAction.Submit, Report.Submission.FileSpecification.SubmissionUserGroup);
-            //        Report.AddWorkItem(wi);
-            //        break;
-            //    case WorkItemAction.SubmitWithError:
-            //        Report.SubmittedDate = DateTime.Now;
-            //        Report.SubmittedUser = AssignedUser;
-            //        Report.ReportState = ReportState.CompleteWithError;
-            //        Report.Submission.SubmissionState = SubmissionState.CompleteWithError;
-            //        wi = WorkItem.Create(WorkItemAction.ReviewError, Report.Submission.FileSpecification.ApprovalUserGroup);
-            //        Report.AddWorkItem(wi);
-            //        break;
-            //    case WorkItemAction.Submit:
-            //        Report.SubmittedDate = DateTime.Now;
-            //        Report.SubmittedUser = AssignedUser;
-            //        Report.ReportState = ReportState.Complete;
-            //        Report.Submission.SubmissionState = SubmissionState.Complete;
-            //        break;
-            //    case WorkItemAction.ReviewError:
-            //        Report.StartNewWork();
-            //        break;
-            //}
-        }
-
-        private WorkItem(WorkItemAction action, string assignee)
-        {
-            WorkItemAction = action;
-            AssignedUser = assignee;
-            AssignedDate = DateTime.Now;
-            WorkItemState = WorkItemState.NotStarted;
-        }
-
-
-        //public static Result<WorkItem> Create(WorkItemAction action, string assignee)
-        //{
-        //    if (string.IsNullOrWhiteSpace(assignee)) return Result.Fail<WorkItem>("Assignee should not be empty");
-
-        //    var workItem = new WorkItem(action, assignee);
-
-        //    return Result.Ok(workItem);
-        //}
-
-        //public static Result<WorkItem> Create(WorkItemAction action, string groupName)
-        //{
-        //    if (string.IsNullOrWhiteSpace(groupName)) return Result.Fail<WorkItem>("Assignment Group should not be empty");
-
-        //    var memberOrError = GetAssigneeFromGroup(groupName);
-
-        //    if (memberOrError.IsFailure) return Result.Fail<WorkItem>(memberOrError.Value);
-
-        //    var workItem = new WorkItem(action, memberOrError.Value);
-
-        //    return Result.Ok(workItem);
-        //}
-
-        private static Result<string> GetAssigneeFromGroup(string groupName)
-        {
-            if (string.IsNullOrWhiteSpace(groupName)) return Result.Fail<string>("Group Name should not be empty");
-
-            var groupMembers = GroupHelper.GetGroupMembers(groupName);
-
-            if (groupMembers == null) return Result.Fail<string>($"No members defined for group {groupName}");
-
-            var members = groupMembers.Select(m => m.EmailAddress).ToList();
-
-            //var assignmentService = new AssignmentService();
-            //Result<string> assigneeOrError = assignmentService.GetAssigneeFromMemberList(members);
-
-            //if (assigneeOrError.IsFailure) return Result.Fail<string>(assigneeOrError.Value);
-
-            //return Result.Ok(assigneeOrError.Value);
-            return Result.Ok<string>("AssigneeTest");
-        }
-
-        //public static WorkItem Create(WorkItemAction action, string assignment, bool isIndividual = false)
-        //{
-
-        //try
-        //{
-
-        //    var assignee = string.Empty;
-        //    var members = new List<string>();
-
-        //    if (isIndividual) assignee = assignment;
-        //    if (!isIndividual)
-        //    {
-        //        var groupMembers = GroupHelper.GetGroupMembers(assignment);
-
-        //        if (groupMembers == null) throw new Exception(string.Format("No group {0} defined or no members assigned", assignment));
-
-        //        members = groupMembers.Select(m => m.EmailAddress).ToList();
-        //    }
-
-        //    //var workItem = new WorkItem();
-
-        //    ////TODO: This doesn't belong here. Coupled to data source. Should not reference uow or group helper
-
-        //    //assignee = isIndividual ? assignee : _uow.WorkItems.GetUserWithLeastAssignments(members);
-
-        //    var wi = new WorkItem(action, assignee);
-        //    return wi;
-        //}
-        //catch (ArgumentNullException e)
-        //{
-        //    throw new Exception(e.Message, e);
-        //}
-        //catch (Exception ex)
-        //{
-        //    if (ex.InnerException.Message.Contains("Login failed"))
-        //    {
-        //        throw new Exception($"User unable to connect to database. ", ex);
-        //    }
-        //    throw new Exception($"{assignment} Group not defined or no members assigned. ", ex);
-        //}
-
-        //}
-
-
 
         private static T GetNext<T>(IEnumerable<T> list, T current)
         {
@@ -267,12 +121,6 @@ namespace Aden.Core.Models
                 return default(T);
             }
         }
-
-        public void SetAction(WorkItemAction action)
-        {
-            WorkItemAction = action;
-        }
-
 
     }
 }

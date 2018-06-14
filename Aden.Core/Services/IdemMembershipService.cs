@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace Aden.Core.Services
 {
-    public class MembershipService : IMembershipService
+    public class IdemMembershipService : IMembershipService
     {
 
-        public MembershipService()
+        public IdemMembershipService()
         {
 
         }

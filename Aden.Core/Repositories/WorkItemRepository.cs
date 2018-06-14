@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Aden.Core.Data;
+using Aden.Core.Models;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Aden.Core.Data;
-using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
@@ -98,20 +98,10 @@ namespace Aden.Core.Repositories
             return workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToList();
         }
 
-
-
-        //TODO: Verify methods needed 
-
-        public IEnumerable<WorkItem> GetHistoryByFileSpecification(int submissionId, int dataYear)
-        {
-            return _context.WorkItems.Where(w => w.Report.SubmissionId == submissionId && w.Report.DataYear == dataYear).OrderByDescending(d => d.Id).ToList();
-        }
-
-
         public string GetUserWithLeastAssignments(IEnumerable<string> members)
         {
             var alreadyAssignedMembers = _context.WorkItems.AsNoTracking().Where(u => members.Contains(u.AssignedUser)).ToLookup(m => m.AssignedUser);
-            
+
             var firstAvailableMember = members.FirstOrDefault(x => !alreadyAssignedMembers.Contains(x));
 
             if (firstAvailableMember != null) return firstAvailableMember;

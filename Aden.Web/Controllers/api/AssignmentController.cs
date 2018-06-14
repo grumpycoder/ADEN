@@ -17,29 +17,19 @@ namespace Aden.Web.Controllers.api
     {
         private readonly IUnitOfWork _uow;
         private readonly INotificationService _notificationService;
+        private readonly IMembershipService _membershipService;
 
-        public AssignmentController(IUnitOfWork uow, INotificationService notificationService)
+        public AssignmentController(IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
         {
             _uow = uow;
             _notificationService = notificationService;
-        }
-
-        [HttpGet]
-        public async Task<object> Get()
-        {
-            //TODO: Verify if needed
-            var id = "mlawrence@alsde.edu"; // User.Identity.Name ?? id;
-
-            var workitems = await _uow.WorkItems.GetActiveAsync(id);
-
-            var dto = Mapper.Map<List<WorkItemDto>>(workitems);
-
-            return Ok(dto);
+            _membershipService = membershipService;
         }
 
         [HttpGet, Route("current/{username}")]
         public async Task<object> CurrentAssignments(string username)
         {
+            //TODO: Should use authenticated user?
             var workitems = await _uow.WorkItems.GetActiveAsync(username);
 
             var dto = Mapper.Map<List<WorkItemDto>>(workitems);
@@ -50,6 +40,7 @@ namespace Aden.Web.Controllers.api
         [HttpGet, Route("history/{username}")]
         public async Task<object> History(string username)
         {
+            //TODO: Should use authenticated user?
             var workItems = await _uow.WorkItems.GetCompletedAsync(username);
 
             var dto = Mapper.Map<List<WorkItemDto>>(workItems.OrderByDescending(w => w.CanCancel).ThenByDescending(w => w.AssignedDate));
@@ -80,11 +71,24 @@ namespace Aden.Web.Controllers.api
                 return Ok();
             }
 
-            //TODO: Get assignee
-            var nextWorkItem = WorkItem.Create(next, "mlawrence@alsde.edu");
+            //Get assignee
+            var groupName = report.Submission.FileSpecification.GenerationUserGroup;
+            switch (next)
+            {
+                case WorkItemAction.Approve:
+                    groupName = report.Submission.FileSpecification.ApprovalUserGroup;
+                    break;
+                case WorkItemAction.Submit:
+                    groupName = report.Submission.FileSpecification.SubmissionUserGroup;
+                    break;
+            }
+            var members = _membershipService.GetGroupMembers(groupName);
+            if (members.IsFailure) return BadRequest(members.Error);
 
+            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
 
-            //TODO: Set ReportState and SubmissionState
+            var nextWorkItem = WorkItem.Create(next, assignee);
+
             report.SetState(next);
             report.Submission.SetState(next);
 
@@ -110,11 +114,16 @@ namespace Aden.Web.Controllers.api
 
             workItem.Cancel();
 
-            //TODO: Set ReportState and SubmissionState
             report.SetState(WorkItemAction.Nothing);
             report.Submission.SetState(WorkItemAction.Nothing);
 
-            var newWorkItem = WorkItem.Create(WorkItemAction.Generate, "mlawrence@alsde.edu");
+            //Get assignee
+            var members = _membershipService.GetGroupMembers(report.Submission.FileSpecification.GenerationUserGroup);
+            if (members.IsFailure) return BadRequest(members.Error);
+
+            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
+
+            var newWorkItem = WorkItem.Create(WorkItemAction.Generate, assignee);
 
             report.WorkItems.Add(newWorkItem);
             report.SetState(newWorkItem.WorkItemAction);
@@ -142,7 +151,6 @@ namespace Aden.Web.Controllers.api
             _notificationService.SendWorkReassignmentNotification(workItem);
 
             workItem.Reassign(model.AssignedUser);
-
 
             await _uow.CompleteAsync();
 
@@ -175,7 +183,6 @@ namespace Aden.Web.Controllers.api
                 if (f.FileName.ToLower().Contains("LEA")) reportLevel = ReportLevel.LEA;
                 if (f.FileName.ToLower().Contains("SEA")) reportLevel = ReportLevel.SEA;
 
-                //TODO: Refactor this
                 var version = await _uow.Documents.GetNextAvailableVersion(report.SubmissionId, reportLevel);
 
                 BinaryReader br = new BinaryReader(f.InputStream);
@@ -191,63 +198,16 @@ namespace Aden.Web.Controllers.api
 
             //What's the next work
             var next = WorkItem.Next(workItem);
-            if (next == WorkItemAction.Nothing)
-            {
-                report.SetState(next);
-                report.Submission.SetState(next);
-                await _uow.CompleteAsync();
-                return Ok();
-            }
-
-            //TODO: Get assignee
-            var nextWorkItem = WorkItem.Create(next, "mlawrence@alsde.edu");
-
-
-            //TODO: Set ReportState and SubmissionState
             report.SetState(next);
             report.Submission.SetState(next);
-
-            report.WorkItems.Add(nextWorkItem);
-
             await _uow.CompleteAsync();
-            //save changes
-
-            //Send work notification
-            _notificationService.SendWorkNotification(nextWorkItem);
 
             var dto = Mapper.Map<WorkItemDto>(workItem);
             return Ok(dto);
+
         }
 
-        [HttpPost, Route("submiterror/{id}")]
-        public object SubmitError(int id, ErrorReportDto model)
-        {
-            //TODO: Fix files missing in model
-            //Retrieve file from file parameter
-            var files = new List<byte[]>();
-            foreach (string filename in HttpContext.Current.Request.Files)
-            {
-                var f = HttpContext.Current.Request.Files[filename];
-
-                //Checking file is available to save.  
-                if (f == null) continue;
-
-                BinaryReader br = new BinaryReader(f.InputStream);
-                byte[] data = br.ReadBytes((f.ContentLength));
-
-                files.Add(data);
-
-                //TODO: attach images to email message
-
-                //TODO: Send error notification
-                
-            }
-            //_notificationService.SendWorkErrorNotification();
-            return Ok();
-        }
-        
     }
-
 
 
     public class ErrorReportDto

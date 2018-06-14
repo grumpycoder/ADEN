@@ -123,8 +123,7 @@
     <Compile Include="Services\EmailNotificationService.cs" />
     <Compile Include="Services\IMembershipService.cs" />
     <Compile Include="Services\INotificationService.cs" />
-    <Compile Include="Services\MembershipService.cs" />
-    <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\IdemMembershipService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
