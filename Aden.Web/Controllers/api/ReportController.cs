@@ -1,6 +1,7 @@
 ﻿using Aden.Core.Dtos;
 using Aden.Core.Models;
 using Aden.Core.Repositories;
+using Aden.Core.Services;
 using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,18 +13,20 @@ namespace Aden.Web.Controllers.api
     public class ReportController : ApiController
     {
         private readonly IUnitOfWork _uow;
+        private readonly INotificationService _notificationService;
 
-        public ReportController(IUnitOfWork uow)
+        public ReportController(IUnitOfWork uow, INotificationService notificationService)
         {
             _uow = uow;
+            _notificationService = notificationService;
         }
 
         [HttpGet, Route("{datayear:int}/{filenumber}")]
         public async Task<object> Get(int datayear, string filenumber)
         {
             var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
-            var reportList = Mapper.Map<List<ReportDto>>(reports);
-            return Ok(reportList);
+            var dto = Mapper.Map<List<ReportDto>>(reports);
+            return Ok(dto);
         }
 
         [HttpPost, Route("create/{id}")]
@@ -45,7 +48,11 @@ namespace Aden.Web.Controllers.api
 
             await _uow.CompleteAsync();
 
-            return Ok(report);
+            //TODO: Send work notification 
+            _notificationService.SendWorkNotification(workItem);
+
+            var dto = Mapper.Map<ReportDto>(report);
+            return Ok(dto);
         }
 
         [HttpPost, Route("waiver/{id}")]

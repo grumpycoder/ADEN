@@ -22,8 +22,8 @@ namespace Aden.Web.Controllers.api
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
             var specs = await _uow.FileSpecifications.GetAllAsync();
-            var vm = Mapper.Map<List<FileSpecificationDto>>(specs);
-            return Ok(vm);
+            var dto = Mapper.Map<List<FileSpecificationDto>>(specs);
+            return Ok(dto);
         }
 
         [HttpPost, Route("retire/{id}")]
@@ -40,7 +40,9 @@ namespace Aden.Web.Controllers.api
 
             await _uow.CompleteAsync();
 
-            return Ok(fileSpecification);
+            var dto = Mapper.Map<FileSpecificationDto>(fileSpecification);
+
+            return Ok(dto);
         }
 
         [HttpPost, Route("activate/{id}")]
@@ -55,19 +57,20 @@ namespace Aden.Web.Controllers.api
 
             await _uow.CompleteAsync();
 
-            return Ok(fileSpecification);
+            var dto = Mapper.Map<FileSpecificationDto>(fileSpecification);
+            return Ok(dto);
         }
 
         [HttpPut, Route("{id}")]
-        public object Update(int id, UpdateFileSpecificationDto model)
+        public object Update(int id, UpdateFileSpecificationDto dto)
         {
             var fileSpecification = _uow.FileSpecifications.GetById(id);
 
-            Mapper.Map(model, fileSpecification);
+            Mapper.Map(dto, fileSpecification);
 
             _uow.Complete();
 
-            return Ok(model);
+            return Ok(dto);
         }
     }
 }

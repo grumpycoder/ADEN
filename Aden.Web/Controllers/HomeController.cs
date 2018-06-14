@@ -2,7 +2,6 @@
 using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Web.Filters;
-using Aden.Web.ViewModels;
 using AutoMapper;
 using System.Collections.Generic;
 using System.IO;
@@ -51,6 +50,7 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> WorkHistory(int reportId)
         {
+            //TODO: refactor
             var isAdministrator = ((ClaimsPrincipal)User).Claims.Where(c => c.Value.ToLower().Contains("administrator")).Count() > 0;
 
             ViewBag.IsSectionAdmin = isAdministrator;
@@ -64,6 +64,7 @@ namespace Aden.Web.Controllers
         public async Task<ActionResult> Reassign(int workItemId)
         {
             var workItem = await _uow.WorkItems.GetByIdAsync(workItemId);
+            //TODO: Refactor to Automapper
             var dto = new ReassignmentDto()
             {
                 WorkItemId = workItem.Id,
@@ -102,47 +103,6 @@ namespace Aden.Web.Controllers
             var model = Mapper.Map<WorkItemDto>(wi);
             return PartialView("_WorkItemForm", model);
         }
-
-        //[HttpPost]
-        //public async Task<ActionResult> ErrorReport(WorkItemDto model, HttpPostedFileBase[] files)
-        //{
-        //    //TODO: Cleanup SaveWorkItem method
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return PartialView("_WorkItemForm", model);
-        //    }
-        //    //TODO: Refactor this to webapi controller
-        //    var wi = await _uow.WorkItems.GetByIdAsync(model.Id);
-        //    wi.Notes = model.Notes;
-        //    wi.SetAction(WorkItemAction.SubmitWithError);
-
-        //    wi.Finish();
-        //    await _uow.CompleteAsync();
-
-        //    var next = wi.Report.WorkItems.LastOrDefault();
-
-        //    foreach (var f in files)
-        //    {
-        //        //Checking file is available to save.  
-        //        if (f == null) continue;
-        //        var inputFileName = Path.GetFileName(f.FileName);
-        //        var serverSavePath = Path.Combine(Server.MapPath("~/App_Data/") + inputFileName);
-        //        f.SaveAs(serverSavePath);
-        //        //assigning file uploaded status to ViewBag for showing message to user.  
-        //        ViewBag.UploadStatus = files.Count() + " files uploaded successfully.";
-        //    }
-
-        //    NotificationService.SendWorkItemError(next, wi.Notes, Server.MapPath("~/App_Data/"));
-
-        //    var path = Server.MapPath("~/App_Data/");
-
-        //    foreach (FileInfo file in new DirectoryInfo(path).GetFiles())
-        //    {
-        //        file.Delete();
-        //    }
-
-        //    return Content("success");
-        //}
 
         public async Task<ActionResult> UploadReport(int id)
         {

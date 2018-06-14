@@ -24,7 +24,6 @@ namespace Aden.Core.Models
         {
             get
             {
-                return true;
                 //TODO: Cleanup
                 if (WorkItemState == WorkItemState.Cancelled) return false;
 

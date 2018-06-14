@@ -28,6 +28,7 @@ namespace Aden.Web.Controllers.api
         [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
+            //TODO: Refactor
             var isGlobalAdmin = true; // User.IsInRole(_globalAdministrators);
 
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;

@@ -76,6 +76,7 @@ namespace Aden.Web.App_Start
             kernel.Bind<IWorkItemRepository>().To<WorkItemRepository>();
             kernel.Bind<IDocumentRepository>().To<DocumentRepository>();
             kernel.Bind<IMembershipService>().To<MembershipService>();
+            kernel.Bind<INotificationService>().To<EmailNotificationService>();
 
         }
     }

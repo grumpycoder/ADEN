@@ -1,6 +1,7 @@
 ﻿using Aden.Core.Dtos;
 using Aden.Core.Models;
 using Aden.Core.Repositories;
+using Aden.Core.Services;
 using AutoMapper;
 using System.Collections.Generic;
 using System.IO;
@@ -15,23 +16,25 @@ namespace Aden.Web.Controllers.api
     public class AssignmentController : ApiController
     {
         private readonly IUnitOfWork _uow;
+        private readonly INotificationService _notificationService;
 
-        public AssignmentController(IUnitOfWork uow)
+        public AssignmentController(IUnitOfWork uow, INotificationService notificationService)
         {
             _uow = uow;
+            _notificationService = notificationService;
         }
 
         [HttpGet]
         public async Task<object> Get()
         {
-            //TODO: Uncomment
+            //TODO: Verify if needed
             var id = "mlawrence@alsde.edu"; // User.Identity.Name ?? id;
 
             var workitems = await _uow.WorkItems.GetActiveAsync(id);
 
-            var wi = Mapper.Map<List<WorkItemDto>>(workitems);
+            var dto = Mapper.Map<List<WorkItemDto>>(workitems);
 
-            return Ok(wi);
+            return Ok(dto);
         }
 
         [HttpGet, Route("current/{username}")]
@@ -53,7 +56,6 @@ namespace Aden.Web.Controllers.api
 
             return Ok(dto);
         }
-
 
         [HttpPost, Route("complete/{id}")]
         public async Task<object> Complete(int id)
@@ -90,7 +92,11 @@ namespace Aden.Web.Controllers.api
 
             await _uow.CompleteAsync();
 
-            return Ok(nextWorkItem);
+            //Send work notification
+            _notificationService.SendWorkNotification(nextWorkItem);
+
+            var dto = Mapper.Map<WorkItemDto>(nextWorkItem);
+            return Ok(dto);
         }
 
         [HttpPost, Route("cancel/{id}")]
@@ -116,28 +122,35 @@ namespace Aden.Web.Controllers.api
 
             await _uow.CompleteAsync();
 
-            return Ok(newWorkItem);
+            //Send cancel notification
+            _notificationService.SendWorkCancelNotification(workItem);
+
+            //Send work notification
+            _notificationService.SendWorkNotification(newWorkItem);
+
+            var dto = Mapper.Map<WorkItemDto>(newWorkItem);
+            return Ok(dto);
         }
 
-        [HttpPost, Route("submiterror/{id}")]
-        public object SubmitError(int id, ErrorReportDto model)
+        [HttpPost, Route("reassign")]
+        public async Task<object> Reassign([FromBody]ReassignmentDto model)
         {
-            //TODO: Fix files missing in model
-            //Retrieve file from file parameter
-            foreach (string filename in HttpContext.Current.Request.Files)
-            {
-                var f = HttpContext.Current.Request.Files[filename];
+            var workItem = await _uow.WorkItems.GetByIdAsync(model.WorkItemId);
+            if (workItem == null) return NotFound();
 
-                //Checking file is available to save.  
-                if (f == null) continue;
+            //Send work reassignment notification
+            _notificationService.SendWorkReassignmentNotification(workItem);
 
-                BinaryReader br = new BinaryReader(f.InputStream);
-                byte[] data = br.ReadBytes((f.ContentLength));
+            workItem.Reassign(model.AssignedUser);
 
-                //attach images to email message
 
-            }
-            return Ok();
+            await _uow.CompleteAsync();
+
+            //Send work notification
+            _notificationService.SendWorkNotification(workItem);
+
+            var dto = Mapper.Map<WorkItemDto>(workItem);
+            return Ok(dto);
         }
 
         [HttpPost, Route("submitreport/{id}")]
@@ -199,25 +212,40 @@ namespace Aden.Web.Controllers.api
             await _uow.CompleteAsync();
             //save changes
 
+            //Send work notification
+            _notificationService.SendWorkNotification(nextWorkItem);
+
             var dto = Mapper.Map<WorkItemDto>(workItem);
             return Ok(dto);
         }
 
-        [HttpPost, Route("reassign")]
-        public async Task<object> Reassign([FromBody]ReassignmentDto model)
+        [HttpPost, Route("submiterror/{id}")]
+        public object SubmitError(int id, ErrorReportDto model)
         {
-            var workItem = await _uow.WorkItems.GetByIdAsync(model.WorkItemId);
-            if (workItem == null) return NotFound();
+            //TODO: Fix files missing in model
+            //Retrieve file from file parameter
+            var files = new List<byte[]>();
+            foreach (string filename in HttpContext.Current.Request.Files)
+            {
+                var f = HttpContext.Current.Request.Files[filename];
 
-            workItem.Reassign(model.AssignedUser);
+                //Checking file is available to save.  
+                if (f == null) continue;
 
-            //TODO: Send notification email
+                BinaryReader br = new BinaryReader(f.InputStream);
+                byte[] data = br.ReadBytes((f.ContentLength));
 
-            await _uow.CompleteAsync();
+                files.Add(data);
 
-            var dto = Mapper.Map<WorkItemDto>(workItem);
-            return Ok(dto);
+                //TODO: attach images to email message
+
+                //TODO: Send error notification
+                
+            }
+            //_notificationService.SendWorkErrorNotification();
+            return Ok();
         }
+        
     }
 
 

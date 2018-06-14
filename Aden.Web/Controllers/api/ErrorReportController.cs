@@ -1,6 +1,6 @@
-﻿
-using Aden.Core.Models;
+﻿using Aden.Core.Models;
 using Aden.Core.Repositories;
+using Aden.Core.Services;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,10 +12,12 @@ namespace Aden.Web.Controllers.api
     {
         // GET: ErrorReport
         private readonly IUnitOfWork _uow;
+        private readonly INotificationService _notificationService;
 
-        public ErrorReportController(IUnitOfWork uow)
+        public ErrorReportController(IUnitOfWork uow, INotificationService notificationService)
         {
             _uow = uow;
+            _notificationService = notificationService;
         }
 
         [HttpPost, Route("assignment/submiterror")]
@@ -27,6 +29,8 @@ namespace Aden.Web.Controllers.api
             workItem.Notes = model.Note;
             workItem.Finish();
 
+            _notificationService.SendWorkErrorNotification(workItem, model.Files);
+
             var report = await _uow.Reports.GetByIdAsync(workItem.ReportId);
 
             var nextWorkItem = WorkItem.Create(WorkItemAction.ReviewError, "mlawrence@alsde.edu");
@@ -36,9 +40,10 @@ namespace Aden.Web.Controllers.api
 
             report.WorkItems.Add(nextWorkItem);
 
-            //Send email notifications
-
             await _uow.CompleteAsync();
+
+            //Send email notifications
+            _notificationService.SendWorkNotification(nextWorkItem);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
