@@ -1,7 +1,6 @@
 ﻿using Aden.Core.Helpers;
 using Aden.Core.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Web;

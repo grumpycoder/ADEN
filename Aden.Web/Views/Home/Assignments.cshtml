@@ -36,7 +36,7 @@
                                                                               c.Add().DataField("fileName");
                                                                               c.Add().DataField("fileNumber").Width(100);
                                                                               c.Add().DataField("displayDataYear").Width(100).Caption("Data Year");
-                                                                              c.Add().DataField("assignedDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                                                              c.Add().DataField("assignedDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); 
                                                                               c.Add().DataField("dueDate").Width(150).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
                                                                               c.Add().CssClass("btn-cell").Alignment(HorizontalAlignment.Center).AllowResizing(true).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
 
@@ -67,11 +67,11 @@
                                                                               c.Add().DataField("fileName");
                                                                               c.Add().DataField("fileNumber");
                                                                               c.Add().DataField("displayDataYear").Caption("Data Year");
-                                                                              c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); ;
+                                                                              c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm"); 
                                                                               c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
                                                                               c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
                                                                               c.Add().DataField("action");
-                                                                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
+                                                                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); 
                                                                           })
                                                                           .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/history/" + @Model + "/")).Key("id")))
                 </div>

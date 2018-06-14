@@ -1,14 +1,11 @@
 ﻿using Aden.Core.Dtos;
-using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Web.Filters;
 using AutoMapper;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Aden.Web.Controllers
@@ -50,8 +47,7 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> WorkHistory(int reportId)
         {
-            //TODO: refactor isAdministrator variable from claims
-            var isAdministrator = ((ClaimsPrincipal)User).Claims.Where(c => c.Value.ToLower().Contains("administrator")).Count() > 0;
+            var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains("administrator"));
 
             ViewBag.IsSectionAdmin = isAdministrator;
             var workItems = await _uow.WorkItems.GetHistoryAsync(reportId);
@@ -106,7 +102,7 @@ namespace Aden.Web.Controllers
             var model = Mapper.Map<ReportUploadDto>(wi);
             return PartialView("_ReportUploadForm", model);
         }
-        
+
         public ActionResult Error(string message)
         {
             return View();

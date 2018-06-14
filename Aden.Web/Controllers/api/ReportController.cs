@@ -40,7 +40,7 @@ namespace Aden.Web.Controllers.api
 
             var report = Report.Create(submission.DataYear);
 
-            submission.Reports.Add(report);
+            submission.AddReport(report);
 
             //Get assignee
             var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
@@ -50,7 +50,7 @@ namespace Aden.Web.Controllers.api
 
             var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
 
-            report.WorkItems.Add(workItem);
+            report.AddWorkItem(workItem);
             report.SetState(workItem.WorkItemAction);
             submission.SetState(workItem.WorkItemAction);
 
@@ -70,7 +70,7 @@ namespace Aden.Web.Controllers.api
 
             var report = Report.Create(submission.DataYear);
 
-            submission.Reports.Add(report);
+            submission.AddReport(report);
 
             submission.Waive();
             report.Waive();

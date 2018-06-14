@@ -17,14 +17,27 @@ namespace Aden.Core.Models
 
         public SubmissionState SubmissionState { get; set; }
 
-        public virtual List<Report> Reports { get; set; }
+        public List<Report> Reports { get; set; }
 
         public byte[] SpecificationDocument { get; set; }
 
         public int FileSpecificationId { get; set; }
         public FileSpecification FileSpecification { get; set; }
 
+        private Submission()
+        {
+            Reports = new List<Report>();
+        }
 
+        private Submission(DateTime dueDate, int dataYear, bool isSea, bool isLea, bool isSch)
+        {
+            DueDate = dueDate;
+            DataYear = dataYear;
+            IsLEA = isLea;
+            IsSEA = isSea;
+            IsSCH = isSch;
+            SubmissionState = SubmissionState.NotStarted;
+        }
 
         public void AddReport(Report report)
         {
@@ -70,5 +83,9 @@ namespace Aden.Core.Models
             SubmissionState = SubmissionState.Waived;
         }
 
+        public static Submission Create(FileSpecification fileSpecification)
+        {
+            return new Submission(fileSpecification.DueDate, fileSpecification.DataYear, fileSpecification.IsSEA, fileSpecification.IsLEA, fileSpecification.IsSCH);
+        }
     }
 }

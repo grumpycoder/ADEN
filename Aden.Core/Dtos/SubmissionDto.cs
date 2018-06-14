@@ -1,12 +1,12 @@
-﻿using Aden.Core.Models;
+﻿using Aden.Core.Helpers;
+using Aden.Core.Models;
+using AutoMapper;
 using Heroic.AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web;
-using Aden.Core.Helpers;
-using AutoMapper;
 
 namespace Aden.Core.Dtos
 {
@@ -23,10 +23,7 @@ namespace Aden.Core.Dtos
 
         public int? DataYear { get; set; }
 
-        public string DisplayDataYear
-        {
-            get { return string.Format("{0}-{1}", DataYear - 1, DataYear); }
-        }
+        public string DisplayDataYear => string.Format("{0}-{1}", DataYear - 1, DataYear);
 
         public bool IsSEA { get; set; }
         public bool IsLEA { get; set; }
@@ -48,10 +45,7 @@ namespace Aden.Core.Dtos
         public int FileSpecificationId { get; set; }
         public virtual FileSpecification FileSpecification { get; set; }
 
-        public bool CanStartReport
-        {
-            get { return !string.IsNullOrEmpty(FileSpecification.ReportAction); }
-        }
+        public bool CanStartReport => !string.IsNullOrEmpty(FileSpecification.ReportAction);
 
         public bool HasAdmin
         {

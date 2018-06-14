@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Aden.Core.Models
 {
@@ -21,8 +22,17 @@ namespace Aden.Core.Models
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }
 
+        public bool IsSEA { get; set; }
+        public bool IsLEA { get; set; }
+        public bool IsSCH { get; set; }
+        public DateTime DueDate { get; set; }
+
         public List<Submission> Submissions { get; set; }
 
+        private FileSpecification()
+        {
+            Submissions = new List<Submission>();
+        }
         public override string ToString()
         {
             return $"{FileNumber} {FileName}";
@@ -36,6 +46,11 @@ namespace Aden.Core.Models
         public void Activate()
         {
             IsRetired = false;
+        }
+
+        public void AddSubmission(Submission submission)
+        {
+            Submissions.Add(submission);
         }
     }
 }

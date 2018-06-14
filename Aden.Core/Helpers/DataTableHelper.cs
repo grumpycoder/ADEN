@@ -36,7 +36,7 @@ namespace Aden.Core.Helpers
                         }
                         else
                         {
-                            sb.Append(dr[i].ToString());
+                            sb.Append(dr[i]);
                         }
                     }
                     if (i < dtDataTable.Columns.Count - 1)
@@ -78,7 +78,7 @@ namespace Aden.Core.Helpers
                         }
                         else
                         {
-                            sb.Append(dr[i].ToString());
+                            sb.Append(dr[i]);
                         }
                     }
                     if (i < dtDataTable.Columns.Count - 1)

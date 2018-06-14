@@ -93,5 +93,14 @@ namespace Aden.Core.Models
             Documents.Add(doc);
         }
 
+        public void AddWorkItem(WorkItem workItem)
+        {
+            WorkItems.Add(workItem);
+        }
+
+        public void AddDocument(ReportDocument document)
+        {
+            Documents.Add(document);
+        }
     }
 }

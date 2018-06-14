@@ -38,9 +38,7 @@ namespace Aden.Core.Models
 
                 if (p == null) return false;
 
-                if (p.Id == Id) return true;
-
-                return false;
+                return p.Id == Id;
             }
         }
 

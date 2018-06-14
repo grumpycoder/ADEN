@@ -97,7 +97,7 @@ namespace Aden.Web.Controllers.api
             report.SetState(next);
             report.Submission.SetState(next);
 
-            report.WorkItems.Add(nextWorkItem);
+            report.AddWorkItem(nextWorkItem);
 
             await _uow.CompleteAsync();
 
@@ -130,7 +130,7 @@ namespace Aden.Web.Controllers.api
 
             var newWorkItem = WorkItem.Create(WorkItemAction.Generate, assignee);
 
-            report.WorkItems.Add(newWorkItem);
+            report.AddWorkItem(newWorkItem);
             report.SetState(newWorkItem.WorkItemAction);
             report.Submission.SetState(newWorkItem.WorkItemAction);
 
@@ -195,7 +195,7 @@ namespace Aden.Web.Controllers.api
                 var doc = ReportDocument.Create(f.FileName, version, reportLevel, data);
 
                 //attach report documents
-                report.Documents.Add(doc);
+                report.AddDocument(doc);
             }
 
             //finish work item

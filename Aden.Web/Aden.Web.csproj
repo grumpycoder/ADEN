@@ -272,15 +272,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\AssigmentsViewModel.cs" />
-    <Compile Include="ViewModels\FileSpecificationEditViewModel.cs" />
-    <Compile Include="ViewModels\FileSpecificationViewModel.cs" />
-    <Compile Include="ViewModels\ReassignmentViewModel.cs" />
-    <Compile Include="ViewModels\ReportDocumentViewModel.cs" />
-    <Compile Include="ViewModels\ReportViewModel.cs" />
-    <Compile Include="ViewModels\SubmissionViewModel.cs" />
-    <Compile Include="ViewModels\ReportUploadViewModel.cs" />
-    <Compile Include="ViewModels\WorkItemViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -486,6 +477,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ViewModels\" />
     <Folder Include="Views\ErrorReport\" />
   </ItemGroup>
   <ItemGroup>

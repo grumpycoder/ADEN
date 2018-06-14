@@ -25,7 +25,7 @@ namespace Aden.Core.Services
 
             var member = _uow.WorkItems.GetUserWithLeastAssignments(members);
 
-            return Result.Ok<string>(member);
+            return Result.Ok(member);
         }
     }
 }

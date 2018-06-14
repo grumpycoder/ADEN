@@ -46,7 +46,7 @@ namespace Aden.Web.Controllers.api
             report.SetState(nextWorkItem.WorkItemAction);
             report.Submission.SetState(nextWorkItem.WorkItemAction);
 
-            report.WorkItems.Add(nextWorkItem);
+            report.AddWorkItem(nextWorkItem);
 
             await _uow.CompleteAsync();
 

@@ -10,20 +10,20 @@ namespace Aden.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly string accessKey = ConfigurationManager.AppSettings["TPA_AccessKey"];
+        private readonly string _accessKey = ConfigurationManager.AppSettings["TPA_AccessKey"];
 
         //Callback url from TPA login
         public ActionResult LoginCallback(string token)
         {
             var url = ConfigurationManager.AppSettings["WebServiceUrl"];
-            var tokenKey = new TokenKey(token, accessKey);
+            var tokenKey = new TokenKey(token, _accessKey);
 
             var identity = IdentityManager.TokenSignin(url, tokenKey);
 
             // Add custom claims to User to store Section information
             var claims = identity.Claims.ToList();
             var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));
-            var isAdministrator = claims.Where(c => c.Value.ToLower().Contains("administrator")).Count() > 0;
+            var isAdministrator = claims.Any(c => c.Value.ToLower().Contains("administrator"));
 
             if (claim != null)
             {

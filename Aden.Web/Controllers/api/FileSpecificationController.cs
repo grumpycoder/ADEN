@@ -5,6 +5,7 @@ using DevExtreme.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Aden.Core.Models;
 
 namespace Aden.Web.Controllers.api
 {
@@ -35,7 +36,6 @@ namespace Aden.Web.Controllers.api
 
             fileSpecification.Retire();
 
-            //TODO: only delete current data year on file specification child records
             _uow.Submissions.Delete(fileSpecification.Id);
 
             await _uow.CompleteAsync();
@@ -54,6 +54,10 @@ namespace Aden.Web.Controllers.api
 
             //TODO: If activate then need to create submission record 
             fileSpecification.Activate();
+
+            //Create submission record
+            var submission = Submission.Create(fileSpecification);
+            fileSpecification.AddSubmission(submission);
 
             await _uow.CompleteAsync();
 
