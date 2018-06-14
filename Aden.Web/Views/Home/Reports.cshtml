@@ -39,7 +39,7 @@
                                       c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
                                       c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
                                   })
-                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/reports/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))
+                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/report/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))
                 </div>
 
             </div>

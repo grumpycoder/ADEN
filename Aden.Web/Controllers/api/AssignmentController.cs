@@ -4,6 +4,7 @@ using Aden.Core.Repositories;
 using AutoMapper;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
@@ -32,6 +33,27 @@ namespace Aden.Web.Controllers.api
 
             return Ok(wi);
         }
+
+        [HttpGet, Route("current/{username}")]
+        public async Task<object> CurrentAssignments(string username)
+        {
+            var workitems = await _uow.WorkItems.GetActiveAsync(username);
+
+            var dto = Mapper.Map<List<WorkItemDto>>(workitems);
+
+            return Ok(dto);
+        }
+
+        [HttpGet, Route("history/{username}")]
+        public async Task<object> History(string username)
+        {
+            var workItems = await _uow.WorkItems.GetCompletedAsync(username);
+
+            var dto = Mapper.Map<List<WorkItemDto>>(workItems.OrderByDescending(w => w.CanCancel).ThenByDescending(w => w.AssignedDate));
+
+            return Ok(dto);
+        }
+
 
         [HttpPost, Route("complete/{id}")]
         public async Task<object> Complete(int id)

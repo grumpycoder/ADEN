@@ -2,6 +2,7 @@
 using Aden.Core.Models;
 using Aden.Core.Repositories;
 using AutoMapper;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -15,6 +16,14 @@ namespace Aden.Web.Controllers.api
         public ReportController(IUnitOfWork uow)
         {
             _uow = uow;
+        }
+
+        [HttpGet, Route("{datayear:int}/{filenumber}")]
+        public async Task<object> Get(int datayear, string filenumber)
+        {
+            var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
+            var reportList = Mapper.Map<List<ReportDto>>(reports);
+            return Ok(reportList);
         }
 
         [HttpPost, Route("create/{id}")]

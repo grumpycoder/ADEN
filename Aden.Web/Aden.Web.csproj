@@ -257,8 +257,6 @@
     <Compile Include="Controllers\api\ReportController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ReportsController.cs" />
-    <Compile Include="Controllers\WorkItemController.cs" />
     <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\TrackViewName.cs" />
     <Compile Include="Filters\ValidateModelAttribute.cs" />

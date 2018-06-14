@@ -41,7 +41,7 @@
                                                                               c.Add().CssClass("btn-cell").Alignment(HorizontalAlignment.Center).AllowResizing(true).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
 
                                                                           })
-                                                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/current/" + @Model + "/")).Key("id")))
+                                                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/current/" + @Model + "/")).Key("id")))
                 </div>
 
             </div>
@@ -73,7 +73,7 @@
                                                                               c.Add().DataField("action");
                                                                               c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}")); ;
                                                                           })
-                                                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/wi/completed/" + @Model + "/")).Key("id")))
+                                                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/history/" + @Model + "/")).Key("id")))
                 </div>
 
             </div>
