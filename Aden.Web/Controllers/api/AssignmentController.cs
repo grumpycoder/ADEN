@@ -55,7 +55,12 @@ namespace Aden.Web.Controllers.api
 
             if (workItem == null) return NotFound();
 
-            //TODO: Generate documents
+            if (workItem.WorkItemAction == WorkItemAction.Generate)
+            {
+                //Create documents
+                await _uow.GenerateDocumentsAsync(workItem.ReportId);
+            }
+
             workItem.Finish();
 
             //Start new work item
