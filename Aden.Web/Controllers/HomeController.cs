@@ -64,14 +64,14 @@ namespace Aden.Web.Controllers
         public async Task<ActionResult> Reassign(int workItemId)
         {
             var workItem = await _uow.WorkItems.GetByIdAsync(workItemId);
-            var model = new ReassignmentViewModel()
+            var dto = new ReassignmentDto()
             {
                 WorkItemId = workItem.Id,
                 AssignedUser = workItem.AssignedUser,
                 WorkItemAction = workItem.WorkItemAction.ToString()
             };
 
-            return PartialView("_WorkItemReassignment", model);
+            return PartialView("_WorkItemReassignment", dto);
         }
 
         public async Task<ActionResult> Document(int id)

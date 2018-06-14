@@ -77,7 +77,6 @@ $(function () {
         e.preventDefault();
         var id = $(this).data('workitem-id');
         var url = $(this).attr('href') + '/' + id;
-
         $.ajax({
             url: url,
             type: 'POST',
@@ -107,8 +106,8 @@ $(function () {
                                 var formData = $('form').serialize();
                                 $.ajax({
                                     type: "POST",
-                                    url: '/api/wi/reassign',
-                                    data: model = formData,
+                                    url: '/api/assignment/reassign',
+                                    data: model = formData
                                 }).done(function (data) {
                                     console.log('data', data);
                                     window.$log.success('Reassigned task');

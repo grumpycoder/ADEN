@@ -120,9 +120,7 @@ namespace Aden.Web.Controllers.api
         }
 
         [HttpPost, Route("submiterror/{id}")]
-        //[HttpPost, Route("submiterror")]
         public object SubmitError(int id, ErrorReportDto model)
-        //public object SubmitError([FromBody]string note)
         {
             //TODO: Fix files missing in model
             //Retrieve file from file parameter
@@ -204,7 +202,25 @@ namespace Aden.Web.Controllers.api
             var dto = Mapper.Map<WorkItemDto>(workItem);
             return Ok(dto);
         }
+
+        [HttpPost, Route("reassign")]
+        public async Task<object> Reassign([FromBody]ReassignmentDto model)
+        {
+            var workItem = await _uow.WorkItems.GetByIdAsync(model.WorkItemId);
+            if (workItem == null) return NotFound();
+
+            workItem.Reassign(model.AssignedUser);
+
+            //TODO: Send notification email
+
+            await _uow.CompleteAsync();
+
+            var dto = Mapper.Map<WorkItemDto>(workItem);
+            return Ok(dto);
+        }
     }
+
+
 
     public class ErrorReportDto
     {

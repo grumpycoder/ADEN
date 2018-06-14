@@ -93,6 +93,10 @@ namespace Aden.Core.Models
             WorkItemState = WorkItemState.Cancelled;
             CompletedDate = DateTime.Now;
         }
+        public void Reassign(string assignee)
+        {
+            AssignedUser = assignee;
+        }
 
         //REFACTOR BELOW 
 
