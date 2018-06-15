@@ -107,16 +107,21 @@ namespace Aden.Core.Repositories
                     adapter.Fill(ds);
                 }
             }
-
-
+            
             var table1 = ds.Tables[0].ToCsvString(false);
             var table2 = ds.Tables[1].ToCsvString(false);
 
-            if (ds.Tables[0].Rows.Count > 1)
-            {
-                return Encoding.ASCII.GetBytes(string.Concat(table2, table1));
-            }
-            return Encoding.ASCII.GetBytes(string.Concat(table1, table2));
+            var file = Encoding.ASCII.GetBytes(ds.Tables[0].Rows.Count > 1 ? string.Concat(table2, table1) : string.Concat(table1, table2)); ;
+
+            return file; 
+
+            //return Encoding.ASCII.GetBytes(ds.Tables[0].Rows.Count > 1 ? string.Concat(table2, table1) : string.Concat(table1, table2));
+
+            //if (ds.Tables[0].Rows.Count > 1)
+            //{
+            //    return Encoding.ASCII.GetBytes(string.Concat(table2, table1));
+            //}
+            //return Encoding.ASCII.GetBytes(string.Concat(table1, table2));
         }
 
         private DataTable ExecuteDocumentCreation(Submission submission, string reportLevel)

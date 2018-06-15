@@ -24,22 +24,22 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                                  .DataGrid().ID("grid")
-                                  .ShowRowLines(true)
-                                  .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                                  .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
-                                  .Columns(c =>
-                                  {
-                                      c.Add().DataField("fileName");
-                                      c.Add().DataField("fileNumber");
-                                      c.Add().DataField("displayDataYear").Caption("Data Year");
-                                      c.Add().DataField("reportState");
-                                      c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                                      c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                                      c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                                      c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
-                                  })
-                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/report/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))
+                                          .DataGrid().ID("grid")
+                                          .ShowRowLines(true)
+                                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                          .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+                                          .Columns(c =>
+                                          {
+                                              c.Add().DataField("fileName");
+                                              c.Add().DataField("fileNumber");
+                                              c.Add().DataField("displayDataYear").Caption("Data Year");
+                                              c.Add().DataField("reportState");
+                                              c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                              c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                              c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                              c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
+                                          })
+                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/report/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))
                 </div>
 
             </div>
@@ -47,46 +47,10 @@
     </div>
 </section>
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Document</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <a class="btn btn-primary" download="file.csv" href="/download/1079">Download</a>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="historyModal" tabindex="-1" role="dialog" aria-labelledby="historyModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="historyModalLabel">Document</h4>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @section scripts
 {
+    <script src="~/js/app/downloadFile.helper.js"></script>
     <script src="~/js/app/app.js"></script>
     <script src="~/js/app/reports.js"></script>
+
 }

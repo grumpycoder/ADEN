@@ -6,10 +6,9 @@
 
 function createReportDocumentLinks(container, options) {
     var documents = options.data.documents;
-    console.log('repdoclink', documents);
     var lnk = '<span><ul class="list-unstyled">';
     documents.forEach(function (doc) {
-        lnk += '<li>' +
+        lnk += '<li class="doclink">' +
             '<a href="#myModal" ' +
             'data-document-viewer ' +
             'data-doc-id="' + doc.id + '" ' +
@@ -26,30 +25,64 @@ function createReportDocumentLinks(container, options) {
     });
     lnk += '</ul></span>';
     container.append(lnk);
+
+    //SETUP LINK CLICK HANDLER
+    $('li[class="doclink"] > a').each(function (e) {
+        var id = $(this).data('doc-id');
+
+        $('[data-doc-id=' + id + ']').on('click', function (e) {
+            var $currentTarget = $(this);
+            var title = $currentTarget.data('title');
+            var modalUrl = $currentTarget.data('url');
+            
+            $.ajax({
+                url: modalUrl,
+                type: 'POST',
+                success: function (data) {
+                    window.showBSModal({
+                        title: title,
+                        body: data,
+                        size: "large", 
+                        actions: [
+                            {
+                                label: 'Cancel',
+                                cssClass: 'btn-default',
+                                onClick: function (e) {
+                                    console.log('e', e);
+                                    $(e.target).parents('.modal').modal('hide');
+                                    $('body').removeClass('modal-open');
+                                    //modal-open class is added on body so it has to be removed
+
+                                    $('.modal-backdrop').remove();
+                                    //need to remove div with modal-backdrop class
+                                }
+                            },
+                            {
+                                label: 'Download',
+                                cssClass: 'btn-primary',
+                                onClick: function (e) {
+                                    var downloadUrl = '/download/' + id;
+                                    window.downloadFile(downloadUrl);
+                                    $('.modalContainer').html('');
+                                    $('.modal').modal('hide');
+
+                                    $(e.target).parents('.modal').modal('hide');
+                                    $('body').removeClass('modal-open');
+                                    //modal-open class is added on body so it has to be removed
+
+                                    $('.modal-backdrop').remove();
+                                    //need to remove div with modal-backdrop class
+                                }
+                            }
+                        ]
+                    });
+                },
+                error: function (err) {
+                    console.log('err', err);
+                    window.$log.error('Error showing history');
+                }
+            });
+
+        });
+    });
 }
-
-$(document).on('click', '[data-document-viewer]', function (e) {
-    console.log('doc link click');
-
-    var $currentTarget = $(e.currentTarget);
-    var targetModal = $currentTarget.data('target');
-    var $modal = $(targetModal);
-
-    var remoteContent = $currentTarget.data('url');
-    var title = $currentTarget.data('doc-title');
-    var id = $currentTarget.data('doc-id');
-    console.log('url', remoteContent);
-
-    var modalBody = $(targetModal + ' .modal-body');
-    var modalTitle = $(targetModal + ' .modal-title');
-
-    modalTitle.html(title);
-    $modal.on('show.bs.modal', function () {
-        var lnk = $(this).find('a[download]');
-        lnk.attr('href', '/download/' + id);
-        modalBody.load(remoteContent);
-    }).modal();
-    return false;
-});
-
-

@@ -347,6 +347,7 @@
     <Content Include="js\angular-route.min.js" />
     <Content Include="js\angular.js" />
     <Content Include="js\angular.min.js" />
+    <Content Include="js\app\downloadFile.helper.js" />
     <Content Include="js\jquery.validate.custom.js" />
     <Content Include="js\aspnet\dx.aspnet.data.js" />
     <Content Include="js\aspnet\dx.aspnet.mvc.js" />
