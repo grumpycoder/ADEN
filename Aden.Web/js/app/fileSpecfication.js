@@ -7,11 +7,83 @@ $(function () {
     $(document).on('click', '[data-edit]', function (e) {
         e.preventDefault();
         var url = $(this).attr("href");
-        $.get(url,
-            function (data) {
-                $('#editContainer').html(data);
-                $('#editModal').modal({ show: true });
-            });
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {
+                window.showBSModal({
+                    title: 'Edit Specification',
+                    body: data,
+                    size: "lg",
+                    actions: [
+                        {
+                            label: 'Cancel',
+                            cssClass: 'btn-default',
+                            onClick: function (e) {
+                                $(e.target).parents('.modal').modal('hide');
+                                $('body').removeClass('modal-open');
+                                //modal-open class is added on body so it has to be removed
+
+                                $('.modal-backdrop').remove();
+                                //need to remove div with modal-backdrop class
+                            }
+                        },
+                        {
+                            label: 'Save',
+                            cssClass: 'btn-primary',
+                            onClick: function (e) {
+                                var form = $('form');
+                                var url = '/api/filespecification/' + $('#Id').val();
+                                window.$showModalWorking();
+
+                                $.ajax({
+                                    type: "PUT",
+                                    url: url,
+                                    data: $('form').serialize(),
+                                    success: function (msg) {
+
+                                        $('.modalContainer').html('');
+                                        $('.modal').modal('hide');
+
+                                        $('#grid').dxDataGrid('instance').refresh().done(function (e) { });
+
+                                        //$(e.target).parents('.modal').modal('hide');
+                                        //$('body').removeClass('modal-open');
+                                        //modal-open class is added on body so it has to be removed
+
+                                        //$('.modal-backdrop').remove();
+                                        //need to remove div with modal-backdrop class
+
+                                        window.toastr.success('Saved ');
+                                    },
+                                    error: function (err) {
+                                        var validationErrors = JSON.parse(err.responseText);
+                                        $.each(validationErrors.modelState, function (i, ival) {
+                                            window.remoteErrors(form, i, ival);
+                                        });
+                                    },
+                                    complete: function () {
+                                        console.log('complete');
+                                        window.$hideModalWorking();
+                                    }
+
+                                });
+                            }
+                        }
+                    ]
+                });
+            },
+            error: function (err) {
+                console.log('err', err);
+                window.$log.error('Error showing reassignment');
+            }
+        });
+
+        //$.get(url,
+        //    function (data) {
+        //        $('#editContainer').html(data);
+        //        $('#editModal').modal({ show: true });
+        //    });
     });
 
     $(document).on('click', '[data-retire]', function (e) {
@@ -62,32 +134,32 @@ $(function () {
 
     });
 
-    $(document).on('submit', 'form', (function (e) {
-        e.preventDefault();
-        var form = $('form');
-        var url = '/api/filespecification/' + $('#Id').val();
+    //$(document).on('submit', 'form', (function (e) {
+    //    e.preventDefault();
+    //    var form = $('form');
+    //    var url = '/api/filespecification/' + $('#Id').val();
 
 
-        $.ajax({
-            type: "PUT",
-            url: url,
-            data: $('form').serialize(),
-            success: function (msg) {
-                $('#editModal').modal('hide');
-                $('#editContainer').html("");
-                $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
-                window.toastr.success('Saved ');
-            },
-            error: function (err) {
-                var validationErrors = JSON.parse(err.responseText);
-                $.each(validationErrors.modelState, function (i, ival) {
-                    window.remoteErrors(form, i, ival);
-                });
-            }
+    //    $.ajax({
+    //        type: "PUT",
+    //        url: url,
+    //        data: $('form').serialize(),
+    //        success: function (msg) {
+    //            $('#editModal').modal('hide');
+    //            $('#editContainer').html("");
+    //            $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
+    //            window.toastr.success('Saved ');
+    //        },
+    //        error: function (err) {
+    //            var validationErrors = JSON.parse(err.responseText);
+    //            $.each(validationErrors.modelState, function (i, ival) {
+    //                window.remoteErrors(form, i, ival);
+    //            });
+    //        }
 
-        });
+    //    });
 
-    }));
+    //}));
 });
 
 function createFileSpecificationGridActionButtons(container, options) {

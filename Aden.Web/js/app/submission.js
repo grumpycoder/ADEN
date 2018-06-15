@@ -109,24 +109,23 @@ $(function () {
                                     url: '/api/assignment/reassign',
                                     data: model = formData
                                 }).done(function (data) {
-                                    console.log('data', data);
                                     window.$log.success('Reassigned task');
                                 }).fail(function (err) {
-                                    console.log('error', error);
                                     window.$log.error('Failed to reassign task. ' + error);
                                 }).always(function () {
-                                    console.log('always');
                                     $('.modalContainer').html('');
                                     $('.modal').modal('hide');
+
+                                    $(e.target).parents('.modal').modal('hide');
+                                    $('body').removeClass('modal-open');
+                                    //modal-open class is added on body so it has to be removed
+
+                                    $('.modal-backdrop').remove();
+                                    //need to remove div with modal-backdrop class
                                     window.$hideModalWorking();
                                 });
 
-                                $(e.target).parents('.modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                //modal-open class is added on body so it has to be removed
-
-                                $('.modal-backdrop').remove();
-                                //need to remove div with modal-backdrop class
+                              
                             }
                         }
                     ]
@@ -134,7 +133,7 @@ $(function () {
             },
             error: function (err) {
                 console.log('err', err);
-                window.$log.error('Error showing history');
+                window.$log.error('Error showing reassignment');
             }
         });
 
