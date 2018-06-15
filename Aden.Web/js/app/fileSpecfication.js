@@ -42,18 +42,16 @@ $(function () {
                                     data: $('form').serialize(),
                                     success: function (msg) {
 
-                                        $('.modalContainer').html('');
-                                        $('.modal').modal('hide');
-
-                                        $('#grid').dxDataGrid('instance').refresh().done(function (e) { });
-
-                                        //$(e.target).parents('.modal').modal('hide');
-                                        //$('body').removeClass('modal-open');
+                                        //$('.modalContainer').html('');
+                                        //$('.modal').modal('hide');
+                                        $('body').removeClass('modal-open');
+                                        $(e.target).parents('.modal').modal('hide');
                                         //modal-open class is added on body so it has to be removed
 
                                         //$('.modal-backdrop').remove();
                                         //need to remove div with modal-backdrop class
 
+                                        $('#grid').dxDataGrid('instance').refresh().done(function (e) { });
                                         window.toastr.success('Saved ');
                                     },
                                     error: function (err) {
@@ -61,9 +59,10 @@ $(function () {
                                         $.each(validationErrors.modelState, function (i, ival) {
                                             window.remoteErrors(form, i, ival);
                                         });
+                                        
                                     },
                                     complete: function () {
-                                        console.log('complete');
+                                        //console.log('complete');
                                         window.$hideModalWorking();
                                     }
 
@@ -79,11 +78,6 @@ $(function () {
             }
         });
 
-        //$.get(url,
-        //    function (data) {
-        //        $('#editContainer').html(data);
-        //        $('#editModal').modal({ show: true });
-        //    });
     });
 
     $(document).on('click', '[data-retire]', function (e) {
@@ -134,32 +128,6 @@ $(function () {
 
     });
 
-    //$(document).on('submit', 'form', (function (e) {
-    //    e.preventDefault();
-    //    var form = $('form');
-    //    var url = '/api/filespecification/' + $('#Id').val();
-
-
-    //    $.ajax({
-    //        type: "PUT",
-    //        url: url,
-    //        data: $('form').serialize(),
-    //        success: function (msg) {
-    //            $('#editModal').modal('hide');
-    //            $('#editContainer').html("");
-    //            $('#grid').dxDataGrid('instance').refresh().done(function (e) { console.log('done', e) });
-    //            window.toastr.success('Saved ');
-    //        },
-    //        error: function (err) {
-    //            var validationErrors = JSON.parse(err.responseText);
-    //            $.each(validationErrors.modelState, function (i, ival) {
-    //                window.remoteErrors(form, i, ival);
-    //            });
-    //        }
-
-    //    });
-
-    //}));
 });
 
 function createFileSpecificationGridActionButtons(container, options) {
