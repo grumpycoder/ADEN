@@ -103,6 +103,7 @@ $(function () {
                             label: 'Save',
                             cssClass: 'btn-primary',
                             onClick: function (e) {
+                                window.$showModalWorking();
                                 var formData = $('form').serialize();
                                 $.ajax({
                                     type: "POST",
