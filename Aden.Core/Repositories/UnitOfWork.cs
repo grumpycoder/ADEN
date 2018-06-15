@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Aden.Core.Repositories
@@ -39,20 +40,17 @@ namespace Aden.Core.Repositories
 
             if (report.Submission.IsSCH)
             {
-                var dataTable = ExecuteDocumentCreation(report.Submission, "SCH");
-                var file = dataTable.ToCSVBytes();
+                var file = ExecuteDocumentCreationToFile(report.Submission, "SCH");
                 report.CreateDocument(file, ReportLevel.SCH);
             }
             if (report.Submission.IsLEA)
             {
-                var dataTable = ExecuteDocumentCreation(report.Submission, "LEA");
-                var file = dataTable.ToCSVBytes();
+                var file = ExecuteDocumentCreationToFile(report.Submission, "LEA");
                 report.CreateDocument(file, ReportLevel.LEA);
             }
             if (report.Submission.IsSEA)
             {
-                var dataTable = ExecuteDocumentCreation(report.Submission, "SEA");
-                var file = dataTable.ToCSVBytes();
+                var file = ExecuteDocumentCreationToFile(report.Submission, "SEA");
                 report.CreateDocument(file, ReportLevel.SEA);
             }
 
@@ -71,20 +69,20 @@ namespace Aden.Core.Repositories
             if (report.Submission.IsSCH)
             {
                 var dataTable = ExecuteDocumentCreation(report.Submission, "SCH");
-                var file = dataTable.ToCSVBytes();
+                var file = dataTable.ToCsvBytes();
                 report.CreateDocument(file, ReportLevel.SCH);
             }
             if (report.Submission.IsLEA)
             {
 
                 var dataTable = ExecuteDocumentCreation(report.Submission, "LEA");
-                var file = dataTable.ToCSVBytes();
+                var file = dataTable.ToCsvBytes();
                 report.CreateDocument(file, ReportLevel.LEA);
             }
             if (report.Submission.IsSEA)
             {
                 var dataTable = ExecuteDocumentCreation(report.Submission, "SEA");
-                var file = dataTable.ToCSVBytes();
+                var file = dataTable.ToCsvBytes();
                 report.CreateDocument(file, ReportLevel.SEA);
             }
 
@@ -93,9 +91,10 @@ namespace Aden.Core.Repositories
             return Result.Ok();
         }
 
-        private DataTable ExecuteDocumentCreation(Submission submission, string reportLevel)
+        private byte[] ExecuteDocumentCreationToFile(Submission submission, string reportLevel)
         {
             var dataTable = new DataTable();
+            var ds = new DataSet();
             using (var connection = new SqlConnection(_context.Database.Connection.ConnectionString))
             {
                 using (var cmd = new SqlCommand(submission.FileSpecification.ReportAction, connection))
@@ -105,6 +104,35 @@ namespace Aden.Core.Repositories
                     cmd.Parameters.AddWithValue("@ReportLevel", reportLevel);
                     var adapter = new SqlDataAdapter(cmd);
                     adapter.Fill(dataTable);
+                    adapter.Fill(ds);
+                }
+            }
+
+
+            var table1 = ds.Tables[0].ToCsvString(false);
+            var table2 = ds.Tables[1].ToCsvString(false);
+
+            if (ds.Tables[0].Rows.Count > 1)
+            {
+                return Encoding.ASCII.GetBytes(string.Concat(table2, table1));
+            }
+            return Encoding.ASCII.GetBytes(string.Concat(table1, table2));
+        }
+
+        private DataTable ExecuteDocumentCreation(Submission submission, string reportLevel)
+        {
+            var dataTable = new DataTable();
+            var ds = new DataSet();
+            using (var connection = new SqlConnection(_context.Database.Connection.ConnectionString))
+            {
+                using (var cmd = new SqlCommand(submission.FileSpecification.ReportAction, connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@DataYear", submission.DataYear);
+                    cmd.Parameters.AddWithValue("@ReportLevel", reportLevel);
+                    var adapter = new SqlDataAdapter(cmd);
+                    adapter.Fill(dataTable);
+                    adapter.Fill(ds);
                 }
             }
             return dataTable;

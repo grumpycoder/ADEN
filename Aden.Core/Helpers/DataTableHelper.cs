@@ -8,30 +8,34 @@ namespace Aden.Core.Helpers
 {
     public static class DataTableHelper
     {
-        public static byte[] ToCSVBytes(this DataTable dtDataTable)
+        public static byte[] ToCsvBytes(this DataTable dtDataTable, bool withHeaderRow = true)
         {
             var sb = new StringBuilder();
 
             //headers  
-            for (int i = 0; i < dtDataTable.Columns.Count; i++)
+            if (withHeaderRow)
             {
-                sb.Append(dtDataTable.Columns[i]);
-                if (i < dtDataTable.Columns.Count - 1)
+                for (var i = 0; i < dtDataTable.Columns.Count; i++)
                 {
-                    sb.Append(",");
+                    sb.Append(dtDataTable.Columns[i]);
+                    if (i < dtDataTable.Columns.Count - 1)
+                    {
+                        sb.Append(",");
+                    }
                 }
+                sb.AppendLine();
             }
-            sb.AppendLine();
+
             foreach (DataRow dr in dtDataTable.Rows)
             {
-                for (int i = 0; i < dtDataTable.Columns.Count; i++)
+                for (var i = 0; i < dtDataTable.Columns.Count; i++)
                 {
                     if (!Convert.IsDBNull(dr[i]))
                     {
                         string value = dr[i].ToString();
                         if (value.Contains(','))
                         {
-                            value = string.Format("\"{0}\"", value);
+                            value = $"\"{value}\"";
                             sb.Append(value);
                         }
                         else
@@ -50,30 +54,34 @@ namespace Aden.Core.Helpers
             return Encoding.ASCII.GetBytes(sb.ToString());
         }
 
-        public static string ToCSVString(this DataTable dtDataTable)
+        public static string ToCsvString(this DataTable dtDataTable, bool withHeaderRow = true)
         {
             var sb = new StringBuilder();
 
             //headers  
-            for (int i = 0; i < dtDataTable.Columns.Count; i++)
+            if (withHeaderRow)
             {
-                sb.Append(dtDataTable.Columns[i]);
-                if (i < dtDataTable.Columns.Count - 1)
+                for (var i = 0; i < dtDataTable.Columns.Count; i++)
                 {
-                    sb.Append(",");
+                    sb.Append(dtDataTable.Columns[i]);
+                    if (i < dtDataTable.Columns.Count - 1)
+                    {
+                        sb.Append(",");
+                    }
                 }
+                sb.AppendLine();
             }
-            sb.AppendLine();
+
             foreach (DataRow dr in dtDataTable.Rows)
             {
-                for (int i = 0; i < dtDataTable.Columns.Count; i++)
+                for (var i = 0; i < dtDataTable.Columns.Count; i++)
                 {
                     if (!Convert.IsDBNull(dr[i]))
                     {
                         string value = dr[i].ToString();
                         if (value.Contains(','))
                         {
-                            value = string.Format("\"{0}\"", value);
+                            value = $"\"{value}\"";
                             sb.Append(value);
                         }
                         else
@@ -92,29 +100,33 @@ namespace Aden.Core.Helpers
             return sb.ToString();
         }
 
-        public static void ToCSVFile(this DataTable dtDataTable, string strFilePath)
+        public static void ToCsvFile(this DataTable dtDataTable, string strFilePath, bool withHeaderRow = true)
         {
             StreamWriter sw = new StreamWriter(strFilePath, false);
             //headers  
-            for (int i = 0; i < dtDataTable.Columns.Count; i++)
+            if (withHeaderRow)
             {
-                sw.Write(dtDataTable.Columns[i]);
-                if (i < dtDataTable.Columns.Count - 1)
+                for (var i = 0; i < dtDataTable.Columns.Count; i++)
                 {
-                    sw.Write(",");
+                    sw.Write(dtDataTable.Columns[i]);
+                    if (i < dtDataTable.Columns.Count - 1)
+                    {
+                        sw.Write(",");
+                    }
                 }
+                sw.Write(sw.NewLine);
             }
-            sw.Write(sw.NewLine);
+
             foreach (DataRow dr in dtDataTable.Rows)
             {
-                for (int i = 0; i < dtDataTable.Columns.Count; i++)
+                for (var i = 0; i < dtDataTable.Columns.Count; i++)
                 {
                     if (!Convert.IsDBNull(dr[i]))
                     {
                         string value = dr[i].ToString();
                         if (value.Contains(','))
                         {
-                            value = String.Format("\"{0}\"", value);
+                            value = $"\"{value}\"";
                             sw.Write(value);
                         }
                         else
