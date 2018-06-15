@@ -37,7 +37,7 @@ namespace Aden.Web.Controllers.api
 
             //Get assignee
             var members = _membershipService.GetGroupMembers(report.Submission.FileSpecification.GenerationUserGroup);
-            if (members.IsFailure) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (members.IsFailure) return new HttpStatusCodeResult(HttpStatusCode.BadRequest, members.Error);
 
             var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
 

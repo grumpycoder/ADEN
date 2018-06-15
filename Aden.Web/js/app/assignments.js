@@ -6,90 +6,6 @@ $(function () {
     var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
     var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
     
-    $(document).on('click', '#btnSubmitErrorReportForm', function (e) {
-        e.preventDefault();
-        window.$showModalWorking();
-
-        var id = $('#Id').val();
-        var url = '/assignment/submiterror/';
-        console.log(id);
-        var formData = new FormData();
-        formData.append('Id', id);
-        formData.append('Note', $('#note').val());
-
-        var files = document.getElementById('files').files; 
-        if (files.length > 0) {
-            for (var i = 0; i < files.length; i++) {
-                formData.append('files', files[i]); 
-            }
-        }
-
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                console.log('response', response);
-                $gridCurrentAssignments.refresh();
-                $gridRetrievableAssignments.refresh();
-                window.$log.success('Submitted report');
-            },
-            error: function (error) {
-                console.log('error', error);
-                window.$log.error('Something went wrong. ' + error.resonseJson.message);
-            },
-            complete: function () {
-                $('.modalContainer').html('');
-                $('.modal').modal('hide');
-
-                window.$hideModalWorking();
-            }
-        });
-
-    });
-
-    $(document).on('click', '#btnSubmitReportForm', function (e) {
-        e.preventDefault();
-        var id = $('#Id').val();
-        var url = '/api/assignment/submitreport/' + id;
-
-        window.$showModalWorking();
-        var formData = new FormData();
-        var fileInput = $('#files').get(0);
-        var files = fileInput.files; 
-
-        for (var i = 0; i < files.length; i++) {
-            formData.append(files[i].name, files[i]);
-        }
-        
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: formData,
-            dataType: 'json',
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                console.log('response', response);
-                $gridCurrentAssignments.refresh();
-                $gridRetrievableAssignments.refresh();
-                window.$log.success('Submitted report');
-            },
-            error: function (error) {
-                console.log('error', error);
-                window.$log.error('Something went wrong. ' + error.resonseJson.message);
-            },
-            complete: function () {
-                $('.modalContainer').html('');
-                $('.modal').modal('hide');
-
-                window.$hideModalWorking();
-            }
-        });
-    });
-
     $(document).on('click', '[data-workitem-id]', function (e) {
         e.preventDefault();
         console.log('work item click');
@@ -140,22 +56,167 @@ $(function () {
         e.preventDefault();
         console.log('upload report');
         var url = $(this).attr("href");
-        $.get(url, function (data) {
-            $('#modalContainer').html(data);
-            $('.modal').modal({ show: true });
+
+        var title = 'Upload Report';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {
+                window.showBSModal({
+                    title: title,
+                    body: data,
+                    size: "large",
+                    actions: [
+                        {
+                            label: 'Cancel',
+                            cssClass: 'btn-default',
+                            onClick: function (e) {
+                                console.log('e', e);
+                                $(e.target).parents('.modal').modal('hide');
+                                $('body').removeClass('modal-open');
+                                //modal-open class is added on body so it has to be removed
+
+                                $('.modal-backdrop').remove();
+                                //need to remove div with modal-backdrop class
+                            }
+                        },
+                        {
+                            label: 'Submit',
+                            cssClass: 'btn-primary',
+                            onClick: function (e) {
+                                var id = $('#Id').val();
+
+                                var url = '/api/assignment/submitreport/' + id;
+                                var formData = new FormData();
+                                var fileInput = $('#files').get(0);
+                                var files = fileInput.files;
+
+                                window.$showModalWorking();
+
+                                for (var i = 0; i < files.length; i++) {
+                                    formData.append(files[i].name, files[i]);
+                                }
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: formData,
+                                    dataType: 'json',
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (response) {
+                                        $gridCurrentAssignments.refresh();
+                                        $gridRetrievableAssignments.refresh();
+                                        window.$log.success('Submitted report');
+                                    },
+                                    error: function (error) {
+                                        window.$log.error('Error: ' + error.resonseJson.message);
+                                    },
+                                    complete: function () {
+                                        $('.modalContainer').html('');
+                                        $('.modal').modal('hide');
+
+                                        $(e.target).parents('.modal').modal('hide');
+                                        $('body').removeClass('modal-open');
+                                        //modal-open class is added on body so it has to be removed
+
+                                        $('.modal-backdrop').remove();
+                                        //need to remove div with modal-backdrop class
+
+                                        window.$hideModalWorking();
+                                    }
+                                });
+                            }
+                        }
+                    ]
+                });
+            },
+            error: function (err) {
+                window.$log.error('Error showing report upload');
+            }
         });
     });
 
     $(document).on('click', '[data-submit-error]', function (e) {
         e.preventDefault();
         var url = $(this).attr("href");
-        $.get(url, function (data) {
-            $('#modalContainer').html(data);
-            $('.modal').modal({ show: true });
+        var title = 'Submission Error';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (data) {
+                window.showBSModal({
+                    title: title,
+                    body: data,
+                    size: "large",
+                    actions: [
+                        {
+                            label: 'Cancel',
+                            cssClass: 'btn-default',
+                            onClick: function (e) {
+                                $(e.target).parents('.modal').modal('hide');
+                                $('body').removeClass('modal-open');
+                                //modal-open class is added on body so it has to be removed
+
+                                $('.modal-backdrop').remove();
+                                //need to remove div with modal-backdrop class
+                            }
+                        },
+                        {
+                            label: 'Submit',
+                            cssClass: 'btn-primary',
+                            onClick: function (e) {
+                                var id = $('#Id').val();
+                                var url = '/assignment/submiterror/';
+
+                                window.$showModalWorking();
+
+                                var formData = new FormData();
+                                formData.append('Id', id);
+                                formData.append('Note', $('#note').val());
+
+                                var files = document.getElementById('files').files;
+                                if (files.length > 0) {
+                                    for (var i = 0; i < files.length; i++) {
+                                        formData.append('files', files[i]);
+                                    }
+                                }
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: formData,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (response) {
+                                        console.log('success', response);
+                                        $gridCurrentAssignments.refresh();
+                                        $gridRetrievableAssignments.refresh();
+                                        window.$log.success('Submitted report');
+                                    },
+                                    error: function (error) {
+                                        console.log('error', error);
+                                        window.$log.error('Error: ' + error.statusText);
+                                    },
+                                    complete: function () {
+                                        $('.modalContainer').html('');
+                                        $('.modal').modal('hide');
+                                        console.log('complete');
+                                        window.$hideModalWorking();
+                                    }
+                                });
+                            }
+                        }
+                    ]
+                });
+            },
+            error: function (err) {
+                console.log('err', err);
+                window.$log.error('Error showing history');
+            }
         });
     });
-
-
+    
 });
 
 function createAssignmentsGridActionButtons(container, options) {

@@ -4,7 +4,7 @@
 @Html.AntiForgeryToken()
 <form role="form" enctype="multipart/form-data">
 
-    <div class="modal-dialog modal-lg" role="document">
+    @*<div class="modal-dialog modal-lg" role="document">
 
         <div class="modal-content">
 
@@ -13,28 +13,32 @@
                 <h4 class="modal-title">@Model.FileName (@Model.FileNumber) Upload</h4>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body">*@
 
-      
-                    @Html.HiddenFor(model => model.Id)
+    <div>
+        <label class="control-label">
+            @Model.FileName (@Model.FileNumber) Submission
+        </label>
+    </div>
+
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group">
+        <input type="file" id="files" name="files" multiple="multiple" class="form-control" />
+    </div>
+
+    @*</div>
+
+                <div class="modal-footer">
                     <div class="form-group">
-                        <label for="files" class="control-label">Report Data Files:</label>
-                        <input type="file" id="files" name="files" multiple="multiple" class="form-control" />
-                    </div>
-      
-            </div>
-
-            <div class="modal-footer">
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <input type="button" class="btn btn-primary" value="Upload" id="btnSubmitReportForm" name="btnSubmitReportForm" />
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input type="button" class="btn btn-primary" value="Upload" id="btnSubmitReportForm" name="btnSubmitReportForm" />
+                        </div>
                     </div>
                 </div>
+
+
             </div>
-
-
-        </div>
-    </div>
+        </div>*@
 
 </form>
