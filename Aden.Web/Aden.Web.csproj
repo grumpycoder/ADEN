@@ -464,7 +464,7 @@
     <Content Include="Views\Home\Assignments.cshtml" />
     <Content Include="Views\Home\_WorkHistory.cshtml" />
     <Content Include="Views\Home\Document.cshtml" />
-    <Content Include="Views\Home\_WorkItemForm.cshtml" />
+    <Content Include="Views\Home\_ErrorReportForm.cshtml" />
     <Content Include="Views\Home\Submissions.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />

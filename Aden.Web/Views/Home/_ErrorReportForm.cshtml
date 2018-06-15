@@ -1,0 +1,24 @@
+﻿@model WorkItemDto
+
+@Html.AntiForgeryToken()
+<form id="errorForm" name="errorForm" role="form" enctype="multipart/form-data">
+
+    @Html.HiddenFor(model => model.Id)
+
+    <div>
+        <label class="control-label">
+            @Model.FileName (@Model.FileNumber) Submission
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="note" class="control-label">Notes:</label>
+        <textarea class="form-control" id="note" name="note" placeholder="Enter details here..."></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="files" class="control-label">Report Data Files:</label>
+        <input type="file" id="files" name="files" multiple="multiple" class="form-control" />
+    </div>
+
+</form>

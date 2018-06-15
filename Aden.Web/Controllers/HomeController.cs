@@ -92,7 +92,7 @@ namespace Aden.Web.Controllers
             var wi = await _uow.WorkItems.GetByIdAsync(id);
 
             var model = Mapper.Map<WorkItemDto>(wi);
-            return PartialView("_WorkItemForm", model);
+            return PartialView("_ErrorReportForm", model);
         }
 
         public async Task<ActionResult> UploadReport(int id)
