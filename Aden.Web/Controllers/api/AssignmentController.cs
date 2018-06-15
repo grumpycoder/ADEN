@@ -201,13 +201,47 @@ namespace Aden.Web.Controllers.api
             //finish work item
             workItem.Finish();
 
+            //Start new work item
+
             //What's the next work
             var next = WorkItem.Next(workItem);
+            if (next == WorkItemAction.Nothing)
+            {
+                report.SetState(next);
+                report.Submission.SetState(next);
+                await _uow.CompleteAsync();
+                return Ok();
+            }
+
+            //Get assignee
+            var groupName = report.Submission.FileSpecification.GenerationUserGroup;
+            switch (next)
+            {
+                case WorkItemAction.Approve:
+                    groupName = report.Submission.FileSpecification.ApprovalUserGroup;
+                    break;
+                case WorkItemAction.Submit:
+                    groupName = report.Submission.FileSpecification.SubmissionUserGroup;
+                    break;
+            }
+            var members = _membershipService.GetGroupMembers(groupName);
+            if (members.IsFailure) return BadRequest(members.Error);
+
+            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
+
+            var nextWorkItem = WorkItem.Create(next, assignee);
+
             report.SetState(next);
             report.Submission.SetState(next);
+
+            report.AddWorkItem(nextWorkItem);
+
             await _uow.CompleteAsync();
 
-            var dto = Mapper.Map<WorkItemDto>(workItem);
+            //Send work notification
+            _notificationService.SendWorkNotification(nextWorkItem);
+
+            var dto = Mapper.Map<WorkItemDto>(nextWorkItem);
             return Ok(dto);
 
         }
