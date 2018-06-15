@@ -117,7 +117,7 @@ namespace Aden.Web.Controllers.api
 
             var report = await _uow.Reports.GetByIdAsync(workItem.ReportId);
 
-            workItem.Cancel();
+            report.CancelWorkItems();
 
             report.SetState(WorkItemAction.Nothing);
             report.Submission.SetState(WorkItemAction.Nothing);

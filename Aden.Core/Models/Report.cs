@@ -102,5 +102,14 @@ namespace Aden.Core.Models
         {
             Documents.Add(document);
         }
+
+        public void CancelWorkItems()
+        {
+            foreach (var workItem in WorkItems.Where(i => i.WorkItemState == WorkItemState.NotStarted))
+            {
+                workItem.Cancel();
+                //Send notification
+            }
+        }
     }
 }
