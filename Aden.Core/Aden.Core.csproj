@@ -54,6 +54,12 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Net.Code.Csv, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Net.Code.Csv.3.0.0\lib\net452\Net.Code.Csv.dll</HintPath>
+    </Reference>
+    <Reference Include="Nortal.Utilities.Csv, Version=0.9.2.0, Culture=neutral, PublicKeyToken=3a479c26195e6b17, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nortal.Utilities.Csv.0.9.2\lib\net35\Nortal.Utilities.Csv.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -92,6 +98,7 @@
     <Compile Include="Dtos\WorkItemHistoryDto.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
+    <Compile Include="Helpers\StringExtensions.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Models\FileSpecification.cs" />
     <Compile Include="Models\FileSpecificationState.cs" />
@@ -131,6 +138,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="bin\ALSDE.IdemLib.dll" />
+    <Content Include="LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
