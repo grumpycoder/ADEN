@@ -1,11 +1,38 @@
 ﻿
-@model ReportDocument
+@model ReportDocumentDto
 
 <div class="row">
     <div class="col-md-12">
-        <object data="data:text/plain;base64,@Convert.ToBase64String(@Model.FileData)" type="text/plain" width="100%" height="400px">
+        <table class="table table-responsive table-striped table-bordered table-condensed">
+            <thead>
+            <tr>Colum1</tr>
+            </thead>
+            <tbody>
+                @*@foreach (var line in @Model.Content)
+                {
+                    //string.Format("<tr><td>{0}</td></tr>", @line.ToString());
+                }*@
+                @foreach (var line in Model.Content.Split(new [] {Environment.NewLine}, StringSplitOptions.None))
+                {
+                    <tr>
+                    @foreach (var data in line.Split(','))
+                    {
+                        <td>@data</td>
+                    }
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <ul>
+            
+            @*@foreach (var line in Model.Content.Split(new [] {Environment.NewLine}, StringSplitOptions.None))
+            {
+                <li>@line</li>
+            }*@
+        </ul>
+        @*<object data="data:text/plain;base64,@Convert.ToBase64String(@Model.FileData)" type="text/plain" width="100%" height="400px">
             <embed src="data:text/plain;base64, @Convert.ToBase64String(@Model.FileData)" type="text/plain" />
-        </object>
+        </object>*@
     </div>
 </div>
 

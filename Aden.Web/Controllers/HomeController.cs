@@ -69,7 +69,10 @@ namespace Aden.Web.Controllers
         public async Task<ActionResult> Document(int id)
         {
             var document = await _uow.Documents.GetByIdAsync(id);
-            return PartialView(document);
+
+            var dto = Mapper.Map<ReportDocumentDto>(document);
+
+            return PartialView(dto);
         }
 
         public async Task<FileResult> Download(int id)
