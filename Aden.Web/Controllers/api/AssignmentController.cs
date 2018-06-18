@@ -58,7 +58,8 @@ namespace Aden.Web.Controllers.api
             if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
                 //Create documents
-                await _uow.GenerateDocumentsAsync(workItem.ReportId);
+                var createOrError = await _uow.GenerateDocumentsAsync(workItem.ReportId);
+                if (createOrError.IsFailure) return BadRequest(createOrError.Error);
             }
 
             workItem.Finish();

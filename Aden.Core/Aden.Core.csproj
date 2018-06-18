@@ -114,7 +114,6 @@
     <Compile Include="Repositories\ISubmissionRepository.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Repositories\IWorkItemRepository.cs" />
-    <Compile Include="Repositories\OperationResult.cs" />
     <Compile Include="Repositories\ReportRepository.cs" />
     <Compile Include="Repositories\SubmissionRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
@@ -129,9 +128,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="bin\ALSDE.IdemLib.dll" />
   </ItemGroup>

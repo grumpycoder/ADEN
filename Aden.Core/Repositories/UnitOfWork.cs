@@ -32,11 +32,11 @@ namespace Aden.Core.Repositories
             Documents = documentRepository;
         }
 
-        public async Task<OperationResult> GenerateDocumentsAsync(int reportId)
+        public async Task<Result> GenerateDocumentsAsync(int reportId)
         {
             var report = await _context.Reports.Include(r => r.Submission).Include(r => r.Documents).SingleOrDefaultAsync(r => r.Id == reportId);
 
-            if (report == null) return new OperationResult("Unable to generate document. Report not found", false);
+            if (report == null) return Result.Fail("Report not found to generate document");
 
             if (report.Submission.IsSCH)
             {
@@ -56,7 +56,7 @@ namespace Aden.Core.Repositories
 
             await CompleteAsync();
 
-            return new OperationResult("Documents created successfully");
+            return Result.Ok($"Document created for {report.Submission.FileSpecification.FileName}");
         }
 
         public Result GenerateDocuments(int reportId)
@@ -64,7 +64,7 @@ namespace Aden.Core.Repositories
             var report = _context.Reports.Include(r => r.Submission).Include(r => r.Documents).SingleOrDefault(r => r.Id == reportId);
 
             //TODO: Error handling creating documents
-            if (report == null) return Result.Fail("Unable to generate document. Report not found");
+            if (report == null) return Result.Fail("Report not found to generate document");
 
             if (report.Submission.IsSCH)
             {
@@ -88,7 +88,7 @@ namespace Aden.Core.Repositories
 
             Complete();
 
-            return Result.Ok();
+            return Result.Ok($"Document created for {report.Submission.FileSpecification.FileName}");
         }
 
         private byte[] ExecuteDocumentCreationToFile(Submission submission, string reportLevel)
@@ -107,13 +107,13 @@ namespace Aden.Core.Repositories
                     adapter.Fill(ds);
                 }
             }
-            
+
             var table1 = ds.Tables[0].ToCsvString(false);
             var table2 = ds.Tables[1].ToCsvString(false);
 
             var file = Encoding.ASCII.GetBytes(ds.Tables[0].Rows.Count > 1 ? string.Concat(table2, table1) : string.Concat(table1, table2)); ;
 
-            return file; 
+            return file;
 
             //return Encoding.ASCII.GetBytes(ds.Tables[0].Rows.Count > 1 ? string.Concat(table2, table1) : string.Concat(table1, table2));
 

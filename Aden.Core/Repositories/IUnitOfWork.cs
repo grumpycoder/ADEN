@@ -14,6 +14,6 @@ namespace Aden.Core.Repositories
         void Complete();
         Task CompleteAsync();
         Result GenerateDocuments(int reportId);
-        Task<OperationResult> GenerateDocumentsAsync(int reportId);
+        Task<Result> GenerateDocumentsAsync(int reportId);
     }
 }
