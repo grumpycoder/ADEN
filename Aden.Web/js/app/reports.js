@@ -63,6 +63,7 @@ function createReportDocumentLinks(container, options) {
                                 onClick: function (e) {
                                     var downloadUrl = '/download/' + id;
                                     window.downloadFile(downloadUrl);
+                                    window.$log.info('Your file is being downloaded');
                                     $('.modalContainer').html('');
                                     $('.modal').modal('hide');
 
