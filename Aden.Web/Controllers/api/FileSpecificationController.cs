@@ -1,14 +1,15 @@
 ﻿using Aden.Core.Dtos;
+using Aden.Core.Models;
 using Aden.Core.Repositories;
 using AutoMapper;
 using DevExtreme.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Aden.Core.Models;
 
 namespace Aden.Web.Controllers.api
 {
+    [Authorize]
     [RoutePrefix("api/filespecification")]
     public class FileSpecificationController : ApiController
     {
