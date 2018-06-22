@@ -11,6 +11,13 @@ namespace Aden.Web.Helpers
 {
     public static class HtmlHelpers
     {
+
+        public static IHtmlString AssemblyVersion(this HtmlHelper helper)
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            return MvcHtmlString.Create(version);
+        }
+
         public static IHtmlString RenderConfigurationValue(this HtmlHelper htmlHelper, string key)
         {
             var value = ConfigurationManager.AppSettings[key];
