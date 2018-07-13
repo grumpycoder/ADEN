@@ -22,6 +22,7 @@ namespace Aden.Web
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/app/bootstrap.model.wrapper.js",
+                      "~/js/app/global.js",
                       "~/Scripts/moment.js",
                       "~/Scripts/toastr.js",
                       "~/Scripts/loadingoverlay.min.js",

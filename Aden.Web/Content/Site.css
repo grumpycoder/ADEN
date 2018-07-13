@@ -18,9 +18,9 @@ body {
     min-height: 100%;
 }
 
-.container-fluid {
+/*.container-fluid {
     display: none;
-}
+}*/
 
 footer {
     position: absolute;

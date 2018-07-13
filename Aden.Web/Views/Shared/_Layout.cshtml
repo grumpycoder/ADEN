@@ -11,6 +11,20 @@
     @Styles.Render("~/css/DevExtremeBundle")
     @Scripts.Render("~/js/DevExtremeBundle")
 
+    <script>
+        //window.addEventListener('load', function () {
+        //    console.log('load');
+        //    //document.getElementById('loader').classList.add('loader.dismissloader');
+        //    //$('.loader').hide();
+        //});
+
+        //window.onbeforeunload = function confirmExit() {
+        //    console.log('beforeunload');
+        //    //$('.page').addClass('hidden');
+        //    //$('.loader').show();
+        //}
+
+    </script>
 </head>
 <body>
 
@@ -18,26 +32,35 @@
     @Html.Partial("_Header")
     @Html.Partial("_NavBar")
 
-    <div class="loading">
-        <div>
-            <div class="c1"></div>
-            <div class="c2"></div>
-            <div class="c3"></div>
-            <div class="c4"></div>
+    @*<div class="loading">
+            <div>
+                <div class="c1"></div>
+                <div class="c2"></div>
+                <div class="c3"></div>
+                <div class="c4"></div>
+            </div>
+            <span>loading</span>
+        </div>*@
+
+    <div class="container-fluid" id="content">
+        <div id="loader" class="loader">
+
+            <div class="spinner">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
         </div>
-        <span>loading</span>
-    </div>
-
-    <div class="container-fluid">
-
-        @RenderBody()
+        <div class="page" id="page">
+            @RenderBody()
+        </div>
     </div>
 
     @Html.Partial("_Footer")
 
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/js/app/bootstrap.model.wrapper.js"></script>
-    
+
     <script src="~/js/jquery.validate.custom.js"></script>
     @RenderSection("scripts", required: false)
 

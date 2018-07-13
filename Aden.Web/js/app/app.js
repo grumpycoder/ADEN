@@ -1,18 +1,4 @@
-﻿// Global Functions
-window.onbeforeunload = function () {
-    console.log('before unload');
-    $('.container-fluid').hide();
-    $('.loading').show();
-
-    //$.LoadingOverlay("show", { image: '', fontawesome: 'fa fa-cog fa-spin' });
-};
-
-window.onBeforeSend = function () {
-}
-
-window.onloadstart = function () {
-}
-
+﻿// App Global Functions
 
 $(document).on('click', '[role="navigation"]', function (e) {
 
@@ -55,8 +41,8 @@ function gridContentReady() {
 $(function () {
     console.log('application ready');
     $('body').tooltip({ selector: '[data-toggle=tooltip]' });
-    $('.container-fluid').show();
-    $('.loading').hide();
+    //$('.container-fluid').show();
+    //$('.loading').hide();
 
     $.ajaxSetup({
         error: function (x, status, error) {
@@ -67,7 +53,7 @@ $(function () {
                 window.showBSModal({
                     title: "Session Expired",
                     body: "Sorry, your session has expired. Please login again to continue.",
-                    size: "small", 
+                    size: "small",
                     actions: [{
                         label: 'Ok',
                         cssClass: 'btn-default',
