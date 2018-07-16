@@ -287,6 +287,10 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="css\bootstrap.min.css">
+      <DependentUpon>bootstrap.css</DependentUpon>
+    </Content>
     <Content Include="css\dx.android5.light.css" />
     <Content Include="css\dx.carmine.compact.css" />
     <Content Include="css\dx.carmine.css" />
@@ -311,6 +315,14 @@
     <Content Include="css\dx.win10.white.css" />
     <Content Include="css\dx.win8.black.css" />
     <Content Include="css\dx.win8.white.css" />
+    <Content Include="css\fontawesome.css" />
+    <Content Include="css\fontawesome.min.css">
+      <DependentUpon>fontawesome.css</DependentUpon>
+    </Content>
+    <Content Include="css\main.css" />
+    <Content Include="css\main.min.css" />
+    <Content Include="css\vendor.css" />
+    <Content Include="css\vendor.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -335,6 +347,19 @@
     <Content Include="css\icons\dxiconsios.woff" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="gulpfile.js" />
+    <Content Include="js\app.min.js" />
+    <Content Include="js\vendor.js" />
+    <Content Include="js\vendor.min.js">
+      <DependentUpon>vendor.js</DependentUpon>
+    </Content>
+    <Content Include="package.json" />
+    <None Include="bundleconfig.json" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="js\app.min.js.map" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -447,6 +472,10 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="src\js\bootstrap.model.wrapper.js" />
+    <Content Include="src\js\downloadFile.helper.js" />
+    <Content Include="src\js\global.js" />
+    <Content Include="src\js\jquery.validate.custom.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -476,6 +505,17 @@
     <Content Include="Views\Home\_ReportUploadForm.cshtml" />
     <Content Include="Views\Home\_WorkItemReassignment.cshtml" />
     <Content Include="Views\Home\_FileSpecificationForm.cshtml" />
+    <Content Include="src\scss\bootstrap\bootstrap.scss" />
+    <Content Include="src\scss\bootstrap\bootstrap_ext\_button.scss" />
+    <Content Include="src\scss\bootstrap\_config.scss" />
+    <Content Include="src\scss\bootstrap\_custom-variables.scss" />
+    <Content Include="src\scss\bootstrap\_pre_default.scss" />
+    <Content Include="src\scss\fontawesome\fontawesome.scss" />
+    <Content Include="src\scss\main\main.scss" />
+    <Content Include="src\scss\main\_defaults.scss" />
+    <Content Include="src\scss\main\_loader.scss" />
+    <Content Include="src\scss\toastr\toastr.scss" />
+    <Content Include="src\scss\vendor.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

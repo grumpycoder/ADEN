@@ -67,31 +67,63 @@ namespace Aden.Web.Helpers
             return new MvcHtmlString("No Application Description");
         }
 
+        public static IHtmlString RenderStatusBarColor(this HtmlHelper htmlHelper)
+        {
+            var env = ConfigurationManager.AppSettings["ASPNET_ENV"].ToLower();
+            var cssClass = "bg-orange";
+
+            switch (env)
+            {
+                case "test":
+                    {
+                        cssClass = "bg-blue";
+                        break;
+                    }
+                case "stage":
+                    {
+                        cssClass = "bg-yellow";
+                        break;
+                    }
+                case "production":
+                    {
+                        cssClass = "bg-white";
+                        break;
+                    }
+            }
+
+            return MvcHtmlString.Create(cssClass);
+        }
+
         public static IHtmlString UserNavBarMenuList(this HtmlHelper htmlHelper, string position)
         {
             var identity = ((ClaimsIdentity)HttpContext.Current.User.Identity);
             var sb = new StringBuilder();
             var env = ConfigurationManager.AppSettings["ASPNET_ENV"].ToLower();
             var baseUrl = "https://devaim.alsde.edu/";
+            var cssClass = "bg-orange";
+
             switch (env)
             {
                 case "test":
                     {
                         baseUrl = baseUrl.Replace("dev", "test");
+                        cssClass = "bg-blue";
                         break;
                     }
                 case "stage":
                     {
                         baseUrl = baseUrl.Replace("dev", "stage");
+                        cssClass = "bg-yellow";
                         break;
                     }
                 case "production":
                     {
                         baseUrl = baseUrl.Replace("dev", "");
+                        cssClass = "bg-white";
                         break;
                     }
             }
-            sb.AppendFormat("<ul class='nav navbar-nav navbar-{0}'>", position);
+            sb.AppendFormat("<ul class='nav navbar-nav {0}'>", cssClass);
 
             sb.Append(@"<li class='dropdown'>");
             sb.AppendFormat(

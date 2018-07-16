@@ -1,0 +1,28 @@
+[
+  {
+    "outputFileName": "js/vendor.js",
+    "inputFiles": [
+      "node_modules/jquery/dist/jquery.js",
+      "node_modules/bootstrap-sass/assets/javascripts/bootstrap.js",
+      "node_modules/moment/moment.js",
+      "node_modules/toastr/toastr.js",
+      "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  },
+  {
+    "outputFileName": "js/app.min.js",
+    "inputFiles": [
+      "src/js/**.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  }
+]

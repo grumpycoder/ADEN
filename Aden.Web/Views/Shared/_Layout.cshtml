@@ -6,41 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - ADEN</title>
 
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/jquery")
+    @*@Styles.Render("~/Content/css")*@
+    @*@Scripts.Render("~/bundles/jquery")*@
+    <link href="~/css/vendor.min.css" rel="stylesheet" />
+    @*<link href="~/Content/site.css" rel="stylesheet" />*@
+    <link href="~/css/main.min.css" rel="stylesheet" />
+    <script src="~/js/vendor.min.js"></script>
     @Styles.Render("~/css/DevExtremeBundle")
     @Scripts.Render("~/js/DevExtremeBundle")
-
-    <script>
-        //window.addEventListener('load', function () {
-        //    console.log('load');
-        //    //document.getElementById('loader').classList.add('loader.dismissloader');
-        //    //$('.loader').hide();
-        //});
-
-        //window.onbeforeunload = function confirmExit() {
-        //    console.log('beforeunload');
-        //    //$('.page').addClass('hidden');
-        //    //$('.loader').show();
-        //}
-
-    </script>
 </head>
 <body>
 
     @Html.Partial("_StatusHeader")
     @Html.Partial("_Header")
     @Html.Partial("_NavBar")
-
-    @*<div class="loading">
-            <div>
-                <div class="c1"></div>
-                <div class="c2"></div>
-                <div class="c3"></div>
-                <div class="c4"></div>
-            </div>
-            <span>loading</span>
-        </div>*@
 
     <div class="container-fluid" id="content">
         <div id="loader" class="loader">
@@ -58,10 +37,12 @@
 
     @Html.Partial("_Footer")
 
-    @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/js/app/bootstrap.model.wrapper.js"></script>
+    @*@Scripts.Render("~/bundles/bootstrap")*@
 
-    <script src="~/js/jquery.validate.custom.js"></script>
+    <script src="~/js/app.min.js"></script>
+    @*<script src="~/js/app/bootstrap.model.wrapper.js"></script>*@
+
+    @*<script src="~/js/jquery.validate.custom.js"></script>*@
     @RenderSection("scripts", required: false)
 
 </body>

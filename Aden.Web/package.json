@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "bootstrap-sass": "^3.3.7",
+    "gulp-concat": "2.6.1",
+    "gulp-minify": "^3.1.0",
+    "jquery": "3.3.1",
+    "moment": "2.20.1",
+    "toastr": "^2.1.2"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.1.0",
+    "gasparesganga-jquery-loading-overlay": "^2.1.5",
+    "gulp": "^3.9.1",
+    "gulp-cssmin": "^0.2.0",
+    "gulp-print": "^5.0.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0"
+  }
+}

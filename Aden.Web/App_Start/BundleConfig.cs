@@ -20,16 +20,25 @@ namespace Aden.Web
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/app/bootstrap.model.wrapper.js",
-                      "~/js/app/global.js",
-                      "~/Scripts/moment.js",
-                      "~/Scripts/toastr.js",
-                      "~/Scripts/loadingoverlay.min.js",
-                      "~/Scripts/respond.js"));
+                "~/js/vendor.min.js",
+                "~/Scripts/app/bootstrap.model.wrapper.js",
+                "~/js/app/global.js",
+                "~/Scripts/moment.js",
+                "~/Scripts/toastr.js",
+                "~/Scripts/loadingoverlay.min.js",
+                "~/Scripts/respond.js"));
+
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            //          "~/Scripts/bootstrap.js",
+            //          "~/Scripts/app/bootstrap.model.wrapper.js",
+            //          "~/js/app/global.js",
+            //          "~/Scripts/moment.js",
+            //          "~/Scripts/toastr.js",
+            //          "~/Scripts/loadingoverlay.min.js",
+            //          "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/css/bootstrap.css",
                       "~/Content/bootstrap-overrides.css",
                       "~/Content/font-awesome.css",
                       "~/Content/toastr.css",
