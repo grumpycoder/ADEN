@@ -1,18 +1,10 @@
 ﻿[
   {
-    "outputFile": "css/bootstrap.css",
-    "inputFile": "scss/bootstrap/bootstrap.scss"
-  },
-  {
-    "outputFile": "css/fontawesome.css",
-    "inputFile": "src/scss/fontawesome/fontawesome.scss"
-  },
-  {
     "outputFile": "css/main.css",
     "inputFile": "src/scss/main/main.scss"
   },
   {
-    "outputFile": "css/vendor.css",
-    "inputFile": "src/scss/vendor.scss"
+    "inputFile": "src/scss/vendor.scss",
+    "outputFile": "css/vendor/vendor.css"
   }
 ]

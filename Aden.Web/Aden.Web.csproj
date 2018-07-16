@@ -287,10 +287,6 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
-    <Content Include="css\bootstrap.css" />
-    <Content Include="css\bootstrap.min.css">
-      <DependentUpon>bootstrap.css</DependentUpon>
-    </Content>
     <Content Include="css\dx.android5.light.css" />
     <Content Include="css\dx.carmine.compact.css" />
     <Content Include="css\dx.carmine.css" />
@@ -315,14 +311,12 @@
     <Content Include="css\dx.win10.white.css" />
     <Content Include="css\dx.win8.black.css" />
     <Content Include="css\dx.win8.white.css" />
-    <Content Include="css\fontawesome.css" />
-    <Content Include="css\fontawesome.min.css">
-      <DependentUpon>fontawesome.css</DependentUpon>
-    </Content>
     <Content Include="css\main.css" />
     <Content Include="css\main.min.css" />
-    <Content Include="css\vendor.css" />
-    <Content Include="css\vendor.min.css" />
+    <Content Include="css\vendor\vendor.css" />
+    <Content Include="css\vendor\vendor.min.css">
+      <DependentUpon>vendor.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -360,6 +354,9 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="js\app.min.js.map" />
+    <Content Include="js\vendor.min.js.map">
+      <DependentUpon>vendor.min.js</DependentUpon>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
