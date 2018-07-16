@@ -16,7 +16,7 @@
     "sourceMap": true
   },
   {
-    "outputFileName": "js/app.min.js",
+    "outputFileName": "js/app/app.global.js",
     "inputFiles": [
       "src/js/**.js"
     ],
@@ -25,5 +25,35 @@
       "renameLocals": true
     },
     "sourceMap": true
+  },
+  {
+    "outputFileName": "js/app/app.module.min.js",
+    "inputFiles": [
+      "js/app/app.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/assignments.module.min.js",
+    "inputFiles": [
+      "js/app/assignments.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/fileSpecfication.module.min.js",
+    "inputFiles": [
+      "js/app/fileSpecfication.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/reports.module.min.js",
+    "inputFiles": [
+      "js/app/reports.module.js"
+    ]
+  },
+  {
+    "outputFileName": "js/app/submission.module.min.js",
+    "inputFiles": [
+      "js/app/submission.module.js"
+    ]
   }
 ]

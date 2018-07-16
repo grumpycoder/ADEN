@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - ADEN</title>
 
-    @*@Styles.Render("~/Content/css")*@
-    @*@Scripts.Render("~/bundles/jquery")*@
     <link href="~/css/vendor/vendor.min.css" rel="stylesheet" />
-    @*<link href="~/Content/site.css" rel="stylesheet" />*@
     <link href="~/css/main.min.css" rel="stylesheet" />
     <script src="~/js/vendor.min.js"></script>
     @Styles.Render("~/css/DevExtremeBundle")
@@ -37,12 +34,7 @@
 
     @Html.Partial("_Footer")
 
-    @*@Scripts.Render("~/bundles/bootstrap")*@
-
-    <script src="~/js/app.min.js"></script>
-    @*<script src="~/js/app/bootstrap.model.wrapper.js"></script>*@
-
-    @*<script src="~/js/jquery.validate.custom.js"></script>*@
+    <script src="~/js/app/app.global.min.js"></script>
     @RenderSection("scripts", required: false)
 
 </body>

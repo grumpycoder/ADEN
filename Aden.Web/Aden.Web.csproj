@@ -342,7 +342,30 @@
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <Content Include="gulpfile.js" />
-    <Content Include="js\app.min.js" />
+    <Content Include="js\app\app.global.js" />
+    <Content Include="js\app\app.global.min.js">
+      <DependentUpon>app.global.js</DependentUpon>
+    </Content>
+    <Content Include="js\app\app.module.js" />
+    <Content Include="js\app\app.module.min.js">
+      <DependentUpon>app.module.js</DependentUpon>
+    </Content>
+    <Content Include="js\app\assignments.module.js" />
+    <Content Include="js\app\assignments.module.min.js">
+      <DependentUpon>assignments.module.js</DependentUpon>
+    </Content>
+    <Content Include="js\app\fileSpecfication.module.js" />
+    <Content Include="js\app\fileSpecfication.module.min.js">
+      <DependentUpon>fileSpecfication.module.js</DependentUpon>
+    </Content>
+    <Content Include="js\app\reports.module.js" />
+    <Content Include="js\app\reports.module.min.js">
+      <DependentUpon>reports.module.js</DependentUpon>
+    </Content>
+    <Content Include="js\app\submission.module.js" />
+    <Content Include="js\app\submission.module.min.js">
+      <DependentUpon>submission.module.js</DependentUpon>
+    </Content>
     <Content Include="js\vendor.js" />
     <Content Include="js\vendor.min.js">
       <DependentUpon>vendor.js</DependentUpon>
@@ -353,9 +376,11 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
-    <Content Include="js\app.min.js.map" />
     <Content Include="js\vendor.min.js.map">
       <DependentUpon>vendor.min.js</DependentUpon>
+    </Content>
+    <Content Include="js\app\app.global.min.js.map">
+      <DependentUpon>app.global.min.js</DependentUpon>
     </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -369,8 +394,6 @@
     <Content Include="js\angular-route.min.js" />
     <Content Include="js\angular.js" />
     <Content Include="js\angular.min.js" />
-    <Content Include="js\app\downloadFile.helper.js" />
-    <Content Include="js\app\global.js" />
     <Content Include="js\jquery.validate.custom.js" />
     <Content Include="js\aspnet\dx.aspnet.data.js" />
     <Content Include="js\aspnet\dx.aspnet.mvc.js" />
@@ -434,12 +457,6 @@
     <Content Include="js\vectormap-utils\dx.vectormaputils.debug.js" />
     <Content Include="js\vectormap-utils\dx.vectormaputils.js" />
     <Content Include="js\vectormap-utils\dx.vectormaputils.node.js" />
-    <Content Include="js\app\app.js" />
-    <Content Include="js\app\assignments.js" />
-    <Content Include="js\app\bootstrap.model.wrapper.js" />
-    <Content Include="js\app\fileSpecfication.js" />
-    <Content Include="js\app\reports.js" />
-    <Content Include="js\app\submission.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />

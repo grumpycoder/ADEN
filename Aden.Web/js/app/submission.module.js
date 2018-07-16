@@ -1,4 +1,4 @@
-﻿// submission.js
+﻿// submission.module.js
 $(function () {
     console.log('submission ready');
     var $grid = $('#grid').dxDataGrid('instance');

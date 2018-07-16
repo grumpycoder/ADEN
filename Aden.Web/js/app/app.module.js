@@ -1,4 +1,5 @@
-﻿// App Global Functions
+﻿// app.module.js
+// App Global Functions
 
 $(document).on('click', '[role="navigation"]', function (e) {
 

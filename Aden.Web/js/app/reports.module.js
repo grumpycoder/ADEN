@@ -1,4 +1,4 @@
-﻿// reports.js
+﻿// reports.module.js
 
 (function () {
     console.log('reports ready');

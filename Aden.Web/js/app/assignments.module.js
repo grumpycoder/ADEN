@@ -1,4 +1,4 @@
-﻿// assignments.js
+﻿// assignments.module.js
 
 $(function () {
     console.log('assignments ready');

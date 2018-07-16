@@ -24,22 +24,22 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                                          .DataGrid().ID("grid")
-                                          .ShowRowLines(true)
-                                          .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                                          .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
-                                          .Columns(c =>
-                                          {
-                                              c.Add().DataField("fileName");
-                                              c.Add().DataField("fileNumber");
-                                              c.Add().DataField("displayDataYear").Caption("Data Year");
-                                              c.Add().DataField("reportState");
-                                              c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                                              c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                                              c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                                              c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
-                                          })
-                                          .DataSource(d => d.StaticJson().Url(@Url.Content("/api/report/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))
+                                                  .DataGrid().ID("grid")
+                                                  .ShowRowLines(true)
+                                                  .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                                  .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+                                                  .Columns(c =>
+                                                  {
+                                                      c.Add().DataField("fileName");
+                                                      c.Add().DataField("fileNumber");
+                                                      c.Add().DataField("displayDataYear").Caption("Data Year");
+                                                      c.Add().DataField("reportState");
+                                                      c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                                      c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                                      c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                                      c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
+                                                  })
+                                                  .DataSource(d => d.StaticJson().Url(@Url.Content("/api/report/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))
                 </div>
 
             </div>
@@ -49,6 +49,6 @@
 
 @section scripts
 {
-    <script src="~/js/app/app.js"></script>
-    <script src="~/js/app/reports.js"></script>
+    <script src="~/js/app/app.module.min.js"></script>
+    <script src="~/js/app/reports.module.min.js"></script>
 }

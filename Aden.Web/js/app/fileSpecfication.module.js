@@ -1,4 +1,4 @@
-﻿//fileSpecification.js
+﻿//fileSpecification.module.js
 $(function () {
     console.log('file specification ready');
 

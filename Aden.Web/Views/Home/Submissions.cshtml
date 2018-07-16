@@ -28,35 +28,35 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme().DataGrid()
-                           .ColumnAutoWidth(true).ID("grid")
-                           .OnEditorPrepared("editorPrepared").OnContentReady("gridContentReady").OnRowPrepared("rowPrepared")
-                           .ShowRowLines(true).ShowBorders(true)
-                           .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                           .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
-                           .Columns(cols =>
-                           {
-                               cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false).CellTemplate(@<text><a href="@Url.Action("workhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a></text>).HidingPriority(12);
-                               cols.Add().DataField("fileNumber");
-                               cols.Add().DataField("fileName").HidingPriority(4);
-                               cols.Add().DataField("submissionState");
-                               cols.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
-                               cols.Add().DataField("displayDataYear").Caption("Data Year").HidingPriority(6);
-                               cols.Add().DataField("section").HidingPriority(5);
-                               cols.Add().DataField("dataGroups").HidingPriority(1);
-                               cols.Add().DataField("application").HidingPriority(2);
-                               cols.Add().DataField("dataSource").HidingPriority(3);
-                               cols.Add().DataField("isSEA").Caption("SEA").HidingPriority(5);
-                               cols.Add().DataField("isLEA").Caption("LEA").HidingPriority(5);
-                               cols.Add().DataField("isSCH").Caption("SCH").HidingPriority(5);
+                                   .ColumnAutoWidth(true).ID("grid")
+                                   .OnEditorPrepared("editorPrepared").OnContentReady("gridContentReady").OnRowPrepared("rowPrepared")
+                                   .ShowRowLines(true).ShowBorders(true)
+                                   .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                   .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+                                   .Columns(cols =>
+                                   {
+                                       cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false).CellTemplate(@<text><a href="@Url.Action("workhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a></text>).HidingPriority(12);
+                            cols.Add().DataField("fileNumber");
+                            cols.Add().DataField("fileName").HidingPriority(4);
+                            cols.Add().DataField("submissionState");
+                            cols.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
+                            cols.Add().DataField("displayDataYear").Caption("Data Year").HidingPriority(6);
+                            cols.Add().DataField("section").HidingPriority(5);
+                            cols.Add().DataField("dataGroups").HidingPriority(1);
+                            cols.Add().DataField("application").HidingPriority(2);
+                            cols.Add().DataField("dataSource").HidingPriority(3);
+                            cols.Add().DataField("isSEA").Caption("SEA").HidingPriority(5);
+                            cols.Add().DataField("isLEA").Caption("LEA").HidingPriority(5);
+                            cols.Add().DataField("isSCH").Caption("SCH").HidingPriority(5);
 
 
-                               cols.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createSubmissionGridActionButtons(container, options);}"));
-                           })
+                            cols.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createSubmissionGridActionButtons(container, options);}"));
+                        })
 .Paging(paging => paging.PageSize(10)).Pager(pager =>
 {
-    pager.ShowPageSizeSelector(true);
-    pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
-    pager.ShowInfo(true);
+pager.ShowPageSizeSelector(true);
+pager.AllowedPageSizes(new List<int> { 5, 10, 20 });
+pager.ShowInfo(true);
 })
 .DataSource(d => d.StaticJson().Url("/api/submission").Key("id"))
                     )
@@ -71,7 +71,7 @@
 
 @section scripts
 {
-    <script src="~/js/app/app.js"></script>
-    <script src="~/js/app/submission.js"></script>
+    <script src="~/js/app/app.module.min.js"></script>
+    <script src="~/js/app/submission.module.min.js"></script>
 
 }
