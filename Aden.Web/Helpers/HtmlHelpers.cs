@@ -123,7 +123,7 @@ namespace Aden.Web.Helpers
                         break;
                     }
             }
-            sb.AppendFormat("<ul class='nav navbar-nav {0}'>", cssClass);
+            sb.AppendFormat("<ul class='nav navbar-nav pull-{0} {1}'>", position, cssClass);
 
             sb.Append(@"<li class='dropdown'>");
             sb.AppendFormat(
