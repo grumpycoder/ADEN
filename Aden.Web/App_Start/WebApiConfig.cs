@@ -34,7 +34,7 @@ namespace Aden.Web
             config.EnableCors(cors);
 
             config.Filters.Add(new ValidateModelAttribute());
-            config.Filters.Add(new AuthorizeAttribute());
+            //config.Filters.Add(new AuthorizeAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

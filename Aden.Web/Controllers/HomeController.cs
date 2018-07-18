@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace Aden.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : AsyncController
     {
         private readonly IUnitOfWork _uow;
@@ -21,7 +21,7 @@ namespace Aden.Web.Controllers
         }
         //TODO: Remove hardcoded roles, these will change 
         [TrackViewName]
-        [CustomAuthorize(Roles = "MarkAdenAppGlobalAdministrators")]
+        //[CustomAuthorize(Roles = "MarkAdenAppGlobalAdministrators")]
         public ActionResult FileSpecifications()
         {
             return View();
