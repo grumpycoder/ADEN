@@ -53,10 +53,6 @@
     <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ALSDE.IdemLib, Version=16.624.59864.654, Culture=neutral, PublicKeyToken=fa4115e8724c5de1, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Aden.Core\bin\ALSDE.IdemLib.dll</HintPath>
-    </Reference>
     <Reference Include="Alsde.Security, Version=2018.4.17.6677, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.4.17.6677\lib\net451\Alsde.Security.dll</HintPath>
       <Private>True</Private>
@@ -530,6 +526,7 @@
     <Content Include="src\scss\main\_loader.scss" />
     <Content Include="src\scss\toastr\toastr.scss" />
     <Content Include="src\scss\vendor.scss" />
+    <Content Include="src\scss\fontawesome\_variables.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
