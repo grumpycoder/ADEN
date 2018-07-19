@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ALSDE.IdemLib, Version=18.709.12692.911, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ALSDE.IdemLib.18.709.12692.911\lib\net40\ALSDE.IdemLib.dll</HintPath>
+    <Reference Include="ALSDE.IdemLib, Version=17.820.55000.1305, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.IdemLib.17.820.55000.1305\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper, Version=6.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.0.2\lib\net45\AutoMapper.dll</HintPath>
@@ -136,8 +136,5 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
-  <ItemGroup>
-    <Content Include="LICENSE.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
