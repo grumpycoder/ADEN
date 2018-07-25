@@ -76,5 +76,10 @@ namespace Aden.Web.Controllers
             return Redirect(sb.ToString());
         }
 
+        public ActionResult Unauthorized()
+        {
+            return View();
+        }
+
     }
 }

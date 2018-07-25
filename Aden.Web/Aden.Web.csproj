@@ -508,7 +508,7 @@
     <Content Include="Views\Home\Submissions.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\Unauthorized.cshtml" />
+    <Content Include="Views\Shared\Unauthorized.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_StatusHeader.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />

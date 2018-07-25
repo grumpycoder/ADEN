@@ -21,7 +21,7 @@ namespace Aden.Web.Controllers
         }
         //TODO: Remove hardcoded roles, these will change 
         [TrackViewName]
-        //[CustomAuthorize(Roles = "MarkAdenAppGlobalAdministrators")]
+        [CustomAuthorize(Roles = "MarkAdenAppGlobalAdministrators")]
         public ActionResult FileSpecifications()
         {
             return View();
@@ -111,10 +111,10 @@ namespace Aden.Web.Controllers
             return View();
         }
 
-        public ActionResult Unauthorized()
-        {
-            return View();
-        }
+        //public ActionResult Unauthorized()
+        //{
+        //    return View();
+        //}
 
     }
 }
