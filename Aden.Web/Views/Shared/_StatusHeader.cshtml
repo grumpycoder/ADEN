@@ -24,7 +24,7 @@
                         <a><i class="fa fa-clock-o"></i> @DateTime.Now.ToString("h:mm tt")</a>
                     </li>
                     <li>
-                        <a><i class="fa fa-globe"></i> @Html.RenderConfigurationValue("ENV") (@Environment.MachineName) @Html.RenderApplicationName()</a>
+                        <a><i class="fa fa-globe"></i> @Html.RenderConfigurationValue("ASPNET_ENV") (@Environment.MachineName) @Html.RenderApplicationName()</a>
                     </li>
                     <li>
                         <a><i class="fa fa-database"></i> Development (@Html.RenderDataSource()) @Html.RenderDataName()</a>

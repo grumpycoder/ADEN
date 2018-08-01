@@ -1,5 +1,4 @@
 ﻿using Alsde.Extensions;
-using System.Configuration;
 using System.Data.Common;
 using System.Reflection;
 using System.Security.Claims;
@@ -20,21 +19,20 @@ namespace Aden.Web.Helpers
 
         public static IHtmlString RenderConfigurationValue(this HtmlHelper htmlHelper, string key)
         {
-            var value = ConfigurationManager.AppSettings[key];
-
+            var value = AppSettings.Get<string>(key);
             return new MvcHtmlString(value);
         }
 
         public static IHtmlString RenderDataSource(this HtmlHelper htmlHelper)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["AdenContext"].ConnectionString;
+            var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContext);
             var builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
             return new MvcHtmlString(builder["Data Source"].ToString());
         }
 
         public static IHtmlString RenderDataName(this HtmlHelper htmlHelper)
         {
-            var connectionString = ConfigurationManager.ConnectionStrings["AdenContext"].ConnectionString;
+            var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContext);
             var builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
             return new MvcHtmlString(builder["initial catalog"].ToString());
         }
@@ -69,9 +67,10 @@ namespace Aden.Web.Helpers
 
         public static IHtmlString RenderStatusBarColor(this HtmlHelper htmlHelper)
         {
-            var env = ConfigurationManager.AppSettings["ASPNET_ENV"].ToLower();
+            var env = AppSettings.Get<string>(Constants.EnvironmentKey).ToLower();
             var cssClass = "bg-orange";
 
+            //TODO: Use Constants or Enum instead of magic strings
             switch (env)
             {
                 case "test":
@@ -98,10 +97,11 @@ namespace Aden.Web.Helpers
         {
             var identity = ((ClaimsIdentity)HttpContext.Current.User.Identity);
             var sb = new StringBuilder();
-            var env = ConfigurationManager.AppSettings["ASPNET_ENV"].ToLower();
-            var baseUrl = "https://devaim.alsde.edu/";
+            var env = AppSettings.Get<string>(Constants.EnvironmentKey).ToLower();
+            var baseUrl = Constants.BaseUrl;
             var cssClass = "bg-orange";
 
+            //TODO: Use Constants or Enum instead of magic strings
             switch (env)
             {
                 case "test":
