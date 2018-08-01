@@ -1,5 +1,5 @@
 ﻿using Alsde.Extensions;
-using System.Data.Common;
+using System.Data.SqlClient;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
@@ -26,15 +26,15 @@ namespace Aden.Web.Helpers
         public static IHtmlString RenderDataSource(this HtmlHelper htmlHelper)
         {
             var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContext);
-            var builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
-            return new MvcHtmlString(builder["Data Source"].ToString());
+            var builder = new SqlConnectionStringBuilder { ConnectionString = connectionString };
+            return new MvcHtmlString(builder.DataSource);
         }
 
         public static IHtmlString RenderDataName(this HtmlHelper htmlHelper)
         {
             var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContext);
-            var builder = new DbConnectionStringBuilder { ConnectionString = connectionString };
-            return new MvcHtmlString(builder["initial catalog"].ToString());
+            var builder = new SqlConnectionStringBuilder { ConnectionString = connectionString };
+            return new MvcHtmlString(builder.InitialCatalog);
         }
 
         public static IHtmlString RenderApplicationName(this HtmlHelper htmlHelper)
