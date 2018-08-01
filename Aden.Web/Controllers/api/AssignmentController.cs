@@ -29,7 +29,7 @@ namespace Aden.Web.Controllers.api
         [HttpGet, Route("current/{username}")]
         public async Task<object> CurrentAssignments(string username)
         {
-            //TODO: Should use authenticated user?
+            if (username == null) return NotFound();
             var workitems = await _uow.WorkItems.GetActiveAsync(username);
 
             var dto = Mapper.Map<List<WorkItemDto>>(workitems);
