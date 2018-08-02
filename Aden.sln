@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aden.Web", "Aden.Web\Aden.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aden.Core", "Aden.Core\Aden.Core.csproj", "{F7E51D12-2AC6-462B-B229-196A1D3CE50F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsde.Security", "..\..\_vsts\Alsde\Alsde.Security\Alsde.Security\Alsde.Security.csproj", "{9EAA3C53-B209-4B4F-854F-F33373F124D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsde.Services", "..\..\_vsts\Alsde\Alsde.Services\Alsde.Services\Alsde.Services.csproj", "{3D177979-5B33-4EB8-99F7-28E973099D01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{F7E51D12-2AC6-462B-B229-196A1D3CE50F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7E51D12-2AC6-462B-B229-196A1D3CE50F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7E51D12-2AC6-462B-B229-196A1D3CE50F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EAA3C53-B209-4B4F-854F-F33373F124D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D177979-5B33-4EB8-99F7-28E973099D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D177979-5B33-4EB8-99F7-28E973099D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D177979-5B33-4EB8-99F7-28E973099D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D177979-5B33-4EB8-99F7-28E973099D01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

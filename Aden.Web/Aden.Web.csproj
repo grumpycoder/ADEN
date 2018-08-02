@@ -53,14 +53,6 @@
     <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Security, Version=2018.4.17.6677, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Security.2018.4.17.6677\lib\net451\Alsde.Security.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Alsde.Services, Version=2018.4.16.6677, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Services.2018.4.16.6677\lib\net451\Alsde.Services.dll</HintPath>
-    </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
@@ -253,6 +245,7 @@
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
     <Compile Include="Controllers\api\ReportController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\CustomAuthorize.cs" />
     <Compile Include="Filters\TrackViewName.cs" />
@@ -262,7 +255,9 @@
     </Compile>
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\BoolHtmlHelper.cs" />
+    <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\HtmlHelpers.cs" />
+    <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -529,6 +524,8 @@
     <Content Include="src\scss\toastr\toastr.scss" />
     <Content Include="src\scss\vendor.scss" />
     <Content Include="src\scss\fontawesome\_variables.scss" />
+    <Content Include="Views\Error\Index.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -538,6 +535,14 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\_vsts\Alsde\Alsde.Security\Alsde.Security\Alsde.Security.csproj">
+      <Project>{9eaa3c53-b209-4b4f-854f-f33373f124d6}</Project>
+      <Name>Alsde.Security</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\_vsts\Alsde\Alsde.Services\Alsde.Services\Alsde.Services.csproj">
+      <Project>{3d177979-5b33-4eb8-99f7-28e973099d01}</Project>
+      <Name>Alsde.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Aden.Core\Aden.Core.csproj">
       <Project>{F7E51D12-2AC6-462B-B229-196A1D3CE50F}</Project>
       <Name>Aden.Core</Name>
