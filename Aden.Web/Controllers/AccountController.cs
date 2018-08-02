@@ -1,5 +1,7 @@
-﻿using Alsde.Extensions;
+﻿using Aden.Web.Helpers;
+using Alsde.Extensions;
 using Alsde.Security.Identity;
+using System;
 using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
@@ -10,16 +12,17 @@ namespace Aden.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly string _accessKey = ConfigurationManager.AppSettings["TPA_AccessKey"];
+        private readonly string _accessKey = AppSettings.Get<string>(Constants.TpaAccessKey);
 
         //Callback url from TPA login
         public ActionResult LoginCallback(string token)
         {
-            var url = ConfigurationManager.AppSettings["WebServiceUrl"];
+            var url = AppSettings.Get<string>(Constants.WebServiceUrlKey);
             var tokenKey = new TokenKey(token, _accessKey);
 
             var identity = IdentityManager.TokenSignin(url, tokenKey);
 
+            if (identity == null) throw new Exception("No idenity returned from Token signin");
             // Add custom claims to User to store Section information
             var claims = identity.Claims.ToList();
             var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));

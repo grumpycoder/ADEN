@@ -6,6 +6,9 @@
         public const string BaseUrl = "https://devaim.alsde.edu/";
         public const string EnvironmentKey = "ASPNET_ENV";
         public const string GlobalAdministratorGroup = "AdenAppGlobalAdministrators";
+        public const string WebServiceUrlKey = "WebServiceUrl";
+        public const string TpaAccessKey = "TPA_AccessKey";
+
     }
 
 
