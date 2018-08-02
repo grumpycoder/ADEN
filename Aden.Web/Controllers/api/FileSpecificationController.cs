@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace Aden.Web.Controllers.api
 {
-    //[Authorize]
+    [Authorize]
     [RoutePrefix("api/filespecification")]
     public class FileSpecificationController : ApiController
     {
