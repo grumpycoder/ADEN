@@ -378,7 +378,6 @@
     <Content Include="js\app\app.global.min.js.map">
       <DependentUpon>app.global.min.js</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -530,12 +529,10 @@
     <Content Include="src\scss\fontawesome\_variables.scss" />
     <Content Include="Views\Error\Index.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
-    <None Include="Web.Dev.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Views\ErrorReport\" />
   </ItemGroup>
   <ItemGroup>
