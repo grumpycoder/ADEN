@@ -191,3 +191,5 @@ ModelManifest.xml
 /.vs/config/applicationhost.config
 /Aden.Web/App_Data
 /.vs/Aden/DesignTimeBuild
+/Aden.Web/yarn.lock 
+*.DotSettings
