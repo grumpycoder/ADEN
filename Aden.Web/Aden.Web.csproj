@@ -378,6 +378,7 @@
     <Content Include="js\app\app.global.min.js.map">
       <DependentUpon>app.global.min.js</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
