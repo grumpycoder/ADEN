@@ -1,7 +1,4 @@
-﻿using Aden.Core.Helpers;
-using Aden.Core.Models;
-using AutoMapper;
-using Heroic.AutoMapper;
+﻿using Aden.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +7,7 @@ using System.Web;
 
 namespace Aden.Core.Dtos
 {
-    public class SubmissionDto : IMapFrom<Submission>, IHaveCustomMappings
+    public class SubmissionDto
     {
         public int Id { get; set; }
         public DateTime? DueDate { get; set; }
@@ -56,23 +53,5 @@ namespace Aden.Core.Dtos
             }
         }
 
-        public void CreateMappings(IMapperConfigurationExpression configuration)
-        {
-            configuration.CreateMap<Submission, SubmissionDto>()
-                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileSpecification.FileName))
-                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileSpecification.FileNumber))
-                .ForMember(d => d.Section, opt => opt.MapFrom(s => s.FileSpecification.Section))
-                .ForMember(d => d.DataGroups, opt => opt.MapFrom(s => s.FileSpecification.DataGroups))
-                .ForMember(d => d.Application, opt => opt.MapFrom(s => s.FileSpecification.Application))
-                .ForMember(d => d.Collection, opt => opt.MapFrom(s => s.FileSpecification.Collection))
-                .ForMember(d => d.DataSource, opt => opt.MapFrom(s => s.FileSpecification.DataSource))
-                .ForMember(d => d.MostRecentReportId,
-                    opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
-                .ForMember(d => d.SubmissionStateId, opt => opt.MapFrom(s => s.SubmissionState))
-                .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState.GetDisplayName()))
-                .ForMember(d => d.SubmissionStateKey, opt => opt.MapFrom(s => s.SubmissionState.GetShortName()))
-                ;
-            ;
-        }
     }
 }

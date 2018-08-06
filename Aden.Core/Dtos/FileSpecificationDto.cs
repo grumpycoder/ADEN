@@ -1,10 +1,6 @@
-﻿using Aden.Core.Models;
-using AutoMapper;
-using Heroic.AutoMapper;
-
-namespace Aden.Core.Dtos
+﻿namespace Aden.Core.Dtos
 {
-    public class FileSpecificationDto : IMapFrom<FileSpecification>, IHaveCustomMappings
+    public class FileSpecificationDto
     {
         public int Id { get; set; }
         public string FileName { get; set; }
@@ -26,9 +22,6 @@ namespace Aden.Core.Dtos
         public string GenerationUserGroup { get; set; }
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }
-        public void CreateMappings(IMapperConfigurationExpression configuration)
-        {
-            configuration.CreateMap<FileSpecification, FileSpecificationDto>().ReverseMap();
-        }
+
     }
 }
