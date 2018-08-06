@@ -2,6 +2,7 @@
 using CSharpFunctionalExtensions;
 using System.Collections.Generic;
 using System.Linq;
+using ALSDE.Idem;
 
 namespace Aden.Core.Services
 {
@@ -17,8 +18,8 @@ namespace Aden.Core.Services
         {
             //if (string.IsNullOrWhiteSpace(groupName)) return Result.Fail<List<string>>("Group name should not be empty");
 
-            //var members = GroupHelper.GetGroupMembers(groupName);
-            //var list = members.Select(m => m.EmailAddress).ToList();
+            var members = GroupHelper.GetGroupMembers(groupName);
+            var list = members.Select(m => m.EmailAddress).ToList();
             //return Result.Ok(list);
             return new Result<List<string>>();
         }

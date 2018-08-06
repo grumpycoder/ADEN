@@ -1,4 +1,5 @@
-using Heroic.AutoMapper;
+using AutoMapper;
+using System.Reflection;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Aden.Core.AutoMapperConfig), "Configure")]
 namespace Aden.Core
@@ -7,13 +8,20 @@ namespace Aden.Core
     {
         public static void Configure()
         {
-            //NOTE: By default, the current project and all referenced projects will be scanned.
-            //		You can customize this by passing in a lambda to filter the assemblies by name,
-            //		like so:
+
             //HeroicAutoMapperConfigurator.LoadMapsFromCallerAndReferencedAssemblies(x => x.Name.StartsWith("YourPrefix"));
-            HeroicAutoMapperConfigurator.LoadMapsFromCallerAndReferencedAssemblies();
+            //HeroicAutoMapperConfigurator.LoadMapsFromCallerAndReferencedAssemblies();
             //If you run into issues with the maps not being located at runtime, try using this method instead: 
             //HeroicAutoMapperConfigurator.LoadMapsFromAssemblyContainingTypeAndReferencedAssemblies<SomeControllerOrTypeInYourWebProject>();
+
+            Mapper.Initialize(cfg =>
+            {
+                cfg.AddProfiles(Assembly.GetExecutingAssembly());
+            });
+
         }
+
+
+
     }
 }

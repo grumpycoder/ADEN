@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using Aden.Core.Helpers;
-using Aden.Core.Models;
-using AutoMapper;
-using Heroic.AutoMapper;
+﻿using Aden.Core.Helpers;
 using Nortal.Utilities.Csv;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Aden.Core.Dtos
 {
-    public class ReportDocumentDto : IMapFrom<ReportDocument>, IHaveCustomMappings
+    public class ReportDocumentDto
     {
         public int Id { get; set; }
 
@@ -61,10 +58,5 @@ namespace Aden.Core.Dtos
         }
 
 
-        public void CreateMappings(IMapperConfigurationExpression configuration)
-        {
-            configuration.CreateMap<ReportDocument, ReportDocumentDto>()
-                .ForMember(d => d.Content, opt => opt.MapFrom(s => Encoding.UTF8.GetString(s.FileData).ToString()));
-        }
     }
 }

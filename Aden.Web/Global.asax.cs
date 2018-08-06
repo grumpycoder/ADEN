@@ -1,6 +1,7 @@
 ﻿using Aden.Web.App_Start;
 using Aden.Web.Controllers;
 using Aden.Web.Helpers;
+using AutoMapper;
 using System;
 using System.Web;
 using System.Web.Http;
@@ -20,6 +21,8 @@ namespace Aden.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             DevExtremeBundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            Mapper.AssertConfigurationIsValid();
         }
 
         protected void Application_Error(object sender, EventArgs e)
