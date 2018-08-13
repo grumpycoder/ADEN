@@ -42,7 +42,7 @@ namespace Aden.Web
                     errorControllerAction = "NotFound";
                     break;
                 default:
-                    //Helpers.LogWebError(Constants.ProductName, Constants.LayerName, ex);
+                    Alsde.Mvc.Logging.Helpers.LogWebError(Constants.ApplicationName, Constants.LayerName, ex);
                     errorControllerAction = "Index";
                     break;
             }

@@ -2,6 +2,8 @@
 {
     public static class Constants
     {
+        public const string ApplicationName = "Aden";
+        public const string LayerName = "MvcWebApp";
         public const string DatabaseContext = "AdenContext";
         public const string BaseUrl = "https://devaim.alsde.edu/";
         public const string EnvironmentKey = "ASPNET_ENV";

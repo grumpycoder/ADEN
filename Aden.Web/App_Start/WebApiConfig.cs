@@ -6,6 +6,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using Alsde.Mvc.Logging.Attributes;
 
 namespace Aden.Web
 {
@@ -34,6 +35,8 @@ namespace Aden.Web
             config.EnableCors(cors);
 
             config.Filters.Add(new ValidateModelAttribute());
+            config.Filters.Add(new TrackApiPerformanceAttribute(Constants.ApplicationName,
+                Constants.LayerName));
             //config.Filters.Add(new AuthorizeAttribute());
 
             // Web API routes
