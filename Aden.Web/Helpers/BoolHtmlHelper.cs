@@ -22,5 +22,10 @@ namespace Aden.Web.Helpers
             return new MvcHtmlString(text);
         }
 
+
+        public static bool IsDev()
+        {
+            return AppSettings.Get<string>("ASPNET_ENV") == "Dev";
+        }
     }
 }

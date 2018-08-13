@@ -35,8 +35,7 @@ namespace Aden.Web.Helpers
             foreach (var key in exception.Data.Keys.Cast<object>()
                 .Where(key => exception.Data[key] != null))
             {
-                exData.Append(prependText + String.Format("DATA-{0}:{1}", key,
-                    exception.Data[key]));
+                exData.Append(prependText + $"DATA-{key}:{exception.Data[key]}");
             }
 
             return exData.ToString();

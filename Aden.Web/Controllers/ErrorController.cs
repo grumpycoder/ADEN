@@ -6,7 +6,6 @@ namespace Aden.Web.Controllers
     {
         public ActionResult Index()
         {
-            var error = Server.GetLastError();
             ViewBag.Error = Session["Error"];
             return View();
         }

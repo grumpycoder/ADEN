@@ -10,6 +10,7 @@ using System.Web.Http;
 namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/report")]
+    [Authorize]
     public class ReportController : ApiController
     {
         private readonly IUnitOfWork _uow;

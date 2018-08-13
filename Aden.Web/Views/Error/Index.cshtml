@@ -4,25 +4,36 @@
 
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <h2>An error occurred processing your request. </h2>
+
+            <div class="alert alert-danger">
+                <p>
+                    Something happened and we have error monitors in place that will let
+                    us know that we have something to fix.
+                    If you want to contact us, refer to the
+                    following error id: <strong>@Session.SessionID</strong>
+                </p>
+            </div>
+        </div><!-- ./col -->
+
+    </div><!-- ./row -->
+
+    <div class="row">
         <div class="col-md-12">
+            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" hidden="@User.IsInRole(Constants.GlobalAdministratorGroup) || @Helper.IsDev()">
+                Exception Details
+            </button>
 
-<h2>Oh, No!</h2>
+            <div class="collapse" id="collapseExample">
+                <p>
+                    <code>
+                        @Html.Raw(@ViewBag.Error)
+                    </code>
+                </p>
+            </div>
+        </div><!-- ./col -->
+    </div><!-- ./row -->
 
-<div class="alert alert-danger">
-    Something bad happened that we have to fix.
-   
-</div>
-
-<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Exception Details
-</button>
-<div class="collapse" id="collapseExample">
-    <code>
-       @Html.Raw(@ViewBag.Error)
-    </code>
-</div>
-
-
-        </div>
-    </div>
-</div>
+</div><!-- ./container -->
