@@ -500,6 +500,8 @@
     <Content Include="Web.Stage.config" />
     <Content Include="Web.Test.config" />
     <Content Include="Web.Dev.config" />
+    <Content Include="src\scss\main\_footer.scss" />
+    <Content Include="src\scss\bootstrap\bootstrap_ext\_navbar.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,3 +1,23 @@
 ﻿$enable-rounded: true;
 
-$theme-colors: ( "blue": rgb(75, 99, 151), "orange": rgb(238,156,32), "green": rgb(39,166,93), "light-blue": rgb(0,255,255), "yellow": rgb(255,255,0), "white": rgb(255, 255, 255));
+/*$theme-colors: ( "blue": rgb(75, 99, 151), "orange": rgb(238,156,32), "green": rgb(39,166,93), "light-blue": rgb(0,255,255), "yellow": rgb(255,255,0), "white": rgb(255, 255, 255) );*/
+
+
+* {
+    -ms-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
+.navbar {
+    margin-bottom: 10px;
+}
+
+nav.navbar {
+    -ms-border-radius: 0;
+    border-radius: 0;
+}
+
+
+.navbar-nav > li > a {
+    cursor: pointer;
+}
