@@ -30,7 +30,8 @@ namespace Aden.Web.Controllers.api
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
             //TODO: Refactor isGlobalAdmin variable
-            var isGlobalAdmin = User.IsInRole(_globalAdministrators);
+            //var isGlobalAdmin = User.IsInRole(_globalAdministrators);
+            var isGlobalAdmin = User.IsInRole(Constants.GlobalAdministratorGroup);
 
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 

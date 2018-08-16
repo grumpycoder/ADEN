@@ -48,7 +48,8 @@ namespace Aden.Core.Dtos
         {
             get
             {
-                var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains("MarkAdenAppAdministrators"));
+                //TODO: Refactor magic string
+                var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains("AdenAppAdministrators"));
                 return claim != null;
             }
         }

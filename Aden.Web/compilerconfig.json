@@ -4,7 +4,11 @@
     "inputFile": "src/scss/main/main.scss"
   },
   {
-    "inputFile": "src/scss/vendor.scss",
-    "outputFile": "css/vendor/vendor.css"
+    "outputFile": "css/vendor/vendor.css",
+    "inputFile": "src/scss/vendor.scss"
+  },
+  {
+    "outputFile": "js/app/submission.module.es5.js",
+    "inputFile": "js/app/submission.module.js"
   }
 ]

@@ -1,4 +1,5 @@
 ﻿using Aden.Web.Filters;
+using Alsde.Mvc.Logging.Attributes;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Linq;
@@ -6,7 +7,6 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using Alsde.Mvc.Logging.Attributes;
 
 namespace Aden.Web
 {
@@ -35,8 +35,8 @@ namespace Aden.Web
             config.EnableCors(cors);
 
             config.Filters.Add(new ValidateModelAttribute());
-            config.Filters.Add(new TrackApiPerformanceAttribute(Constants.ApplicationName,
-                Constants.LayerName));
+            config.Filters.Add(new TrackApiPerformanceAttribute(Constants.ApplicationName, Constants.WebApiLayerName));
+            config.Filters.Add(new TraceExceptionLogger());
             //config.Filters.Add(new AuthorizeAttribute());
 
             // Web API routes
