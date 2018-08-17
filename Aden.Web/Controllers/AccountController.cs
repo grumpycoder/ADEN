@@ -17,6 +17,7 @@ namespace Aden.Web.Controllers
         //Callback url from TPA login
         public ActionResult LoginCallback(string token)
         {
+            //return new HttpUnauthorizedResult();
             var url = AppSettings.Get<string>(Constants.WebServiceUrlKey);
             var tokenKey = new TokenKey(token, _accessKey);
 

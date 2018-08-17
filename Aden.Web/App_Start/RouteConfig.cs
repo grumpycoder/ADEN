@@ -13,8 +13,14 @@ namespace Aden.Web
 
             routes.LowercaseUrls = true;
 
-            routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
+            routes.MapRoute(
+                name: "Unauthorized",
+                url: "unauthorized",
+                defaults: new { controller = "Account", action = "Unauthorized" }
+            );
 
+            routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
+            
             routes.MapRoute(
                 name: "ReportActionsByYear",
                 url: "reports/{datayear}",
