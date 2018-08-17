@@ -1,5 +1,4 @@
-﻿using Aden.Core.Data;
-using CSharpFunctionalExtensions;
+﻿using CSharpFunctionalExtensions;
 using System.Threading.Tasks;
 
 namespace Aden.Core.Repositories
@@ -11,8 +10,6 @@ namespace Aden.Core.Repositories
         IReportRepository Reports { get; set; }
         ISubmissionRepository Submissions { get; set; }
         IWorkItemRepository WorkItems { get; set; }
-
-        AdenContext _context { get; set; }
         void Complete();
         Task CompleteAsync();
         Result GenerateDocuments(int reportId);

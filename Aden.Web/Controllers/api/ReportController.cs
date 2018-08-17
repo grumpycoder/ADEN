@@ -48,7 +48,6 @@ namespace Aden.Web.Controllers.api
             var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
             if (members.IsFailure) return BadRequest(members.Error);
 
-            _uow._context.Database.Connection.ConnectionString = "Data Source=.;initial catalog=Aden;Connect Timeout=15;;User Id=myUsername;Password=myPassword;";
             var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
 
             var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);

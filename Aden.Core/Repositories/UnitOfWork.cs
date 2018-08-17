@@ -14,7 +14,7 @@ namespace Aden.Core.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         //private readonly AdenContext _context;
-        public AdenContext _context { get; set; }
+        private readonly AdenContext _context;
         public IFileSpecificationRepository FileSpecifications { get; set; }
         public IReportRepository Reports { get; set; }
         public IWorkItemRepository WorkItems { get; set; }
