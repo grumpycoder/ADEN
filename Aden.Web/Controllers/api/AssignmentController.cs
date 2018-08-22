@@ -186,14 +186,15 @@ namespace Aden.Web.Controllers.api
                 if (f == null) continue;
 
                 var reportLevel = ReportLevel.SCH;
-                if (f.FileName.ToLower().Contains("SCH")) reportLevel = ReportLevel.SCH;
-                if (f.FileName.ToLower().Contains("LEA")) reportLevel = ReportLevel.LEA;
-                if (f.FileName.ToLower().Contains("SEA")) reportLevel = ReportLevel.SEA;
+                //TODO: Refactor Constants to use ReportLevel Value
+                if (f.FileName.ToLower().Contains(Constants.SchoolKey)) reportLevel = ReportLevel.SCH;
+                if (f.FileName.ToLower().Contains(Constants.LeaKey)) reportLevel = ReportLevel.LEA;
+                if (f.FileName.ToLower().Contains(Constants.StateKey)) reportLevel = ReportLevel.SEA;
 
                 var version = await _uow.Documents.GetNextAvailableVersion(report.SubmissionId, reportLevel);
 
-                BinaryReader br = new BinaryReader(f.InputStream);
-                byte[] data = br.ReadBytes((f.ContentLength));
+                var br = new BinaryReader(f.InputStream);
+                var data = br.ReadBytes((f.ContentLength));
                 var doc = ReportDocument.Create(f.FileName, version, reportLevel, data);
 
                 //attach report documents

@@ -1,8 +1,6 @@
-﻿using Aden.Web.Helpers;
-using Alsde.Extensions;
+﻿using Alsde.Extensions;
 using Alsde.Security.Identity;
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -12,14 +10,14 @@ namespace Aden.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly string _accessKey = AppSettings.Get<string>(Constants.TpaAccessKey);
+        //private readonly string _accessKey = AppSettings.Get<string>(Constants.TpaAccessKey);
 
         //Callback url from TPA login
         public ActionResult LoginCallback(string token)
         {
             //return new HttpUnauthorizedResult();
-            var url = AppSettings.Get<string>(Constants.WebServiceUrlKey);
-            var tokenKey = new TokenKey(token, _accessKey);
+            var url = Constants.WebServiceUrl;
+            var tokenKey = new TokenKey(token, Constants.TpaAccessKey);
 
             var identity = IdentityManager.TokenSignin(url, tokenKey);
 
@@ -50,34 +48,15 @@ namespace Aden.Web.Controllers
         {
             IdentityManager.IdentitySignout();
             var sb = new StringBuilder();
-            var env = ConfigurationManager.AppSettings["ASPNET_ENV"].ToLower();
-            var viewKey = ConfigurationManager.AppSettings["ALSDE_AIM_ApplicationViewKey"];
+            var env = Constants.Environment.ToLower();
 
-            //TODO: Refactor magic string out of signout
-            sb.AppendFormat("http://devaim.alsde.edu/aim/applicationinventory.aspx?logout={0}", viewKey);
+            if (env == "production") env = string.Empty;
 
-            if (HttpContext.Request.IsSecureConnection) sb.Replace("http", "https");
+            var http = HttpContext.Request.IsSecureConnection ? "http" : "https";
 
-            //TODO: Refactor to utility or factory class 
-            switch (env)
-            {
-                case "test":
-                    {
-                        sb.Replace("dev", "test");
-                        break;
-                    }
-                case "stage":
-                    {
-                        sb.Replace("dev", "stage");
-                        break;
-                    }
-                case "production":
-                    {
-                        sb.Replace("dev", "");
-                        break;
-                    }
-            }
-            return Redirect(sb.ToString());
+            var logoutUrl = $"{http}://{env}{Constants.LogoutUrl}{Constants.AimApplicationViewKey}";
+
+            return Redirect(logoutUrl);
         }
 
         public ActionResult Unauthorized()

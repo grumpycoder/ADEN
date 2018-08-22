@@ -1,4 +1,5 @@
 ﻿using Alsde.Extensions;
+using System;
 using System.Data.SqlClient;
 using System.Reflection;
 using System.Security.Claims;
@@ -25,14 +26,14 @@ namespace Aden.Web.Helpers
 
         public static IHtmlString RenderDataSource(this HtmlHelper htmlHelper)
         {
-            var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContext);
+            var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContextName);
             var builder = new SqlConnectionStringBuilder { ConnectionString = connectionString };
             return new MvcHtmlString(builder.DataSource);
         }
 
         public static IHtmlString RenderDataName(this HtmlHelper htmlHelper)
         {
-            var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContext);
+            var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContextName);
             var builder = new SqlConnectionStringBuilder { ConnectionString = connectionString };
             return new MvcHtmlString(builder.InitialCatalog);
         }
@@ -67,28 +68,7 @@ namespace Aden.Web.Helpers
 
         public static IHtmlString RenderStatusBarColor(this HtmlHelper htmlHelper)
         {
-            var env = AppSettings.Get<string>(Constants.EnvironmentKey).ToLower();
-            var cssClass = "bg-orange";
-
-            //TODO: Use Constants or Enum instead of magic strings
-            switch (env)
-            {
-                case "test":
-                    {
-                        cssClass = "bg-blue";
-                        break;
-                    }
-                case "stage":
-                    {
-                        cssClass = "bg-yellow";
-                        break;
-                    }
-                case "production":
-                    {
-                        cssClass = "bg-white";
-                        break;
-                    }
-            }
+            var cssClass = GetCssClass();
 
             return MvcHtmlString.Create(cssClass);
         }
@@ -97,32 +77,8 @@ namespace Aden.Web.Helpers
         {
             var identity = ((ClaimsIdentity)HttpContext.Current.User.Identity);
             var sb = new StringBuilder();
-            var env = AppSettings.Get<string>(Constants.EnvironmentKey).ToLower();
-            var baseUrl = Constants.BaseUrl;
-            var cssClass = "bg-orange";
+            var cssClass = GetCssClass();
 
-            //TODO: Use Constants or Enum instead of magic strings
-            switch (env)
-            {
-                case "test":
-                    {
-                        baseUrl = baseUrl.Replace("dev", "test");
-                        cssClass = "bg-blue";
-                        break;
-                    }
-                case "stage":
-                    {
-                        baseUrl = baseUrl.Replace("dev", "stage");
-                        cssClass = "bg-yellow";
-                        break;
-                    }
-                case "production":
-                    {
-                        baseUrl = baseUrl.Replace("dev", "");
-                        cssClass = "bg-white";
-                        break;
-                    }
-            }
             sb.AppendFormat("<ul class='nav navbar-nav pull-{0} {1}'>", position, cssClass);
 
             sb.Append(@"<li class='dropdown'>");
@@ -132,25 +88,25 @@ namespace Aden.Web.Helpers
 
             sb.Append("<ul class='dropdown-menu'>");
 
-            sb.AppendFormat("<li><a href='{0}aim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", baseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/UserProfile.aspx'><i class='fa fa-book'></i> User Profile</a></li>", baseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/EdDirPositions.aspx'><i class='fa fa-university'></i> EdDir Positions</a></li>", baseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/UserProfile.aspx'><i class='fa fa-book'></i> User Profile</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/EdDirPositions.aspx'><i class='fa fa-university'></i> EdDir Positions</a></li>", Constants.AimBaseUrl);
             sb.Append("<li role='separator' class='divider'></li>");
 
             sb.Append("<li class='dropdown-header'>AIM Groups and Users</li>");
-            sb.AppendFormat("<li><a href='{0}aim/admin/RolesAndUsers.aspx'><i class='fa fa-group'></i> Groups and Users</a></li>", baseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/admin/UserMaintenance.aspx'><i class='fa fa-user'></i> User Maintenance</a></li>", baseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/alsde/AppMembership.aspx'><i class='fa fa-heartbeat'></i> App Members</a></li>", baseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/admin/RolesAndUsers.aspx'><i class='fa fa-group'></i> Groups and Users</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/admin/UserMaintenance.aspx'><i class='fa fa-user'></i> User Maintenance</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/alsde/AppMembership.aspx'><i class='fa fa-heartbeat'></i> App Members</a></li>", Constants.AimBaseUrl);
             sb.Append("<li role='separator' class='divider'></li>");
 
             sb.Append("<li class='dropdown-header'>AIM Administration</li>");
-            sb.AppendFormat("<li><a href='{0}aim/admin/EditMessages.aspx'><i class='fa fa-comment'></i> Messages</a></li>", baseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/admin/WebsitesandApplications.aspx'><i class='fa fa-sitemap'></i> Websites and Applications</a></li>", baseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/admin/Groups.aspx''><i class='fa fa-cogs'></i> Group/Subgroup Maintenance</a></li>", baseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/alsde/LoadGroups.aspx'><i class='fa fa-cogs'></i> Load Groups</a></li>", baseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/admin/EditMessages.aspx'><i class='fa fa-comment'></i> Messages</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/admin/WebsitesandApplications.aspx'><i class='fa fa-sitemap'></i> Websites and Applications</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/admin/Groups.aspx''><i class='fa fa-cogs'></i> Group/Subgroup Maintenance</a></li>", Constants.AimBaseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/alsde/LoadGroups.aspx'><i class='fa fa-cogs'></i> Load Groups</a></li>", Constants.AimBaseUrl);
             sb.Append("<li role='separator' class='divider'></li>");
 
-            sb.AppendFormat("<li><a href='{0}aim/Index.aspx?Impersonate=0'><i class='fa fa-stop'></i> Stop Impersonating</a></li>", baseUrl);
+            sb.AppendFormat("<li><a href='{0}aim/Index.aspx?Impersonate=0'><i class='fa fa-stop'></i> Stop Impersonating</a></li>", Constants.AimBaseUrl);
             sb.Append("<li role='separator' class='divider'></li>");
 
             sb.Append("<li><a href='/account/signout'><i class='fa fa-sign-out'></i> Logout</a></li>");
@@ -163,9 +119,41 @@ namespace Aden.Web.Helpers
             return MvcHtmlString.Create(sb.ToString());
         }
 
+        private static string GetCssClass()
+        {
+            string cssClass;
+            var env = (Environment)Enum.Parse(typeof(Environment), Constants.Environment);
+
+            switch (env)
+            {
+                case Environment.Dev:
+                    cssClass = "bg-orange";
+                    break;
+                case Environment.Test:
+                    cssClass = "bg-blue";
+                    break;
+                case Environment.Stage:
+                    cssClass = "bg-yellow";
+                    break;
+                case Environment.Production:
+                    cssClass = "bg-white";
+                    break;
+                default:
+                    cssClass = "bg-orange";
+                    break;
+            }
+
+            return cssClass;
+        }
 
     }
 
-
+    enum Environment
+    {
+        Dev,
+        Test,
+        Stage,
+        Production
+    }
 
 }

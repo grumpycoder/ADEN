@@ -4,7 +4,6 @@ using AutoMapper;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -18,9 +17,6 @@ namespace Aden.Web.Controllers.api
     {
         private readonly IUnitOfWork _uow;
 
-        private readonly string _globalAdministrators =
-            ConfigurationManager.AppSettings["GlobalAdministratorsGroupName"];
-
         public SubmissionController(IUnitOfWork uow)
         {
             _uow = uow;
@@ -30,9 +26,9 @@ namespace Aden.Web.Controllers.api
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
             //TODO: Refactor isGlobalAdmin variable
-            //var isGlobalAdmin = User.IsInRole(_globalAdministrators);
             var isGlobalAdmin = User.IsInRole(Constants.GlobalAdministratorGroup);
 
+            //TODO: Refactor to use a custom claimtype and not magic string
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 
             var submissions = await _uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);

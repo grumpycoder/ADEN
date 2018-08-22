@@ -27,7 +27,7 @@
                         <a><i class="fa fa-globe"></i> @Html.RenderConfigurationValue("ASPNET_ENV") (@Environment.MachineName) @Html.RenderApplicationName()</a>
                     </li>
                     <li>
-                        <a><i class="fa fa-database"></i> Development (@Html.RenderDataSource()) @Html.RenderDataName()</a>
+                        <a><i class="fa fa-database"></i> @Html.RenderConfigurationValue("ASPNET_ENV") (@Html.RenderDataSource()) @Html.RenderDataName()</a>
                     </li>
                 </ul>
                 @Html.UserNavBarMenuList("right")
