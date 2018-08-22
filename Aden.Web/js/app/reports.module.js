@@ -34,7 +34,7 @@ function createReportDocumentLinks(container, options) {
             var $currentTarget = $(this);
             var title = $currentTarget.data('title');
             var modalUrl = $currentTarget.data('url');
-            
+
             $.ajax({
                 url: modalUrl,
                 type: 'POST',
@@ -42,13 +42,13 @@ function createReportDocumentLinks(container, options) {
                     window.showBSModal({
                         title: title,
                         body: data,
-                        size: "large", 
+                        size: "large",
                         actions: [
                             {
                                 label: 'Cancel',
                                 cssClass: 'btn-default',
                                 onClick: function (e) {
-                                    console.log('e', e);
+                                    //console.log('e', e);
                                     $(e.target).parents('.modal').modal('hide');
                                     $('body').removeClass('modal-open');
                                     //modal-open class is added on body so it has to be removed
@@ -79,7 +79,7 @@ function createReportDocumentLinks(container, options) {
                     });
                 },
                 error: function (err) {
-                    console.log('err', err);
+                    //console.log('err', err);
                     window.$log.error('Error showing history');
                 }
             });

@@ -59,7 +59,7 @@ $(function () {
                                         $.each(validationErrors.modelState, function (i, ival) {
                                             window.remoteErrors(form, i, ival);
                                         });
-                                        
+
                                     },
                                     complete: function () {
                                         //console.log('complete');
@@ -73,7 +73,7 @@ $(function () {
                 });
             },
             error: function (err) {
-                console.log('err', err);
+                //console.log('err', err);
                 window.$log.error('Error showing reassignment');
             }
         });
@@ -119,12 +119,12 @@ $(function () {
                 window.$log.success('Activated ' + data.fileNumber + ' - ' + data.fileName);
             },
             error: function (err) {
-                console.log('err', err);
+                //console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.message);
             }
         }).always(function () {
             window.$toggleWorkingButton(btn);
-            });
+        });
 
     });
 

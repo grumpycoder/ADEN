@@ -42,26 +42,4 @@ function gridContentReady() {
 $(function () {
     console.log('application ready');
     $('body').tooltip({ selector: '[data-toggle=tooltip]' });
-
-    //$.ajaxSetup({
-    //    error: function (x, status, error) {
-    //        if (x.status === 401) {
-    //            window.showBSModal({
-    //                title: "Session Expired",
-    //                body: "Sorry, your session has expired. Please login again to continue.",
-    //                size: "small",
-    //                actions: [{
-    //                    label: 'Ok',
-    //                    cssClass: 'btn-default',
-    //                    onClick: function (e) {
-    //                        //proceed to log out
-    //                        $(e.target).parents('.modal').modal('hide');
-    //                        window.location.href = "/";
-    //                    }
-    //                }]
-    //            });
-    //        }
-    //    }
-    //});
-
 });

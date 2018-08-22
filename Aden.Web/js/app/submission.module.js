@@ -16,15 +16,16 @@ $(function () {
         })
             .done(function (data) {
                 $grid.refresh().done(function (e) { });
-                $log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
+                window.$log.success('Waived' + data.fileNumber + ' - ' + data.fileName);
             })
             .fail(function (err) {
-                console.log('err', err);
+                //console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
             })
             .always(function () {
                 window.$toggleWorkingButton(btn, 'off');
-            });;
+            });
+
     });
 
     $(document).on('click', '[data-start]', function (e) {
@@ -36,19 +37,20 @@ $(function () {
 
         $.ajax({
             url: '/api/report/create/' + id,
-            type: 'POST',
+            type: 'POST'
         })
             .done(function () {
                 $grid.refresh().done(function (e) { console.log('done', e) });
                 window.$log.success('Created assignment');
             })
             .fail(function (err) {
-                console.log('err', err);
+                //console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
             })
             .always(function () {
                 window.$toggleWorkingButton(btn, 'off');
-            });;
+            });
+
     });
 
     $(document).on('click', '[data-history]', function (e) {
@@ -66,7 +68,7 @@ $(function () {
                 });
             },
             error: function (err) {
-                console.log('err', err);
+                //console.log('err', err);
                 window.$log.error('Error showing history');
             }
         });
@@ -90,7 +92,7 @@ $(function () {
                             label: 'Cancel',
                             cssClass: 'btn-default',
                             onClick: function (e) {
-                                console.log('e', e);
+                                //console.log('e', e);
                                 $(e.target).parents('.modal').modal('hide');
                                 $('body').removeClass('modal-open');
                                 //modal-open class is added on body so it has to be removed
@@ -126,14 +128,14 @@ $(function () {
                                     window.$hideModalWorking();
                                 });
 
-                              
+
                             }
                         }
                     ]
                 });
             },
             error: function (err) {
-                console.log('err', err);
+                //console.log('err', err);
                 window.$log.error('Error showing reassignment');
             }
         });
@@ -182,7 +184,7 @@ function rowStyle(submissionState, dueDate) {
     }
 
     if (submissionState === 'CompleteWithErrors') {
-        console.log('complete with errors');
+        //console.log('complete with errors');
         return classes[2];
     }
 

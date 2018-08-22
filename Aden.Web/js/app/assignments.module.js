@@ -8,7 +8,6 @@ $(function () {
     
     $(document).on('click', '[data-workitem-id]', function (e) {
         e.preventDefault();
-        console.log('work item click');
         var btn = $(this);
         var id = btn.data('workitem-id');
         var url = '/api/assignment/complete/' + id;
@@ -20,10 +19,9 @@ $(function () {
             success: function (data) {
                 $gridCurrentAssignments.refresh();
                 $gridRetrievableAssignments.refresh();
-                window.$log.success(data.action + ' - ' + data.state);
+                window.$log.success('Completed ' + data.action + ' assignment');
             },
             error: function (err) {
-                console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
             }
         });
@@ -39,13 +37,18 @@ $(function () {
             url: url,
             type: 'POST',
             success: function (data) {
-                $gridCurrentAssignments.refresh().done(function (e) { console.log('done', e) });
-                $gridRetrievableAssignments.refresh().done(function (e) { console.log('done', e) });
-                window.$log.success('Cancelled ' + data.action + ' - ' + data.state);
+                $gridCurrentAssignments.refresh().done(function (e)
+                {
+                    //console.log('done', e)
+                });
+                $gridRetrievableAssignments.refresh().done(function(e) {
+                     //console.log('done', e)
+                });
+                window.$log.success('Cancelled ' + data.action + ' assignment');
                 window.$toggleWorkingButton(btn);
             },
             error: function (err) {
-                console.log('err', err);
+                //console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
                 window.$toggleWorkingButton(btn);
             }
@@ -71,7 +74,6 @@ $(function () {
                             label: 'Cancel',
                             cssClass: 'btn-default',
                             onClick: function (e) {
-                                console.log('e', e);
                                 $(e.target).parents('.modal').modal('hide');
                                 $('body').removeClass('modal-open');
                                 //modal-open class is added on body so it has to be removed
@@ -189,19 +191,16 @@ $(function () {
                                     contentType: false,
                                     processData: false,
                                     success: function (response) {
-                                        console.log('success', response);
                                         $gridCurrentAssignments.refresh();
                                         $gridRetrievableAssignments.refresh();
                                         window.$log.success('Submitted report');
                                     },
                                     error: function (error) {
-                                        console.log('error', error);
                                         window.$log.error('Error: ' + error.statusText);
                                     },
                                     complete: function () {
                                         $('.modalContainer').html('');
                                         $('.modal').modal('hide');
-                                        console.log('complete');
                                         window.$hideModalWorking();
                                     }
                                 });
@@ -211,7 +210,6 @@ $(function () {
                 });
             },
             error: function (err) {
-                console.log('err', err);
                 window.$log.error('Error showing history');
             }
         });
