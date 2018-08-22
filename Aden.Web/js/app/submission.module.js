@@ -203,3 +203,4 @@ function rowPrepared(row) {
         row.rowElement.addClass(css);
     }
 }
+

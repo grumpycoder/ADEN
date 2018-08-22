@@ -45,9 +45,9 @@
                             cols.Add().DataField("dataGroups").HidingPriority(1);
                             cols.Add().DataField("application").HidingPriority(2);
                             cols.Add().DataField("dataSource").HidingPriority(3);
-                            cols.Add().DataField("isSEA").Caption("SEA").HidingPriority(5);
-                            cols.Add().DataField("isLEA").Caption("LEA").HidingPriority(5);
-                            cols.Add().DataField("isSCH").Caption("SCH").HidingPriority(5);
+                            cols.Add().DataField("isSEA").ShowEditorAlways(false).Caption("SEA").TrueText("Yes").FalseText("No").HidingPriority(5);
+                            cols.Add().DataField("isLEA").ShowEditorAlways(false).Caption("LEA").TrueText("Yes").FalseText("No").HidingPriority(5);
+                            cols.Add().DataField("isSCH").ShowEditorAlways(false).Caption("SCH").TrueText("Yes").FalseText("No").HidingPriority(5);
 
 
                             cols.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createSubmissionGridActionButtons(container, options);}"));
