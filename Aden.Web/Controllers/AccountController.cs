@@ -1,6 +1,7 @@
 ﻿using Alsde.Extensions;
 using Alsde.Security.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -18,6 +19,10 @@ namespace Aden.Web.Controllers
             //return new HttpUnauthorizedResult();
             var url = Constants.WebServiceUrl;
             var tokenKey = new TokenKey(token, Constants.TpaAccessKey);
+
+            Alsde.Mvc.Logging.Helpers.LogWebDiagnostic(Constants.ApplicationName, Constants.LayerName, "Token values", new Dictionary<string, object> { { "token", tokenKey.Token } });
+            Alsde.Mvc.Logging.Helpers.LogWebDiagnostic(Constants.ApplicationName, Constants.LayerName, "Token values", new Dictionary<string, object> { { "token", tokenKey.AccessKey } });
+            Alsde.Mvc.Logging.Helpers.LogWebDiagnostic(Constants.ApplicationName, Constants.LayerName, "WebServiceUrl", new Dictionary<string, object> { { "WebserviceUrl", url } });
 
             var identity = IdentityManager.TokenSignin(url, tokenKey);
 
