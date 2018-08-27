@@ -122,7 +122,9 @@ namespace Aden.Web.Helpers
         private static string GetCssClass()
         {
             string cssClass;
-            var env = (Environment)Enum.Parse(typeof(Environment), Constants.Environment);
+            Enum.TryParse(Constants.Environment, out Environment env);
+
+            //var env = (Environment)Enum.Parse(typeof(Environment), Constants.Environment);
 
             switch (env)
             {
@@ -145,6 +147,45 @@ namespace Aden.Web.Helpers
 
             return cssClass;
         }
+
+        public static string MakeActiveClass(this UrlHelper urlHelper, string controller)
+        {
+            string result = "active";
+
+            string controllerName = urlHelper.RequestContext.RouteData.Values["controller"].ToString();
+
+            if (!controllerName.Equals(controller, StringComparison.OrdinalIgnoreCase))
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+        public static MvcHtmlString NavigationLink(this HtmlHelper html, string linkText, string action, string controller, string icon = null, object routeValues = null, object css = null)
+        {
+            TagBuilder aTag = new TagBuilder("a");
+            TagBuilder liTag = new TagBuilder("li");
+            var htmlAttributes = HtmlHelper.AnonymousObjectToHtmlAttributes(css);
+            string url = (routeValues == null) ?
+                (new UrlHelper(html.ViewContext.RequestContext)).Action(action, controller)
+                : (new UrlHelper(html.ViewContext.RequestContext)).Action(action, controller, routeValues);
+
+            var imageIcon = $@"<i class='{icon}'></i>&nbsp;&nbsp;";
+
+            linkText = imageIcon + linkText;
+            aTag.MergeAttribute("href", url);
+            aTag.InnerHtml = linkText;
+
+            aTag.MergeAttributes(htmlAttributes);
+
+            if (action.ToLower() == html.ViewContext.RouteData.Values["action"].ToString().ToLower() && controller.ToLower() == html.ViewContext.RouteData.Values["controller"].ToString().ToLower())
+                liTag.MergeAttribute("class", "active");
+
+            liTag.InnerHtml = aTag.ToString(TagRenderMode.Normal);
+            return new MvcHtmlString(liTag.ToString(TagRenderMode.Normal));
+        }
+
 
     }
 

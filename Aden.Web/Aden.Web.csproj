@@ -63,10 +63,13 @@
       <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Mvc.Logging, Version=2018.8.27.6814, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Mvc.Logging.2018.8.1-beta-03\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
+      <HintPath>..\packages\Alsde.Mvc.Logging.2018.8.1-beta\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2018.8.25.6811, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.8.0\lib\net451\Alsde.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Alsde.Services, Version=2018.8.24.6680, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Services.2018.8.0\lib\net451\Alsde.Services.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
@@ -285,11 +288,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-overrides.css" />
-    <Content Include="Content\bootstrap-custom.css" />
-    <Content Include="Content\bootstrap.min - Copy.css" />
-    <Content Include="Content\loader.css" />
-    <Content Include="Content\sandstone.bootstrap.min.css" />
     <Content Include="css\dx.android5.light.css" />
     <Content Include="css\dx.carmine.compact.css" />
     <Content Include="css\dx.carmine.css" />
@@ -325,7 +323,6 @@
     <Content Include="fonts\fa-regular-400.svg" />
     <Content Include="fonts\fa-solid-900.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\site.css" />
     <Content Include="css\icons\dxicons.ttf" />
     <Content Include="css\icons\dxicons.woff" />
     <Content Include="css\icons\dxiconsios.ttf" />
@@ -516,6 +513,7 @@
     <Content Include="Web.Test.config" />
     <Content Include="Web.Dev.config" />
     <Content Include="src\scss\main\_footer.scss" />
+    <Content Include="src\scss\bootstrap\bootstrap_ext\_status-navbar.scss" />
     <Content Include="src\scss\bootstrap\bootstrap_ext\_navbar.scss" />
   </ItemGroup>
   <ItemGroup>

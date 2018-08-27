@@ -1,10 +1,10 @@
 ﻿// Import Bootstrap config first
 /*@import 'config';*/ 
-/*@import '_custom-variables';*/
+@import '_custom-variables';
 
 // Import all Bootstrap_ext here
 /*@import 'bootstrap_ext/button';*/
-@import 'bootstrap_ext/navbar';
+@import 'bootstrap_ext/status-navbar';
 
 @import "_pre_default";
 @import "node_modules/bootstrap-sass/assets/stylesheets/_bootstrap-sprockets";
