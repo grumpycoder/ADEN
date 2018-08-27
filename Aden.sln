@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aden.Web", "Aden.Web\Aden.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aden.Core", "Aden.Core\Aden.Core.csproj", "{F7E51D12-2AC6-462B-B229-196A1D3CE50F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alsde.Mvc.Logging", "..\Alsde\Alsde.Mvc.Logging\Alsde.Mvc.Logging\Alsde.Mvc.Logging.csproj", "{5541F008-8C9F-4681-938A-D43C00919483}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,24 +23,15 @@ Global
 		{F7E51D12-2AC6-462B-B229-196A1D3CE50F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7E51D12-2AC6-462B-B229-196A1D3CE50F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7E51D12-2AC6-462B-B229-196A1D3CE50F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5541F008-8C9F-4681-938A-D43C00919483}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5541F008-8C9F-4681-938A-D43C00919483}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5541F008-8C9F-4681-938A-D43C00919483}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5541F008-8C9F-4681-938A-D43C00919483}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {43FD184F-A0C0-4C0A-A2E1-82B0C23534A7}
-	EndGlobalSection
-	GlobalSection(AutomaticVersions) = postSolution
-		PrimaryVersionType = AssemblyInfoVersionAttribute
-		UpdateAssemblyVersion = True
-		UpdateAssemblyFileVersion = True
-		UpdateAssemblyInfoVersion = True
-		AdvancedSettingsExpanded = True
-		AssemblyVersionSettings = YearStamp.MonthStamp.DayStamp.DeltaDayStamp
-		AssemblyFileVersionSettings = YearStamp.MonthStamp.DayStamp.DeltaDayStamp
-		AssemblyInfoVersionSettings = YearStamp.MonthStamp.DayStamp.DeltaDayStamp
-		UpdatePackageVersion = False
-		AssemblyInfoVersionType = SettingsVersion
-		InheritWinAppVersionFrom = None
 	EndGlobalSection
 EndGlobal

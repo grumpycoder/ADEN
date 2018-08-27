@@ -24,7 +24,7 @@
     <UseGlobalApplicationHostFile />
     <ApplicationVersion>57.0.56.6636</ApplicationVersion>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2018.8.25</AssemblyVersion>
+    <AssemblyVersion>2018.8.27</AssemblyVersion>
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
@@ -61,9 +61,6 @@
     </Reference>
     <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Alsde.Mvc.Logging, Version=2018.8.6800.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Mvc.Logging.2018.8.1\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2018.8.25.6811, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2018.8.0\lib\net451\Alsde.Security.dll</HintPath>
@@ -525,6 +522,10 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Alsde\Alsde.Mvc.Logging\Alsde.Mvc.Logging\Alsde.Mvc.Logging.csproj">
+      <Project>{5541f008-8c9f-4681-938a-d43c00919483}</Project>
+      <Name>Alsde.Mvc.Logging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Aden.Core\Aden.Core.csproj">
       <Project>{F7E51D12-2AC6-462B-B229-196A1D3CE50F}</Project>
       <Name>Aden.Core</Name>
