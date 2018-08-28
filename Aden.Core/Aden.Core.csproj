@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2018.8.27</AssemblyVersion>
+    <AssemblyVersion>2018.8.34</AssemblyVersion>
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\AutoMapperConfig.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Data\AdenContext.cs" />
     <Compile Include="Data\EntityConfigurations\FileSpecificationConfiguration.cs" />
     <Compile Include="Data\EntityConfigurations\ReportConfiguration.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Dtos\UpdateFileSpecificationDto.cs" />
     <Compile Include="Dtos\WorkItemDto.cs" />
     <Compile Include="Dtos\WorkItemHistoryDto.cs" />
+    <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="Helpers\StringExtensions.cs" />

@@ -9,19 +9,27 @@ namespace Aden.Core.Services
 {
     public class EmailNotificationService : INotificationService
     {
-        private const string HelpDeskEmail = "HelpDeskEmail@alsde.edu";
-        private const string ReplyAddress = "noreply@alsde.edu";
+
+        public string Url
+        {
+            get
+            {
+                var env = Constants.CurrentEnvironment != "Production" ? Constants.CurrentEnvironment : string.Empty;
+                return $"https://{env.ToLower()}aden.alsde.edu/assignments";
+            }
+        }
 
         public void SendWorkNotification(WorkItem workItem)
         {
+            var s = AppSettings.Get<string>("ASPNET_ENV");
             try
             {
                 var client = new SmtpClient();
-                var message = new MailMessage(ReplyAddress, workItem.AssignedUser)
+                var message = new MailMessage(Constants.ReplyAddress, workItem.AssignedUser)
                 {
                     Subject =
                         $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Assignment",
-                    Body = $"You have been assigned a {workItem.WorkItemAction.GetDisplayName()} task for {workItem.Report.Submission.FileSpecification.FileName} to be completed by {workItem.Report.Submission.DueDate}"
+                    Body = $"You have been assigned a {workItem.WorkItemAction.GetDisplayName()} task for {workItem.Report.Submission.FileSpecification.FileName} to be completed by {workItem.Report.Submission.DueDate}. You can view your assignments at {Url}."
                 };
 
                 client.Send(message);
@@ -38,12 +46,12 @@ namespace Aden.Core.Services
             try
             {
                 var client = new SmtpClient();
-                var message = new MailMessage(ReplyAddress, workItem.AssignedUser)
+                var message = new MailMessage(Constants.ReplyAddress, workItem.AssignedUser)
                 {
                     Subject =
                         $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Assignment Cancelled",
                     Body =
-                        $"You're assignment of {workItem.WorkItemAction.GetDisplayName()} task for {workItem.Report.Submission.FileSpecification.FileName} has been cancelled"
+                        $"You're assignment of {workItem.WorkItemAction.GetDisplayName()} task for {workItem.Report.Submission.FileSpecification.FileName} has been cancelled."
                 };
 
                 client.Send(message);
@@ -60,12 +68,12 @@ namespace Aden.Core.Services
             try
             {
                 var client = new SmtpClient();
-                var message = new MailMessage(ReplyAddress, workItem.AssignedUser)
+                var message = new MailMessage(Constants.ReplyAddress, workItem.AssignedUser)
                 {
                     Subject =
                         $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Assignment Cancelled",
                     Body =
-                        $"You're assignment of {workItem.WorkItemAction.GetDisplayName()} task for {workItem.Report.Submission.FileSpecification.FileName} has been ressigned"
+                        $"You're assignment of {workItem.WorkItemAction.GetDisplayName()} task for {workItem.Report.Submission.FileSpecification.FileName} has been reassigned. You can view your assignments at {Url}."
                 };
 
                 client.Send(message);
@@ -83,7 +91,7 @@ namespace Aden.Core.Services
             try
             {
                 var client = new SmtpClient();
-                var message = new MailMessage(ReplyAddress, workItem.AssignedUser)
+                var message = new MailMessage(Constants.ReplyAddress, workItem.AssignedUser)
                 {
                     Subject =
                         $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Submission Error",
@@ -120,7 +128,7 @@ namespace Aden.Core.Services
                     $"{workItem.Report.Submission.FileSpecification.FileName} submission has generated an error. {Environment.NewLine}";
                 bodyText += $"Notes: {Environment.NewLine} {workItem.Notes}";
 
-                var message = new MailMessage(ReplyAddress, HelpDeskEmail)
+                var message = new MailMessage(Constants.ReplyAddress, Constants.HelpDeskEmail)
                 {
                     Subject =
                         $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Submission Error",
