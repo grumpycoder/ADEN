@@ -17,7 +17,15 @@ namespace Aden.Web.Filters
                 base.HandleUnauthorizedRequest(filterContext);
             }
 
-            filterContext.Result = new RedirectResult("~/Account/Unauthorized");
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                filterContext.Result = new RedirectResult("~/Account/Unauthorized");
+            }
+            else
+            {
+                base.HandleUnauthorizedRequest(filterContext);
+            }
+
         }
 
         public override void OnAuthorization(AuthorizationContext filterContext)

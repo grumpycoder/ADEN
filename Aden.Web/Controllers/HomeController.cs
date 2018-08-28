@@ -10,7 +10,8 @@ using System.Web.Mvc;
 
 namespace Aden.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
+    [CustomAuthorize(Roles = "AdenAppUsers")]
     public class HomeController : AsyncController
     {
         private readonly IUnitOfWork _uow;

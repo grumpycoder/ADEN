@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2018.8.34</AssemblyVersion>
+    <AssemblyVersion>2018.8.37</AssemblyVersion>
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>False</UpdateAssemblyVersion>

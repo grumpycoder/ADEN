@@ -11,7 +11,7 @@ using System.Web.Routing;
 
 namespace Aden.Web
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -27,15 +27,13 @@ namespace Aden.Web
         protected void Application_Error(object sender, EventArgs e)
         {
             var ex = Server.GetLastError();
-            if (ex == null)
-                return;
+            if (ex == null) return;
 
             Session["Error"] = ex.ToBetterString();
 
-            int httpStatus;
             string errorControllerAction;
 
-            WebHelpers.GetHttpStatus(ex, out httpStatus);
+            WebHelpers.GetHttpStatus(ex, out var httpStatus);
             switch (httpStatus)
             {
                 case 404:

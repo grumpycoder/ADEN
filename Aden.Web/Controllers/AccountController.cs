@@ -1,10 +1,8 @@
 ﻿using Alsde.Extensions;
 using Alsde.Security.Identity;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Web.Mvc;
 
 namespace Aden.Web.Controllers
@@ -16,17 +14,12 @@ namespace Aden.Web.Controllers
         //Callback url from TPA login
         public ActionResult LoginCallback(string token)
         {
-            //return new HttpUnauthorizedResult();
-            var url = Constants.WebServiceUrl;
             var tokenKey = new TokenKey(token, Constants.TpaAccessKey);
 
-            Alsde.Mvc.Logging.Helpers.LogWebDiagnostic(Constants.ApplicationName, Constants.LayerName, "Token values", new Dictionary<string, object> { { "token", tokenKey.Token } });
-            Alsde.Mvc.Logging.Helpers.LogWebDiagnostic(Constants.ApplicationName, Constants.LayerName, "Token values", new Dictionary<string, object> { { "token", tokenKey.AccessKey } });
-            Alsde.Mvc.Logging.Helpers.LogWebDiagnostic(Constants.ApplicationName, Constants.LayerName, "WebServiceUrl", new Dictionary<string, object> { { "WebserviceUrl", url } });
+            var identity = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
 
-            var identity = IdentityManager.TokenSignin(url, tokenKey);
+            if (identity == null) throw new Exception("No identity returned from Token signin");
 
-            if (identity == null) throw new Exception("No idenity returned from Token signin");
             // Add custom claims to User to store Section information
             var claims = identity.Claims.ToList();
             var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));
@@ -52,14 +45,12 @@ namespace Aden.Web.Controllers
         public ActionResult Signout()
         {
             IdentityManager.IdentitySignout();
-            var sb = new StringBuilder();
-            var env = Constants.Environment.ToLower();
+            //var env = Constants.Environment.ToLower();
+            var env = Constants.Environment.ToLower() == "production" ? string.Empty : Constants.Environment.ToLower();
 
-            if (env == "production") env = string.Empty;
+            //if (env == "production") env = string.Empty;
 
-            var http = HttpContext.Request.IsSecureConnection ? "http" : "https";
-
-            var logoutUrl = $"{http}://{env}{Constants.LogoutUrl}{Constants.AimApplicationViewKey}";
+            var logoutUrl = $"https://{env}{Constants.LogoutUrl}{Constants.AimApplicationViewKey}";
 
             return Redirect(logoutUrl);
         }
