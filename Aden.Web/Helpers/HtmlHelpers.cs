@@ -93,21 +93,41 @@ namespace Aden.Web.Helpers
             sb.AppendFormat("<li><a href='{0}aim/EdDirPositions.aspx'><i class='fa fa-university'></i> EdDir Positions</a></li>", Constants.AimBaseUrl);
             sb.Append("<li role='separator' class='divider'></li>");
 
-            sb.Append("<li class='dropdown-header'>AIM Groups and Users</li>");
-            sb.AppendFormat("<li><a href='{0}aim/admin/RolesAndUsers.aspx'><i class='fa fa-group'></i> Groups and Users</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/admin/UserMaintenance.aspx'><i class='fa fa-user'></i> User Maintenance</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/alsde/AppMembership.aspx'><i class='fa fa-heartbeat'></i> App Members</a></li>", Constants.AimBaseUrl);
-            sb.Append("<li role='separator' class='divider'></li>");
 
-            sb.Append("<li class='dropdown-header'>AIM Administration</li>");
-            sb.AppendFormat("<li><a href='{0}aim/admin/EditMessages.aspx'><i class='fa fa-comment'></i> Messages</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/admin/WebsitesandApplications.aspx'><i class='fa fa-sitemap'></i> Websites and Applications</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/admin/Groups.aspx''><i class='fa fa-cogs'></i> Group/Subgroup Maintenance</a></li>", Constants.AimBaseUrl);
-            sb.AppendFormat("<li><a href='{0}aim/alsde/LoadGroups.aspx'><i class='fa fa-cogs'></i> Load Groups</a></li>", Constants.AimBaseUrl);
-            sb.Append("<li role='separator' class='divider'></li>");
+            if (identity.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "IdemAppUsers"))
+            {
+                sb.Append("<li class='dropdown-header'>AIM Groups and Users</li>");
+                sb.AppendFormat("<li><a href='{0}aim/admin/RolesAndUsers.aspx'><i class='fa fa-group'></i> Groups and Users</a></li>", Constants.AimBaseUrl);
+                sb.AppendFormat("<li><a href='{0}aim/admin/UserMaintenance.aspx'><i class='fa fa-user'></i> User Maintenance</a></li>", Constants.AimBaseUrl);
+                sb.AppendFormat("<li><a href='{0}aim/alsde/AppMembership.aspx'><i class='fa fa-heartbeat'></i> App Members</a></li>", Constants.AimBaseUrl);
+                sb.Append("<li role='separator' class='divider'></li>");
+            }
 
-            sb.AppendFormat("<li><a href='{0}aim/Index.aspx?Impersonate=0'><i class='fa fa-stop'></i> Stop Impersonating</a></li>", Constants.AimBaseUrl);
-            sb.Append("<li role='separator' class='divider'></li>");
+            if (identity.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "IdemAppAdministrators"))
+            {
+                sb.Append("<li class='dropdown-header'>AIM Administration</li>");
+                sb.AppendFormat(
+                    "<li><a href='{0}aim/admin/EditMessages.aspx'><i class='fa fa-comment'></i> Messages</a></li>",
+                    Constants.AimBaseUrl);
+                sb.AppendFormat(
+                    "<li><a href='{0}aim/admin/WebsitesandApplications.aspx'><i class='fa fa-sitemap'></i> Websites and Applications</a></li>",
+                    Constants.AimBaseUrl);
+                sb.AppendFormat(
+                    "<li><a href='{0}aim/admin/Groups.aspx''><i class='fa fa-cogs'></i> Group/Subgroup Maintenance</a></li>",
+                    Constants.AimBaseUrl);
+                sb.AppendFormat(
+                    "<li><a href='{0}aim/alsde/LoadGroups.aspx'><i class='fa fa-cogs'></i> Load Groups</a></li>",
+                    Constants.AimBaseUrl);
+                sb.Append("<li role='separator' class='divider'></li>");
+            }
+
+            //if (LoginHelper.CurrentUser.ImpersonateEmailAddress != HttpContext.Current.User.Identity.Name)
+            //{
+            //    sb.AppendFormat(
+            //        "<li><a href='{0}aim/Index.aspx?Impersonate=0'><i class='fa fa-stop'></i> Stop Impersonating</a></li>",
+            //        Constants.AimBaseUrl);
+            //    sb.Append("<li role='separator' class='divider'></li>");
+            //}
 
             sb.Append("<li><a href='/account/signout'><i class='fa fa-sign-out'></i> Logout</a></li>");
             sb.Append("</ul>");
