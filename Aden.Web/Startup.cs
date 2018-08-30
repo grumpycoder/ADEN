@@ -1,8 +1,8 @@
-﻿using System.Web;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
+using System.Web;
 
 [assembly: OwinStartup(typeof(Aden.Web.Startup))]
 namespace Aden.Web
@@ -20,6 +20,7 @@ namespace Aden.Web
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 CookieName = "Aden",
+                CookieDomain = ".alsde.edu",
                 LoginPath = new PathString("/Account/LoginCallback"),
                 Provider = new CookieAuthenticationProvider()
                 {
