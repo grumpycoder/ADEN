@@ -34,7 +34,7 @@ namespace Aden.Web
                     }
                 }
             });
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ApplicationCookie);
+            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ApplicationCookie);
 
         }
 
