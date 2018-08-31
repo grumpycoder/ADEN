@@ -1,14 +1,28 @@
 ﻿using Alsde.Extensions;
 using Alsde.Security.Identity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
+using System.Web;
 using System.Web.Mvc;
+using Aden.Web.Helpers;
+using Alsde.Entity;
+using Alsde.Services;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 
 namespace Aden.Web.Controllers
 {
+
     public class AccountController : Controller
     {
+        public IAuthenticationManager AuthenticationManager
+        {
+            get { return HttpContext.GetOwinContext().Authentication; }
+        }
+
         //private readonly string _accessKey = AppSettings.Get<string>(Constants.TpaAccessKey);
 
         //Callback url from TPA login
@@ -16,11 +30,17 @@ namespace Aden.Web.Controllers
         {
             var tokenKey = new TokenKey(token, Constants.TpaAccessKey);
 
-            var identity = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
+            var dir = new EdDirectory(AppSettings.Get<string>("WebServiceUrl"));
+            var person = dir.GetPersonDetail(tokenKey.Token, tokenKey.AccessKey);
 
-            if (identity == null) throw new Exception("No identity returned from Token signin");
+            var identity = CreateClaimsIdentity(person);
 
-            // Add custom claims to User to store Section information
+            AuthenticationManager.SignIn(identity);
+            //var identity = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
+
+            //if (identity == null) throw new Exception("No identity returned from Token signin");
+
+            //// Add custom claims to User to store Section information
             var claims = identity.Claims.ToList();
             var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));
             var isAdministrator = claims.Any(c => c.Value.ToLower().Contains("administrator"));
@@ -60,5 +80,23 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        private static ClaimsIdentity CreateClaimsIdentity(Person person)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, person.Email),
+                new Claim(ClaimTypes.Name, person.Email),
+                new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider", person.Email),
+            };
+
+            var list = person.Groups.Select(g => g.GroupViewKey);
+
+            foreach (var group in person.Groups)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, group.GroupViewKey));
+            }
+
+            return new ClaimsIdentity(claims, DefaultAuthenticationTypes.ApplicationCookie);
+        }
     }
 }
