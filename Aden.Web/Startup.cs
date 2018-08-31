@@ -21,7 +21,8 @@ namespace Aden.Web
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 CookieName = "Aden",
                 CookieDomain = "alsde.edu",
-                CookieHttpOnly = false,
+                CookieHttpOnly = true,
+                CookieSecure = CookieSecureOption.Never,
                 LoginPath = new PathString("/Account/LoginCallback"),
                 Provider = new CookieAuthenticationProvider()
                 {
