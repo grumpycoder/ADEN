@@ -13,7 +13,7 @@ using System.Web.Http;
 namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/assignment")]
-    [Authorize]
+    //[Authorize]
     public class AssignmentController : ApiController
     {
         private readonly IUnitOfWork _uow;
