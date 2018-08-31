@@ -1,17 +1,14 @@
-﻿using Alsde.Extensions;
+﻿using Alsde.Entity;
+using Alsde.Extensions;
 using Alsde.Security.Identity;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
-using Aden.Web.Helpers;
-using Alsde.Entity;
-using Alsde.Services;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
 
 namespace Aden.Web.Controllers
 {
@@ -30,15 +27,9 @@ namespace Aden.Web.Controllers
         {
             var tokenKey = new TokenKey(token, Constants.TpaAccessKey);
 
-            var dir = new EdDirectory(AppSettings.Get<string>("WebServiceUrl"));
-            var person = dir.GetPersonDetail(tokenKey.Token, tokenKey.AccessKey);
+            var identity = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
 
-            var identity = CreateClaimsIdentity(person);
-
-            AuthenticationManager.SignIn(identity);
-            //var identity = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
-
-            //if (identity == null) throw new Exception("No identity returned from Token signin");
+            if (identity == null) throw new Exception("No identity returned from Token signin");
 
             //// Add custom claims to User to store Section information
             var claims = identity.Claims.ToList();
