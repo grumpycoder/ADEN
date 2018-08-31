@@ -29,6 +29,8 @@ namespace Aden.Web.Controllers
 
             var identity = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
 
+            System.Threading.Thread.Sleep(3000);
+
             if (identity == null) throw new Exception("No identity returned from Token signin");
 
             //// Add custom claims to User to store Section information
