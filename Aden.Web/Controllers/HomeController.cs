@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace Aden.Web.Controllers
 {
     //[Authorize]
-    //[CustomAuthorize(Roles = "AdenAppUsers")]
+    [CustomAuthorize(Roles = "AdenAppUsers")]
     public class HomeController : AsyncController
     {
         private readonly IUnitOfWork _uow;
@@ -21,7 +21,7 @@ namespace Aden.Web.Controllers
             _uow = uow;
         }
         [TrackViewName]
-        //[CustomAuthorize(Roles = Constants.GlobalAdministratorGroup)]
+        [CustomAuthorize(Roles = Constants.GlobalAdministratorGroup)]
         [Authorize]
         public ActionResult FileSpecifications()
         {
