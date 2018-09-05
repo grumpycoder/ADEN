@@ -6,11 +6,13 @@ using DevExtreme.AspNet.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Aden.Web.Filters;
 
 namespace Aden.Web.Controllers.api
 {
-    [Authorize]
+    
     [RoutePrefix("api/filespecification")]
+    [CustomAuthorize(Roles = "AdenAppUsers")]
     public class FileSpecificationController : ApiController
     {
         private readonly IUnitOfWork _uow;

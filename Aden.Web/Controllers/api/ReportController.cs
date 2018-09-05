@@ -6,11 +6,12 @@ using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Aden.Web.Filters;
 
 namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/report")]
-    [Authorize]
+    [CustomAuthorize(Roles = "AdenAppUsers")]
     public class ReportController : ApiController
     {
         private readonly IUnitOfWork _uow;
