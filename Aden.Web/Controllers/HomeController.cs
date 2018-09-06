@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace Aden.Web.Controllers
 {
     //[Authorize]
-    [CustomAuthorize(Roles = "AdenAppUsers")]
+    //[CustomAuthorize(Roles = "AdenAppUsers")]
     public class HomeController : AsyncController
     {
         private readonly IUnitOfWork _uow;
