@@ -8,12 +8,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Aden.Web.Filters;
 
 namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/submission")]
-    [CustomAuthorize(Roles = "AdenAppUsers")]
     public class SubmissionController : ApiController
     {
         private readonly IUnitOfWork _uow;

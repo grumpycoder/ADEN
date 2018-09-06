@@ -2,7 +2,6 @@
 using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
-using Aden.Web.Filters;
 using AutoMapper;
 using System.Collections.Generic;
 using System.IO;
@@ -14,7 +13,6 @@ using System.Web.Http;
 namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/assignment")]
-    [CustomAuthorize(Roles = "AdenAppUsers")]
     public class AssignmentController : ApiController
     {
         private readonly IUnitOfWork _uow;
