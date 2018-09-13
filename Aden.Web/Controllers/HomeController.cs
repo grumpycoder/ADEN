@@ -1,12 +1,17 @@
 ﻿using Aden.Core.Dtos;
 using Aden.Core.Repositories;
 using Aden.Web.Filters;
+using Aden.Web.ViewModels;
 using AutoMapper;
+using Independentsoft.Email.Mime;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Hosting;
 using System.Web.Mvc;
+
 
 namespace Aden.Web.Controllers
 {
@@ -22,7 +27,6 @@ namespace Aden.Web.Controllers
         }
         [TrackViewName]
         [CustomAuthorize(Roles = Constants.GlobalAdministratorGroup)]
-        [Authorize]
         public ActionResult FileSpecifications()
         {
             return View();
@@ -110,6 +114,34 @@ namespace Aden.Web.Controllers
         public ActionResult Error(string message)
         {
             return View();
+        }
+
+        public ActionResult Mail()
+        {
+            var vm = new List<MailViewModel>();
+            var path = HostingEnvironment.MapPath(@"/App_Data");
+            foreach (var file in Directory.GetFiles($@"{path}", "*.eml"))
+            {
+                var message = new Message(file);
+
+
+                var body = message.BodyParts.Count > 1 ? message.BodyParts.FirstOrDefault()?.Body : message.Body;
+                var attachmentList = message.GetAttachments().ToList();
+
+                vm.Add(new MailViewModel()
+                {
+                    Id = Path.GetFileNameWithoutExtension(file),
+                    Sent = message.Date,
+                    To = message.To.Select(s => s.EmailAddress.ToString()),
+                    CC = message.Cc.Select(s => s.EmailAddress.ToString()),
+                    From = message.From.EmailAddress,
+                    Subject = message.Subject,
+                    Body = body,
+                    Attachments = attachmentList
+                });
+            }
+
+            return View(vm.OrderByDescending(x => x.Sent));
         }
 
     }

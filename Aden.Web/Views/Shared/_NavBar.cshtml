@@ -17,6 +17,10 @@
             {
                 @Html.NavigationLink("File Specifications Admin", "FileSpecifications", "Home", "fa fa-cog")
             }
+            @if (Constants.Environment != "Prod")
+            {
+                @Html.NavigationLink("Mail Viewer", "Mail", "Home", "fa fa-envelope")
+            }
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>

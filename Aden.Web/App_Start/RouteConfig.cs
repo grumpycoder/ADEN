@@ -20,7 +20,7 @@ namespace Aden.Web
             );
 
             routes.MapRoute("HomeActions", "{action}", new { controller = "Home" });
-            
+
             routes.MapRoute(
                 name: "ReportActionsByYear",
                 url: "reports/{datayear}",
