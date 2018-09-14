@@ -319,6 +319,7 @@
     <Compile Include="ViewModels\MailViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\release.txt" />
     <Content Include="css\dx.android5.light.css" />
     <Content Include="css\dx.carmine.compact.css" />
     <Content Include="css\dx.carmine.css" />
@@ -543,7 +544,6 @@
     <Content Include="Views\Home\Mail.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Views\ErrorReport\" />
   </ItemGroup>
   <ItemGroup>

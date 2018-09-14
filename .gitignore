@@ -189,7 +189,9 @@ _Pvt_Extensions/
 ModelManifest.xml
 /.vs/Aden/v15/Server/sqlite3
 /.vs/config/applicationhost.config
-/Aden.Web/App_Data
+/Aden.Web/App_Data/*.*
+!/Aden.Web/App_Data/*.txt
+
 /.vs/Aden/DesignTimeBuild
 /Aden.Web/yarn.lock 
 *.DotSettings
