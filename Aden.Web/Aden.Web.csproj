@@ -369,12 +369,6 @@
     <Content Include="js\app\reports.module.min.js">
       <DependentUpon>reports.module.js</DependentUpon>
     </Content>
-    <Content Include="js\app\submission.module.es5.js">
-      <DependentUpon>submission.module.js</DependentUpon>
-    </Content>
-    <Content Include="js\app\submission.module.es5.min.js">
-      <DependentUpon>submission.module.es5.js</DependentUpon>
-    </Content>
     <Content Include="js\app\submission.module.js" />
     <Content Include="js\app\submission.module.min.js">
       <DependentUpon>submission.module.js</DependentUpon>

@@ -9,10 +9,9 @@ $(function () {
     $(document).on('click', '[data-workitem-id]', function (e) {
         e.preventDefault();
         var btn = $(this);
+        window.$toggleWorkingButton(btn);
         var id = btn.data('workitem-id');
         var url = '/api/assignment/complete/' + id;
-
-        window.$toggleWorkingButton(btn);
         $.ajax({
             url: url,
             type: 'POST',
@@ -24,34 +23,30 @@ $(function () {
             error: function (err) {
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
             }
+        }).always(function () {
+            window.$toggleWorkingButton(btn);
         });
     });
 
     $(document).on('click', 'button[data-cancel-workitem]', function (e) {
         e.preventDefault();
         var btn = $(this);
+        window.$toggleWorkingButton(btn);
         var id = btn.data('cancel-workitem-id');
         var url = '/api/assignment/cancel/' + id;
-        window.$toggleWorkingButton(btn);
         $.ajax({
             url: url,
             type: 'POST',
             success: function (data) {
-                $gridCurrentAssignments.refresh().done(function (e)
-                {
-                    //console.log('done', e)
-                });
-                $gridRetrievableAssignments.refresh().done(function(e) {
-                     //console.log('done', e)
-                });
+                $gridCurrentAssignments.refresh().done(function (e){});
+                $gridRetrievableAssignments.refresh().done(function(e) {});
                 window.$log.success('Cancelled ' + data.action + ' assignment');
-                window.$toggleWorkingButton(btn);
             },
             error: function (err) {
-                //console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
-                window.$toggleWorkingButton(btn);
             }
+        }).always(function () {
+            window.$toggleWorkingButton(btn);
         });
     });
 

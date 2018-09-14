@@ -6,10 +6,8 @@ $(function () {
     $(document).on('click', '[data-waiver]', function (e) {
         e.preventDefault();
         var btn = $(this);
-        var id = btn.data('submission-id');
-
         window.$toggleWorkingButton(btn);
-
+        var id = btn.data('submission-id');
         $.ajax({
             url: '/api/report/waiver/' + id,
             type: 'POST'
@@ -31,9 +29,9 @@ $(function () {
     $(document).on('click', '[data-start]', function (e) {
         e.preventDefault();
         var btn = $(this);
+        window.$toggleWorkingButton(btn);
         var id = btn.data('submission-id');
 
-        window.$toggleWorkingButton(btn);
 
         $.ajax({
             url: '/api/report/create/' + id,

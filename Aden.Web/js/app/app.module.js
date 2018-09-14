@@ -8,6 +8,9 @@ $(document).on('click', '[role="navigation"]', function (e) {
 window.$log = window.toastr;
 
 window.$toggleWorkingButton = function (button, status) {
+
+    if ($('.loadingoverlay').length) status = 'off'; 
+
     if (status === 'off') {
         button.LoadingOverlay('hide');
     } else {

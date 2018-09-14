@@ -107,10 +107,8 @@ $(function () {
     $(document).on('click', '[data-activate]', function (e) {
         e.preventDefault();
         var btn = $(this);
-        var id = btn.data('filespec-id');
-
         window.$toggleWorkingButton(btn);
-
+        var id = btn.data('filespec-id');
         $.ajax({
             url: '/api/filespecification/activate/' + id,
             type: 'POST',
