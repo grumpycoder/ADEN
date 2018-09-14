@@ -2,7 +2,19 @@
 @{
     ViewBag.Title = "Mail Messages";
 }
+<style>
+    .panel-heading a:after {
+        font-family: 'Font Awesome\ 5 Free';
+        content: "\f078";
+        float: right;
+        color: grey;
+        font-weight: 900;
+    }
 
+    .panel-heading a.collapsed:after {
+        content: "\f054";
+    }
+</style>
 <section class="content-header">
     <div>
         <ul class="breadcrumb pull-right">
@@ -16,75 +28,104 @@
 <section class="content">
     <div class="row">
         <div class="col-sm-12">
-            @foreach (var message in Model)
-            {
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <b>Email </b>
-                        <span class="pull-right">Sent: @message.Sent</span>
-                    </div>
 
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-sm-4"><b class="text-primary">From: </b> @message.From</div>
-                                <div class="col-sm-4">
-                                    <b class="text-primary">To: </b>
-                                    @foreach (var recipient in message.To)
-                                    {
-                                        @recipient
-                                    }
+            <div class="panel-group" id="accordion">
+                @foreach (var message in Model)
+                {
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" class="collapsed" data-parent="#accordion" href="#@message.Id">
+                                    @message.Subject (@message.Sent)
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="@message.Id" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <span class="pull-right">
+                                            <button class="btn" data-message-id="@message.Id" data-toggle="tooltip" title="Delete message"><i class="fa fa-trash"></i>&nbsp;Delete</button>
+                                        </span>
+                                    </div>
                                 </div>
-                                <div class="col-sm-4">
-                                    <b class="text-primary">CC: </b>
-                                    @foreach (var recipient in message.CC)
-                                    {
-                                        @recipient
-                                    }
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <b class="text-primary">Subject: </b> @message.Subject
-                                </div>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <p>
-                                        <a data-toggle="collapse" href="#@message.Id" aria-expanded="false" aria-controls="attachments"><b class="text-primary">Attachments: </b></a>
-                                    </p>
-                                    <div class="collapse" id="@message.Id">
-                                        <div class="row">
-                                            @foreach (var attachment in message.Attachments)
-                                            {
-                                                <div class="col-sm-3 col-md-3">
-                                                    <div class="thumbnail">
-                                                        <img src="data:image;base64,@Convert.ToBase64String(attachment.Content)" alt="@attachment.Name" class="thumbnail" />
-                                                        <div class="caption bg-primary">
-                                                            <span class="bg-primary">
-                                                                @attachment
-                                                            </span>
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-sm-4"><b class="text-primary">From: </b> @message.From</div>
+                                                    <div class="col-sm-4">
+                                                        <b class="text-primary">To: </b>
+                                                        @foreach (var recipient in message.To)
+                                                        {
+                                                            @recipient
+                                                        }
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <b class="text-primary">CC: </b>
+                                                        @foreach (var recipient in message.CC)
+                                                        {
+                                                            @recipient
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <b class="text-primary">Subject: </b> @message.Subject
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <p>
+                                                            <a data-toggle="collapse" href="#@message.Id-attachment" aria-expanded="false" aria-controls="attachments"><b class="text-primary">Attachments: </b></a>
+                                                        </p>
+                                                        <div class="collapse" id="@message.Id-attachment">
+                                                            <div class="row">
+                                                                @foreach (var attachment in message.Attachments)
+                                                                {
+                                                                    <div class="col-sm-3 col-md-3">
+                                                                        <div class="thumbnail">
+                                                                            <img src="data:image;base64,@Convert.ToBase64String(attachment.Content)" alt="@attachment.Name" class="thumbnail" />
+                                                                            <div class="caption bg-primary">
+                                                                                <span class="bg-primary">
+                                                                                    @attachment
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            }
-                                        </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <span>@Html.Raw(@message.Body)</span>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                        <li class="list-group-item">
-                            <span>@Html.Raw(@message.Body)</span>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                    </div>
+                }
+            </div>
 
-            }
         </div>
     </div>
 
 </section>
+
+@section scripts
+{
+    <script src="~/js/app/app.module.min.js"></script>
+    <script src="~/js/app/mail.module.min.js"></script>
+}

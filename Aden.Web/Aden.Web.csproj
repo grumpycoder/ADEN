@@ -291,6 +291,7 @@
     <Compile Include="Controllers\api\AssignmentController.cs" />
     <Compile Include="Controllers\api\ErrorReportController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
+    <Compile Include="Controllers\api\MailController.cs" />
     <Compile Include="Controllers\api\ReportController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -376,6 +377,10 @@
     <Content Include="js\app\fileSpecfication.module.min.js">
       <DependentUpon>fileSpecfication.module.js</DependentUpon>
     </Content>
+    <Content Include="js\app\mail.module.js" />
+    <Content Include="js\app\mail.module.min.js">
+      <DependentUpon>mail.module.js</DependentUpon>
+    </Content>
     <Content Include="js\app\reports.module.js" />
     <Content Include="js\app\reports.module.min.js">
       <DependentUpon>reports.module.js</DependentUpon>
@@ -389,7 +394,6 @@
       <DependentUpon>vendor.js</DependentUpon>
     </Content>
     <Content Include="package.json" />
-    <Content Include="Alsde Logging Readme.md" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

@@ -117,6 +117,7 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        [TrackViewName]
         public ActionResult Mail()
         {
             var vm = new List<MailViewModel>();
@@ -134,7 +135,7 @@ namespace Aden.Web.Controllers
                     CC = msg.Cc.Select(s => s.Address.ToString()),
 
                     From = msg.From.Address,
-                    Subject = msg.Subject,
+                    Subject = msg.Subject.Replace("(Trial Version)", ""),
                     Body = msg.HtmlBody,
                     Attachments = msg.Attachments.ToList()
                 });
