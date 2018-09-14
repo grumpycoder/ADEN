@@ -1,4 +1,4 @@
-﻿using Independentsoft.Email.Mime;
+﻿using EAGetMail;
 using System;
 using System.Collections.Generic;
 
@@ -12,8 +12,8 @@ namespace Aden.Web.ViewModels
         public string From { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
-        public List<Attachment> Attachments { get; set; }
+
         public DateTime Sent { get; set; }
-        public IList<Mailbox> ToMe { get; set; }
+        public List<Attachment> Attachments { get; set; }
     }
 }

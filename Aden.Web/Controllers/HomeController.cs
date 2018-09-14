@@ -3,7 +3,8 @@ using Aden.Core.Repositories;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
 using AutoMapper;
-using Independentsoft.Email.Mime;
+using EAGetMail;
+//using Independentsoft.Email.Mime;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -122,22 +123,20 @@ namespace Aden.Web.Controllers
             var path = HostingEnvironment.MapPath(@"/App_Data");
             foreach (var file in Directory.GetFiles($@"{path}", "*.eml"))
             {
-                var message = new Message(file);
 
-
-                var body = message.BodyParts.Count > 1 ? message.BodyParts.FirstOrDefault()?.Body : message.Body;
-                var attachmentList = message.GetAttachments().ToList();
-
+                var msg = new Mail("TryIt");
+                msg.Load(file, false);
                 vm.Add(new MailViewModel()
                 {
                     Id = Path.GetFileNameWithoutExtension(file),
-                    Sent = message.Date,
-                    To = message.To.Select(s => s.EmailAddress.ToString()),
-                    CC = message.Cc.Select(s => s.EmailAddress.ToString()),
-                    From = message.From.EmailAddress,
-                    Subject = message.Subject,
-                    Body = body,
-                    Attachments = attachmentList
+                    Sent = msg.ReceivedDate,
+                    To = msg.To.Select(s => s.Address.ToString()),
+                    CC = msg.Cc.Select(s => s.Address.ToString()),
+
+                    From = msg.From.Address,
+                    Subject = msg.Subject,
+                    Body = msg.HtmlBody,
+                    Attachments = msg.Attachments.ToList()
                 });
             }
 
