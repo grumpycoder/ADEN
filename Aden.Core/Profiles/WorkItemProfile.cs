@@ -20,6 +20,7 @@ namespace Aden.Core.Profiles
                 .ForMember(d => d.CompletedDate, opt => opt.MapFrom(s => s.CompletedDate))
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileName))
                 .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.FileNumber))
+                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
                 .ForMember(d => d.WorkItemActionId, opt => opt.MapFrom(s => s.WorkItemAction))
                 .ForMember(d => d.ReportAction, opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.ReportAction))
                 .ForMember(d => d.Action, opt => opt.MapFrom(s => s.WorkItemAction.GetDisplayName()))
@@ -32,6 +33,7 @@ namespace Aden.Core.Profiles
                 .ForMember(d => d.AssignedUser, opt => opt.MapFrom(s => s.AssignedUser))
                 .ForMember(d => d.WorkItemState, opt => opt.MapFrom(s => s.WorkItemState))
                 .ForMember(d => d.CompletedDate, opt => opt.MapFrom(s => s.CompletedDate))
+                .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
                 .ForMember(d => d.Action, opt => opt.MapFrom(s => s.WorkItemAction.GetDisplayName()))
                 .ForAllOtherMembers(d => d.Ignore())
                 ;

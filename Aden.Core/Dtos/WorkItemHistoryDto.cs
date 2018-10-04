@@ -11,6 +11,7 @@ namespace Aden.Core.Dtos
         public DateTime? CompletedDate { get; set; }
         public string AssignedUser { get; set; }
         public WorkItemState WorkItemState { get; set; }
+        public string Description { get; set; }
 
     }
 }

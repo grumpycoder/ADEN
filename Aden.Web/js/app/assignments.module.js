@@ -170,7 +170,7 @@ $(function () {
 
                                 var formData = new FormData();
                                 formData.append('Id', id);
-                                formData.append('Note', $('#note').val());
+                                formData.append('Description', $('#description').val());
 
                                 var files = document.getElementById('files').files;
                                 if (files.length > 0) {

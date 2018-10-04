@@ -32,7 +32,7 @@ namespace Aden.Core.Dtos
 
 
         [Required]
-        public string Notes { get; set; }
+        public string Description { get; set; }
 
     }
 }

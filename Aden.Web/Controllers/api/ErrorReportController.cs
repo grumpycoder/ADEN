@@ -28,7 +28,7 @@ namespace Aden.Web.Controllers.api
             //if (!ModelState.IsValid) return PartialView("_WorkItemForm", model);
 
             var workItem = await _uow.WorkItems.GetByIdAsync(model.Id);
-            workItem.Notes = model.Note;
+            workItem.Description = model.Description;
             workItem.Finish();
 
             _notificationService.SendWorkErrorNotification(workItem, model.Files);
@@ -60,7 +60,7 @@ namespace Aden.Web.Controllers.api
     public class SubmissionErrorDto
     {
         public int Id { get; set; }
-        public string Note { get; set; }
+        public string Description { get; set; }
         public HttpPostedFileBase[] Files { get; set; }
     }
 }

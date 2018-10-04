@@ -204,7 +204,7 @@ namespace Aden.Core.Services
                     $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Submission Error";
                 var title = $"{workItem.Report.Submission.FileSpecification.FileName} submission has generated an error";
                 var messageBody = $"<p>An email notification has been sent to the Help Desk for ticket generation. </p>";
-                var additionalNotes = $"<p><strong>Notes:</strong> <hr />{workItem.Notes}</p>";
+                var additionalNotes = $"<p><strong>Notes:</strong> <hr />{workItem.Description}</p>";
                 var imagePath = @"https://png.icons8.com/ios/50/000000/error-filled.png";
                 var assignmentsUrlText = "View Your Assignments";
 
@@ -251,7 +251,7 @@ namespace Aden.Core.Services
                     $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Submission Error";
                 var title = $"{workItem.Report.Submission.FileSpecification.FileName} Report submission has generated an error";
                 var messageBody = $"<p>Place below text into ticket and attach any images and assign to IS Programmers. Thanks <br /></p>";
-                var additionalNotes = $"<p><strong>Notes:</strong> <hr />{workItem.Notes}</p>";
+                var additionalNotes = $"<p><strong>Notes:</strong> <hr />{workItem.Description}</p>";
                 var imagePath = @"https://png.icons8.com/ios/50/000000/error-filled.png";
 
 

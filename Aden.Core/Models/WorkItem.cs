@@ -11,7 +11,7 @@ namespace Aden.Core.Models
         public string AssignedUser { get; set; }
         public DateTime AssignedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
-        public string Notes { get; set; }
+        public string Description { get; set; }
 
         public WorkItemAction WorkItemAction { get; set; }
         public WorkItemState WorkItemState { get; set; }
