@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="panel-body">
-                    @(Html.DevExtreme().DataGrid()
+                    @(Html.DevExtreme().DataGrid().WordWrapEnabled(true)
                                    .ColumnAutoWidth(true).ID("grid")
                                    .OnEditorPrepared("editorPrepared").OnContentReady("gridContentReady").OnRowPrepared("rowPrepared")
                                    .ShowRowLines(true).ShowBorders(true)
@@ -29,7 +29,7 @@
                             cols.Add().DataField("fileNumber");
                             cols.Add().DataField("fileName").HidingPriority(4);
                             cols.Add().DataField("submissionState");
-                            cols.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
+                            cols.Add().DataField("dueDate").Caption("Submission Date").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
                             cols.Add().DataField("displayDataYear").Caption("Data Year").HidingPriority(6);
                             cols.Add().DataField("section").HidingPriority(5);
                             cols.Add().DataField("dataGroups").HidingPriority(1);
