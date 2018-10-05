@@ -58,5 +58,18 @@ namespace Aden.Core.Repositories
         {
             return await _context.Reports.FindAsync(id);
         }
+
+        public void RemoveNotStartedWorkItems(int reportId)
+        {
+            var report = _context.Reports.Find(reportId);
+
+            var wi = _context.WorkItems.Where(
+                x => x.ReportId == reportId && x.WorkItemState == WorkItemState.NotStarted);
+
+            _context.WorkItems.RemoveRange(wi);
+
+            //report.WorkItems.RemoveAll(x => x.WorkItemState == WorkItemState.NotStarted); 
+
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace Aden.Core.Repositories
         IEnumerable<Report> GetByFileSpecificationNumberPaged(string search, string order, int offset, int limit);
         Report GetById(int id);
         Task<Report> GetByIdAsync(int id);
+        void RemoveNotStartedWorkItems(int reportId);
     }
 }

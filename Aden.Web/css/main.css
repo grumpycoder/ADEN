@@ -61,13 +61,17 @@ header .lead {
   font-weight: 700; }
 
 .btn-grid {
-  min-width: 85px; }
+  min-width: 120px; }
 
 .btn-lg-grid {
   min-width: 90px; }
 
 .align-right {
   text-align: right; }
+
+.btn-cell {
+  /*white-space: nowrap;
+    text-align:right;*/ }
 
 footer {
   position: absolute;
@@ -212,4 +216,3 @@ span#links {
   40% {
     -webkit-transform: scale(1);
     transform: scale(1); } }
-

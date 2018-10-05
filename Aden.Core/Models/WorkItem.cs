@@ -28,7 +28,9 @@ namespace Aden.Core.Models
                 if (Report.ReportState == ReportState.Complete || Report.ReportState == ReportState.CompleteWithError)
                     return false;
 
-                var items = Report.WorkItems.OrderBy(x => x.Id).ToList();
+                var items = Report.WorkItems.Where(x => x.Report.ReportState != ReportState.Complete || x.Report.ReportState != ReportState.CompleteWithError).OrderBy(x => x.Id).ToList();
+
+                //var items = Report.WorkItems.OrderBy(x => x.Id).ToList();
                 var item = items.LastOrDefault();
                 if (item == null) return false;
 

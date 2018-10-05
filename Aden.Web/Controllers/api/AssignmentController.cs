@@ -116,7 +116,10 @@ namespace Aden.Web.Controllers.api
 
             if (workItem == null) return NotFound();
 
+            workItem.WorkItemState = WorkItemState.Cancelled;
+
             var report = await _uow.Reports.GetByIdAsync(workItem.ReportId);
+            _uow.Reports.RemoveNotStartedWorkItems(report.Id);
 
             report.CancelWorkItems();
 

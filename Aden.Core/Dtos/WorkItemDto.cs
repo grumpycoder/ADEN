@@ -18,11 +18,17 @@ namespace Aden.Core.Dtos
         public DateTime? DueDate { get; set; }
         public string State { get; set; }
         public string Action { get; set; }
+
+        public string ActionName { get; set; }
+        public string ActionDescription { get; set; }
+
+        public string Status { get; set; }
         public string ReportAction { get; set; }
 
         public WorkItemAction WorkItemActionId { get; set; }
 
         public string FileName { get; set; }
+
         public string FileNumber { get; set; }
 
         public bool CanCancel { get; set; }

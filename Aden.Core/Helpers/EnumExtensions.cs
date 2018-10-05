@@ -76,14 +76,40 @@ namespace Aden.Core.Helpers
                    ?? val.ToString();
         }
 
+
         public static string GetShortName(this Enum val)
         {
-            return val.GetType()
-                       .GetMember(val.ToString())
-                       .FirstOrDefault()
-                       .GetCustomAttribute<DisplayAttribute>(false)
-                       .ShortName
-                   ?? val.ToString();
+
+            return val.GetAttribute<DisplayAttribute>().ShortName;
+
+            //return val.GetType()
+            //           .GetMember(val.ToString())
+            //           .FirstOrDefault()
+            //           .GetCustomAttribute<DisplayAttribute>(false)
+            //           .ShortName
+            //       ?? val.ToString();
+        }
+
+        public static string GetDescription(this Enum val)
+        {
+
+            return val.GetAttribute<DisplayAttribute>().Description;
+
+            //return val.GetType()
+            //           .GetMember(val.ToString())
+            //           .FirstOrDefault()
+            //           .GetCustomAttribute<DisplayAttribute>(false)
+            //           .ShortName
+            //       ?? val.ToString();
+        }
+
+        public static TAttribute GetAttribute<TAttribute>(this Enum value)
+            where TAttribute : Attribute
+        {
+            var type = value.GetType();
+            var name = Enum.GetName(type, value);
+            return type.GetField(name) // I prefer to get attributes this way
+                .GetCustomAttribute<TAttribute>();
         }
 
         public static T Next<T>(this T src) where T : struct

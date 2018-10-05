@@ -105,11 +105,13 @@ namespace Aden.Core.Models
 
         public void CancelWorkItems()
         {
-            foreach (var workItem in WorkItems.Where(i => i.WorkItemState == WorkItemState.NotStarted))
-            {
-                workItem.Cancel();
-                //Send notification
-            }
+            WorkItems.RemoveAll(x => x.WorkItemState == WorkItemState.NotStarted);
+
+            //foreach (var workItem in WorkItems.Where(i => i.WorkItemState == WorkItemState.NotStarted))
+            //{
+            //    workItem.Cancel();
+            //    //Send notification
+            //}
         }
     }
 }

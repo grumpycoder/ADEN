@@ -215,9 +215,11 @@ $(function () {
 function createAssignmentsGridActionButtons(container, options) {
     var reportId = options.data.reportId;
     var action = options.data.action;
+    var actionName = options.data.actionName;
+    var actionDescription = options.data.actionDescription;
     var workItemId = options.data.id;
     var isManualUpload = options.data.isManualUpload;
-
+    console.log('data', options.data);
     var lnk = '';
 
     if (action === 'Generate' && isManualUpload === true) {
@@ -232,18 +234,22 @@ function createAssignmentsGridActionButtons(container, options) {
             '" data-workitem-action="' +
             action +
             '"><i class="fa fa-spinner fa-spin hidden"></i> ' +
-            action +
+            actionName +
             '</button>&nbsp;';
     }
 
-    //Show Error opton link if work item in Submit mode
-    if (action === 'Submit') {
+    if (action === 'Accept' || action === 'Approve') {
         lnk +=
-            '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Errors</a>&nbsp;';
+            '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Reject</a>&nbsp;';
+    }
+     
+    if (action === 'SubmitFile') {
+        lnk +=
+            '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Report Errors</a>&nbsp;';
     }
     //Show Report Link if already documents generated 
     if (action !== 'Generate') {
-        lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Report</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>&nbsp;';
     }
 
     container.append(lnk);
@@ -254,6 +260,6 @@ function createGridCancelActionButtons(container, options) {
     var action = options.data.action;
     var workItemId = options.data.id;
     var lnk = '';
-    if (options.data.canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '"><i class="fa fa-spinner fa-spin hidden"></i> Cancel ' + action + '</button>';
+    if (options.data.canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '"><i class="fa fa-spinner fa-spin hidden"></i> Cancel</button>';
     container.append(lnk);
 }
