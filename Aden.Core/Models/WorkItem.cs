@@ -67,6 +67,8 @@ namespace Aden.Core.Models
 
         public static WorkItemAction Next(WorkItem workItem)
         {
+            if (workItem.WorkItemState == WorkItemState.Reject) return WorkItemAction.Generate; 
+
             switch (workItem.WorkItemAction)
             {
                 case WorkItemAction.Generate:
@@ -78,6 +80,8 @@ namespace Aden.Core.Models
                 case WorkItemAction.SubmitWithError:
                     return WorkItemAction.ReviewError;
                 case WorkItemAction.ReviewError:
+                    return WorkItemAction.Generate;
+                case WorkItemAction.Reject:
                     return WorkItemAction.Generate;
                 case WorkItemAction.Submit:
                     return WorkItemAction.Nothing;
@@ -122,5 +126,10 @@ namespace Aden.Core.Models
             }
         }
 
+        public void Reject()
+        {
+            WorkItemState = WorkItemState.Reject;
+            CompletedDate = DateTime.Now;
+        }
     }
 }

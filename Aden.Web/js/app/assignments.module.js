@@ -11,7 +11,10 @@ $(function () {
         var btn = $(this);
         window.$toggleWorkingButton(btn);
         var id = btn.data('workitem-id');
+        var action = btn.data('workitem-action');
         var url = '/api/assignment/complete/' + id;
+        if (action === 'reject') url = '/api/assignment/reject/' + id;
+        console.log('action', action);
         $.ajax({
             url: url,
             type: 'POST',
@@ -240,7 +243,16 @@ function createAssignmentsGridActionButtons(container, options) {
 
     if (action === 'Accept' || action === 'Approve') {
         lnk +=
-            '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Reject</a>&nbsp;';
+            '<button class="btn btn-danger btn-grid" data-report-id="' +
+            reportId +
+            '" data-workitem-id="' +
+            workItemId +
+            '" data-workitem-action="' +
+            'reject' +
+            '"><i class="fa fa-spinner fa-spin hidden"></i>Reject</button>&nbsp;';
+
+        //lnk +=
+        //    '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Reject</a>&nbsp;';
     }
      
     if (action === 'SubmitFile') {

@@ -62,7 +62,7 @@
                             c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
                             c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
                             c.Add().DataField("status").Caption("Status");
-                            c.Add().DataField("actionDescription").Caption("Task");
+                            c.Add().DataField("actionName").Caption("Task");
                             c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}"));
                         })
                         .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/history/" + @Model + "/")).Key("id")))

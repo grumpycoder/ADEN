@@ -11,6 +11,8 @@ namespace Aden.Core.Models
         [Display(Name = "Complete")]
         Completed = 3,
         [Display(Name = "Reassigned")]
-        Reassigned = 4
+        Reassigned = 4,
+        [Display(Name = "Reject", ShortName = "Reject", Description = "Reject File")]
+        Reject = 5,
     }
 }

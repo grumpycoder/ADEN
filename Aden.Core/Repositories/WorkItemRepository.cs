@@ -37,7 +37,7 @@ namespace Aden.Core.Repositories
             var workItems = _context.WorkItems
                 .Include(f => f.Report.Submission.FileSpecification).Include(r => r.Report.WorkItems).AsQueryable();
 
-            return await workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).OrderBy(d => d.AssignedDate).ToListAsync();
+            return await workItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed || u.WorkItemState == WorkItemState.Reject).OrderBy(d => d.AssignedDate).ToListAsync();
         }
 
         public IEnumerable<WorkItem> GetCompleted(string username)
