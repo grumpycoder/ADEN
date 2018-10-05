@@ -191,9 +191,13 @@ namespace Aden.Web.Helpers
                 (new UrlHelper(html.ViewContext.RequestContext)).Action(action, controller)
                 : (new UrlHelper(html.ViewContext.RequestContext)).Action(action, controller, routeValues);
 
-            var imageIcon = $@"<i class='{icon}'></i>&nbsp;&nbsp;";
+            var imageIcon = string.Empty;
+            if (icon != null)
+            {
+                imageIcon = $@"<i class='{icon} visible-sm'>&nbsp;</i>&nbsp;&nbsp;";
+            }
 
-            linkText = imageIcon + linkText;
+            linkText = imageIcon + "<span class='hidden-sm'>" + linkText + "<span>";
             aTag.MergeAttribute("href", url);
             aTag.InnerHtml = linkText;
 

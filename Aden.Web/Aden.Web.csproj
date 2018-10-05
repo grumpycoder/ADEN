@@ -527,7 +527,7 @@
     <Content Include="src\scss\bootstrap\bootstrap.scss" />
     <Content Include="src\scss\bootstrap\bootstrap_ext\_button.scss" />
     <Content Include="src\scss\bootstrap\_config.scss" />
-    <Content Include="src\scss\bootstrap\_custom-variables.scss" />
+    <Content Include="src\scss\bootstrap\_variables.scss" />
     <Content Include="src\scss\bootstrap\_pre_default.scss" />
     <Content Include="src\scss\fontawesome\fontawesome.scss" />
     <Content Include="src\scss\main\main.scss" />
@@ -546,6 +546,7 @@
     <Content Include="src\scss\bootstrap\bootstrap_ext\_status-navbar.scss" />
     <Content Include="src\scss\bootstrap\bootstrap_ext\_navbar.scss" />
     <Content Include="Views\Home\Mail.cshtml" />
+    <Content Include="src\scss\bootstrap\_custom-style.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\ErrorReport\" />

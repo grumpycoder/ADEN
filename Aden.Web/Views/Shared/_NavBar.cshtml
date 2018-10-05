@@ -15,12 +15,18 @@
 
             @if (User.IsInRole(Constants.GlobalAdministratorGroup))
             {
-                @Html.NavigationLink("File Specifications Admin", "FileSpecifications", "Home", "fa fa-cog")
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-cogs visible-sm">&nbsp;</i><span class="hidden-sm">Administration </span><span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        @Html.NavigationLink("File Specifications", "FileSpecifications", "Home")
+                    </ul>
+                </li>
             }
             @if (Constants.Environment != "Prod")
             {
                 @Html.NavigationLink("Mail Viewer", "Mail", "Home", "fa fa-envelope")
             }
+
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li>
