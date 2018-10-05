@@ -25,19 +25,19 @@
                                    .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
                                    .Columns(cols =>
                                    {
-                                       cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false).CellTemplate(@<text><a href="@Url.Action("workhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a></text>).HidingPriority(12);
-                            cols.Add().DataField("fileNumber");
-                            cols.Add().DataField("fileName").HidingPriority(4);
-                            cols.Add().DataField("submissionState");
-                            cols.Add().DataField("dueDate").Caption("Submission Date").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
-                            cols.Add().DataField("displayDataYear").Caption("Data Year").HidingPriority(6);
-                            cols.Add().DataField("section").HidingPriority(5);
+                            cols.Add().DataField("mostRecentReportId").Caption("").Alignment(HorizontalAlignment.Center).Width(35).AllowFiltering(false).CellTemplate(@<text><a href="@Url.Action("workhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a></text>).HidingPriority(12);
+                            cols.Add().DataField("fileNumber").Width(100);
+                            cols.Add().DataField("fileName").HidingPriority(1);
+                            cols.Add().DataField("submissionState").Width(175).Caption("Status");
+                            cols.Add().DataField("dueDate").Width(125).Caption("Submission Date").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
+                            cols.Add().DataField("displayDataYear").Width(90).Caption("Data Year").HidingPriority(6);
+                            cols.Add().DataField("section").Width(200).HidingPriority(5);
                             cols.Add().DataField("dataGroups").HidingPriority(1);
                             cols.Add().DataField("application").HidingPriority(2);
                             cols.Add().DataField("dataSource").HidingPriority(3);
-                            cols.Add().DataField("isSEA").ShowEditorAlways(false).Caption("SEA").TrueText("Yes").FalseText("No").HidingPriority(5);
-                            cols.Add().DataField("isLEA").ShowEditorAlways(false).Caption("LEA").TrueText("Yes").FalseText("No").HidingPriority(5);
-                            cols.Add().DataField("isSCH").ShowEditorAlways(false).Caption("SCH").TrueText("Yes").FalseText("No").HidingPriority(5);
+                            cols.Add().DataField("isSEA").Width(80).ShowEditorAlways(false).Caption("SEA").TrueText("Yes").FalseText("No").HidingPriority(5);
+                            cols.Add().DataField("isLEA").Width(80).ShowEditorAlways(false).Caption("LEA").TrueText("Yes").FalseText("No").HidingPriority(5);
+                            cols.Add().DataField("isSCH").Width(80).ShowEditorAlways(false).Caption("SCH").TrueText("Yes").FalseText("No").HidingPriority(5);
 
 
                             cols.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createSubmissionGridActionButtons(container, options);}"));
