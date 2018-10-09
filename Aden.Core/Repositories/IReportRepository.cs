@@ -12,5 +12,8 @@ namespace Aden.Core.Repositories
         Report GetById(int id);
         Task<Report> GetByIdAsync(int id);
         void RemoveNotStartedWorkItems(int reportId);
+
+        Task<Report> GetBySubmissionIdAsync(int submissionId);
+        void Delete(int reportId);
     }
 }

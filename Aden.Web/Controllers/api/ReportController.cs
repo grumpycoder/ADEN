@@ -83,6 +83,29 @@ namespace Aden.Web.Controllers.api
             return Ok(dto);
         }
 
+        [HttpPost, Route("cancel/{id}")]
+        public async Task<object> Cancel(int id)
+        {
+            var submission = await _uow.Submissions.GetByIdAsync(id);
+            if (submission == null) return NotFound();
+
+            var report = await _uow.Reports.GetBySubmissionIdAsync(id);
+            //Delete work items 
+            _uow.WorkItems.DeleteFromReport(report.Id);
+
+            //Delete documents
+            _uow.Documents.DeleteReportDocuments(report.Id);
+
+            //Delete reports
+            _uow.Reports.Delete(report.Id);
+
+            //Set submission state
+            submission.SetState(WorkItemAction.Nothing);
+
+            await _uow.CompleteAsync();
+
+            return Ok();
+        }
 
     }
 }

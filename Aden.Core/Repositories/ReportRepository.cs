@@ -61,8 +61,6 @@ namespace Aden.Core.Repositories
 
         public void RemoveNotStartedWorkItems(int reportId)
         {
-            var report = _context.Reports.Find(reportId);
-
             var wi = _context.WorkItems.Where(
                 x => x.ReportId == reportId && x.WorkItemState == WorkItemState.NotStarted);
 
@@ -70,6 +68,17 @@ namespace Aden.Core.Repositories
 
             //report.WorkItems.RemoveAll(x => x.WorkItemState == WorkItemState.NotStarted); 
 
+        }
+
+        public async Task<Report> GetBySubmissionIdAsync(int submissionId)
+        {
+            return await _context.Reports.FirstOrDefaultAsync(x => x.SubmissionId == submissionId);
+        }
+
+        public void Delete(int reportId)
+        {
+            var report = _context.Reports.Find(reportId);
+            _context.Reports.Remove(report);
         }
     }
 }

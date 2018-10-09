@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Aden.Core.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Aden.Core.Models;
 
 namespace Aden.Core.Repositories
 {
@@ -19,5 +19,7 @@ namespace Aden.Core.Repositories
         IEnumerable<WorkItem> GetHistory(int reportId);
         Task<IEnumerable<WorkItem>> GetHistoryAsync(int reportId);
         string GetUserWithLeastAssignments(IEnumerable<string> members);
+
+        void DeleteFromReport(int reportId);
     }
 }

@@ -113,5 +113,16 @@ namespace Aden.Core.Models
             //    //Send notification
             //}
         }
+
+        public void DeleteWorkItems()
+        {
+            WorkItems.RemoveAll(x => x.ReportId == Id);
+
+            //foreach (var workItem in WorkItems.Where(i => i.WorkItemState == WorkItemState.NotStarted))
+            //{
+            //    workItem.Cancel();
+            //    //Send notification
+            //}
+        }
     }
 }

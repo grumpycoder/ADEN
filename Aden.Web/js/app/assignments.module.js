@@ -222,7 +222,6 @@ function createAssignmentsGridActionButtons(container, options) {
     var actionDescription = options.data.actionDescription;
     var workItemId = options.data.id;
     var isManualUpload = options.data.isManualUpload;
-    console.log('data', options.data);
     var lnk = '';
 
     if (action === 'Generate' && isManualUpload === true) {

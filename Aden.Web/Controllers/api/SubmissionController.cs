@@ -32,7 +32,7 @@ namespace Aden.Web.Controllers.api
 
             var submissions = await _uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);
 
-            var rows = Mapper.Map<List<SubmissionDto>>(submissions);
+            var rows = Mapper.Map<List<SubmissionDto>>(submissions.Where(x=>x.FileSpecification.FileNumber == "029"));
 
             return Ok(DataSourceLoader.Load(rows, loadOptions));
 

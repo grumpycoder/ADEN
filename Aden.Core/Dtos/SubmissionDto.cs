@@ -42,7 +42,13 @@ namespace Aden.Core.Dtos
         public int FileSpecificationId { get; set; }
         public virtual FileSpecification FileSpecification { get; set; }
 
-        public bool CanStartReport => !string.IsNullOrEmpty(FileSpecification.ReportAction);
+        public bool HasStarted => SubmissionStateId != Models.SubmissionState.NotStarted;
+        public bool CanCancel => !CanStart && HasAdmin;
+        public bool CanStart => SubmissionStateId == Models.SubmissionState.NotStarted && HasAdmin;
+
+        public bool CanWaiver => CanStart && HasAdmin;
+
+        public bool CanReview => !CanStart;
 
         public bool HasAdmin
         {

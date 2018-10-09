@@ -51,6 +51,31 @@ $(function () {
 
     });
 
+    $(document).on('click', '[data-cancel]', function (e) {
+        e.preventDefault();
+        var btn = $(this);
+        window.$toggleWorkingButton(btn);
+        var id = btn.data('submission-id');
+
+        console.log('id', id);
+        $.ajax({
+                url: '/api/report/cancel/' + id,
+                type: 'POST'
+            })
+            .done(function () {
+                $grid.refresh().done(function (e) { console.log('done', e) });
+                window.$log.success('Cancelled assignments');
+            })
+            .fail(function (err) {
+                //console.log('err', err);
+                window.$log.error('Something went wrong: ' + err.responseJSON.message);
+            })
+            .always(function () {
+                window.$toggleWorkingButton(btn, 'off');
+            });
+
+    });
+
     $(document).on('click', '[data-history]', function (e) {
         e.preventDefault();
         var url = $(this).attr('href');
@@ -144,30 +169,40 @@ $(function () {
 
 function createSubmissionGridActionButtons(container, options) {
     var lnk = '';
+    var hasStarted = options.data.hasStarted;
+    var canCancel = options.data.canCancel;
+    var canStart = options.data.canStart; 
+    var canWaiver = options.data.canWaiver; 
+    var canReview = options.data.canReview; 
+
     var submissionStateId = options.data.submissionStateId;
     var canStartReport = options.data.canStartReport;
     var hasAdmin = options.data.hasAdmin;
     var submissionId = options.data.id;
     var fileNumber = options.data.fileNumber;
     var dataYear = options.data.dataYear;
-
-    if (submissionStateId !== 1) {
-        lnk = '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
-
+    if (canReview) {
+        lnk += '<a class="btn btn-default btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
     }
+    if (canCancel) {
+        lnk += '<a href="#" class="btn btn-default btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Cancel</a>&nbsp;';
+        //lnk += '<button class="btn btn-default btn-grid" data-waiver data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Cancel</button>';
+    }
+
     if (submissionStateId >= 5 && hasAdmin) {
-        lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</button>';
+        lnk += '<a href="#" class="btn btn-default btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</a>&nbsp;';
+        //lnk += '<button class="btn btn-default btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</button>';
     }
-    if (submissionStateId === 1 && hasAdmin) {
-        if (canStartReport) {
-            lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</button>&nbsp;';
+    if (canStart) {
+        lnk += '<a href="#" class="btn btn-default btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</a>&nbsp;';
+        //lnk += '<button class="btn btn-default btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</button>&nbsp;';
+    }
+    if(canWaiver)
+    {
+        lnk += '<a href="#" class="btn btn-default btn-grid" data-waiver data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Waiver</a>&nbsp;';
+        //lnk += '<button class="btn btn-default btn-grid" data-waiver data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Waiver</button>';
+    }
 
-        } else {
-            lnk += '<button class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId +
-                ' disabled="true" data-toggle="tooltip" data-title="Missing action on specification" title="Missing action on specification" data-placement="left"><i class="fa fa-spinner fa-spin hidden"></i> Start</button>&nbsp;';
-        }
-        lnk += '<button class="btn btn-default btn-sm btn-grid" data-waiver data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Waiver</button>';
-    }
     container.append(lnk);
 }
 

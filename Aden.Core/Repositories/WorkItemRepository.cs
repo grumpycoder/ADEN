@@ -116,5 +116,12 @@ namespace Aden.Core.Repositories
 
             return nextAvailable != null ? nextAvailable.Key : string.Empty;
         }
+
+        public void DeleteFromReport(int reportId)
+        {
+            var wi = _context.WorkItems.Where(x => x.ReportId == reportId);
+
+            _context.WorkItems.RemoveRange(wi);
+        }
     }
 }
