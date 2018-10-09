@@ -181,6 +181,12 @@ namespace Aden.Web.Controllers.api
             report.SetState(WorkItemAction.Nothing);
             report.Submission.SetState(WorkItemAction.Nothing);
 
+            //Create new report
+            //var submission = _uow.Submissions.GetById(report.SubmissionId);
+            //var newReport = Report.Create(submission.DataYear);
+
+            //submission.AddReport(newReport);
+
             //Get assignee
             var members = _membershipService.GetGroupMembers(report.Submission.FileSpecification.GenerationUserGroup);
             if (members.IsFailure) return BadRequest(members.Error);
@@ -192,6 +198,10 @@ namespace Aden.Web.Controllers.api
             report.AddWorkItem(newWorkItem);
             report.SetState(newWorkItem.WorkItemAction);
             report.Submission.SetState(newWorkItem.WorkItemAction);
+
+            //report.AddWorkItem(newWorkItem);
+            //report.SetState(newWorkItem.WorkItemAction);
+            //report.Submission.SetState(newWorkItem.WorkItemAction);
 
             await _uow.CompleteAsync();
 

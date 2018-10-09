@@ -40,9 +40,12 @@ namespace Aden.Web.Controllers
         }
 
         [TrackViewName]
-        public ActionResult Reports(string id = null, int datayear = 0)
+        public async Task<ActionResult> Reports(int datayear, string filenumber)
         {
-            return View();
+            var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
+            //var dto = Mapper.Map<List<ReportDto>>(reports.FirstOrDefault());
+            var dto = Mapper.Map<ReportDto>(reports.FirstOrDefault());
+            return View(dto);
         }
 
         [TrackViewName]

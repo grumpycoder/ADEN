@@ -6,6 +6,10 @@
 
 function createReportDocumentLinks(container, options) {
     var documents = options.data.documents;
+    console.log('data', options.data);
+
+
+
     var lnk = '<span><ul class="list-unstyled">';
     documents.forEach(function (doc) {
         lnk += '<li class="doclink">' +
@@ -19,7 +23,7 @@ function createReportDocumentLinks(container, options) {
             'data-toggle="tooltip" ' +
             'title="' + doc.filename + '" ' +
             'data-placement="right" ' +
-            'data-original-title="' + doc.filename + '">' + doc.filename +
+            'data-original-title="' + doc.filename + '">v.' + doc.version + ' - ' + doc.filename +
             '</a>' +
             '</li>';
     });

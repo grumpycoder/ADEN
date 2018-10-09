@@ -61,7 +61,6 @@
                             c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
                             c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
                             c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                            c.Add().DataField("status").Caption("Status");
                             c.Add().DataField("actionName").Caption("Task");
                             c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}"));
                         })

@@ -4,6 +4,7 @@ using Aden.Core.Repositories;
 using Aden.Core.Services;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -28,6 +29,11 @@ namespace Aden.Web.Controllers.api
         {
             var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
             var dto = Mapper.Map<List<ReportDto>>(reports);
+            //foreach (var reportDto in dto)
+            //{
+            //    var reportDocumentDtos = reportDto.Documents.OrderByDescending(x => x.Version);
+            //    reportDto.Documents = reportDocumentDtos.ToList();
+            //}
             return Ok(dto);
         }
 

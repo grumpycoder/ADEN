@@ -11,6 +11,8 @@ namespace Aden.Core.Dtos
 
         public string Filename { get; set; }
 
+        public int Version { get; set; }
+
         public string Content { get; set; }
 
         public string Html => ConvertToHtml();
