@@ -82,7 +82,7 @@
                                         @foreach (var doc in Model.Documents)
                                         {
                                             <tr>
-                                                <td><a href="#myModal" data-document-viewer data-doc-id=@doc.Id data-url="/document/@doc.Id" data-toggle="modal" data-target="#myModal" data-title="@doc.Filename" title="@doc.Filename" data-placement="right" data-original-title="@doc.Filename">@doc.Filename</a></td>
+                                                <td><a href="#myModal" class="doc-link" data-document-viewer data-doc-id=@doc.Id data-url="/document/@doc.Id" data-toggle="modal" data-target="#myModal" data-title="@doc.Filename" title="@doc.Filename" data-placement="right" data-original-title="@doc.Filename">@doc.Filename</a></td>
                                                 <td>@doc.Version</td>
                                             </tr>
                                         }
