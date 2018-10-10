@@ -84,7 +84,7 @@ namespace Aden.Core.Models
         public void CreateDocument(byte[] file, ReportLevel reportLevel)
         {
             var version = 0;
-            if (Documents.Any(d => d.ReportLevel == reportLevel)) version = Documents.Max(x => x.Version);
+            if (Documents.Any(d => d.ReportLevel == reportLevel)) version = Documents.Where(x => x.ReportLevel == reportLevel).Max(x => x.Version);
 
             version += 1;
             var filename = Submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));

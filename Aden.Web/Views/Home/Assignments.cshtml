@@ -24,6 +24,7 @@
                       .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
                       .Columns(c =>
                       {
+                          c.Add().DataField("id");
                           c.Add().DataField("fileName");
                           //c.Add().DataField("fileNumber").Width("70");
                           c.Add().DataField("displayDataYear").Width(90).Caption("Data Year");
