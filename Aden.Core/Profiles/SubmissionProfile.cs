@@ -24,6 +24,7 @@ namespace Aden.Core.Profiles
                 .ForMember(d => d.SubmissionStateId, opt => opt.MapFrom(s => s.SubmissionState))
                 .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState.GetDisplayName()))
                 .ForMember(d => d.SubmissionStateKey, opt => opt.MapFrom(s => s.SubmissionState.GetShortName()))
+                .ForMember(d => d.LastUpdated, opt => opt.MapFrom(s => s.LastUpdated))
                 ;
         }
     }

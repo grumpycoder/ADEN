@@ -1,4 +1,5 @@
 ﻿using Aden.Core.Models;
+using Humanizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +30,22 @@ namespace Aden.Core.Dtos
         public string FileNumber { get; set; }
         public string FileName { get; set; }
 
+        public string SubmissionStateWithElapsedTime
+        {
+            get { return $"{SubmissionState} {LastUpdated.Humanize()}"; }
+        }
+
+        public string LastUpdatedFriendly
+        {
+            get { return $"{LastUpdated.Humanize()}"; }
+        }
+
+
         public string SubmissionState { get; set; }
         public string SubmissionStateKey { get; set; }
         public SubmissionState SubmissionStateId { get; set; }
+
+        public DateTime? LastUpdated { get; set; }
 
         public int? MostRecentReportId { get; set; }
 

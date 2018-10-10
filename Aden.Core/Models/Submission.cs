@@ -17,6 +17,8 @@ namespace Aden.Core.Models
 
         public SubmissionState SubmissionState { get; set; }
 
+        public DateTime? LastUpdated { get; set; }
+
         public List<Report> Reports { get; set; }
 
         public byte[] SpecificationDocument { get; set; }
@@ -75,6 +77,8 @@ namespace Aden.Core.Models
                     SubmissionDate = null;
                     break;
             }
+
+            LastUpdated = DateTime.Now;
 
         }
 
