@@ -1,0 +1,11 @@
+﻿@model SubmissionAuditEntryDto
+
+    <form id="form" name="form" role="form">
+        @Html.HiddenFor(m => m.SubmissionId)
+        
+        <div class="form-group">
+            <label for="description" class="control-label">Description:</label>
+            <textarea class="form-control" id="description" name="message" placeholder="Enter details here..."></textarea>
+        </div>
+
+    </form>

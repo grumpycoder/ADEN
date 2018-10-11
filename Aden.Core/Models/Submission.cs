@@ -21,6 +21,8 @@ namespace Aden.Core.Models
 
         public List<Report> Reports { get; set; }
 
+        public List<SubmissionAudit> SubmissionAudits { get; set; }
+
         public byte[] SpecificationDocument { get; set; }
 
         public int FileSpecificationId { get; set; }
@@ -29,6 +31,7 @@ namespace Aden.Core.Models
         private Submission()
         {
             Reports = new List<Report>();
+            SubmissionAudits = new List<SubmissionAudit>();
         }
 
         private Submission(DateTime dueDate, int dataYear, bool isSea, bool isLea, bool isSch)
@@ -82,10 +85,26 @@ namespace Aden.Core.Models
 
         }
 
-        public void Waive()
+        public void Waive(string reason, string waivedBy)
         {
             SubmissionState = SubmissionState.Waived;
+            var message = $"Waived by {waivedBy}: {reason}";
+            var audit = new SubmissionAudit(Id, message);
+            Log(audit);
         }
+
+        public void Reopen(string reason, string openedBy)
+        {
+            var message = $"ReOpened by {openedBy}: {reason}";
+            var audit = new SubmissionAudit(Id, message);
+            Log(audit);
+        }
+
+        private void Log(SubmissionAudit audit)
+        {
+            SubmissionAudits.Add(audit);
+        }
+
 
         public static Submission Create(FileSpecification fileSpecification)
         {

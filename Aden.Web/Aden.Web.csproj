@@ -293,6 +293,7 @@
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
     <Compile Include="Controllers\api\MailController.cs" />
     <Compile Include="Controllers\api\ReportController.cs" />
+    <Compile Include="ViewModels\SubmissionAuditEntryDto.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -547,6 +548,7 @@
     <Content Include="src\scss\bootstrap\bootstrap_ext\_navbar.scss" />
     <Content Include="Views\Home\Mail.cshtml" />
     <Content Include="src\scss\bootstrap\_custom-style.scss" />
+    <Content Include="Views\Home\_SubmissionAuditEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\ErrorReport\" />
