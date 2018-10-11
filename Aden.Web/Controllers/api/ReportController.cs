@@ -4,14 +4,13 @@ using Aden.Core.Repositories;
 using Aden.Core.Services;
 using AutoMapper;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/report")]
-    public class ReportController : ApiController
+    public partial class ReportController : ApiController
     {
         private readonly IUnitOfWork _uow;
         private readonly INotificationService _notificationService;
@@ -47,6 +46,11 @@ namespace Aden.Web.Controllers.api
 
             var report = Report.Create(submission.DataYear);
 
+            if (submission.SubmissionState != SubmissionState.NotStarted)
+            {
+                var message = "test reopen";
+                submission.Reopen(message, User.Identity.Name);
+            }
             submission.AddReport(report);
 
             //Get assignee
@@ -66,26 +70,6 @@ namespace Aden.Web.Controllers.api
             _notificationService.SendWorkNotification(workItem);
 
             var dto = Mapper.Map<ReportDto>(report);
-            return Ok(dto);
-        }
-
-        [HttpPost, Route("waiver/{id}")]
-        public async Task<object> Waiver(int id)
-        {
-            var submission = await _uow.Submissions.GetByIdAsync(id);
-            if (submission == null) return NotFound();
-
-            var report = Report.Create(submission.DataYear);
-
-            submission.AddReport(report);
-
-            submission.Waive();
-            report.Waive();
-
-            await _uow.CompleteAsync();
-
-            var dto = Mapper.Map<ReportDto>(report);
-
             return Ok(dto);
         }
 

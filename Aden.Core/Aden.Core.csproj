@@ -98,6 +98,7 @@
     <Compile Include="Data\EntityConfigurations\FileSpecificationConfiguration.cs" />
     <Compile Include="Data\EntityConfigurations\ReportConfiguration.cs" />
     <Compile Include="Data\EntityConfigurations\ReportDocumentConfiguration.cs" />
+    <Compile Include="Data\EntityConfigurations\SubmissionAuditConfiguration.cs" />
     <Compile Include="Data\EntityConfigurations\SubmissionConfiguration.cs" />
     <Compile Include="Data\EntityConfigurations\WorkItemConfiguration.cs" />
     <Compile Include="Dtos\AssignmentDto.cs" />
@@ -123,11 +124,13 @@
     <Compile Include="Models\ReportLevel.cs" />
     <Compile Include="Models\ReportState.cs" />
     <Compile Include="Models\Submission.cs" />
+    <Compile Include="Models\SubmissionAudit.cs" />
     <Compile Include="Models\SubmissionState.cs" />
     <Compile Include="Models\WorkItem.cs" />
     <Compile Include="Models\WorkItemAction.cs" />
     <Compile Include="Models\WorkItemState.cs" />
     <Compile Include="Profiles\ReportProfile.cs" />
+    <Compile Include="Profiles\SubmissionAuditProfile.cs" />
     <Compile Include="Profiles\WorkItemProfile.cs" />
     <Compile Include="Profiles\FileSpecificationProfile.cs" />
     <Compile Include="Profiles\SubmissionProfile.cs" />

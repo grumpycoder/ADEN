@@ -120,6 +120,13 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        public ActionResult Audit(int id)
+        {
+            var audit = new SubmissionAuditEntryDto() { SubmissionId = id };
+            return PartialView("_SubmissionAuditEntry", audit);
+        }
+
+
         [TrackViewName]
         public ActionResult Mail()
         {
