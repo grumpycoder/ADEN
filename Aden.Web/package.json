@@ -1,7 +1,7 @@
 {
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "bootstrap3-dialog": "^1.35.4",
     "bootstrap-sass": "^3.3.7",
     "@fortawesome/fontawesome-free": "5.1.0",
     "gasparesganga-jquery-loading-overlay": "^2.1.5",

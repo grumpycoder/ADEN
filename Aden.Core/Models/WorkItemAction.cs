@@ -16,7 +16,7 @@ namespace Aden.Core.Models
         Submit = 4,
         [Display(Name = "Submit With Error", ShortName = "SubmitErrorFile")]
         SubmitWithError = 5,
-        [Display(Name = "Error Reviewed", ShortName = "SubmitErrorReview", Description = "Submission error reviewed")]
+        [Display(Name = "Review Completed", ShortName = "SubmitErrorReview", Description = "Submission error reviewed")]
         ReviewError = 6,
 
         Nothing = 0

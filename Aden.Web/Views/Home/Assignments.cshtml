@@ -1,9 +1,7 @@
 ﻿@model string
 @{
-                /**/
-
-                ViewBag.Title = "My Assignments";
-                Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "My Assignments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <section class="content">
@@ -18,22 +16,21 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                      .DataGrid().WordWrapEnabled(true)
-                      .ID("gridCurrentAssignments")
-                      .ShowRowLines(true)
-                      .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                      .Columns(c =>
-                      {
-                          c.Add().DataField("id");
-                          c.Add().DataField("fileName");
-                          //c.Add().DataField("fileNumber").Width("70");
-                          c.Add().DataField("displayDataYear").Width(90).Caption("Data Year");
-                          c.Add().DataField("assignedDate").Width(125).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                          c.Add().DataField("dueDate").Width(100).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                          c.Add().CssClass("btn-cell").AllowResizing(true).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
+                              .DataGrid().WordWrapEnabled(true)
+                              .ID("gridCurrentAssignments")
+                              .ShowRowLines(true)
+                              .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                              .Columns(c =>
+                              {
+                                  c.Add().DataField("fileName");
+                                      //c.Add().DataField("fileNumber").Width("70");
+                                  c.Add().DataField("displayDataYear").Width(90).Caption("Data Year");
+                                  c.Add().DataField("assignedDate").Width(125).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                  c.Add().DataField("dueDate").Width(125).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                  c.Add().CssClass("btn-cell").Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createAssignmentsGridActionButtons(container, options);}"));
 
-                      })
-                      .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/current/" + @Model + "/")).Key("id")))
+                              })
+                              .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/current/" + @Model + "/")).Key("id")))
                 </div>
 
             </div>
@@ -49,23 +46,23 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                        .DataGrid()
-                        .ID("gridRetrievableAssignments")
-                        .ShowRowLines(true)
-                        .ShowBorders(true)
-                        .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                        .Columns(c =>
-                        {
-                            c.Add().DataField("fileName");
-                            //c.Add().DataField("fileNumber");
-                            c.Add().DataField("displayDataYear").Caption("Data Year");
-                            c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                            c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                            c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
-                            c.Add().DataField("actionName").Caption("Task");
-                            c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}"));
-                        })
-                        .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/history/" + @Model + "/")).Key("id")))
+                                .DataGrid()
+                                .ID("gridRetrievableAssignments")
+                                .ShowRowLines(true)
+                                .ShowBorders(true)
+                                .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+                                .Columns(c =>
+                                {
+                                    c.Add().DataField("fileName");
+                                        //c.Add().DataField("fileNumber");
+                                        c.Add().DataField("displayDataYear").Caption("Data Year");
+                                    c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+                                    c.Add().DataField("dueDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                    c.Add().DataField("completedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY");
+                                    c.Add().DataField("actionName").Caption("Task");
+                                    c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createGridCancelActionButtons(container, options);}"));
+                                })
+                                .DataSource(d => d.StaticJson().Url(@Url.Content("/api/assignment/history/" + @Model + "/")).Key("id")))
                 </div>
 
             </div>

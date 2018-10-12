@@ -6,7 +6,7 @@ $(function () {
     var $gridCurrentAssignments = $('#gridCurrentAssignments').dxDataGrid('instance');
     var $gridRetrievableAssignments = $('#gridRetrievableAssignments').dxDataGrid('instance');
     
-    $(document).on('click', '[data-workitem-id]', function (e) {
+    $(document).on('click', '[data-workitem-action]', function (e) {
         e.preventDefault();
         var btn = $(this);
         window.$toggleWorkingButton(btn);
@@ -14,7 +14,6 @@ $(function () {
         var action = btn.data('workitem-action');
         var url = '/api/assignment/complete/' + id;
         if (action === 'reject') url = '/api/assignment/reject/' + id;
-        console.log('action', action);
         $.ajax({
             url: url,
             type: 'POST',
@@ -139,8 +138,12 @@ $(function () {
 
     $(document).on('click', '[data-submit-error]', function (e) {
         e.preventDefault();
-        var url = $(this).attr("href");
+
+        var id = $(this).data('workitem-id');
+        var url = '/ErrorReport/' + id;  
+        var postUrl = '/assignment/submiterror/';
         var title = 'Submission Error';
+
         $.ajax({
             url: url,
             type: 'GET',
@@ -166,8 +169,7 @@ $(function () {
                             label: 'Submit',
                             cssClass: 'btn-primary',
                             onClick: function (e) {
-                                var id = $('#Id').val();
-                                var url = '/assignment/submiterror/';
+                       
 
                                 window.$showModalWorking();
 
@@ -181,10 +183,10 @@ $(function () {
                                         formData.append('files', files[i]);
                                     }
                                 }
-
+                                console.log('id', id);
                                 $.ajax({
                                     type: "POST",
-                                    url: url,
+                                    url: postUrl,
                                     data: formData,
                                     contentType: false,
                                     processData: false,
@@ -212,7 +214,28 @@ $(function () {
             }
         });
     });
-    
+
+    $(document).on('click', '[data-image-viewer]', function (e) {
+        e.preventDefault();
+        var btn = $(this);
+
+        var url = $(this).attr('href');
+        var title = 'Work Item Images'; 
+
+        window.BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true,
+            title: title,
+            message: $('<div></div>').load(url),
+            buttons: [{
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+    });
 });
 
 function createAssignmentsGridActionButtons(container, options) {
@@ -225,11 +248,11 @@ function createAssignmentsGridActionButtons(container, options) {
     var lnk = '';
 
     if (action === 'Generate' && isManualUpload === true) {
-        lnk += '<a class="btn btn-primary btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>';
+        lnk += '<a class="btn btn-primary btn-sm btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>';
     }
     else {
         lnk +=
-            '<button class="btn btn-success btn-grid" data-report-id="' +
+            '<button class="btn btn-success btn-sm btn-grid" data-report-id="' +
             reportId +
             '" data-workitem-id="' +
             workItemId +
@@ -237,38 +260,40 @@ function createAssignmentsGridActionButtons(container, options) {
             action +
             '"><i class="fa fa-spinner fa-spin hidden"></i> ' +
             actionName +
-            '</button>&nbsp;';
+            '</button>';
     }
 
     if (action === 'Accept' || action === 'Approve') {
         lnk +=
-            '<button class="btn btn-danger btn-grid" data-report-id="' +
+            '<button class="btn btn-danger btn-sm btn-grid" data-report-id="' +
             reportId +
             '" data-workitem-id="' +
             workItemId +
             '" data-workitem-action="' +
             'reject' +
-            '"><i class="fa fa-spinner fa-spin hidden"></i>Reject</button>&nbsp;';
-
-        //lnk +=
-        //    '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Reject</a>&nbsp;';
+            '"><i class="fa fa-spinner fa-spin hidden"></i>Reject</button>';
     }
      
     if (action === 'SubmitFile') {
         lnk +=
-            '<a href="/ErrorReport/' + workItemId + '" class="btn btn-danger btn-grid" data-submit-error><i class="fa fa-spinner fa-spin hidden"></i> Report Errors</a>&nbsp;';
+            '<button class="btn btn-danger btn-sm btn-grid" data-submit-error data-workitem-id=' + workItemId + '><i class="fa fa-spinner fa-spin hidden"></i> Report Errors</button>';
     }
+
+    //Show details link if action is to review error
+    if (action === 'SubmitErrorReview') lnk += '<button class="btn btn-primary btn-sm btn-grid" data-image-viewer href="/workitemimages/' + workItemId + '">View Details</button>';
+
     //Show Report Link if already documents generated 
     if (action !== 'Generate') {
-        lnk += '<a class="btn btn-default btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>&nbsp;';
+        lnk += '<button class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</button>';
     }
+
+    
 
     container.append(lnk);
 }
 
 
 function createGridCancelActionButtons(container, options) {
-    var action = options.data.action;
     var workItemId = options.data.id;
     var lnk = '';
     if (options.data.canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '"><i class="fa fa-spinner fa-spin hidden"></i> Cancel</button>';

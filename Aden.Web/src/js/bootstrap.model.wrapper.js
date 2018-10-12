@@ -1,4 +1,5 @@
-﻿window.showBSModal = function self(options) {
+﻿//https://www.ovais.me/javascript/bootstrap-3-modal-easy-way/ 
+window.showBSModal = function self(options) {
 
     var options = $.extend({
         title: '',
@@ -8,7 +9,8 @@
         size: false,
         onShow: false,
         onHide: false,
-        actions: false
+        actions: false, 
+        name: ''
     }, options);
 
     self.onShow = typeof options.onShow == 'function' ? options.onShow : function () { };

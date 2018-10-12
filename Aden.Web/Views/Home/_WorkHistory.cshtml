@@ -8,26 +8,31 @@ else
 {
     <table class="table table-bordered table-striped">
         <tr>
-            <td>Action</td>
+            <td>Task</td>
             <td>Assign Date</td>
             <td>Completed Date</td>
             <td>Assigned User</td>
-            <td>State</td>
+            <td>Status</td>
             <td></td>
         </tr>
         @foreach (var item in Model)
         {
             <tr>
 
-                <td>@item.Action</td>
+                <td>@item.ActionDescription</td>
                 <td>@item.AssignedDate</td>
                 <td>@item.CompletedDate</td>
                 <td>@item.AssignedUser</td>
-                <td>@item.WorkItemState</td>
-                <td>
+                <td>@item.Status</td>
+                <td class="no-wrap">
                     @if (ViewBag.IsSectionAdmin && item.WorkItemState == WorkItemState.NotStarted)
                     {
-                        <a href="@Url.Action("Reassign")" class="btn btn-default" data-reassign data-workitem-id="@item.Id">Reassign</a>
+                        <a href="@Url.Action("Reassign")" class="btn btn-primary btn-sm" data-reassign data-workitem-id="@item.Id">Reassign</a>
+
+                    }
+                    @if (item.Action == "SubmitErrorReview")
+                    {
+                        <a href="@Url.Action("Reassign")" class="btn btn-warning btn-sm" data-image-viewer data-workitem-id="@item.Id">Errors</a>
                     }
                 </td>
             </tr>

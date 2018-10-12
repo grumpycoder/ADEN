@@ -1,8 +1,9 @@
 ﻿using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
+using Aden.Web.Helpers;
+using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -23,17 +24,17 @@ namespace Aden.Web.Controllers.api
         }
 
         [HttpPost, Route("assignment/submiterror")]
-        public async Task<object> ErrorReport(SubmissionErrorDto model)
+        public object ErrorReport(SubmissionErrorDto model)
         {
             //if (!ModelState.IsValid) return PartialView("_WorkItemForm", model);
 
-            var workItem = await _uow.WorkItems.GetByIdAsync(model.Id);
+            var workItem = _uow.WorkItems.GetById(model.Id);
             workItem.Description = model.Description;
             workItem.Finish();
 
             _notificationService.SendWorkErrorNotification(workItem, model.Files);
 
-            var report = await _uow.Reports.GetByIdAsync(workItem.ReportId);
+            var report = _uow.Reports.GetById(workItem.ReportId);
 
             //Get assignee
             var members = _membershipService.GetGroupMembers(report.Submission.FileSpecification.GenerationUserGroup);
@@ -46,15 +47,26 @@ namespace Aden.Web.Controllers.api
             report.SetState(nextWorkItem.WorkItemAction);
             report.Submission.SetState(nextWorkItem.WorkItemAction);
 
+            List<byte[]> files = new List<byte[]>();
+            foreach (var f in model.Files)
+            {
+                files.Add(f.ConvertToByte());
+                //files.Add(ConvertToByte(f));
+            }
+
+            nextWorkItem.Description = model.Description;
+            nextWorkItem.AddImages(files);
             report.AddWorkItem(nextWorkItem);
 
-            await _uow.CompleteAsync();
+            _uow.Complete();
 
             //Send email notifications
             _notificationService.SendWorkNotification(nextWorkItem);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
+
+
     }
 
     public class SubmissionErrorDto
@@ -63,4 +75,6 @@ namespace Aden.Web.Controllers.api
         public string Description { get; set; }
         public HttpPostedFileBase[] Files { get; set; }
     }
+
+
 }

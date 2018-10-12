@@ -88,6 +88,12 @@ namespace Aden.Web
             );
 
             routes.MapRoute(
+                name: "WorkItemImageActions",
+                url: "workitemimages/{workItemId}",
+                defaults: new { controller = "Home", action = "WorkItemImages", reportId = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Submissions", id = UrlParameter.Optional }

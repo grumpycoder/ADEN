@@ -1,4 +1,5 @@
-﻿using Aden.Core.Dtos;
+﻿using Aden.Core.Data;
+using Aden.Core.Dtos;
 using Aden.Core.Repositories;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
@@ -6,6 +7,7 @@ using AutoMapper;
 using EAGetMail;
 //using Independentsoft.Email.Mime;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
@@ -64,6 +66,17 @@ namespace Aden.Web.Controllers
             var list = Mapper.Map<List<WorkItemHistoryDto>>(workItems);
 
             return PartialView("_WorkHistory", list);
+        }
+
+        public async Task<ActionResult> WorkItemImages(int workItemId)
+        {
+            //TODO: Move to repository
+            var context = new AdenContext();
+
+            var wi = await context.WorkItems.Include(x => x.WorkItemImages).FirstOrDefaultAsync(x => x.Id == workItemId);
+            //var list = await context.WorkItemImages.Where(x => x.WorkItemId == workItemId).ToListAsync();
+
+            return PartialView("_WorkItemImage", wi);
         }
 
         public async Task<ActionResult> Reassign(int workItemId)

@@ -201,22 +201,23 @@ $(function () {
         e.preventDefault();
         var url = $(this).attr('href');
         var title = $(this).data('title');
-        $.ajax({
-            url: url,
-            type: 'POST',
-            success: function (data) {
-                window.showBSModal({
-                    title: title,
-                    body: data,
-                    size: "large"
-                });
-            },
-            error: function (err) {
-                //console.log('err', err);
-                window.$log.error('Error showing history');
-            }
-        });
 
+        window.BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true,
+            title: title,
+            message: $('<div></div>').load(url, function (resp, status, xhr) {
+                 if (status === 'error') {
+                     window.$log.error('Error showing history');
+                 }
+            }),
+            buttons: [{
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
     });
 
     $(document).on('click', '[data-reassign]', function (e) {
@@ -286,6 +287,28 @@ $(function () {
 
     });
 
+    $(document).on('click', '[data-image-viewer]', function (e) {
+        e.preventDefault();
+
+        var btn = $(this);
+        var workItemId = btn.data('workitem-id');
+        var url = '/workitemimages/' + workItemId;
+        var title = 'Work Item Images';
+
+        window.BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_WIDE,
+            draggable: true, 
+            title: title,
+            message: $('<div></div>').load(url), 
+            buttons: [{
+                label: 'Close',
+                action: function (dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+
+    });
 });
 
 function createSubmissionGridActionButtons(container, options) {
@@ -301,19 +324,19 @@ function createSubmissionGridActionButtons(container, options) {
     var fileNumber = options.data.fileNumber;
     var dataYear = options.data.dataYear;
     if (canReview) {
-        lnk += '<a class="btn btn-default btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
+        lnk += '<a class="btn btn-success btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
     }
     if (canCancel) {
-        lnk += '<a href="#" class="btn btn-default btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Cancel</a>&nbsp;';
+        lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Cancel</a>&nbsp;';
     }
     if (submissionStateId >= 5 && hasAdmin) {
-        lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-grid" data-reopen data-title="ReOpen Reason" data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</a>&nbsp;';
+        lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-sm btn-grid" data-reopen data-title="ReOpen Reason" data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</a>&nbsp;';
     }
     if (canStart) {
-        lnk += '<a href="#" class="btn btn-default btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</a>&nbsp;';
+        lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</a>&nbsp;';
     }
     if (canWaiver) {
-        lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-grid" data-waiver data-title="Waiver Reason" data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Waiver</a>&nbsp;';
+        lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-sm btn-grid" data-waiver data-title="Waiver Reason" data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Waiver</a>&nbsp;';
     }
 
     container.append(lnk);

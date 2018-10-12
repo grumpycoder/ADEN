@@ -13,6 +13,8 @@ namespace Aden.Core.Models
         public DateTime? CompletedDate { get; set; }
         public string Description { get; set; }
 
+        public List<WorkItemImage> WorkItemImages { get; set; }
+
         public WorkItemAction WorkItemAction { get; set; }
         public WorkItemState WorkItemState { get; set; }
 
@@ -44,14 +46,18 @@ namespace Aden.Core.Models
             }
         }
 
-        private WorkItem() { }
+        private WorkItem()
+        {
+            
+        }
 
-        private WorkItem(WorkItemAction action, string assignee)
+        private WorkItem(WorkItemAction action, string assignee): base()
         {
             WorkItemAction = action;
             AssignedUser = assignee;
             AssignedDate = DateTime.Now;
             WorkItemState = WorkItemState.NotStarted;
+            WorkItemImages = new List<WorkItemImage>();
         }
 
         public static WorkItem Create(WorkItemAction action, string assignee)
@@ -67,7 +73,7 @@ namespace Aden.Core.Models
 
         public static WorkItemAction Next(WorkItem workItem)
         {
-            if (workItem.WorkItemState == WorkItemState.Reject) return WorkItemAction.Generate; 
+            if (workItem.WorkItemState == WorkItemState.Reject) return WorkItemAction.Generate;
 
             switch (workItem.WorkItemAction)
             {
@@ -131,5 +137,16 @@ namespace Aden.Core.Models
             WorkItemState = WorkItemState.Reject;
             CompletedDate = DateTime.Now;
         }
+
+        public void AddImages(List<byte[]> files)
+        {
+            foreach (var file in files)
+            {
+                var workItemImage = new WorkItemImage();
+                workItemImage.Image = file;
+                WorkItemImages.Add(workItemImage);
+            }
+        }
+
     }
 }

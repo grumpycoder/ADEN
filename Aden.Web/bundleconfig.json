@@ -7,7 +7,8 @@
       "node_modules/moment/moment.js",
       "node_modules/toastr/toastr.js",
       "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.js",
-      "node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"
+      "node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js",
+      "node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js"
     ],
     "minify": {
       "enabled": true,

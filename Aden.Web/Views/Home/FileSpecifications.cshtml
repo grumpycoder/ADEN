@@ -15,7 +15,7 @@
 
                 <div class="panel-body">
 
-                    @(Html.DevExtreme().DataGrid().ID("grid")
+                    @(Html.DevExtreme().DataGrid().ID("grid").WordWrapEnabled(true)
                                                           .OnEditorPrepared("editorPrepared")
                                                           .ShowRowLines(true)
                                                           .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
@@ -35,7 +35,7 @@
                                                               c.Add().DataField("generationUserGroup").HidingPriority(1);
                                                               c.Add().DataField("approvalUserGroup").HidingPriority(1);
                                                               c.Add().DataField("submissionUserGroup").HidingPriority(1);
-                                                              c.Add().Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createFileSpecificationGridActionButtons(container, options);}"));
+                                                              c.Add().CssClass("btn-cell").Alignment(HorizontalAlignment.Center).CellTemplate(new JS("function(container, options) {createFileSpecificationGridActionButtons(container, options);}"));
                                                           })
                                                           .Paging(paging => paging.PageSize(10)).Pager(pager =>
                                                           {

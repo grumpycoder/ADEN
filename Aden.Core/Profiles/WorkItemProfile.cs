@@ -11,6 +11,7 @@ namespace Aden.Core.Profiles
         {
             CreateMap<WorkItem, ReassignmentDto>()
                 .ForMember(d => d.WorkItemAction, opt => opt.MapFrom(s => s.WorkItemAction.GetDisplayName()))
+                .ForMember(d => d.AssignedUser, opt => opt.MapFrom(s => s.AssignedUser))
                 .ForAllOtherMembers(d => d.Ignore());
 
             CreateMap<WorkItem, WorkItemDto>()
