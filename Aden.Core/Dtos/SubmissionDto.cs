@@ -37,7 +37,7 @@ namespace Aden.Core.Dtos
 
         public string LastUpdatedFriendly
         {
-            get { return $"{LastUpdated.Humanize()}"; }
+            get { return $"{LastUpdated.Humanize(false)}"; }
         }
 
 
@@ -69,7 +69,7 @@ namespace Aden.Core.Dtos
             get
             {
                 //TODO: Refactor magic string
-                var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains("AdenAppAdministrators"));
+                var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains("AdenAppGlobalAdministrators"));
                 return claim != null;
             }
         }
