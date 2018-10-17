@@ -4,7 +4,9 @@ namespace Aden.Core
 {
     public static class Constants
     {
-        public static string HelpDeskEmail = AppSettings.Get<string>("HelpDeskEmail");
+        public static string Development = AppSettings.Get<string>("Developers");
+
+        public static string GlobalAdministrators = AppSettings.Get<string>("GlobalAdministrators");
 
         public static string ReplyAddress = AppSettings.Get<string>("ReplyAddress");
         public static string CurrentEnvironment => AppSettings.Get<string>("ASPNET_ENV");

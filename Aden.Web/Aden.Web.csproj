@@ -25,7 +25,7 @@
     <UseGlobalApplicationHostFile />
     <ApplicationVersion>57.0.56.6636</ApplicationVersion>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2018.10.20</AssemblyVersion>
+    <AssemblyVersion>2018.10.21</AssemblyVersion>
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>True</UpdateAssemblyVersion>

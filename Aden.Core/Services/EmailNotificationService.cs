@@ -1,8 +1,10 @@
 ﻿using Aden.Core.Helpers;
 using Aden.Core.Models;
+using ALSDE.Idem;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Mail;
 using System.Reflection;
 using System.Text;
@@ -194,131 +196,56 @@ namespace Aden.Core.Services
             }
         }
 
-        //public void SendWorkErrorNotification(WorkItem workItem, List<byte[]> files = null)
         public void SendWorkErrorNotification(WorkItem workItem, HttpPostedFileBase[] files = null)
         {
-            try
+            // Send Generation User email notification
+            // Send Global Admins email notification
+            // Send Developers email notification
+            var globalAdmins = GroupHelper.GetGroupMembers(Constants.GlobalAdministrators).Select(x => x.EmailAddress);
+
+
+            var heading = "Submission Error!";
+            var subject =
+                $"ADEN {workItem.Report.Submission.FileSpecification.FileName} ({workItem.Report.Submission.FileSpecification.FileNumber}) File Submission Error";
+            var title = $"{workItem.Report.Submission.FileSpecification.FileName} file submission has generated an error";
+            var messageBody = $"<p>A submission error has occurred when sending file to EDEN for {workItem.Report.Submission.FileSpecification.FileName} ({workItem.Report.Submission.FileSpecification.FileNumber}). Management and Development have also been notified. </p>";
+            var additionalNotes = $"<p><strong>Error Description:</strong> <hr />{workItem.Description}</p>";
+            var imagePath = @"https://png.icons8.com/ios/50/000000/error-filled.png";
+            var assignmentsUrlText = "View Your Assignments";
+
+            var body = GetTemplateResourceBody()
+                .Replace(@"{Heading}", $"{heading}")
+                .Replace(@"{Title}", $"{title}")
+                .Replace(@"{MessageBody}", $"{messageBody}")
+                .Replace(@"{AdditionalNotes}", $"{additionalNotes}")
+                .Replace(@"{AssignmentsUrlText}", $"{assignmentsUrlText}")
+                .Replace(@"{AssignmentsUrl}", $"{Constants.Url}")
+                .Replace(@"{ImagePath}", $"{imagePath}").Replace("..", ".");
+
+            var message = new MailMessage(Constants.ReplyAddress, workItem.AssignedUser)
             {
-                var heading = "Oh No!";
-                var subject =
-                    $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Submission Error";
-                var title = $"{workItem.Report.Submission.FileSpecification.FileName} submission has generated an error";
-                var messageBody = $"<p>An email notification has been sent to the Help Desk for ticket generation. </p>";
-                var additionalNotes = $"<p><strong>Notes:</strong> <hr />{workItem.Description}</p>";
-                var imagePath = @"https://png.icons8.com/ios/50/000000/error-filled.png";
-                var assignmentsUrlText = "View Your Assignments";
+                IsBodyHtml = true,
+                BodyEncoding = Encoding.UTF8,
+                Subject = subject,
+                Body = body
+            };
+            message.CC.Add(Constants.Development);
+            foreach (var admin in globalAdmins)
+            {
+                message.CC.Add(admin);
+            }
 
-                var body = GetTemplateResourceBody()
-                    .Replace(@"{Heading}", $"{heading}")
-                    .Replace(@"{Title}", $"{title}")
-                    .Replace(@"{MessageBody}", $"{messageBody}")
-                    .Replace(@"{AdditionalNotes}", $"{additionalNotes}")
-                    .Replace(@"{AssignmentsUrlText}", $"{assignmentsUrlText}")
-                    .Replace(@"{AssignmentsUrl}", $"{Constants.Url}")
-                    .Replace(@"{ImagePath}", $"{imagePath}").Replace("..", ".");
-
-                var message = new MailMessage(Constants.ReplyAddress, workItem.AssignedUser)
+            if (files != null)
+            {
+                foreach (var file in files)
                 {
-                    IsBodyHtml = true,
-                    BodyEncoding = Encoding.UTF8,
-                    Subject = subject,
-                    Body = body
-                };
-
-                if (files != null)
-                {
-                    foreach (var file in files)
-                    {
-                        file.InputStream.Position = 0;
-                        message.Attachments.Add(new Attachment(file.InputStream, file.FileName));
-                    }
+                    file.InputStream.Position = 0;
+                    message.Attachments.Add(new Attachment(file.InputStream, file.FileName));
                 }
-
-                var client = new SmtpClient();
-                client.Send(message);
-            }
-            catch (Exception e)
-            {
-                //TODO: Log sending error and queue message
-                Debug.WriteLine("Error sending email message", e);
             }
 
-            //Send email to helpdesk
-            try
-            {
-                var heading = "Create Ticket Please!";
-                var subject =
-                    $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Submission Error";
-                var title = $"{workItem.Report.Submission.FileSpecification.FileName} Report submission has generated an error";
-                var messageBody = $"<p>Place below text into ticket and attach any images and assign to IS Programmers. Thanks <br /></p>";
-                var additionalNotes = $"<p><strong>Notes:</strong> <hr />{workItem.Description}</p>";
-                var imagePath = @"https://png.icons8.com/ios/50/000000/error-filled.png";
-
-
-                var body = GetTemplateResourceBody()
-                    .Replace(@"{Heading}", $"{heading}")
-                    .Replace(@"{Title}", $"{title}")
-                    .Replace(@"{MessageBody}", $"{messageBody}")
-                    .Replace(@"{AdditionalNotes}", $"{additionalNotes}")
-                    .Replace(@"{AssignmentsUrlText}", "")
-                    .Replace(@"{AssignmentsUrl}", "")
-                    .Replace(@"{ImagePath}", $"{imagePath}").Replace("..", ".");
-
-                var message = new MailMessage(Constants.ReplyAddress, workItem.AssignedUser)
-                {
-                    IsBodyHtml = true,
-                    BodyEncoding = Encoding.UTF8,
-                    Subject = subject,
-                    Body = body
-                };
-
-                if (files != null)
-                {
-                    foreach (var file in files)
-                    {
-                        file.InputStream.Position = 0;
-                        message.Attachments.Add(new Attachment(file.InputStream, file.FileName));
-                    }
-                }
-
-                var client = new SmtpClient();
-                client.Send(message);
-
-
-                //TODO: Refactor Helpdesk email 
-                //var client = new SmtpClient();
-                //var bodyText = $"Place below text into ticket and attach any images and assign to IS Programmers. Thanks <br />";
-                //var line = new string('-', 25);
-                //bodyText += $"{line}{Environment.NewLine}";
-
-                //bodyText +=
-                //    $"{workItem.Report.Submission.FileSpecification.FileName} submission has generated an error. <br />";
-                //bodyText += $"Notes: <br /> {workItem.Notes}";
-
-                //var message = new MailMessage(Constants.ReplyAddress, Constants.HelpDeskEmail)
-                //{
-                //    Subject =
-                //        $"{workItem.Report.Submission.FileSpecification.FileName} {workItem.WorkItemAction.GetDisplayName()} Submission Error",
-                //    Body = bodyText
-                //};
-
-                //if (files != null)
-                //{
-                //    foreach (var file in files)
-                //    {
-                //        file.InputStream.Position = 0;
-                //        message.Attachments.Add(new Attachment(file.InputStream, file.FileName));
-                //    }
-                //}
-
-                //client.Send(message);
-            }
-            catch (Exception e)
-            {
-                //TODO: Log sending error and queue message
-                Debug.WriteLine("Error sending email message", e);
-            }
-
+            var client = new SmtpClient();
+            client.Send(message);
         }
 
         private static string GetTemplateResourceBody()
