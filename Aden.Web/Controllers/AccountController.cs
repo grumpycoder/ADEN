@@ -14,8 +14,16 @@ namespace Aden.Web.Controllers
         {
             var tokenKey = new TokenKey(token, Constants.TpaAccessKey);
 
-            var identity = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
+            var result = IdentityManager.TokenSignin(Constants.WebServiceUrl, tokenKey);
 
+            Session["LoginFailureMessage"] = string.Empty;
+            if (result.IsFailure)
+            {
+                Session["LoginFailureMessage"] = result.Error;
+                return RedirectToAction("LoginFailure", "Account");
+            }
+
+            var identity = result.Value;
             if (identity == null) throw new Exception("No identity returned from Token signin");
 
             // Add custom claims to User to store Section information
@@ -53,6 +61,12 @@ namespace Aden.Web.Controllers
 
         public ActionResult Unauthorized()
         {
+            return View();
+        }
+
+        public ActionResult LoginFailure(string message)
+        {
+            ViewBag.Message = Session["LoginFailureMessage"];
             return View();
         }
 
