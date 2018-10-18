@@ -114,6 +114,7 @@
     <Compile Include="Dtos\ReportDto.cs" />
     <Compile Include="Dtos\ReportUploadDto.cs" />
     <Compile Include="Dtos\SubmissionDto.cs" />
+    <Compile Include="Dtos\SubmissionViewDto.cs" />
     <Compile Include="Dtos\UpdateFileSpecificationDto.cs" />
     <Compile Include="Dtos\WorkItemDto.cs" />
     <Compile Include="Dtos\WorkItemHistoryDto.cs" />

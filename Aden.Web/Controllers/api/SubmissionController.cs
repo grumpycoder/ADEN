@@ -1,12 +1,14 @@
-﻿using Aden.Core.Dtos;
+﻿using Aden.Core.Data;
+using Aden.Core.Dtos;
 using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
 using Aden.Web.ViewModels;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,12 +19,14 @@ namespace Aden.Web.Controllers.api
     [RoutePrefix("api/submission")]
     public class SubmissionController : ApiController
     {
+        private readonly AdenContext _context;
         private readonly IUnitOfWork _uow;
         private readonly INotificationService _notificationService;
         private readonly IMembershipService _membershipService;
 
-        public SubmissionController(IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
+        public SubmissionController(AdenContext context, IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
         {
+            _context = context;
             _uow = uow;
             _notificationService = notificationService;
             _membershipService = membershipService;
@@ -31,19 +35,13 @@ namespace Aden.Web.Controllers.api
         [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            //TODO: Refactor isGlobalAdmin variable
-            var isGlobalAdmin = User.IsInRole(Constants.GlobalAdministratorGroup);
-
-            //TODO: Refactor to use a custom claimtype and not magic string
+            //TODO: Refactor to use a custom ClaimType and not magic string
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 
-            var submissions = await _uow.Submissions.GetBySectionWithReportsAsync(!isGlobalAdmin ? section : string.Empty);
+            var dto = await _context.Submissions
+                .ProjectTo<SubmissionViewDto>().ToListAsync();
 
-            var rows = Mapper.Map<List<SubmissionDto>>(submissions);
-
-
-            return Ok(DataSourceLoader.Load(rows, loadOptions));
-
+            return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.DueDate).ThenByDescending(x => x.Id), loadOptions));
         }
 
         [HttpPost, Route("reopen/{id}")]
@@ -101,4 +99,6 @@ namespace Aden.Web.Controllers.api
             return Ok(dto);
         }
     }
+
+
 }
