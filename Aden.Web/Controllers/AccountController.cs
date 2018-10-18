@@ -28,8 +28,10 @@ namespace Aden.Web.Controllers
 
             // Add custom claims to User to store Section information
             var claims = identity.Claims.ToList();
+
             var claim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.ToLower().Contains("section"));
-            var isAdministrator = claims.Any(c => c.Value.ToLower().Contains("administrator"));
+            var isAdministrator = claims.Exists(c => c.Type == ClaimTypes.Role && c.Value.ToLower().StartsWith("adenapp") && c.Value.ToLower().EndsWith("administrators"));
+            //claims.Any(c => c.Value.ToLower().Contains("administrator"));
 
             if (claim != null)
             {

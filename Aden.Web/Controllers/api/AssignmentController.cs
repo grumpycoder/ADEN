@@ -72,7 +72,8 @@ namespace Aden.Web.Controllers.api
             if (next == WorkItemAction.Nothing)
             {
                 report.SetState(next);
-                report.Submission.SetState(next);
+                //report.Submission.SetState(next);
+                report.Submission.Complete();
                 await _uow.CompleteAsync();
                 return Ok();
             }

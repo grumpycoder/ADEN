@@ -29,7 +29,7 @@ namespace Aden.Web.Controllers
             _uow = uow;
         }
         [TrackViewName]
-        [CustomAuthorize(Roles = Constants.GlobalAdministratorGroup)]
+        [CustomAuthorize(Roles = Constants.FileSpecificationAdministratorGroup)]
         public ActionResult FileSpecifications()
         {
             return View();

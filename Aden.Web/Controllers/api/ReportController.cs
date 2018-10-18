@@ -53,6 +53,9 @@ namespace Aden.Web.Controllers.api
             }
             submission.AddReport(report);
 
+            if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
+                return BadRequest("No Generation Group defined for specification");
+
             //Get assignee
             var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
             if (members.IsFailure) return BadRequest(members.Error);
@@ -81,13 +84,14 @@ namespace Aden.Web.Controllers.api
 
             var report = await _uow.Reports.GetBySubmissionIdAsync(id);
             //Delete work items 
-            _uow.WorkItems.DeleteFromReport(report.Id);
-
-            //Delete documents
-            _uow.Documents.DeleteReportDocuments(report.Id);
-
-            //Delete reports
-            _uow.Reports.Delete(report.Id);
+            if (report != null)
+            {
+                _uow.WorkItems.DeleteFromReport(report.Id);
+                //Delete documents
+                _uow.Documents.DeleteReportDocuments(report.Id);
+                //Delete reports
+                _uow.Reports.Delete(report.Id);
+            }
 
             //Set submission state
             submission.SetState(WorkItemAction.Nothing);

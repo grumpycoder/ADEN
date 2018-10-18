@@ -34,7 +34,7 @@ namespace Aden.Core.Dtos
         public bool CanCancel { get; set; }
         public DateTime? CompletedDate { get; set; }
 
-        public bool IsManualUpload => ReportAction.ToLower() == "manual";
+        public bool IsManualUpload => ReportAction?.ToLower() == "manual";
 
 
         [Required]

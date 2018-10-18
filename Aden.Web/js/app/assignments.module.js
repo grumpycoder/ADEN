@@ -284,7 +284,8 @@ function createAssignmentsGridActionButtons(container, options) {
 
     //Show Report Link if already documents generated 
     if (action !== 'Generate') {
-        lnk += '<button class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</button>';
+        //lnk += '<button class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</button>';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>';
     }
 
     

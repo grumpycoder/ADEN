@@ -207,9 +207,9 @@ $(function () {
             draggable: true,
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
-                 if (status === 'error') {
-                     window.$log.error('Error showing history');
-                 }
+                if (status === 'error') {
+                    window.$log.error('Error showing history');
+                }
             }),
             buttons: [{
                 label: 'Close',
@@ -297,9 +297,9 @@ $(function () {
 
         window.BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
-            draggable: true, 
+            draggable: true,
             title: title,
-            message: $('<div></div>').load(url), 
+            message: $('<div></div>').load(url),
             buttons: [{
                 label: 'Close',
                 action: function (dialogRef) {
@@ -309,14 +309,19 @@ $(function () {
         });
 
     });
+
+    $('[data-toggle="tooltip"]').tooltip(); 
+
 });
 
 function createSubmissionGridActionButtons(container, options) {
     var lnk = '';
     var canCancel = options.data.canCancel;
     var canStart = options.data.canStart;
+    var canReopen = options.data.canReopen;
     var canWaiver = options.data.canWaiver;
     var canReview = options.data.canReview;
+    var startDisabled = options.data.startDisabled;
 
     var submissionStateId = options.data.submissionStateId;
     var hasAdmin = options.data.hasAdmin;
@@ -329,11 +334,13 @@ function createSubmissionGridActionButtons(container, options) {
     if (canCancel) {
         lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Cancel</a>&nbsp;';
     }
-    if (submissionStateId >= 5 && hasAdmin) {
+    if (canReopen) {
         lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-sm btn-grid" data-reopen data-title="ReOpen Reason" data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</a>&nbsp;';
     }
     if (canStart) {
-        lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Start</a>&nbsp;';
+        lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId;
+        if (startDisabled) lnk += ' disabled data-toggle="tooltip" data-placement="left" title="Missing group assignments or report action"';
+        lnk += '><i class="fa fa-spinner fa-spin hidden"></i> Start</a>&nbsp;';
     }
     if (canWaiver) {
         lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-sm btn-grid" data-waiver data-title="Waiver Reason" data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Waiver</a>&nbsp;';

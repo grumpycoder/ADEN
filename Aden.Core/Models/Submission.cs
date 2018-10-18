@@ -110,5 +110,11 @@ namespace Aden.Core.Models
         {
             return new Submission(fileSpecification.DueDate, fileSpecification.DataYear, fileSpecification.IsSEA, fileSpecification.IsLEA, fileSpecification.IsSCH);
         }
+
+        public void Complete()
+        {
+            SubmissionState = SubmissionState.Complete;
+            LastUpdated = DateTime.Now;
+        }
     }
 }

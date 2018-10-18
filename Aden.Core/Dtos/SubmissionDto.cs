@@ -60,9 +60,15 @@ namespace Aden.Core.Dtos
         public bool CanCancel => !CanStart && HasAdmin;
         public bool CanStart => SubmissionStateId == Models.SubmissionState.NotStarted && HasAdmin;
 
+        public bool CanReopen => SubmissionStateId == Models.SubmissionState.Complete && HasAdmin;
+
+        public bool StartDisabled => CanStart && (string.IsNullOrWhiteSpace(FileSpecification.ReportAction) || (string.IsNullOrWhiteSpace(FileSpecification.GenerationUserGroup) ||
+              string.IsNullOrWhiteSpace(FileSpecification.ApprovalUserGroup) ||
+              string.IsNullOrWhiteSpace(FileSpecification.SubmissionUserGroup)));
+
         public bool CanWaiver => CanStart && HasAdmin;
 
-        public bool CanReview => !CanStart;
+        public bool CanReview => HasStarted;
 
         public bool HasAdmin
         {
