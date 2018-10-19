@@ -4,20 +4,25 @@ using Aden.Core.Repositories;
 using Aden.Core.Services;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Aden.Core.Data;
+using AutoMapper.QueryableExtensions;
 
 namespace Aden.Web.Controllers.api
 {
     [RoutePrefix("api/report")]
     public partial class ReportController : ApiController
     {
+        private readonly AdenContext _context;
         private readonly IUnitOfWork _uow;
         private readonly INotificationService _notificationService;
         private readonly IMembershipService _membershipService;
 
-        public ReportController(IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
+        public ReportController(AdenContext context, IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
         {
+            _context = context;
             _uow = uow;
             _notificationService = notificationService;
             _membershipService = membershipService;
@@ -26,8 +31,14 @@ namespace Aden.Web.Controllers.api
         [HttpGet, Route("{datayear:int}/{filenumber}")]
         public async Task<object> Get(int datayear, string filenumber)
         {
-            var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
-            var dto = Mapper.Map<List<ReportDto>>(reports);
+            var dto = _context.Reports
+                //.Include(f => f.Submission.FileSpecification).Include(r => r.Documents)
+                .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber &&
+                             f.Submission.DataYear == datayear) || string.IsNullOrEmpty(filenumber))
+                .OrderByDescending(x => x.Id).ProjectTo<ReportViewDto>();
+
+            //var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
+            //var dto = Mapper.Map<List<ReportDto>>(reports);
             //foreach (var reportDto in dto)
             //{
             //    var reportDocumentDtos = reportDto.Documents.OrderByDescending(x => x.Version);

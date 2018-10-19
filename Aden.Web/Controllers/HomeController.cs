@@ -49,9 +49,11 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public async Task<ActionResult> Reports(int datayear, string filenumber)
         {
-            var reports = await _uow.Reports.GetByFileSpecificationAsync(datayear, filenumber);
-            //var dto = Mapper.Map<List<ReportDto>>(reports.FirstOrDefault());
-            var dto = Mapper.Map<ReportDto>(reports.FirstOrDefault());
+            var reports = await _context.Reports.Include(f => f.Submission.FileSpecification).Include(r => r.Documents)
+                .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(filenumber))
+                .OrderByDescending(x => x.Id)
+                .ToListAsync();
+            var dto = Mapper.Map<ReportViewDto>(reports.FirstOrDefault());
             return View(dto);
         }
 
