@@ -4,6 +4,7 @@ using Aden.Core.Repositories;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using EAGetMail;
 //using Independentsoft.Email.Mime;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Mvc;
+using Z.EntityFramework.Plus;
 
 
 namespace Aden.Web.Controllers
@@ -22,12 +24,15 @@ namespace Aden.Web.Controllers
     [CustomAuthorize(Roles = "AdenAppUsers")]
     public class HomeController : AsyncController
     {
+        private readonly AdenContext _context;
         private readonly IUnitOfWork _uow;
 
-        public HomeController(IUnitOfWork uow)
+        public HomeController(AdenContext context, IUnitOfWork uow)
         {
+            _context = context;
             _uow = uow;
         }
+
         [TrackViewName]
         [CustomAuthorize(Roles = Constants.FileSpecificationAdministratorGroup)]
         public ActionResult FileSpecifications()
@@ -61,10 +66,14 @@ namespace Aden.Web.Controllers
             var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains("administrator"));
 
             ViewBag.IsSectionAdmin = isAdministrator;
-            var workItems = await _uow.WorkItems.GetHistoryAsync(reportId);
 
-            var list = Mapper.Map<List<WorkItemHistoryDto>>(workItems);
-
+            var reports = _context.Reports.Where(x => x.SubmissionId == reportId).Future();
+            var mostRecentReport = reports.OrderByDescending(r => r.Id).FirstOrDefault();
+            var list = new List<WorkItemHistoryDto>();
+            if (mostRecentReport != null)
+            {
+                list = await _context.WorkItems.Where(x => x.ReportId == mostRecentReport.Id).ProjectTo<WorkItemHistoryDto>().ToListAsync();
+            }
             return PartialView("_WorkHistory", list);
         }
 

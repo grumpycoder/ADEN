@@ -1,4 +1,5 @@
-﻿using Aden.Core.Models;
+﻿using Aden.Core.Helpers;
+using Aden.Core.Models;
 using System;
 
 namespace Aden.Core.Dtos
@@ -6,9 +7,9 @@ namespace Aden.Core.Dtos
     public class WorkItemHistoryDto
     {
         public int Id { get; set; }
-        public string Action { get; set; }
-        public string ActionDescription { get; set; }
-        public string Status { get; set; }
+        public WorkItemAction Action { get; set; }
+        public string ActionDescription => Action.GetDisplayName();
+        public string Status => WorkItemState.GetDisplayName();
         public DateTime? AssignedDate { get; set; }
         public DateTime? CompletedDate { get; set; }
         public string AssignedUser { get; set; }

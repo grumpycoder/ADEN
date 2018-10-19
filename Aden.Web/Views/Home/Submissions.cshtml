@@ -25,7 +25,7 @@
                                    .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
                                    .Columns(cols =>
                                    {
-                            cols.Add().DataField("mostRecentReportId").Caption("")
+                            cols.Add().DataField("id").Caption("")
                                 .Alignment(HorizontalAlignment.Center)
                                 .Width(35).AllowFiltering(false)
                                 .CellTemplate(@<text><a href="@Url.Action("workhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a></text>)

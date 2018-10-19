@@ -40,9 +40,7 @@ namespace Aden.Core.Profiles
                 .ForMember(d => d.WorkItemState, opt => opt.MapFrom(s => s.WorkItemState))
                 .ForMember(d => d.CompletedDate, opt => opt.MapFrom(s => s.CompletedDate))
                 .ForMember(d => d.Description, opt => opt.MapFrom(s => s.Description))
-                .ForMember(d => d.Action, opt => opt.MapFrom(s => s.WorkItemAction.GetShortName()))
-                .ForMember(d => d.ActionDescription, opt => opt.MapFrom(s => s.WorkItemAction.GetDisplayName()))
-                .ForMember(d => d.Status, opt => opt.MapFrom(s => s.WorkItemState.GetDisplayName()))
+                .ForMember(d => d.Action, opt => opt.MapFrom(s => s.WorkItemAction))
                 .ForAllOtherMembers(d => d.Ignore())
                 ;
         }
