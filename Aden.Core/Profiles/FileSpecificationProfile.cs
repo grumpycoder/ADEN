@@ -9,6 +9,7 @@ namespace Aden.Core.Profiles
         public FileSpecificationProfile()
         {
             CreateMap<FileSpecification, FileSpecificationDto>();
+
             CreateMap<FileSpecification, UpdateFileSpecificationDto>()
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.FileName))
                 .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.FileNumber))

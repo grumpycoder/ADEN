@@ -130,18 +130,21 @@ $(function () {
 
 function createFileSpecificationGridActionButtons(container, options) {
     var lnk = '';
-    var isRetired = options.data.isRetired;
-    var fileNumber = options.data.fileNumber;
-    var dataYear = options.data.dataYear;
-    var filespecId = options.data.id;
+    var canRetire = options.data.canRetire;
+    var canActivate = options.data.canActivate;
+    var fileSpecId = options.data.id;
 
-    if (!isRetired) {
-        lnk += '<button class="btn btn-default btn-sm btn-grid" data-retire data-filespec-id=' + filespecId + '><i class="fa fa-spinner fa-spin hidden"></i> Retire</button>';
+    if (fileSpecId === 1) {
+        console.log('canActivate', canActivate);
+        console.log('canRetire', canRetire);
     }
-    if (isRetired) {
-        lnk += '<button class="btn btn-default btn-sm btn-grid" data-activate data-filespec-id=' + filespecId + '><i class="fa fa-spinner fa-spin hidden"></i> Activate</button>';
+    if (canRetire) {
+        lnk += '<button class="btn btn-default btn-sm btn-grid" data-retire data-filespec-id=' + fileSpecId + '><i class="fa fa-spinner fa-spin hidden"></i> Retire</button>';
     }
-    lnk += '<button class="btn btn-default btn-sm btn-grid" href="/EditFileSpecification/' + filespecId + '" data-edit data-id="' + filespecId + '">Edit</button>';
+    if (canActivate) {
+        lnk += '<button class="btn btn-default btn-sm btn-grid" data-activate data-filespec-id=' + fileSpecId + '><i class="fa fa-spinner fa-spin hidden"></i> Activate</button>';
+    }
+    lnk += '<button class="btn btn-default btn-sm btn-grid" href="/EditFileSpecification/' + fileSpecId + '" data-edit data-id="' + fileSpecId + '">Edit</button>';
     container.append(lnk);
 }
 

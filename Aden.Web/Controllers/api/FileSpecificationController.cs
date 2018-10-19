@@ -4,8 +4,11 @@ using Aden.Core.Repositories;
 using AutoMapper;
 using DevExtreme.AspNet.Mvc;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Aden.Core.Data;
+using AutoMapper.QueryableExtensions;
 
 namespace Aden.Web.Controllers.api
 {
@@ -13,18 +16,19 @@ namespace Aden.Web.Controllers.api
     [RoutePrefix("api/filespecification")]
     public class FileSpecificationController : ApiController
     {
+        private readonly AdenContext _context;
         private readonly IUnitOfWork _uow;
 
-        public FileSpecificationController(IUnitOfWork uow)
+        public FileSpecificationController(AdenContext context, IUnitOfWork uow)
         {
+            _context = context;
             _uow = uow;
         }
 
         [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            var specs = await _uow.FileSpecifications.GetAllAsync();
-            var dto = Mapper.Map<List<FileSpecificationDto>>(specs);
+            var dto = await _context.FileSpecifications.ProjectTo<FileSpecificationDto>().ToListAsync();
             return Ok(dto);
         }
 
