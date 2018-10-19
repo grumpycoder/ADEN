@@ -8,6 +8,8 @@ namespace Aden.Core
 
         public static string GlobalAdministrators = AppSettings.Get<string>("GlobalAdministrators");
 
+        public const string FileSpecificationAdministratorGroup = "AdenAppSpecificationAdministrators";
+
         public static string ReplyAddress = AppSettings.Get<string>("ReplyAddress");
         public static string CurrentEnvironment => AppSettings.Get<string>("ASPNET_ENV");
 

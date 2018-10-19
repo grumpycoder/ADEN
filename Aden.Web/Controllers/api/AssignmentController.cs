@@ -1,9 +1,11 @@
-﻿using Aden.Core.Dtos;
+﻿using Aden.Core.Data;
+using Aden.Core.Dtos;
 using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
 using AutoMapper;
-using System.Collections.Generic;
+using AutoMapper.QueryableExtensions;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,12 +17,14 @@ namespace Aden.Web.Controllers.api
     [RoutePrefix("api/assignment")]
     public class AssignmentController : ApiController
     {
+        private readonly AdenContext _context;
         private readonly IUnitOfWork _uow;
         private readonly INotificationService _notificationService;
         private readonly IMembershipService _membershipService;
 
-        public AssignmentController(IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
+        public AssignmentController(AdenContext context, IUnitOfWork uow, INotificationService notificationService, IMembershipService membershipService)
         {
+            _context = context;
             _uow = uow;
             _notificationService = notificationService;
             _membershipService = membershipService;
@@ -30,9 +34,8 @@ namespace Aden.Web.Controllers.api
         public async Task<object> CurrentAssignments(string username)
         {
             if (username == null) return NotFound();
-            var workitems = await _uow.WorkItems.GetActiveAsync(username);
 
-            var dto = Mapper.Map<List<WorkItemDto>>(workitems);
+            var dto = await _context.WorkItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.NotStarted).ProjectTo<WorkItemViewDto>().ToListAsync();
 
             return Ok(dto);
         }
@@ -40,12 +43,14 @@ namespace Aden.Web.Controllers.api
         [HttpGet, Route("history/{username}")]
         public async Task<object> History(string username)
         {
-            //TODO: Should use authenticated user?
-            var workItems = await _uow.WorkItems.GetCompletedAsync(username);
+            if (username == null) return NotFound();
 
-            var dto = Mapper.Map<List<WorkItemDto>>(workItems.OrderByDescending(w => w.CanCancel).ThenByDescending(w => w.AssignedDate));
+            var dto = await _context.WorkItems.Where(u => u.AssignedUser == username && u.WorkItemState == WorkItemState.Completed).ProjectTo<WorkItemViewDto>().ToListAsync();
 
-            return Ok(dto);
+            var list = dto.OrderByDescending(l => l.Id);
+
+            return Ok(list);
+
         }
 
         [HttpPost, Route("complete/{id}")]

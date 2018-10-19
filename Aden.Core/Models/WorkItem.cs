@@ -24,25 +24,26 @@ namespace Aden.Core.Models
         {
             get
             {
+                return true;
                 //TODO: Cleanup
-                if (WorkItemState == WorkItemState.Cancelled) return false;
+                //if (WorkItemState == WorkItemState.Cancelled) return false;
 
-                if (Report.ReportState == ReportState.Complete || Report.ReportState == ReportState.CompleteWithError)
-                    return false;
+                //if (Report.ReportState == ReportState.Complete || Report.ReportState == ReportState.CompleteWithError)
+                //    return false;
 
-                var items = Report.WorkItems.Where(x => x.Report.ReportState != ReportState.Complete || x.Report.ReportState != ReportState.CompleteWithError).OrderBy(x => x.Id).ToList();
+                //var items = Report.WorkItems.Where(x => x.Report.ReportState != ReportState.Complete || x.Report.ReportState != ReportState.CompleteWithError).OrderBy(x => x.Id).ToList();
 
-                //var items = Report.WorkItems.OrderBy(x => x.Id).ToList();
-                var item = items.LastOrDefault();
-                if (item == null) return false;
+                ////var items = Report.WorkItems.OrderBy(x => x.Id).ToList();
+                //var item = items.LastOrDefault();
+                //if (item == null) return false;
 
-                if (item.WorkItemAction == WorkItemAction.Generate) return false;
+                //if (item.WorkItemAction == WorkItemAction.Generate) return false;
 
-                var p = GetPrevious(items, item);
+                //var p = GetPrevious(items, item);
 
-                if (p == null) return false;
+                //if (p == null) return false;
 
-                return p.Id == Id;
+                //return p.Id == Id;
             }
         }
 

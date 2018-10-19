@@ -19,7 +19,7 @@ $(function () {
             type: 'POST',
             success: function (data) {
                 $gridCurrentAssignments.refresh();
-                $gridRetrievableAssignments.refresh();
+                //$gridRetrievableAssignments.refresh();
                 window.$log.success('Completed ' + data.action + ' assignment');
             },
             error: function (err) {
@@ -240,6 +240,11 @@ $(function () {
 
 function createAssignmentsGridActionButtons(container, options) {
     var reportId = options.data.reportId;
+    var canGenerate = options.data.canGenerate; 
+    var canReject = options.data.canReject; 
+    var canSubmit = options.data.canSubmit; 
+    var canReviewError = options.data.canReviewError; 
+
     var action = options.data.action;
     var actionName = options.data.actionName;
     var actionDescription = options.data.actionDescription;
@@ -247,7 +252,7 @@ function createAssignmentsGridActionButtons(container, options) {
     var isManualUpload = options.data.isManualUpload;
     var lnk = '';
 
-    if (action === 'Generate' && isManualUpload === true) {
+    if (canGenerate && isManualUpload === true) {
         lnk += '<a class="btn btn-primary btn-sm btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>';
     }
     else {
@@ -263,7 +268,7 @@ function createAssignmentsGridActionButtons(container, options) {
             '</button>';
     }
 
-    if (action === 'Accept' || action === 'Approve') {
+    if (canReject) {
         lnk +=
             '<button class="btn btn-danger btn-sm btn-grid" data-report-id="' +
             reportId +
@@ -274,21 +279,19 @@ function createAssignmentsGridActionButtons(container, options) {
             '"><i class="fa fa-spinner fa-spin hidden"></i>Reject</button>';
     }
      
-    if (action === 'SubmitFile') {
+    if (canSubmit) {
         lnk +=
             '<button class="btn btn-danger btn-sm btn-grid" data-submit-error data-workitem-id=' + workItemId + '><i class="fa fa-spinner fa-spin hidden"></i> Report Errors</button>';
     }
 
     //Show details link if action is to review error
-    if (action === 'SubmitErrorReview') lnk += '<button class="btn btn-primary btn-sm btn-grid" data-image-viewer href="/workitemimages/' + workItemId + '">View Details</button>';
+    if (canReviewError) lnk += '<button class="btn btn-primary btn-sm btn-grid" data-image-viewer href="/workitemimages/' + workItemId + '">View Details</button>';
 
     //Show Report Link if already documents generated 
-    if (action !== 'Generate') {
+    if (!canGenerate) {
         //lnk += '<button class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</button>';
         lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>';
     }
-
-    
 
     container.append(lnk);
 }
@@ -296,7 +299,8 @@ function createAssignmentsGridActionButtons(container, options) {
 
 function createGridCancelActionButtons(container, options) {
     var workItemId = options.data.id;
+    var canCancel = options.data.canCancel; 
     var lnk = '';
-    if (options.data.canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '"><i class="fa fa-spinner fa-spin hidden"></i> Cancel</button>';
+    if (canCancel) lnk = '<button class="btn btn-default btn-grid" data-cancel-workitem data-cancel-workitem-id="' + workItemId + '"><i class="fa fa-spinner fa-spin hidden"></i> Cancel</button>';
     container.append(lnk);
 }

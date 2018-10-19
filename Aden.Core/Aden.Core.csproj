@@ -118,6 +118,7 @@
     <Compile Include="Dtos\UpdateFileSpecificationDto.cs" />
     <Compile Include="Dtos\WorkItemDto.cs" />
     <Compile Include="Dtos\WorkItemHistoryDto.cs" />
+    <Compile Include="Dtos\WorkItemViewDto.cs" />
     <Compile Include="Helpers\AppSettings.cs" />
     <Compile Include="Helpers\DataTableHelper.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
