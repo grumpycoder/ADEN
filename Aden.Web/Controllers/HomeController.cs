@@ -65,7 +65,7 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> WorkHistory(int reportId)
         {
-            var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains("administrator"));
+            var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains(Constants.GlobalAdministratorGroup));
 
             ViewBag.IsSectionAdmin = isAdministrator;
 
@@ -74,7 +74,7 @@ namespace Aden.Web.Controllers
             var list = new List<WorkItemHistoryDto>();
             if (mostRecentReport != null)
             {
-                list = await _context.WorkItems.Where(x => x.ReportId == mostRecentReport.Id).ProjectTo<WorkItemHistoryDto>().ToListAsync();
+                list = await _context.WorkItems.OrderByDescending(r => r.Id).Where(x => x.ReportId == mostRecentReport.Id).ProjectTo<WorkItemHistoryDto>().ToListAsync();
             }
             return PartialView("_WorkHistory", list);
         }
