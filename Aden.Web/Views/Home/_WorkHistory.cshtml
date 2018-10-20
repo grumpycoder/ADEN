@@ -30,7 +30,7 @@ else
                         <a href="@Url.Action("Reassign")" class="btn btn-primary btn-sm" data-reassign data-workitem-id="@item.Id">Reassign</a>
 
                     }
-                    @if (item.Action == WorkItemAction.SubmitWithError)
+                    @if (item.Action == WorkItemAction.ReviewError)
                     {
                         <a href="@Url.Action("Reassign")" class="btn btn-warning btn-sm" data-image-viewer data-workitem-id="@item.Id">Errors</a>
                     }
