@@ -124,5 +124,16 @@ namespace Aden.Core.Models
             //    //Send notification
             //}
         }
+
+
+        //NEW CODE
+        public WorkItem CreateTask(string assignee)
+        {
+            var wi = WorkItem.Create(WorkItemAction.Generate, assignee);
+            WorkItems.Add(wi);
+
+            ReportState = ReportState.AssignedForGeneration;
+            return wi;
+        }
     }
 }

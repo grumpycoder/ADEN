@@ -47,7 +47,7 @@ $(function () {
                                         window.$log.success('Waived submission');
                                     },
                                     error: function (error) {
-                                        window.$log.error('Error: ' + error.resonseJson.message);
+                                        window.$log.error('Error: ' + error.responseJSON.message);
                                     },
                                     complete: function () {
                                         $('.modalContainer').html('');
@@ -82,7 +82,7 @@ $(function () {
 
 
         $.ajax({
-            url: '/api/report/create/' + id,
+            url: '/api/submission/start/' + id,
             type: 'POST'
         })
             .done(function () {
@@ -144,7 +144,8 @@ $(function () {
                                         window.$log.success('ReOpened submission');
                                     },
                                     error: function (error) {
-                                        window.$log.error('Error: ' + error.resonseJson.message);
+                                        console.log('error', error);
+                                        window.$log.error('Error: ' + error.responseJSON.message);
                                     },
                                     complete: function () {
                                         $('.modalContainer').html('');
@@ -178,9 +179,8 @@ $(function () {
         window.$toggleWorkingButton(btn);
         var id = btn.data('submission-id');
 
-        console.log('id', id);
         $.ajax({
-            url: '/api/report/cancel/' + id,
+            url: '/api/submission/cancel/' + id,
             type: 'POST'
         })
             .done(function () {
@@ -322,9 +322,8 @@ function createSubmissionGridActionButtons(container, options) {
     var canWaiver = options.data.canWaiver;
     var canReview = options.data.canReview;
     var startDisabled = options.data.startDisabled;
+    var reopenDisabled = options.data.reopenDisabled;
 
-    var submissionStateId = options.data.submissionStateId;
-    var hasAdmin = options.data.hasAdmin;
     var submissionId = options.data.id;
     var fileNumber = options.data.fileNumber;
     var dataYear = options.data.dataYear;
@@ -335,7 +334,13 @@ function createSubmissionGridActionButtons(container, options) {
         lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Cancel</a>&nbsp;';
     }
     if (canReopen) {
-        lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-sm btn-grid" data-reopen data-title="ReOpen Reason" data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</a>&nbsp;';
+        lnk += '<a href="/audit/' +
+            submissionId +
+            '" class="btn btn-default btn-sm btn-grid" ' +
+            'data-reopen data-title="ReOpen Reason" data-submission-id=' +
+            submissionId;
+        if (reopenDisabled) lnk += ' disabled data-toggle="tooltip" data-placement="left" title="Missing group assignments or report action"';
+        lnk += '><i class="fa fa-spinner fa-spin hidden"></i> ReOpen</a>&nbsp;';
     }
     if (canStart) {
         lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-start data-submission-id=' + submissionId;
@@ -377,7 +382,7 @@ function rowStyle(submissionState, dueDate) {
 
 function rowPrepared(row) {
     if (row.rowType === 'data') {
-        var css = rowStyle(row.data.submissionStateKey, row.data.dueDate);
+        var css = rowStyle(row.data.submissionStateDisplay, row.data.dueDate);
         row.rowElement.addClass(css);
     }
 }

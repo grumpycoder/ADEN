@@ -43,11 +43,15 @@ namespace Aden.Core.Dtos
         public bool CanCancel => !CanStart && HasAdmin;
         public bool CanStart => SubmissionState == SubmissionState.NotStarted && HasAdmin;
 
-        public bool CanReopen => SubmissionState == SubmissionState.Complete && HasAdmin;
+        public bool CanReopen => (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && HasAdmin;
 
         public bool StartDisabled => CanStart && (string.IsNullOrWhiteSpace(ReportAction) || (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
-                                                                                                                string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
-                                                                                                                string.IsNullOrWhiteSpace(SubmissionUserGroup)));
+                                                                                              string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
+                                                                                              string.IsNullOrWhiteSpace(SubmissionUserGroup)));
+
+        public bool ReopenDisabled => CanReopen && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
+                                                    string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
+                                                    string.IsNullOrWhiteSpace(SubmissionUserGroup));
 
         public bool CanWaiver => CanStart && HasAdmin;
 
@@ -58,7 +62,7 @@ namespace Aden.Core.Dtos
             get
             {
                 //TODO: Refactor magic string
-                var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains("AdenAppGlobalAdministrators"));
+                var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains("Administrators"));
                 return claim != null;
             }
         }

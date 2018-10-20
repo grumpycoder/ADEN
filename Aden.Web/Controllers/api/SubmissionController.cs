@@ -4,7 +4,6 @@ using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Core.Services;
 using Aden.Web.ViewModels;
-using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
@@ -44,20 +43,65 @@ namespace Aden.Web.Controllers.api
             return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.DueDate).ThenByDescending(x => x.Id), loadOptions));
         }
 
+        [HttpPost, Route("start/{submissionId}")]
+        public async Task<object> Start(int submissionId)
+        {
+
+            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(s => s.Id == submissionId);
+            if (submission == null) return NotFound();
+
+            if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
+                return BadRequest("No Generation Group defined for specification");
+
+            var report = submission.CreateReport();
+
+            //Get assignee
+            var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
+            if (members.IsFailure) return BadRequest(members.Error);
+            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
+
+            var wi = report.CreateTask(assignee);
+
+            _context.SaveChanges();
+
+            _notificationService.SendWorkNotification(wi);
+
+            return Ok();
+
+        }
+
+        [HttpPost, Route("cancel/{submissionId}")]
+        public async Task<object> Cancel(int submissionId)
+        {
+            var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == submissionId);
+            if (submission == null) return NotFound();
+
+            var report = await _context.Reports.FirstOrDefaultAsync(r => r.SubmissionId == submissionId);
+            if (report != null)
+            {
+                var wi = _context.WorkItems.Where(w => w.ReportId == report.Id);
+                _context.WorkItems.RemoveRange(wi);
+
+                var docs = _context.ReportDocuments.Where(d => d.ReportId == report.Id);
+                _context.ReportDocuments.RemoveRange(docs);
+
+                _context.Reports.Remove(report);
+            }
+
+            submission.SubmissionState = SubmissionState.NotStarted;
+
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
         [HttpPost, Route("reopen/{id}")]
         public async Task<object> Reopen(int id, SubmissionAuditEntryDto model)
         {
-            var submission = await _uow.Submissions.GetByIdAsync(model.SubmissionId);
-
+            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
 
-            var report = Report.Create(submission.DataYear);
-
-            if (submission.SubmissionState != SubmissionState.NotStarted)
-            {
-                submission.Reopen(model.Message, User.Identity.Name);
-            }
-            submission.AddReport(report);
+            var report = submission.CreateReport();
 
             //Get assignee
             var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
@@ -65,38 +109,32 @@ namespace Aden.Web.Controllers.api
 
             var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
 
-            var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
+            var wi = report.CreateTask(assignee);
 
-            report.AddWorkItem(workItem);
-            report.SetState(workItem.WorkItemAction);
-            submission.SetState(workItem.WorkItemAction);
+            submission.Reopen(model.Message, User.Identity.Name);
 
-            await _uow.CompleteAsync();
+            _context.SaveChanges();
 
-            _notificationService.SendWorkNotification(workItem);
+            _notificationService.SendWorkNotification(wi);
 
-            var dto = Mapper.Map<ReportDto>(report);
-            return Ok(dto);
+            return Ok("Successfully reopened Submission");
         }
 
         [HttpPost, Route("waiver/{id}")]
         public async Task<object> Waiver(int id, SubmissionAuditEntryDto model)
         {
-            var submission = await _uow.Submissions.GetByIdAsync(id);
+            var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
 
-            var report = Report.Create(submission.DataYear);
-
-            submission.AddReport(report);
+            var report = submission.CreateReport();
 
             submission.Waive(model.Message, User.Identity.Name);
+
             report.Waive();
 
-            await _uow.CompleteAsync();
+            _context.SaveChanges();
 
-            var dto = Mapper.Map<ReportDto>(report);
-
-            return Ok(dto);
+            return Ok("Successfully waived Submission");
         }
     }
 

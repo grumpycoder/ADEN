@@ -47,70 +47,70 @@ namespace Aden.Web.Controllers.api
             return Ok(dto);
         }
 
-        [HttpPost, Route("create/{id}")]
-        public async Task<object> Create(int id)
-        {
+        //[HttpPost, Route("create/{id}")]
+        //public async Task<object> Create(int id)
+        //{
 
-            var submission = await _uow.Submissions.GetByIdAsync(id);
+        //    var submission = await _uow.Submissions.GetByIdAsync(id);
 
-            if (submission == null) return NotFound();
+        //    if (submission == null) return NotFound();
 
-            var report = Report.Create(submission.DataYear);
+        //    var report = Report.Create(submission.DataYear);
 
-            if (submission.SubmissionState != SubmissionState.NotStarted)
-            {
-                var message = "test reopen";
-                submission.Reopen(message, User.Identity.Name);
-            }
-            submission.AddReport(report);
+        //    if (submission.SubmissionState != SubmissionState.NotStarted)
+        //    {
+        //        var message = "test reopen";
+        //        submission.Reopen(message, User.Identity.Name);
+        //    }
+        //    submission.AddReport(report);
 
-            if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
-                return BadRequest("No Generation Group defined for specification");
+        //    if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
+        //        return BadRequest("No Generation Group defined for specification");
 
-            //Get assignee
-            var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
-            if (members.IsFailure) return BadRequest(members.Error);
+        //    //Get assignee
+        //    var members = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationUserGroup);
+        //    if (members.IsFailure) return BadRequest(members.Error);
 
-            var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
+        //    var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
 
-            var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
+        //    var workItem = WorkItem.Create(WorkItemAction.Generate, assignee);
 
-            report.AddWorkItem(workItem);
-            report.SetState(workItem.WorkItemAction);
-            submission.SetState(workItem.WorkItemAction);
+        //    report.AddWorkItem(workItem);
+        //    report.SetState(workItem.WorkItemAction);
+        //    submission.SetState(workItem.WorkItemAction);
 
-            await _uow.CompleteAsync();
+        //    await _uow.CompleteAsync();
 
-            _notificationService.SendWorkNotification(workItem);
+        //    _notificationService.SendWorkNotification(workItem);
 
-            var dto = Mapper.Map<ReportDto>(report);
-            return Ok(dto);
-        }
+        //    var dto = Mapper.Map<ReportDto>(report);
+        //    return Ok(dto);
+        //}
 
-        [HttpPost, Route("cancel/{id}")]
-        public async Task<object> Cancel(int id)
-        {
-            var submission = await _uow.Submissions.GetByIdAsync(id);
-            if (submission == null) return NotFound();
+        //[HttpPost, Route("cancel/{id}")]
+        //public async Task<object> Cancel(int id)
+        //{
+        //    var submission = await _uow.Submissions.GetByIdAsync(id);
+        //    if (submission == null) return NotFound();
 
-            var report = await _uow.Reports.GetBySubmissionIdAsync(id);
-            //Delete work items 
-            if (report != null)
-            {
-                _uow.WorkItems.DeleteFromReport(report.Id);
-                //Delete documents
-                _uow.Documents.DeleteReportDocuments(report.Id);
-                //Delete reports
-                _uow.Reports.Delete(report.Id);
-            }
+        //    var report = await _uow.Reports.GetBySubmissionIdAsync(id);
+        //    //Delete work items 
+        //    if (report != null)
+        //    {
+        //        _uow.WorkItems.DeleteFromReport(report.Id);
+        //        //Delete documents
+        //        _uow.Documents.DeleteReportDocuments(report.Id);
+        //        //Delete reports
+        //        _uow.Reports.Delete(report.Id);
+        //    }
 
-            //Set submission state
-            submission.SetState(WorkItemAction.Nothing);
+        //    //Set submission state
+        //    submission.SetState(WorkItemAction.Nothing);
 
-            await _uow.CompleteAsync();
+        //    await _uow.CompleteAsync();
 
-            return Ok();
-        }
+        //    return Ok();
+        //}
 
     }
 }

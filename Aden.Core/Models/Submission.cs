@@ -116,5 +116,15 @@ namespace Aden.Core.Models
             SubmissionState = SubmissionState.Complete;
             LastUpdated = DateTime.Now;
         }
+
+
+        // NEW CODE
+        public Report CreateReport()
+        {
+            var report = Report.Create(DataYear);
+            Reports.Add(report);
+            SubmissionState = SubmissionState.AssignedForGeneration;
+            return report;
+        }
     }
 }
