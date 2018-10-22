@@ -1,5 +1,6 @@
 ﻿using Aden.Core.Data;
 using Aden.Core.Dtos;
+using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
@@ -63,20 +64,28 @@ namespace Aden.Web.Controllers
             return View((object)User.Identity.Name);
         }
 
-        public async Task<ActionResult> WorkHistory(int reportId)
+        public async Task<ActionResult> WorkHistory(int submissionId)
         {
-            var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains("administrator"));
+            var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains(Constants.GlobalAdministratorGroup));
 
-            ViewBag.IsSectionAdmin = isAdministrator;
+            ViewBag.IsSectionAdmin = true;
 
-            var reports = _context.Reports.Where(x => x.SubmissionId == reportId).Future();
-            var mostRecentReport = reports.OrderByDescending(r => r.Id).FirstOrDefault();
-            var list = new List<WorkItemHistoryDto>();
-            if (mostRecentReport != null)
+            var dto = new SubmissionWorkHistoryViewDto()
             {
-                list = await _context.WorkItems.Where(x => x.ReportId == mostRecentReport.Id).ProjectTo<WorkItemHistoryDto>().ToListAsync();
-            }
-            return PartialView("_WorkHistory", list);
+                WorkItemHistory = new List<WorkItemHistoryDto>(),
+                SubmissionAudits = new List<SubmissionAudit>()
+            };
+
+            var report = _context.Reports.OrderByDescending(r => r.Id).FirstOrDefault(x => x.SubmissionId == submissionId);
+
+            if (report == null) return PartialView("_WorkHistory", dto);
+
+            dto.WorkItemHistory = _context.WorkItems.OrderByDescending(o => o.Id).Where(w => w.ReportId == report.Id)
+                .ProjectTo<WorkItemHistoryDto>().Future().ToList();
+            dto.SubmissionAudits = _context.SubmissionAudits.Where(a => a.SubmissionId == submissionId).Future().ToList();
+
+            return PartialView("_WorkHistory", dto);
+
         }
 
         public async Task<ActionResult> WorkItemImages(int workItemId)

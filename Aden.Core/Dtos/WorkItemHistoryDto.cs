@@ -16,5 +16,6 @@ namespace Aden.Core.Dtos
         public WorkItemState WorkItemState { get; set; }
         public string Description { get; set; }
 
+
     }
 }

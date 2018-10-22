@@ -1,6 +1,7 @@
-﻿@model IEnumerable<WorkItemHistoryDto>
+﻿@*@model IEnumerable<WorkItemHistoryDto>*@
+@model SubmissionWorkHistoryViewDto
 
-@if (!Model.Any())
+@if (!Model.WorkItemHistory.Any())
 {
     <h3>No work history</h3>
 }
@@ -15,7 +16,7 @@ else
             <td>Status</td>
             <td></td>
         </tr>
-        @foreach (var item in Model)
+        @foreach (var item in Model.WorkItemHistory)
         {
             <tr>
 
@@ -30,11 +31,24 @@ else
                         <a href="@Url.Action("Reassign")" class="btn btn-primary btn-sm" data-reassign data-workitem-id="@item.Id">Reassign</a>
 
                     }
-                    @if (item.Action == WorkItemAction.SubmitWithError)
+                    @if (item.Action == WorkItemAction.ReviewError)
                     {
-                        <a href="@Url.Action("Reassign")" class="btn btn-warning btn-sm" data-image-viewer data-workitem-id="@item.Id">Errors</a>
+                        <a href="#" class="btn btn-warning btn-sm" data-image-viewer data-workitem-id="@item.Id">Errors</a>
                     }
                 </td>
+            </tr>
+        }
+    </table>
+}
+
+@if (Model.SubmissionAudits.Any())
+{
+    <table class="table table-bordered table-striped table-responsive">
+        @foreach (var audit in Model.SubmissionAudits)
+        {
+            <tr>
+                <td>@audit.AuditDate</td>
+                <td>@audit.Message</td>
             </tr>
         }
     </table>

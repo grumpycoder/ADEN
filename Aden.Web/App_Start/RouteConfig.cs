@@ -47,7 +47,7 @@ namespace Aden.Web
 
             routes.MapRoute(
                 name: "WorkHistoryActions",
-                url: "workhistory/{reportId}",
+                url: "workhistory/{submissionId}",
                 defaults: new { controller = "Home", action = "WorkHistory", reportId = UrlParameter.Optional }
             );
 

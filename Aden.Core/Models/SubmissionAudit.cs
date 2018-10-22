@@ -16,5 +16,10 @@ namespace Aden.Core.Models
             AuditDate = DateTime.Now;
             Message = message;
         }
+
+        private SubmissionAudit()
+        {
+            
+        }
     }
 }

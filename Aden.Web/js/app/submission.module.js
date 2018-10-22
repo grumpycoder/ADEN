@@ -201,7 +201,7 @@ $(function () {
         e.preventDefault();
         var url = $(this).attr('href');
         var title = $(this).data('title');
-
+        console.log('url', url);
         window.BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
             draggable: true,

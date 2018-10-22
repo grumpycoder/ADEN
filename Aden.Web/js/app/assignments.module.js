@@ -19,7 +19,7 @@ $(function () {
             type: 'POST',
             success: function (data) {
                 $gridCurrentAssignments.refresh();
-                //$gridRetrievableAssignments.refresh();
+                $gridRetrievableAssignments.refresh();
                 window.$log.success('Completed ' + data.action + ' assignment');
             },
             error: function (err) {

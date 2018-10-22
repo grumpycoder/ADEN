@@ -26,7 +26,7 @@ namespace Aden.Core.Dtos
 
         public WorkItemState WorkItemState { get; set; }
 
-        public string ActionName => Action.GetShortName();
+        public string ActionName => Action.GetDisplayName();
 
 
         public bool CanGenerate => Action == WorkItemAction.Generate;
