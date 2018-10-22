@@ -30,7 +30,6 @@
                                 .Width(35).AllowFiltering(false)
                                 .CellTemplate(@<text><a href="@Url.Action("workhistory")/<%= value || 0 %>" data-modal="historyModal" data-history data-title="Work History" data-toggle="tooltip" data-placement="right"><i class="fa fa-history"></i></a></text>)
                                 ;
-                            cols.Add().DataField("id").Width(100);
                             cols.Add().DataField("fileNumber").Width(100);
                             cols.Add().DataField("fileName").HidingPriority(1);
                             cols.Add().DataField("submissionStateDisplay").Caption("Status");
