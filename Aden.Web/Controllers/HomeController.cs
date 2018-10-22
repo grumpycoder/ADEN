@@ -66,9 +66,9 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> WorkHistory(int submissionId)
         {
-            var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains(Constants.GlobalAdministratorGroup));
+            var isAdministrator = ((ClaimsPrincipal)User).Claims.Any(c => c.Value.ToLower().Contains(Constants.GlobalAdministratorGroup.ToLower()));
 
-            ViewBag.IsSectionAdmin = true;
+            ViewBag.IsSectionAdmin = isAdministrator;
 
             var dto = new SubmissionWorkHistoryViewDto()
             {
@@ -90,11 +90,7 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> WorkItemImages(int workItemId)
         {
-            //TODO: Move to repository
-            var context = new AdenContext();
-
-            var wi = await context.WorkItems.Include(x => x.WorkItemImages).FirstOrDefaultAsync(x => x.Id == workItemId);
-            //var list = await context.WorkItemImages.Where(x => x.WorkItemId == workItemId).ToListAsync();
+            var wi = await _context.WorkItems.Include(x => x.WorkItemImages).FirstOrDefaultAsync(x => x.Id == workItemId);
 
             return PartialView("_WorkItemImage", wi);
         }
