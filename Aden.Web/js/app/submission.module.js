@@ -331,7 +331,7 @@ function createSubmissionGridActionButtons(container, options) {
         lnk += '<a class="btn btn-success btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
     }
     if (canCancel) {
-        lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Cancel</a>&nbsp;';
+        lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Reset</a>&nbsp;';
     }
     if (canReopen) {
         lnk += '<a href="/audit/' +
