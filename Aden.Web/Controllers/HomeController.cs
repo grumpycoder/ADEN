@@ -50,11 +50,13 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public async Task<ActionResult> Reports(int datayear, string filenumber)
         {
-            var reports = await _context.Reports.Include(f => f.Submission.FileSpecification).Include(r => r.Documents)
+            var reports = await _context.Reports
+                .Include(f => f.Submission.FileSpecification)
+                .Include(r => r.Documents)
                 .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(filenumber))
                 .OrderByDescending(x => x.Id)
                 .ToListAsync();
-            var dto = Mapper.Map<ReportViewDto>(reports.FirstOrDefault());
+            var dto = Mapper.Map<List<ReportViewDto>>(reports);
             return View(dto);
         }
 
@@ -82,7 +84,7 @@ namespace Aden.Web.Controllers
 
             dto.WorkItemHistory = _context.WorkItems.OrderByDescending(o => o.Id).Where(w => w.ReportId == report.Id)
                 .ProjectTo<WorkItemHistoryDto>().Future().ToList();
-            dto.SubmissionAudits = _context.SubmissionAudits.Where(a => a.SubmissionId == submissionId).Future().ToList();
+            dto.SubmissionAudits = _context.SubmissionAudits.OrderByDescending(x => x.Id).Where(a => a.SubmissionId == submissionId).Future().ToList();
 
             return PartialView("_WorkHistory", dto);
 
@@ -155,6 +157,11 @@ namespace Aden.Web.Controllers
             return PartialView("_SubmissionAuditEntry", audit);
         }
 
+        public ActionResult ReopenAudit(int id)
+        {
+            var audit = new SubmissionReopenAuditEntryDto() { SubmissionId = id };
+            return PartialView("_SubmissionReopenAuditEntry", audit);
+        }
 
         [TrackViewName]
         public ActionResult Mail()

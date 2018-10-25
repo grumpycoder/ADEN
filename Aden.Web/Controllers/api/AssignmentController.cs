@@ -227,10 +227,16 @@ namespace Aden.Web.Controllers.api
             var workItem = await _uow.WorkItems.GetByIdAsync(model.WorkItemId);
             if (workItem == null) return NotFound();
 
+
             //Send work reassignment notification
             _notificationService.SendWorkReassignmentNotification(workItem);
 
             workItem.Reassign(model.AssignedUser);
+
+            var submission = await _context.Submissions.FindAsync(workItem.Report.SubmissionId);
+
+            model.Reason = $"Reassigned from {workItem.AssignedUser} to {model.AssignedUser} : {model.Reason}";
+            submission.Reassign(model.Reason, User.Identity.Name);
 
             await _uow.CompleteAsync();
 

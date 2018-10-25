@@ -34,7 +34,8 @@
                             cols.Add().DataField("fileName").HidingPriority(1);
                             cols.Add().DataField("submissionStateDisplay").Caption("Status");
                             cols.Add().DataField("lastUpdatedFriendly").Width(175).Caption("Last Update");
-                            cols.Add().DataField("dueDate").Width(125).Caption("Submission Date").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
+                            cols.Add().DataField("deadlineDate").Width(125).Caption("Submission Deadline").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
+                            cols.Add().DataField("submissionDate").Width(125).Caption("Date Submitted").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY").HidingPriority(6);
                             cols.Add().DataField("displayDataYear").Width(90).Caption("Data Year").HidingPriority(6);
                             cols.Add().DataField("section").HidingPriority(5);
                             cols.Add().DataField("dataGroups").HidingPriority(1);

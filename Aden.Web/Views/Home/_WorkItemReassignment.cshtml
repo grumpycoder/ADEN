@@ -11,8 +11,21 @@
         <dd>@Model.WorkItemAction</dd>
     </dl>
 
-    <div>
-        <label class="control-label" for="assignedUser">Reassign To</label>
-        <input type="text" id="assignedUser" name="assignedUser" class="form-control" />
+    <div class="form-group">
+
+        <label class="control-label full-width">
+            Reassign To
+            <input type="text" id="assignedUser" name="assignedUser" class="form-control" />
+        </label>
+        
+
     </div>
+    
+    <div class="form-group">
+        <label class="control-label full-width">
+            Description:
+            <textarea class="form-control" id="Reason" name="Reason" placeholder="Enter reason here..."></textarea>
+        </label>
+    </div>
+
 </form>

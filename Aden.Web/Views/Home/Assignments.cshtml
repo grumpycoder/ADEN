@@ -16,13 +16,15 @@
 
                 <div class="panel-body">
                     @(Html.DevExtreme()
-                              .DataGrid().WordWrapEnabled(true)
+                              .DataGrid()
+                              .NoDataText("No Current Assignments")
+                              .WordWrapEnabled(true)
                               .ID("gridCurrentAssignments")
                               .ShowRowLines(true)
                               .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
                               .Columns(c =>
                               {
-                                  c.Add().DataField("fileName");
+                                  c.Add().DataField("displayFileName");
                                       //c.Add().DataField("fileNumber").Width("70");
                                   c.Add().DataField("displayDataYear").Width(90).Caption("Data Year");
                                   c.Add().DataField("assignedDate").Width(125).DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
@@ -47,13 +49,15 @@
                 <div class="panel-body">
                     @(Html.DevExtreme()
                                 .DataGrid()
+                                .NoDataText("No Completed Assignments")
+                                .WordWrapEnabled(true)
                                 .ID("gridRetrievableAssignments")
                                 .ShowRowLines(true)
                                 .ShowBorders(true)
                                 .FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
                                 .Columns(c =>
                                 {
-                                    c.Add().DataField("fileName");
+                                    c.Add().DataField("displayFileName");
                                         //c.Add().DataField("fileNumber");
                                         c.Add().DataField("displayDataYear").Caption("Data Year");
                                     c.Add().DataField("assignedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");

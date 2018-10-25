@@ -73,6 +73,9 @@ header .lead {
   /*white-space: nowrap;
     text-align:right;*/ }
 
+.full-width {
+  display: block; }
+
 footer {
   position: absolute;
   right: 0;

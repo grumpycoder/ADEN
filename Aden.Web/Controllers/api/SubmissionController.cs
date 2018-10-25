@@ -37,6 +37,8 @@ namespace Aden.Web.Controllers.api
             //TODO: Refactor to use a custom ClaimType and not magic string
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 
+            var s = await _context.Submissions.ToListAsync(); 
+
             var dto = await _context.Submissions
                 .ProjectTo<SubmissionViewDto>().ToListAsync();
 
@@ -52,6 +54,9 @@ namespace Aden.Web.Controllers.api
 
             if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
                 return BadRequest("No Generation Group defined for specification");
+
+
+            submission.Start(User.Identity.Name);
 
             var report = submission.CreateReport();
 
@@ -76,6 +81,9 @@ namespace Aden.Web.Controllers.api
             var submission = await _context.Submissions.FirstOrDefaultAsync(s => s.Id == submissionId);
             if (submission == null) return NotFound();
 
+            submission.Cancel(User.Identity.Name);
+            //TODO: Add to Cancel method
+
             var report = await _context.Reports.FirstOrDefaultAsync(r => r.SubmissionId == submissionId);
             if (report != null)
             {
@@ -96,7 +104,7 @@ namespace Aden.Web.Controllers.api
         }
 
         [HttpPost, Route("reopen/{id}")]
-        public async Task<object> Reopen(int id, SubmissionAuditEntryDto model)
+        public async Task<object> Reopen(int id, SubmissionReopenAuditEntryDto model)
         {
             var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(s => s.Id == id);
             if (submission == null) return NotFound();
@@ -112,6 +120,8 @@ namespace Aden.Web.Controllers.api
             var wi = report.CreateTask(assignee);
 
             submission.Reopen(model.Message, User.Identity.Name);
+
+            submission.NextDueDate = model.NextSubmissionDate;
 
             _context.SaveChanges();
 

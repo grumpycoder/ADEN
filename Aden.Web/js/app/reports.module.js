@@ -10,67 +10,51 @@ $('a[data-document-viewer]').each(function (e) {
     $('[data-doc-id=' + id + ']').on('click', function (e) {
         var $currentTarget = $(this);
         var title = $currentTarget.data('title');
-        var modalUrl = $currentTarget.data('url');
+        var url = $currentTarget.data('url');
 
         $.ajax({
-            url: modalUrl,
+            url: url,
             type: 'POST',
             success: function (data) {
-                window.showBSModal({
+                window.BootstrapDialog.show({
+                    size: window.BootstrapDialog.SIZE_WIDE,
+                    draggable: true,
                     title: title,
-                    body: data,
-                    size: "large",
-                    actions: [
+                    message: $('<div></div>').load(url, function (resp, status, xhr) {
+                        if (status === 'error') {
+                            window.$log.error('Error showing history');
+                        }
+                    }),
+                    buttons: [
                         {
-                            label: 'Cancel',
-                            cssClass: 'btn-default',
-                            onClick: function (e) {
-                                //console.log('e', e);
-                                $(e.target).parents('.modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                //modal-open class is added on body so it has to be removed
-
-                                $('.modal-backdrop').remove();
-                                //need to remove div with modal-backdrop class
+                            label: 'Close',
+                            action: function (dialogRef) {
+                                dialogRef.close();
                             }
-                        },
+                        }, 
                         {
                             label: 'Download',
-                            cssClass: 'btn-primary',
-                            onClick: function (e) {
+                            cssClass: 'btn-primary', 
+                            action: function (dialogRef) {
                                 var downloadUrl = '/download/' + id;
                                 window.downloadFile(downloadUrl);
                                 window.$log.info('Your file is being downloaded');
-                                $('.modalContainer').html('');
-                                $('.modal').modal('hide');
-
-                                $(e.target).parents('.modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                //modal-open class is added on body so it has to be removed
-
-                                $('.modal-backdrop').remove();
-                                //need to remove div with modal-backdrop class
+                                dialogRef.close();
                             }
                         }
                     ]
                 });
             },
             error: function (err) {
-                //console.log('err', err);
-                window.$log.error('Error showing history');
+                window.$log.error('Error showing file contents');
             }
         });
 
     });
 });
 
-
 function createReportDocumentLinks(container, options) {
     var documents = options.data.documents;
-    console.log('data', options.data);
-
-
-
     var lnk = '<span><ul class="list-unstyled">';
     documents.forEach(function (doc) {
         lnk += '<li class="doc-link">' +
@@ -90,68 +74,4 @@ function createReportDocumentLinks(container, options) {
     });
     lnk += '</ul></span>';
     container.append(lnk);
-
-    //SETUP LINK CLICK HANDLER
- 
-
-
-    $('li[class="doc-link"] > a').each(function (e) {
-        var id = $(this).data('doc-id');
-
-        $('[data-doc-id=' + id + ']').on('click', function (e) {
-            var $currentTarget = $(this);
-            var title = $currentTarget.data('title');
-            var modalUrl = $currentTarget.data('url');
-
-            $.ajax({
-                url: modalUrl,
-                type: 'POST',
-                success: function (data) {
-                    window.showBSModal({
-                        title: title,
-                        body: data,
-                        size: "large",
-                        actions: [
-                            {
-                                label: 'Cancel',
-                                cssClass: 'btn-default',
-                                onClick: function (e) {
-                                    //console.log('e', e);
-                                    $(e.target).parents('.modal').modal('hide');
-                                    $('body').removeClass('modal-open');
-                                    //modal-open class is added on body so it has to be removed
-
-                                    $('.modal-backdrop').remove();
-                                    //need to remove div with modal-backdrop class
-                                }
-                            },
-                            {
-                                label: 'Download',
-                                cssClass: 'btn-primary',
-                                onClick: function (e) {
-                                    var downloadUrl = '/download/' + id;
-                                    window.downloadFile(downloadUrl);
-                                    window.$log.info('Your file is being downloaded');
-                                    $('.modalContainer').html('');
-                                    $('.modal').modal('hide');
-
-                                    $(e.target).parents('.modal').modal('hide');
-                                    $('body').removeClass('modal-open');
-                                    //modal-open class is added on body so it has to be removed
-
-                                    $('.modal-backdrop').remove();
-                                    //need to remove div with modal-backdrop class
-                                }
-                            }
-                        ]
-                    });
-                },
-                error: function (err) {
-                    //console.log('err', err);
-                    window.$log.error('Error showing history');
-                }
-            });
-
-        });
-    });
 }

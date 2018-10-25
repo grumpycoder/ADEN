@@ -13,7 +13,12 @@ namespace Aden.Core.Dtos
         public int Id { get; set; }
         public string FileNumber { get; set; }
         public string FileName { get; set; }
+        public DateTime? SubmissionDate { get; set; }
         public DateTime? DueDate { get; set; }
+        public DateTime? NextDueDate { get; set; }
+
+        public DateTime? DeadlineDate => NextDueDate ?? DueDate;
+
         public int? DataYear { get; set; }
         public string DisplayDataYear => $"{DataYear - 1}-{DataYear}";
 
@@ -40,7 +45,7 @@ namespace Aden.Core.Dtos
         public string SubmissionStateDisplay => SubmissionState.GetDisplayName();
 
         public bool HasStarted => SubmissionState != SubmissionState.NotStarted;
-        public bool CanCancel => !CanStart && HasAdmin;
+        public bool CanCancel => SubmissionState == SubmissionState.AssignedForGeneration && HasAdmin;
         public bool CanStart => SubmissionState == SubmissionState.NotStarted && HasAdmin;
 
         public bool CanReopen => (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && HasAdmin;

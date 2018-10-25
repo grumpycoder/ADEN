@@ -15,27 +15,26 @@ $(function () {
             url: url,
             type: 'GET',
             success: function (data) {
-                window.showBSModal({
+                window.BootstrapDialog.show({
+                    size: window.BootstrapDialog.SIZE_WIDE,
+                    draggable: true,
                     title: title,
-                    body: data,
-                    size: "large",
-                    actions: [
+                    message: $('<div></div>').load(url, function (resp, status, xhr) {
+                        if (status === 'error') {
+                            window.$log.error('Error showing history');
+                        }
+                    }),
+                    buttons: [
                         {
-                            label: 'Cancel',
-                            cssClass: 'btn-default',
-                            onClick: function (e) {
-                                $(e.target).parents('.modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                //modal-open class is added on body so it has to be removed
-
-                                $('.modal-backdrop').remove();
-                                //need to remove div with modal-backdrop class
+                            label: 'Close',
+                            action: function (dialogRef) {
+                                dialogRef.close();
                             }
                         },
                         {
-                            label: 'Submit',
+                            label: 'Save',
                             cssClass: 'btn-primary',
-                            onClick: function (e) {
+                            action: function (dialogRef) {
                                 window.$showModalWorking();
                                 $.ajax({
                                     type: "POST",
@@ -50,23 +49,16 @@ $(function () {
                                         window.$log.error('Error: ' + error.responseJSON.message);
                                     },
                                     complete: function () {
-                                        $('.modalContainer').html('');
-                                        $('.modal').modal('hide');
-
-                                        $(e.target).parents('.modal').modal('hide');
-                                        $('body').removeClass('modal-open');
-                                        //modal-open class is added on body so it has to be removed
-
-                                        $('.modal-backdrop').remove();
-                                        //need to remove div with modal-backdrop class
-
+                                        dialogRef.close();
                                         window.$hideModalWorking();
                                     }
                                 });
+
                             }
                         }
                     ]
                 });
+
             },
             error: function (err) {
                 window.$log.error('Error showing audit entry');
@@ -90,7 +82,6 @@ $(function () {
                 window.$log.success('Created assignment');
             })
             .fail(function (err) {
-                //console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
             })
             .always(function () {
@@ -100,39 +91,38 @@ $(function () {
     });
 
     $(document).on('click', '[data-reopen]', function (e) {
+
         e.preventDefault();
         var btn = $(this);
         var title = btn.data('title');
         var id = btn.data('submission-id');
         var url = $(this).attr("href");
         var postUrl = '/api/submission/reopen/' + id;
-
+        console.log('posturl');
         $.ajax({
             url: url,
             type: 'GET',
             success: function (data) {
-                window.showBSModal({
+                window.BootstrapDialog.show({
+                    size: window.BootstrapDialog.SIZE_WIDE,
+                    draggable: true,
                     title: title,
-                    body: data,
-                    size: "large",
-                    actions: [
+                    message: $('<div></div>').load(url, function (resp, status, xhr) {
+                        if (status === 'error') {
+                            window.$log.error('Error showing history');
+                        }
+                    }),
+                    buttons: [
                         {
-                            label: 'Cancel',
-                            cssClass: 'btn-default',
-                            onClick: function (e) {
-                                $(e.target).parents('.modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                //modal-open class is added on body so it has to be removed
-
-                                $('.modal-backdrop').remove();
-                                //need to remove div with modal-backdrop class
+                            label: 'Close',
+                            action: function (dialogRef) {
+                                dialogRef.close();
                             }
                         },
                         {
-                            label: 'Submit',
+                            label: 'Save',
                             cssClass: 'btn-primary',
-                            onClick: function (e) {
-
+                            action: function (dialogRef) {
                                 window.$showModalWorking();
                                 $.ajax({
                                     type: "POST",
@@ -148,19 +138,11 @@ $(function () {
                                         window.$log.error('Error: ' + error.responseJSON.message);
                                     },
                                     complete: function () {
-                                        $('.modalContainer').html('');
-                                        $('.modal').modal('hide');
-
-                                        $(e.target).parents('.modal').modal('hide');
-                                        $('body').removeClass('modal-open');
-                                        //modal-open class is added on body so it has to be removed
-
-                                        $('.modal-backdrop').remove();
-                                        //need to remove div with modal-backdrop class
-
+                                        dialogRef.close();
                                         window.$hideModalWorking();
                                     }
                                 });
+
                             }
                         }
                     ]
@@ -188,7 +170,6 @@ $(function () {
                 window.$log.success('Cancelled assignments');
             })
             .fail(function (err) {
-                //console.log('err', err);
                 window.$log.error('Something went wrong: ' + err.responseJSON.message);
             })
             .always(function () {
@@ -223,33 +204,32 @@ $(function () {
     $(document).on('click', '[data-reassign]', function (e) {
         e.preventDefault();
         var id = $(this).data('workitem-id');
+        var title = 'Reassign Task';
         var url = $(this).attr('href') + '/' + id;
         $.ajax({
             url: url,
             type: 'POST',
             success: function (data) {
-                window.showBSModal({
-                    title: 'Reassign Task',
-                    body: data,
-                    size: "lg",
-                    actions: [
+                window.BootstrapDialog.show({
+                    size: window.BootstrapDialog.SIZE_WIDE,
+                    draggable: true,
+                    title: title,
+                    message: $('<div></div>').load(url, function (resp, status, xhr) {
+                        if (status === 'error') {
+                            window.$log.error('Error showing history');
+                        }
+                    }),
+                    buttons: [
                         {
-                            label: 'Cancel',
-                            cssClass: 'btn-default',
-                            onClick: function (e) {
-                                //console.log('e', e);
-                                $(e.target).parents('.modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                //modal-open class is added on body so it has to be removed
-
-                                $('.modal-backdrop').remove();
-                                //need to remove div with modal-backdrop class
+                            label: 'Close',
+                            action: function (dialogRef) {
+                                dialogRef.close();
                             }
                         },
                         {
                             label: 'Save',
                             cssClass: 'btn-primary',
-                            onClick: function (e) {
+                            action: function (dialogRef) {
                                 window.$showModalWorking();
                                 var formData = $('form').serialize();
                                 $.ajax({
@@ -261,26 +241,17 @@ $(function () {
                                 }).fail(function (err) {
                                     window.$log.error('Failed to reassign task. ' + error);
                                 }).always(function () {
-                                    $('.modalContainer').html('');
-                                    $('.modal').modal('hide');
-
-                                    $(e.target).parents('.modal').modal('hide');
-                                    $('body').removeClass('modal-open');
-                                    //modal-open class is added on body so it has to be removed
-
-                                    $('.modal-backdrop').remove();
-                                    //need to remove div with modal-backdrop class
+                                    dialogRef.close();
                                     window.$hideModalWorking();
                                 });
-
 
                             }
                         }
                     ]
                 });
+               
             },
             error: function (err) {
-                //console.log('err', err);
                 window.$log.error('Error showing reassignment');
             }
         });
@@ -310,7 +281,7 @@ $(function () {
 
     });
 
-    $('[data-toggle="tooltip"]').tooltip(); 
+    $('[data-toggle="tooltip"]').tooltip();
 
 });
 
@@ -328,13 +299,14 @@ function createSubmissionGridActionButtons(container, options) {
     var fileNumber = options.data.fileNumber;
     var dataYear = options.data.dataYear;
     if (canReview) {
-        lnk += '<a class="btn btn-success btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
     }
     if (canCancel) {
-        lnk += '<a href="#" class="btn btn-default btn-sm btn-grid" data-cancel data-submission-id=' + submissionId + '><i class="fa fa-spinner fa-spin hidden"></i> Reset</a>&nbsp;';
+        lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-sm btn-grid" data-cancel data-title="Reason for Reset" data-submission-id=' + submissionId +
+            '><i class="fa fa-spinner fa-spin hidden"></i> Reset</a>&nbsp;';
     }
     if (canReopen) {
-        lnk += '<a href="/audit/' +
+        lnk += '<a href="/reopenaudit/' +
             submissionId +
             '" class="btn btn-default btn-sm btn-grid" ' +
             'data-reopen data-title="ReOpen Reason" data-submission-id=' +

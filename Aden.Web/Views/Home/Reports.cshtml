@@ -1,6 +1,7 @@
-﻿@model ReportViewDto
+﻿@model List<ReportViewDto>
 @{
     ViewBag.Title = "Files";
+    int count = 0; 
 }
 
 
@@ -15,102 +16,116 @@
                 </div>
 
                 <div class="panel-body">
-                    
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h3>@Model.DisplayFileName</h3>
-                            <hr />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <dl>
-                                <dt>Data Year</dt>
-                                <dd>@Model.DisplayDataYear</dd>
-
-                                <dt>Status</dt>
-                                <dd>@Model.ReportStateDisplay</dd>
-
-                                <dt>Generated</dt>
-                                <dd>
-                                    @Model.GeneratedDate
-                                    @if (!Model.GeneratedDate.HasValue)
+               
+                    @foreach (var report in Model)
+                    {
+                        count +=1; 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="alert alert-info">
+                                    @report.DisplayFileName
+                                    @if (count == 1 && Model.Count > 1)
                                     {
-                                        <text>Not yet generated</text>
+                                        <span>(Reopened Submission)</span>
                                     }
-                                </dd>
+                                </h3>
 
-                                <dt>Approved</dt>
-                                <dd>
-                                    @Model.ApprovedDate
-                                    @if (!Model.ApprovedDate.HasValue)
-                                    {
-                                        <text>Not yet approved</text>
-                                    }
-                                </dd>
-
-                                <dt>Submitted</dt>
-                                <dd>
-                                    @*@Model.SubmittedDate.HasValue ? @Model.SubmittedDate : @DateTime.Now*@
-                                    @Model.SubmittedDate
-                                    @if (!Model.SubmittedDate.HasValue)
-                                    {
-                                        <text>Not yet submitted</text>
-                                    }
-                                </dd>
-
-                            </dl>
-
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Files
-                                </div>
-                                <div class="panel-body">
-                                    <table class="table table-responsive">
-
-                                        <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Version</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        @foreach (var doc in Model.Documents)
-                                        {
-                                            <tr>
-                                                <td><a href="#myModal" class="doc-link" data-document-viewer data-doc-id=@doc.Id data-url="/document/@doc.Id" data-toggle="modal" data-target="#myModal" data-title="@doc.Filename" title="@doc.Filename" data-placement="right" data-original-title="@doc.Filename">@doc.Filename</a></td>
-                                                <td>@doc.Version</td>
-                                            </tr>
-                                        }
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <hr/>
                             </div>
-                         
-
                         </div>
-                    </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl>
+                                    <dt>Data Year</dt>
+                                    <dd>@report.DisplayDataYear</dd>
+
+                                    <dt>Status</dt>
+                                    <dd>@report.ReportStateDisplay</dd>
+
+                                    <dt>Generated</dt>
+                                    <dd>
+                                        @report.GeneratedDate
+                                        @if (!report.GeneratedDate.HasValue)
+                                        {
+                                            <text>Not yet generated</text>
+                                        }
+                                    </dd>
+
+                                    <dt>Approved</dt>
+                                    <dd>
+                                        @report.ApprovedDate
+                                        @if (!report.ApprovedDate.HasValue)
+                                        {
+                                            <text>Not yet approved</text>
+                                        }
+                                    </dd>
+
+                                    <dt>Submitted</dt>
+                                    <dd>
+
+                                        @report.SubmittedDate
+                                        @if (!report.SubmittedDate.HasValue)
+                                        {
+                                            <text>Not yet submitted</text>
+                                        }
+                                    </dd>
+
+                                </dl>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Files
+                                    </div>
+                                    <div class="panel-body">
+                                        <table class="table table-responsive">
+
+                                            <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Version</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            @foreach (var doc in report.Documents)
+                                            {
+                                                <tr>
+                                                    <td><a href="#" data-document-viewer data-doc-id=@doc.Id data-url="/document/@doc.Id" data-title="@doc.Filename" title="@doc.Filename" data-placement="right" data-original-title="@doc.Filename">@doc.Filename</a></td>
+                                                    <td>@doc.Version</td>
+                                                </tr>
+                                            }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    }
+
 
 
                     @*@(Html.DevExtreme()
-                        .DataGrid().ID("grid").WordWrapEnabled(true)
-                        .ShowRowLines(true)
-                        .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
-                        .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
-                        .Columns(c =>
-                        {
-                            c.Add().DataField("fileName");
-                            c.Add().DataField("displayDataYear").Caption("Data Year");
-                            c.Add().DataField("reportState").Caption("Status");
-                            c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                            c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                            c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
-                            c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
-                        })
-                        .DataSource(d => d.StaticJson().Url(@Url.Content("/api/report/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))*@
+        .DataGrid().ID("grid").WordWrapEnabled(true)
+        .ShowRowLines(true)
+        .ShowBorders(true).FilterRow(filterRow => filterRow.Visible(true).ApplyFilter(GridApplyFilterMode.Auto))
+        .SearchPanel(searchPanel => searchPanel.Visible(true).Width(240).Placeholder("Search...")).HeaderFilter(headerFilter => headerFilter.Visible(true))
+        .Columns(c =>
+        {
+            c.Add().DataField("fileName");
+            c.Add().DataField("displayDataYear").Caption("Data Year");
+            c.Add().DataField("reportState").Caption("Status");
+            c.Add().DataField("generatedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+            c.Add().DataField("approvedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+            c.Add().DataField("submittedDate").DataType(GridColumnDataType.Date).Format("MM/dd/YYYY hh:mm");
+            c.Add().Caption("Documents").CssClass("documentList").CellTemplate(new JS("function(container, options) {createReportDocumentLinks(container, options);}"));
+        })
+        .DataSource(d => d.StaticJson().Url(@Url.Content("/api/report/" + @ViewContext.RouteData.Values["datayear"] + "/" + @ViewContext.RouteData.Values["filenumber"])).Key("id")))*@
                 </div>
 
             </div>

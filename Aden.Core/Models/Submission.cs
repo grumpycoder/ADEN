@@ -8,6 +8,7 @@ namespace Aden.Core.Models
         public int Id { get; set; }
         public DateTime? DueDate { get; set; }
         public DateTime? SubmissionDate { get; set; }
+        public DateTime? NextDueDate { get; set; }
 
         public int DataYear { get; set; }
 
@@ -88,6 +89,7 @@ namespace Aden.Core.Models
         public void Waive(string reason, string waivedBy)
         {
             SubmissionState = SubmissionState.Waived;
+            LastUpdated = DateTime.Now;
             var message = $"Waived by {waivedBy}: {reason}";
             var audit = new SubmissionAudit(Id, message);
             Log(audit);
@@ -96,6 +98,13 @@ namespace Aden.Core.Models
         public void Reopen(string reason, string openedBy)
         {
             var message = $"ReOpened by {openedBy}: {reason}";
+            var audit = new SubmissionAudit(Id, message);
+            Log(audit);
+        }
+
+        public void Reassign(string reason, string openedBy)
+        {
+            var message = $"Reassigned by {openedBy}: {reason}";
             var audit = new SubmissionAudit(Id, message);
             Log(audit);
         }
@@ -114,6 +123,7 @@ namespace Aden.Core.Models
         public void Complete()
         {
             SubmissionState = SubmissionState.Complete;
+            SubmissionDate = DateTime.Now;
             LastUpdated = DateTime.Now;
         }
 
@@ -125,6 +135,20 @@ namespace Aden.Core.Models
             Reports.Add(report);
             SubmissionState = SubmissionState.AssignedForGeneration;
             return report;
+        }
+
+        public void Cancel(string cancelledBy)
+        {
+            var message = $"Cancelled by {cancelledBy}";
+            var audit = new SubmissionAudit(Id, message);
+            Log(audit);
+        }
+
+        public void Start(string startedBy)
+        {
+            var message = $"Started by {startedBy}";
+            var audit = new SubmissionAudit(Id, message);
+            Log(audit);
         }
     }
 }

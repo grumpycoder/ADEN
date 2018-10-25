@@ -6,5 +6,9 @@
   {
     "outputFile": "css/vendor/vendor.css",
     "inputFile": "src/scss/vendor.scss"
+  },
+  {
+    "outputFile": "js/app/reports.module.es5.js",
+    "inputFile": "js/app/reports.module.js"
   }
 ]
