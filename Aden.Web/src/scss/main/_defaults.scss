@@ -91,6 +91,10 @@ header .lead {
     text-align:right;*/
 }
 
-.full-width{
+.full-width {
     display: block;
+}
+
+.form-group > label > input, select, textarea {
+    font-weight: normal;
 }

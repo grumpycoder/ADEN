@@ -1,0 +1,70 @@
+﻿@model dynamic
+
+
+<h3>
+    @ViewBag.GroupName
+</h3>
+
+<div class="row">
+    <form role="form" id="groupForm">
+        <input type="hidden" name="groupName" id="groupName" value="@ViewBag.GroupName" />
+
+        <div class="col-md-12">
+            <div class="form-group">
+
+
+                <label class="control-label">
+                    Add member
+
+                    <input type="text" id="email" name="email" class="form-control" data-provide="typeahead">
+                    @*<select class="form-control" id="email" name="email">
+                            <option>mlawrence@alsde.edu</option>
+                            <option>sjones@alsde.edu</option>
+                            <option>jking@alsde.edu</option>
+                            <option>mkong@alsde.edu</option>
+                        </select>*@
+                </label>
+                <button class="btn btn-default" id="btnAddGroupMember">Add</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <form id="memberForm" role="form">
+            <input type="hidden" name="groupName" value="@ViewBag.GroupName" />
+            <input type="hidden" name="email" id="email" />
+        </form>
+        <label class="control-label">
+            Current Members
+        </label>
+        <ul class="list-group">
+            @foreach (var member in ViewBag.Members)
+            {
+                <li class="list-group-item">
+                    <a href="#" id="btnRemoveGroupMember" data-email="@member"><i class="fa fa-trash"></i></a> <span>@member</span>
+                </li>
+            }
+        </ul>
+    </div>
+</div>
+
+<script>
+
+    $('#email').typeahead({
+        source: function (query, response) {
+            return $.get('/api/filespecification/findmembers?username=' + query, { query: query }, function (data) {
+                return response(data);
+            });
+        },
+        items: 15,
+        displayText: function (item) {
+            return item.emailAddress;
+        }, 
+        delay: 500,
+        minLength: 0,
+        autoSelect: true
+    });
+
+</script>

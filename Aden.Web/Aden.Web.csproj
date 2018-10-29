@@ -25,7 +25,7 @@
     <UseGlobalApplicationHostFile />
     <ApplicationVersion>57.0.56.6636</ApplicationVersion>
     <TargetFrameworkProfile />
-    <AssemblyVersion>2018.10.291</AssemblyVersion>
+    <AssemblyVersion>2018.10.372</AssemblyVersion>
     <ShouldCreateLogs>True</ShouldCreateLogs>
     <AdvancedSettingsExpanded>True</AdvancedSettingsExpanded>
     <UpdateAssemblyVersion>True</UpdateAssemblyVersion>
@@ -68,8 +68,8 @@
     <Reference Include="Alsde.Extensions, Version=2018.5.22.6717, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Extensions.2018.5.22.6717\lib\net451\Alsde.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="ALSDE.IdemLib, Version=17.820.55000.1305, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ALSDE.IdemLib.17.820.55000.1305\lib\net40\ALSDE.IdemLib.dll</HintPath>
+    <Reference Include="ALSDE.IdemLib, Version=2018.10.29.6877, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.IdemLib.2018.10.1-beta\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Mvc.Logging, Version=2018.8.27.6814, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Mvc.Logging.2018.8.1-beta\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
@@ -88,6 +88,9 @@
     </Reference>
     <Reference Include="CSharpFunctionalExtensions, Version=1.12.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\CSharpFunctionalExtensions.1.12.0\lib\net461\CSharpFunctionalExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net451\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="DelegateDecompiler, Version=1.0.0.0, Culture=neutral, PublicKeyToken=93b26a10a04705bd, processorArchitecture=MSIL">
       <HintPath>..\packages\DelegateDecompiler.0.23.0\lib\net40-client\DelegateDecompiler.dll</HintPath>
@@ -120,6 +123,9 @@
     </Reference>
     <Reference Include="Glimpse.Mvc5, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Glimpse.Mvc5.1.5.3\lib\net45\Glimpse.Mvc5.dll</HintPath>
+    </Reference>
+    <Reference Include="Humanizer, Version=2.5.0.0, Culture=neutral, PublicKeyToken=979442b78dfc278e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Humanizer.Core.2.5.1\lib\netstandard2.0\Humanizer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -170,6 +176,9 @@
     </Reference>
     <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.3.2.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Extended.3.2.0.0\lib\net45-full\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="OpenMcdf, Version=2.2.0.1, Culture=neutral, PublicKeyToken=fdbb1629d7c00800, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenMcdf.2.2.0.1\lib\net40\OpenMcdf.dll</HintPath>
@@ -298,6 +307,7 @@
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
     <Compile Include="Controllers\api\MailController.cs" />
     <Compile Include="Controllers\api\ReportController.cs" />
+    <Compile Include="ViewModels\UpdateGroupMemberDto.cs" />
     <Compile Include="Helpers\ImageHelper.cs" />
     <Compile Include="ViewModels\SubmissionAuditEntryDto.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
@@ -566,6 +576,7 @@
     <Content Include="src\scss\bootstrap-dialog\bootstrap-dialog.scss" />
     <Content Include="Views\Account\LoginFailure.cshtml" />
     <Content Include="Views\Home\_SubmissionReopenAuditEntry.cshtml" />
+    <Content Include="Views\Home\_GroupMembershipForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\ErrorReport\" />

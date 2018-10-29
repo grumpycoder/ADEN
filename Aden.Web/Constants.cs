@@ -23,6 +23,8 @@ namespace Aden.Web
         //TODO: Refactor magic string and match to config
         public const string GlobalAdministratorGroup = "AdenAppGlobalAdministrators";
         public const string FileSpecificationAdministratorGroup = "AdenAppSpecificationAdministrators";
+        public const string ApplicationProgrammerGroup = "IdemAppProgrammerEditors";
+
         public static string LogoutUrl = "aim.alsde.edu/aim/applicationinventory.aspx?logout=";
 
         public static string TpaAccessKey => AppSettings.Get<string>("TPA_AccessKey");

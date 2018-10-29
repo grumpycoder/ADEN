@@ -16,7 +16,7 @@ namespace Aden.Core.Dtos
         public string DataGroups { get; set; }
         public string Application { get; set; }
         public string Collection { get; set; }
-        public string DataSource { get; set; }
+        public string SupportGroup { get; set; }
 
         [Display(Name = "Generation User Group")]
         public string GenerationUserGroup { get; set; }

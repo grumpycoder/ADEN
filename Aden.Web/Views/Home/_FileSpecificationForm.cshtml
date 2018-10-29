@@ -38,16 +38,20 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(model => model.FileNumber, new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.FileNumber, new { @class = "form-control", autofocus = "autofocus" })
+                <label class="control-label full-width">
+                    File Number
+                    @Html.TextBoxFor(model => model.FileNumber, new { @class = "form-control", autofocus = "autofocus" })
+                </label>
                 @Html.ValidationMessageFor(model => model.FileNumber, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="form-group">
-                @Html.LabelFor(model => model.FileName, new { @class = "control-label" })
-                @Html.TextBoxFor(model => model.FileName, new { @class = "form-control" })
+                <label class="control-label full-width">
+                    File Name
+                    @Html.TextBoxFor(model => model.FileName, new { @class = "form-control" })
+                </label>
                 @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -61,16 +65,20 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Section, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Section, new { @class = "form-control", autofocus = "autofocus" })
+                    <label class="control-label full-width">
+                        Section
+                        @Html.TextBoxFor(model => model.Section, new { @class = "form-control", autofocus = "autofocus" })
+                    </label>
                     @Html.ValidationMessageFor(model => model.Section, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Application, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Application, new { @class = "form-control" })
+                    <label class="control-label full-width">
+                        Application
+                        @Html.DropDownListFor(m => m.Application, new SelectList(ViewBag.Applications, "Value", "Text"), "Select Application", new { @class = "form-control" })
+                    </label>
                     @Html.ValidationMessageFor(model => model.Application, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -79,58 +87,82 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Collection, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.Collection, new { @class = "form-control", autofocus = "autofocus" })
-                    @Html.ValidationMessageFor(model => model.Collection, "", new { @class = "text-danger" })
+                    <label class="control-label full-width">
+                        Select group members
+                        <button class="btn btn-info btn-block" id="btnGenerationGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.GenerationUserGroup">Generation Group Members (@ViewBag.GenerationGroupMemberCount)</button>
+                    </label>
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DataSource, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.DataSource, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.DataSource, "", new { @class = "text-danger" })
+
+                    <label class="control-label full-width">
+                        Collection
+                        @Html.DropDownListFor(m => m.Collection, new SelectList(ViewBag.Collections, "Value", "Text"), "Select Collection", new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.Collection, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DataGroups, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.DataGroups, new { @class = "form-control", autofocus = "autofocus" })
-                    @Html.ValidationMessageFor(model => model.DataGroups, "", new { @class = "text-danger" })
+                    <label class="control-label full-width">
+                        Select group members
+                        <button class="btn btn-info btn-block" id="btnApprovalGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.ApprovalUserGroup">Approval Group Members (@ViewBag.ApprovalGroupMemberCount)</button>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+
+                <div class="form-group">
+
+                    <label class="control-label full-width">
+                        Support Group Members
+                        @Html.DropDownListFor(m => m.SupportGroup, new SelectList(ViewBag.DataGroups, "Value", "Text"), "Select Group", new { @class = "form-control" })
+                    </label>
+                    @Html.ValidationMessageFor(model => model.SupportGroup, "", new { @class = "text-danger" })
                 </div>
             </div>
 
         </div>
+
     </fieldset>
 
 
-    <fieldset>
+    <fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">
         <legend>Responsible User Groups</legend>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.GenerationUserGroup, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.GenerationUserGroup, new { @class = "form-control", autofocus = "autofocus" })
+                    <label class="control-label full-width">
+                        Generation User Group
+                        @Html.TextBoxFor(model => model.GenerationUserGroup, new { @class = "form-control", autofocus = "autofocus" })
+                    </label>
                     @Html.ValidationMessageFor(model => model.GenerationUserGroup, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ApprovalUserGroup, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.ApprovalUserGroup, new { @class = "form-control" })
+                    <label class="control-label full-width">
+                        Approval User Group
+                        @Html.TextBoxFor(model => model.ApprovalUserGroup, new { @class = "form-control" })
+                    </label>
                     @Html.ValidationMessageFor(model => model.ApprovalUserGroup, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.SubmissionUserGroup, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.SubmissionUserGroup, new { @class = "form-control" })
+                    <label class="control-label full-width">
+                        Submission User Group
+                        @Html.TextBoxFor(model => model.SubmissionUserGroup, new { @class = "form-control" })
+                    </label>
                     @Html.ValidationMessageFor(model => model.SubmissionUserGroup, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -139,22 +171,27 @@
     </fieldset>
 
 
-    <fieldset>
+    <fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">
         <legend>Generation Properties</legend>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.FileNameFormat, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.FileNameFormat, new { @class = "form-control", autofocus = "autofocus" })
+
+                    <label class="control-label full-width">
+                        File Name Format
+                        @Html.TextBoxFor(model => model.FileNameFormat, new { @class = "form-control", autofocus = "autofocus" })
+                    </label>
                     @Html.ValidationMessageFor(model => model.FileNameFormat, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="col-md-6">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ReportAction, new { @class = "control-label" })
-                    @Html.TextBoxFor(model => model.ReportAction, new { @class = "form-control" })
+                    <label class="control-label full-width">
+                        Report Action
+                        @Html.TextBoxFor(model => model.ReportAction, new { @class = "form-control" })
+                    </label>
                     @Html.ValidationMessageFor(model => model.ReportAction, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -162,6 +199,6 @@
         </div>
     </fieldset>
 
-   
+
 </form>
 

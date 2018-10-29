@@ -15,7 +15,7 @@ namespace Aden.Core.Models
         public string DataGroups { get; set; }
         public string Application { get; set; }
         public string Collection { get; set; }
-        public string DataSource { get; set; }
+        public string SupportGroup { get; set; }
 
         public string Section { get; set; }
         public string GenerationUserGroup { get; set; }

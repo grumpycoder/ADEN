@@ -1,14 +1,20 @@
-﻿using Aden.Core.Dtos;
+﻿using Aden.Core.Data;
+using Aden.Core.Dtos;
 using Aden.Core.Models;
 using Aden.Core.Repositories;
+using Aden.Web.ViewModels;
+using Alsde.Extensions;
+using ALSDE.Services;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Mvc;
-using System.Collections.Generic;
+using Humanizer;
 using System.Data.Entity;
+using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Aden.Core.Data;
-using AutoMapper.QueryableExtensions;
+using System.Web.Http.Results;
 
 namespace Aden.Web.Controllers.api
 {
@@ -80,6 +86,50 @@ namespace Aden.Web.Controllers.api
             _uow.Complete();
 
             return Ok(dto);
+        }
+
+        [HttpPut, Route("groupmembers")]
+        public OkResult AddGroupMember(UpdateGroupMemberDto model)
+        {
+
+            var client = new SmtpClient();
+            var message = new MailMessage()
+            {
+                Body = $"Please ADD user {model.Email} to group <br />{model.GroupName.Humanize().ToTitleCase()}",
+                To = { "helpdesk@alsde.edu" },
+                From = new MailAddress(User.Identity.Name),
+                IsBodyHtml = true
+            };
+
+            client.Send(message);
+
+            return Ok();
+        }
+
+        [HttpDelete, Route("groupmembers")]
+        public OkResult DeleteGroupMember(UpdateGroupMemberDto model)
+        {
+
+            var client = new SmtpClient();
+            var message = new MailMessage()
+            {
+                Body = $"Please REMOVE user {model.Email} from group <br />{model.GroupName.Humanize().ToTitleCase()}",
+                To = { "helpdesk@alsde.edu" },
+                From = new MailAddress(User.Identity.Name),
+                IsBodyHtml = true
+            };
+
+            client.Send(message);
+
+            return Ok();
+        }
+
+        [HttpGet, Route("findmembers")]
+        public object GetMembers(string username = null)
+        {
+            var _userService = new IdemUserService();
+            var users = _userService.GetUsers(username);
+            return Ok(users.ToList());
         }
     }
 }

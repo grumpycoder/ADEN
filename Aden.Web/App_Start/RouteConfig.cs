@@ -69,6 +69,13 @@ namespace Aden.Web
                 defaults: new { controller = "Home", action = "SaveSpecification" }
             );
 
+
+            routes.MapRoute(
+                name: "EditGroupMembershipActions",
+                url: "editgroupmembership/{id}/{groupName}",
+                defaults: new { controller = "Home", action = "EditGroupMembership", Id = UrlParameter.Optional, GroupName = UrlParameter.Optional }
+            );
+
             routes.MapRoute(
                 name: "UploadErrorReportActions",
                 url: "errorreport/{id}",

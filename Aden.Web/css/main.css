@@ -76,6 +76,9 @@ header .lead {
 .full-width {
   display: block; }
 
+.form-group > label > input, select, textarea {
+  font-weight: normal; }
+
 footer {
   position: absolute;
   right: 0;

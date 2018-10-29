@@ -4,6 +4,8 @@ using Aden.Core.Models;
 using Aden.Core.Repositories;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
+using ALSDE.Idem;
+using ALSDE.Idem.Web.UI.AimBanner;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EAGetMail;
@@ -125,9 +127,39 @@ namespace Aden.Web.Controllers
         {
             var spec = _uow.FileSpecifications.GetById(id);
 
+            var dataGroups = new List<SelectListItem>()
+            {
+                new SelectListItem(){ Value = "Data", Text = "Data"},
+                new SelectListItem(){ Value = "Development", Text = "Development"},
+                new SelectListItem(){ Value = "Section", Text = "Section"}
+            };
+
+            var collections = new List<SelectListItem>()
+            {
+                new SelectListItem(){ Value = "Accumulator", Text = "Accumulator"},
+                new SelectListItem(){ Value = "Application", Text = "Application"},
+                new SelectListItem(){ Value = "EOY-9thMonth", Text = "EOY - 9th Month"},
+                new SelectListItem(){ Value = "Fall-20Day", Text = "Fall-20 Day"},
+                new SelectListItem(){ Value = "Manual", Text = "Manual"}
+            };
+
+            ViewBag.GenerationGroupMemberCount = GroupHelper.GetGroupMembers(spec.GenerationUserGroup).Count;
+            ViewBag.ApprovalGroupMemberCount = GroupHelper.GetGroupMembers(spec.ApprovalUserGroup).Count;
+            ViewBag.Applications = IdemApplications.Applications.ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
+            ViewBag.DataGroups = dataGroups;
+            ViewBag.Collections = collections;
+
             var model = Mapper.Map<UpdateFileSpecificationDto>(spec);
             return PartialView("_FileSpecificationForm", model);
 
+        }
+
+        public ActionResult EditGroupMembership(int id, string groupName)
+        {
+            ViewBag.GroupName = groupName;
+            var members = GroupHelper.GetGroupMembers(groupName).Select(m => m.EmailAddress);
+            ViewBag.Members = members;
+            return PartialView("_GroupMembershipForm");
         }
 
         public async Task<ActionResult> ErrorReport(int id)

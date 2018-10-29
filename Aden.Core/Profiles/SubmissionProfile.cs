@@ -1,8 +1,6 @@
 ﻿using Aden.Core.Dtos;
-using Aden.Core.Helpers;
 using Aden.Core.Models;
 using AutoMapper;
-using System.Linq;
 
 
 namespace Aden.Core.Profiles
@@ -38,7 +36,7 @@ namespace Aden.Core.Profiles
                 .ForMember(d => d.DataGroups, opt => opt.MapFrom(s => s.FileSpecification.DataGroups))
                 .ForMember(d => d.Application, opt => opt.MapFrom(s => s.FileSpecification.Application))
                 .ForMember(d => d.Collection, opt => opt.MapFrom(s => s.FileSpecification.Collection))
-                .ForMember(d => d.DataSource, opt => opt.MapFrom(s => s.FileSpecification.DataSource))
+                .ForMember(d => d.SupportGroup, opt => opt.MapFrom(s => s.FileSpecification.SupportGroup))
                 .ForMember(d => d.ReportAction, opt => opt.MapFrom(s => s.FileSpecification.ReportAction))
                 .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(s => s.FileSpecification.GenerationUserGroup))
                 .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(s => s.FileSpecification.ApprovalUserGroup))

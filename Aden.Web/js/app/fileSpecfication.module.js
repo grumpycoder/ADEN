@@ -7,31 +7,34 @@ $(function () {
     $(document).on('click', '[data-edit]', function (e) {
         e.preventDefault();
         var url = $(this).attr("href");
+        var title = 'Edit Specification';
+
         $.ajax({
             url: url,
             type: 'GET',
             success: function (data) {
-                window.showBSModal({
-                    title: 'Edit Specification',
-                    body: data,
-                    size: "lg",
-                    actions: [
+                window.BootstrapDialog.show({
+                    size: window.BootstrapDialog.SIZE_WIDE,
+                    closeByBackdrop: false,
+                    closeByKeyboard: false,
+                    draggable: true,
+                    title: title,
+                    message: $('<div></div>').load(url, function (resp, status, xhr) {
+                        if (status === 'error') {
+                            window.$log.error('Error showing history');
+                        }
+                    }),
+                    buttons: [
                         {
-                            label: 'Cancel',
-                            cssClass: 'btn-default',
-                            onClick: function (e) {
-                                $(e.target).parents('.modal').modal('hide');
-                                $('body').removeClass('modal-open');
-                                //modal-open class is added on body so it has to be removed
-
-                                $('.modal-backdrop').remove();
-                                //need to remove div with modal-backdrop class
+                            label: 'Close',
+                            action: function (dialogRef) {
+                                dialogRef.close();
                             }
                         },
                         {
                             label: 'Save',
                             cssClass: 'btn-primary',
-                            onClick: function (e) {
+                            action: function (dialogRef) {
                                 var form = $('form');
                                 var url = '/api/filespecification/' + $('#Id').val();
                                 window.$showModalWorking();
@@ -41,16 +44,7 @@ $(function () {
                                     url: url,
                                     data: $('form').serialize(),
                                     success: function (msg) {
-
-                                        //$('.modalContainer').html('');
-                                        //$('.modal').modal('hide');
-                                        $('body').removeClass('modal-open');
-                                        $(e.target).parents('.modal').modal('hide');
-                                        //modal-open class is added on body so it has to be removed
-
-                                        //$('.modal-backdrop').remove();
-                                        //need to remove div with modal-backdrop class
-
+                                        dialogRef.close();
                                         $('#grid').dxDataGrid('instance').refresh().done(function (e) { });
                                         window.toastr.success('Saved ');
                                     },
@@ -63,7 +57,7 @@ $(function () {
                                     },
                                     complete: function () {
                                         //console.log('complete');
-                                        window.$hideModalWorking();
+                                        dialogRef.close();
                                     }
 
                                 });
@@ -73,8 +67,7 @@ $(function () {
                 });
             },
             error: function (err) {
-                //console.log('err', err);
-                window.$log.error('Error showing reassignment');
+                window.$log.error('Error showing edit form');
             }
         });
 
@@ -126,6 +119,115 @@ $(function () {
 
     });
 
+    $(document).on('click', '[data-modify-group]', function (e) {
+        e.preventDefault();
+
+        var btn = $(this);
+        var id = btn.data('id');
+        var groupName = btn.data('group-name');
+        var url = '/editgroupmembership/' + id + '/' + groupName;
+        var title = 'Edit Membership';
+
+        window.BootstrapDialog.show({
+            size: window.BootstrapDialog.SIZE_NORMAL,
+            closable: true,
+            closeByBackdrop: false,
+            closeByKeyboard: false,
+            title: title,
+            message: $('<div></div>').load(url, function (resp, status, xhr) {
+                if (status === 'error') {
+                    console.log('status', status);
+                    console.log('resp', resp);
+                    window.$log.error('Error showing group membership');
+                }
+            }),
+            buttons: [
+                {
+                    label: 'Close',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                    }
+                }
+            ]
+        });
+
+    });
+
+    $(document).on('click', '#btnAddGroupMember',
+        function (e) {
+            e.preventDefault();
+            var url = '/api/filespecification/groupmembers/';
+            console.log('form', $('#groupForm').serialize());
+            var form = new FormData($('#groupForm'));
+            $.ajax({
+                type: "PUT",
+                url: url,
+                data: $('#groupForm').serialize(),
+                success: function (data) {
+                    console.log('success', data);
+                    window.$log.success('Request has been sent to HelpDesk. Check back in 24 hours. ');
+                },
+                error: function (err) {
+                    console.log('error', err);
+                }
+            }).always(function () {
+
+            });
+        });
+
+    $(document).on('click', '#btnRemoveGroupMember',
+        function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var url = '/api/filespecification/groupmembers/';
+            var email = btn.data('email');
+            $('#memberForm #email').val(email); 
+            
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                data: $('#memberForm').serialize(),
+                processData: false,
+                success: function (data) {
+                    console.log('success', data);
+                    window.$log.success('Request has been sent to HelpDesk. Check back in 24 hours. ');
+                },
+                error: function (err) {
+                    console.log('error', err);
+                    window.$log.success('Error in request. ' + err);
+                }
+            }).always(function () {
+
+            });
+        });
+
+
+    //var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+    //    'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+    //    'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
+    //    'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
+    //    'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+    //    'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
+    //    'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
+    //    'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+    //    'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+    //];
+
+    //var cities = ['Pontevedra', 'A Coruña', 'Lugo', 'Ourense'];
+
+    //$(document).on('', '#city', function(e) {
+
+    //    });
+
+    //$('#city').typeahead({
+    //    source: cities
+    //});
+
+
+    //$('#states_search').typeahead({
+    //    source: states
+    //});
+
 });
 
 function createFileSpecificationGridActionButtons(container, options) {
@@ -134,10 +236,6 @@ function createFileSpecificationGridActionButtons(container, options) {
     var canActivate = options.data.canActivate;
     var fileSpecId = options.data.id;
 
-    if (fileSpecId === 1) {
-        console.log('canActivate', canActivate);
-        console.log('canRetire', canRetire);
-    }
     if (canRetire) {
         lnk += '<button class="btn btn-default btn-sm btn-grid" data-retire data-filespec-id=' + fileSpecId + '><i class="fa fa-spinner fa-spin hidden"></i> Retire</button>';
     }

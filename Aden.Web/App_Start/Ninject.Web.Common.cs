@@ -1,4 +1,5 @@
 using Aden.Core.Services;
+using ALSDE.Services;
 
 [assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Aden.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Aden.Web.App_Start.NinjectWebCommon), "Stop")]
@@ -78,6 +79,7 @@ namespace Aden.Web.App_Start
             //kernel.Bind<IMembershipService>().To<InMemoryMembershipService>();
             kernel.Bind<IMembershipService>().To<IdemMembershipService>();
             kernel.Bind<INotificationService>().To<EmailNotificationService>();
+            //kernel.Bind<IUserService>().To<IdemUserService>().InTransientScope();
 
         }
     }

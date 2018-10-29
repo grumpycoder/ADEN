@@ -17,7 +17,7 @@ namespace Aden.Core.Profiles
                 .ForMember(d => d.Application, opt => opt.MapFrom(s => s.Application))
                 .ForMember(d => d.DataGroups, opt => opt.MapFrom(s => s.DataGroups))
                 .ForMember(d => d.Collection, opt => opt.MapFrom(s => s.Collection))
-                .ForMember(d => d.DataSource, opt => opt.MapFrom(s => s.DataSource))
+                .ForMember(d => d.SupportGroup, opt => opt.MapFrom(s => s.SupportGroup))
                 .ForMember(d => d.GenerationUserGroup, opt => opt.MapFrom(s => s.GenerationUserGroup))
                 .ForMember(d => d.ApprovalUserGroup, opt => opt.MapFrom(s => s.ApprovalUserGroup))
                 .ForMember(d => d.SubmissionUserGroup, opt => opt.MapFrom(s => s.SubmissionUserGroup))
