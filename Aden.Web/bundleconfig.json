@@ -8,7 +8,8 @@
       "node_modules/toastr/toastr.js",
       "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.js",
       "node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js",
-      "node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js"
+      "node_modules/bootstrap3-dialog/dist/js/bootstrap-dialog.js",
+      "node_modules/bootstrap-3-typeahead/bootstrap3-typeahead.min.js"
     ],
     "minify": {
       "enabled": true,
