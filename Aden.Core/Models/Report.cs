@@ -93,6 +93,15 @@ namespace Aden.Core.Models
             Documents.Add(doc);
         }
 
+        public int GetNextFileVersionNumber(ReportLevel reportLevel)
+        {
+            var version = 0;
+            if (Documents.Any(d => d.ReportLevel == reportLevel)) version = Documents.Where(x => x.ReportLevel == reportLevel).Max(x => x.Version);
+
+            version += 1;
+            return version;
+        }
+
         public void AddWorkItem(WorkItem workItem)
         {
             WorkItems.Add(workItem);

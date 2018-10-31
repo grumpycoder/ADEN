@@ -12,7 +12,6 @@ namespace Aden.Core.Repositories
         IWorkItemRepository WorkItems { get; set; }
         void Complete();
         Task CompleteAsync();
-        Result GenerateDocuments(int reportId);
         Task<Result> GenerateDocumentsAsync(int reportId);
     }
 }

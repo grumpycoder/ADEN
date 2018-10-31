@@ -66,7 +66,6 @@ namespace Aden.Core.Dtos
         {
             get
             {
-                //TODO: Refactor magic string
                 var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains(Constants.GlobalAdministrators));
                 return claim != null;
             }

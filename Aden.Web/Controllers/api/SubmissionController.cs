@@ -9,6 +9,7 @@ using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -37,7 +38,7 @@ namespace Aden.Web.Controllers.api
             //TODO: Refactor to use a custom ClaimType and not magic string
             var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
 
-            var s = await _context.Submissions.ToListAsync(); 
+            var s = await _context.Submissions.ToListAsync();
 
             var dto = await _context.Submissions
                 .ProjectTo<SubmissionViewDto>().ToListAsync();
@@ -49,7 +50,8 @@ namespace Aden.Web.Controllers.api
         public async Task<object> Start(int submissionId)
         {
 
-            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(s => s.Id == submissionId);
+            var submission = await _context.Submissions.Include(f => f.FileSpecification)
+                .FirstOrDefaultAsync(s => s.Id == submissionId);
             if (submission == null) return NotFound();
 
             if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
@@ -57,6 +59,26 @@ namespace Aden.Web.Controllers.api
 
 
             submission.Start(User.Identity.Name);
+
+            //HACK: Instructed to do by management
+            if (submission.FileSpecification.ReportAction == "manual")
+            {
+                var groupName = "Data Collections";
+                if (submission.FileSpecification.SupportGroup == "Development")
+                    groupName = "IS Programmers Software Developers";
+
+                var client = new SmtpClient();
+                var message = new MailMessage()
+                {
+                    Body = $"File needs to be created for {submission.FileSpecification.FileName}.<br /> Please assign to {groupName} group",
+                    To = { "helpdesk@alsde.edu" },
+                    From = new MailAddress(User.Identity.Name),
+                    IsBodyHtml = true
+                };
+
+                client.Send(message);
+
+            }
 
             var report = submission.CreateReport();
 

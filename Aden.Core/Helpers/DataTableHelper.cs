@@ -100,6 +100,16 @@ namespace Aden.Core.Helpers
             return sb.ToString();
         }
 
+        public static DataTable UpdateFieldValue(this DataTable dtDataTable, string fieldname, string filename)
+        {
+            foreach (DataRow row in dtDataTable.Rows)
+            {
+                row.SetField(fieldname, filename);
+            }
+
+            return dtDataTable;
+        }
+
         public static void ToCsvFile(this DataTable dtDataTable, string strFilePath, bool withHeaderRow = true)
         {
             StreamWriter sw = new StreamWriter(strFilePath, false);
