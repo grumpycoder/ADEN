@@ -29,7 +29,7 @@ namespace Aden.Web
 
             routes.MapRoute(
                 name: "ReportActions",
-                url: "files/{datayear}/{filenumber}",
+                url: "reports/{datayear}/{filenumber}",
                 defaults: new { controller = "Home", action = "Reports", datayear = UrlParameter.Optional, filenumber = UrlParameter.Optional }
             );
 
