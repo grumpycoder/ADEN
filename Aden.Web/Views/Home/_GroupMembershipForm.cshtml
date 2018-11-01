@@ -2,7 +2,7 @@
 
 
 <h3>
-    @ViewBag.GroupName
+    @Html.HumanizeTitleCase((string)ViewBag.GroupName)
 </h3>
 
 <div class="row">
@@ -15,14 +15,7 @@
 
                 <label class="control-label">
                     Add member
-
                     <input type="text" id="email" name="email" class="form-control" data-provide="typeahead">
-                    @*<select class="form-control" id="email" name="email">
-                            <option>mlawrence@alsde.edu</option>
-                            <option>sjones@alsde.edu</option>
-                            <option>jking@alsde.edu</option>
-                            <option>mkong@alsde.edu</option>
-                        </select>*@
                 </label>
                 <button class="btn btn-default" id="btnAddGroupMember">Add</button>
             </div>

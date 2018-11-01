@@ -1,4 +1,5 @@
 ﻿using Alsde.Extensions;
+using Humanizer;
 using System;
 using System.Data.SqlClient;
 using System.Reflection;
@@ -87,13 +88,13 @@ namespace Aden.Web.Helpers
                 sb.AppendFormat("<li><a href='{0}aim/ApplicationInventory.aspx'><i class='fa fa-home'></i> My Applications</a></li>", Constants.AimBaseUrl);
                 sb.Append("</ul>");
                 return MvcHtmlString.Create(sb.ToString());
-            } 
+            }
 
             sb.Append(@"<li class='dropdown'>");
-                sb.AppendFormat(
-                    @"<a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user'></i>&nbsp;{0}<span class='caret'></span></a>",
-                    identity.Name);
-            
+            sb.AppendFormat(
+                @"<a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'><i class='fa fa-user'></i>&nbsp;{0}<span class='caret'></span></a>",
+                identity.Name);
+
 
             sb.Append("<ul class='dropdown-menu'>");
 
@@ -219,7 +220,11 @@ namespace Aden.Web.Helpers
             return new MvcHtmlString(liTag.ToString(TagRenderMode.Normal));
         }
 
-
+        public static IHtmlString HumanizeTitleCase(this HtmlHelper htmlHelper, string key)
+        {
+            var value = key.Humanize(LetterCasing.Title);
+            return new MvcHtmlString(value);
+        }
     }
 
     enum Environment
