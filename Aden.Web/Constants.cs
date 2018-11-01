@@ -21,7 +21,7 @@ namespace Aden.Web
         }
 
         //TODO: Refactor magic string and match to config
-        public const string GlobalAdministratorGroup = "AdenAppGlobalAdministrators";
+        public static string GlobalAdministratorGroup = AppSettings.Get<string>("GlobalAdministratorsGroupName"); //"AdenAppAdenTestAdministrators";
         public const string FileSpecificationAdministratorGroup = "AdenAppSpecificationAdministrators";
         public const string ApplicationProgrammerGroup = "IdemAppProgrammerEditors";
 

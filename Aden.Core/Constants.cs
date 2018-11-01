@@ -6,7 +6,7 @@ namespace Aden.Core
     {
         public static string Development = AppSettings.Get<string>("Developers");
 
-        public static string GlobalAdministrators = AppSettings.Get<string>("GlobalAdministrators");
+        public static string GlobalAdministrators = AppSettings.Get<string>("GlobalAdministratorsGroupName");
 
         public const string FileSpecificationAdministratorGroup = "AdenAppSpecificationAdministrators";
 
