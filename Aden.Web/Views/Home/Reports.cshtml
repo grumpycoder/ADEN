@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="panel-body panel-collapse collapse" id="fileHistory" role="tabpanel" aria-labelledby="fileHistory">
                                         @{
-                                            if (report.Documents.Any(d => d.Version > mostRecentVersion))
+                                            if (report.Documents.Any(d => d.Version < mostRecentVersion))
                                             {
                                                 <table class="table table-responsive">
 
@@ -148,7 +148,7 @@
                                                     </thead>
                                                     <tbody>
 
-                                                    @foreach (var doc in report.Documents.Where(d => d.Version != mostRecentVersion).OrderByDescending(d => d.Version))
+                                                    @foreach (var doc in report.Documents.Where(d => d.Version < mostRecentVersion).OrderByDescending(d => d.Version))
                                                     {
                                                         <tr>
                                                             <td><a href="#" data-document-viewer data-doc-id=@doc.Id data-url="/document/@doc.Id" data-title="@doc.Filename" title="@doc.Filename" data-placement="right" data-original-title="@doc.Filename">@doc.Filename</a></td>
