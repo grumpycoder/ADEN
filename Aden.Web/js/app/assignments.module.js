@@ -252,6 +252,10 @@ function createAssignmentsGridActionButtons(container, options) {
     var isManualUpload = options.data.isManualUpload;
     var lnk = '';
 
+    if (!canGenerate) {
+        lnk += '<a class="btn btn-primary btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>';
+    }
+
     if (canGenerate && isManualUpload === true) {
         lnk += '<a class="btn btn-primary btn-sm btn-grid" data-upload-report href="/uploadreport/' + workItemId + '">Upload</a>';
     }
@@ -288,9 +292,7 @@ function createAssignmentsGridActionButtons(container, options) {
     if (canReviewError) lnk += '<button class="btn btn-primary btn-sm btn-grid" data-image-viewer href="/workitemimages/' + workItemId + '">View Details</button>';
 
     //Show Report Link if already documents generated 
-    if (!canGenerate) {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>';
-    }
+   
 
     container.append(lnk);
 }
