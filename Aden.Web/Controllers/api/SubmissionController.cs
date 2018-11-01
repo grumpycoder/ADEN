@@ -10,7 +10,6 @@ using DevExtreme.AspNet.Mvc;
 using System.Data.Entity;
 using System.Linq;
 using System.Net.Mail;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -35,11 +34,6 @@ namespace Aden.Web.Controllers.api
         [HttpGet]
         public async Task<object> Get(DataSourceLoadOptions loadOptions)
         {
-            //TODO: Refactor to use a custom ClaimType and not magic string
-            var section = ((ClaimsPrincipal)User).Claims.FirstOrDefault(c => c.Type == "Section")?.Value;
-
-            var s = await _context.Submissions.ToListAsync();
-
             var dto = await _context.Submissions
                 .ProjectTo<SubmissionViewDto>().ToListAsync();
 
