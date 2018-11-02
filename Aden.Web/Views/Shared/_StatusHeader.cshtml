@@ -24,10 +24,24 @@
                         <a><i class="fa fa-clock"></i> @DateTime.Now.ToString("h:mm tt")</a>
                     </li>
                     <li>
-                        <a><i class="fa fa-globe"></i> @Html.RenderConfigurationValue("ASPNET_ENV") (@Environment.MachineName) @Html.RenderApplicationName()</a>
+                        <a>
+                            @if (Constants.Environment != "Production")
+                            {
+                                <i class="fa fa-globe"></i>
+                                @Html.RenderConfigurationValue("ASPNET_ENV")
+                                @("(" + Html.RenderMachineName() + ") ")
+                                @Html.RenderApplicationName()
+                            }
+                        </a>
                     </li>
                     <li>
-                        <a><i class="fa fa-database"></i> @Html.RenderConfigurationValue("ASPNET_ENV") (@Html.RenderDataSource()) @Html.RenderDataName()</a>
+                        <a>
+                        @if (Constants.Environment != "Production")
+                        {
+                            <i class="fa fa-database"></i>
+                            @Html.RenderConfigurationValue("ASPNET_ENV") @("(" + Html.RenderDataSource() + ") ") @(Html.RenderDataName())
+                        }
+                        </a>
                     </li>
                 </ul>
                 @Html.UserNavBarMenuList("right")

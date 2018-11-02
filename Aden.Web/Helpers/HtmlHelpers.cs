@@ -25,6 +25,13 @@ namespace Aden.Web.Helpers
             return new MvcHtmlString(value);
         }
 
+        public static IHtmlString RenderMachineName(this HtmlHelper htmlHelper)
+        {
+            var value = System.Environment.MachineName;
+            return new MvcHtmlString(value);
+        }
+
+
         public static IHtmlString RenderDataSource(this HtmlHelper htmlHelper)
         {
             var connectionString = AppSettings.GetDatabaseString<string>(Constants.DatabaseContextName);
