@@ -102,11 +102,11 @@ namespace Aden.Core.Helpers
 
         public static DataTable UpdateFieldValue(this DataTable dtDataTable, string fieldname, string filename)
         {
+            if (!dtDataTable.Columns.Contains(fieldname)) return dtDataTable;
             foreach (DataRow row in dtDataTable.Rows)
             {
                 row.SetField(fieldname, filename);
             }
-
             return dtDataTable;
         }
 
