@@ -143,8 +143,8 @@ namespace Aden.Web.Controllers
                 new SelectListItem(){ Value = "Manual", Text = "Manual"}
             };
 
-            ViewBag.GenerationGroupMemberCount = GroupHelper.GetGroupMembers(spec.GenerationUserGroup).Count;
-            ViewBag.ApprovalGroupMemberCount = GroupHelper.GetGroupMembers(spec.ApprovalUserGroup).Count;
+            ViewBag.GenerationGroupMemberCount = GroupHelper.GetGroupMembers(spec.GenerationUserGroup)?.Count ?? 0;
+            ViewBag.ApprovalGroupMemberCount = GroupHelper.GetGroupMembers(spec.ApprovalUserGroup)?.Count ?? 0;
             ViewBag.Applications = IdemApplications.Applications.ConvertAll(a => new SelectListItem() { Text = a.Title, Value = a.Title });
             ViewBag.DataGroups = dataGroups;
             ViewBag.Collections = collections;

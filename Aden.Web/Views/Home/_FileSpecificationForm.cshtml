@@ -89,7 +89,7 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Select group members
-                        <button class="btn btn-info btn-block" id="btnGenerationGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.GenerationUserGroup">Generation Group Members (@ViewBag.GenerationGroupMemberCount)</button>
+                        <button class="btn btn-info btn-block" id="btnGenerationGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.GenerationUserGroup" @(Model.GenerationUserGroup == null ? "disabled='disabled'" : "")>Generation Group Members (@ViewBag.GenerationGroupMemberCount)</button>
                     </label>
                 </div>
             </div>
@@ -111,7 +111,7 @@
                 <div class="form-group">
                     <label class="control-label full-width">
                         Select group members
-                        <button class="btn btn-info btn-block" id="btnApprovalGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.ApprovalUserGroup">Approval Group Members (@ViewBag.ApprovalGroupMemberCount)</button>
+                        <button class="btn btn-info btn-block" id="btnApprovalGroup" data-id="@Model.Id" data-modify-group data-group-name="@Model.ApprovalUserGroup" @(Model.ApprovalUserGroup == null ? "disabled='disabled'" : "")>Approval Group Members (@ViewBag.ApprovalGroupMemberCount)</button>
                     </label>
                 </div>
             </div>
