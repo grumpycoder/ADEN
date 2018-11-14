@@ -253,7 +253,7 @@ function createAssignmentsGridActionButtons(container, options) {
     var lnk = '';
 
     if (!canGenerate) {
-        lnk += '<a class="btn btn-primary btn-sm btn-grid" href="/reports/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>';
+        lnk += '<a class="btn btn-primary btn-sm btn-grid" href="/report/' + options.data.dataYear + '/' + options.data.fileNumber + '">Review File</a>';
     }
 
     if (canGenerate && isManualUpload === true) {

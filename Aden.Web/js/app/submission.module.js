@@ -299,7 +299,7 @@ function createSubmissionGridActionButtons(container, options) {
     var fileNumber = options.data.fileNumber;
     var dataYear = options.data.dataYear;
     if (canReview) {
-        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/reports/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
+        lnk += '<a class="btn btn-default btn-sm btn-grid" href="/report/' + dataYear + '/' + fileNumber + '">Review File</a>&nbsp;';
     }
     if (canCancel) {
         lnk += '<a href="/audit/' + submissionId + '" class="btn btn-default btn-sm btn-grid" data-cancel data-title="Reason for Reset" data-submission-id=' + submissionId +

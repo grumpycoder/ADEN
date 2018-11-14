@@ -23,13 +23,13 @@ namespace Aden.Web
 
             routes.MapRoute(
                 name: "ReportActionsByYear",
-                url: "reports/{datayear}",
+                url: "report/{datayear}",
                 defaults: new { controller = "Home", action = "Reports", datayear = UrlParameter.Optional }
             );
 
             routes.MapRoute(
                 name: "ReportActions",
-                url: "reports/{datayear}/{filenumber}",
+                url: "report/{datayear}/{filenumber}",
                 defaults: new { controller = "Home", action = "Reports", datayear = UrlParameter.Optional, filenumber = UrlParameter.Optional }
             );
 
