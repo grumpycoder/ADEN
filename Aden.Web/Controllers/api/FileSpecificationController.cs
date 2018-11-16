@@ -12,6 +12,7 @@ using Humanizer;
 using System.Data.Entity;
 using System.Linq;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -93,9 +94,10 @@ namespace Aden.Web.Controllers.api
         {
 
             var client = new SmtpClient();
+            //Regex.Replace(groupName.Humanize().ToTitleCase(), " App ", " ", RegexOptions.ExplicitCapture);
             var message = new MailMessage()
             {
-                Body = $"Please ADD user {model.Email} to group <br />{model.GroupName.Humanize().ToTitleCase()}",
+                Body = $"Please ADD user {model.Email} to group <br />{ Regex.Replace(model.GroupName.Humanize().ToTitleCase().TrimEnd('s'), " App ", " ", RegexOptions.ExplicitCapture) }",
                 To = { "helpdesk@alsde.edu" },
                 From = new MailAddress(User.Identity.Name),
                 IsBodyHtml = true
@@ -113,7 +115,7 @@ namespace Aden.Web.Controllers.api
             var client = new SmtpClient();
             var message = new MailMessage()
             {
-                Body = $"Please REMOVE user {model.Email} from group <br />{model.GroupName.Humanize().ToTitleCase()}",
+                Body = $"Please REMOVE user {model.Email} from group <br />{ Regex.Replace(model.GroupName.Humanize().ToTitleCase().TrimEnd('s'), " App ", " ", RegexOptions.ExplicitCapture) }",
                 To = { "helpdesk@alsde.edu" },
                 From = new MailAddress(User.Identity.Name),
                 IsBodyHtml = true

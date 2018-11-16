@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using ALSDE.Dtos;
+using CSharpFunctionalExtensions;
 using System.Collections.Generic;
 
 namespace Aden.Core.Services
@@ -16,6 +17,21 @@ namespace Aden.Core.Services
             };
 
             return Result.Ok(list);
+        }
+
+        public Result<List<string>> GetGroups(string groupName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public bool GroupExists(string groupName)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        Result<List<GroupDto>> IMembershipService.GetGroups(string groupName)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

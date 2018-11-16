@@ -79,6 +79,7 @@ namespace Aden.Web.App_Start
             //kernel.Bind<IMembershipService>().To<InMemoryMembershipService>();
             kernel.Bind<IMembershipService>().To<IdemMembershipService>();
             kernel.Bind<INotificationService>().To<EmailNotificationService>();
+            kernel.Bind<IGroupService>().To<IdemGroupService>();
             //kernel.Bind<IUserService>().To<IdemUserService>().InTransientScope();
 
         }

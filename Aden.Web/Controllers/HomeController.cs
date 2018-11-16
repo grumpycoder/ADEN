@@ -2,13 +2,16 @@
 using Aden.Core.Dtos;
 using Aden.Core.Models;
 using Aden.Core.Repositories;
+using Aden.Core.Services;
 using Aden.Web.Filters;
 using Aden.Web.ViewModels;
+using Alsde.Extensions;
 using ALSDE.Idem;
 using ALSDE.Idem.Web.UI.AimBanner;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EAGetMail;
+using Humanizer;
 //using Independentsoft.Email.Mime;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -29,11 +32,13 @@ namespace Aden.Web.Controllers
     {
         private readonly AdenContext _context;
         private readonly IUnitOfWork _uow;
+        private readonly IMembershipService _membership;
 
-        public HomeController(AdenContext context, IUnitOfWork uow)
+        public HomeController(AdenContext context, IUnitOfWork uow, IMembershipService membership)
         {
             _context = context;
             _uow = uow;
+            _membership = membership;
         }
 
         [TrackViewName]
@@ -156,9 +161,26 @@ namespace Aden.Web.Controllers
 
         public ActionResult EditGroupMembership(int id, string groupName)
         {
+            var displayGroupName = groupName.Humanize().ToTitleCase().RemoveExactWord("App");
             ViewBag.GroupName = groupName;
-            var members = GroupHelper.GetGroupMembers(groupName).Select(m => m.EmailAddress);
-            ViewBag.Members = members;
+            ViewBag.DisplayGroupName = displayGroupName;
+            ViewBag.IsGroupDefined = true;
+
+            var groupExists = _membership.GroupExists(groupName);
+
+            if (!groupExists)
+            {
+                ViewBag.IsGroupDefined = false;
+                return PartialView("_GroupMembershipForm");
+            }
+
+            var membersResult = _membership.GetGroupMembers(groupName);
+
+            if (membersResult.IsSuccess) ViewBag.Members = membersResult.Value;
+
+
+            if (membersResult.IsFailure) ViewBag.IsGroupDefined = false;
+
             return PartialView("_GroupMembershipForm");
         }
 

@@ -157,8 +157,6 @@ $(function () {
         function (e) {
             e.preventDefault();
             var url = '/api/filespecification/groupmembers/';
-            console.log('form', $('#groupForm').serialize());
-            var form = new FormData($('#groupForm'));
             $.ajax({
                 type: "PUT",
                 url: url,

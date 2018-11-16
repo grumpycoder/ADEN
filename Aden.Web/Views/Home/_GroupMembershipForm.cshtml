@@ -2,46 +2,61 @@
 
 
 <h3>
-    @Html.HumanizeTitleCase((string)ViewBag.GroupName)
+    @ViewBag.DisplayGroupName
 </h3>
 
-<div class="row">
-    <form role="form" id="groupForm">
-        <input type="hidden" name="groupName" id="groupName" value="@ViewBag.GroupName" />
-
+@if (!(bool)ViewBag.IsGroupDefined)
+{
+    <div class="row">
         <div class="col-md-12">
-            <div class="form-group">
-
-
-                <label class="control-label">
-                    Add member
-                    <input type="text" id="email" name="email" class="form-control" data-provide="typeahead">
-                </label>
-                <button class="btn btn-default" id="btnAddGroupMember">Add</button>
-            </div>
+            <h4>Group does not exist</h4>
         </div>
-    </form>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <form id="memberForm" role="form">
-            <input type="hidden" name="groupName" value="@ViewBag.GroupName" />
-            <input type="hidden" name="email" id="email" />
-        </form>
-        <label class="control-label">
-            Current Members
-        </label>
-        <ul class="list-group">
-            @foreach (var member in ViewBag.Members)
-            {
-                <li class="list-group-item">
-                    <a href="#" id="btnRemoveGroupMember" data-email="@member"><i class="fa fa-trash"></i></a> <span>@member</span>
-                </li>
-            }
-        </ul>
     </div>
-</div>
+}
+else
+{
+    <div class="row">
+        <form role="form" id="groupForm">
+            <input type="hidden" name="groupName" id="groupName" value="@ViewBag.GroupName" />
+
+            <div class="col-md-12">
+                <div class="form-group">
+
+
+                    <label class="control-label">
+                        Add member
+                        <input type="text" id="email" name="email" class="form-control" data-provide="typeahead">
+                    </label>
+                    <button class="btn btn-default" id="btnAddGroupMember">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form id="memberForm" role="form">
+                <input type="hidden" name="groupName" value="@ViewBag.GroupName" />
+                <input type="hidden" name="email" id="email" />
+            </form>
+            <label class="control-label">
+                Current Members
+            </label>
+            <ul class="list-group">
+                @if (Enumerable.Count(ViewBag.Members) == 0)
+                {
+                    <li class="list-group-item">Group contains no members</li>
+                }
+                @foreach (var member in ViewBag.Members)
+                {
+                    <li class="list-group-item">
+                        <a href="#" id="btnRemoveGroupMember" data-email="@member"><i class="fa fa-trash"></i></a> <span>@member</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
 
 <script>
 
@@ -54,7 +69,7 @@
         items: 15,
         displayText: function (item) {
             return item.emailAddress;
-        }, 
+        },
         delay: 500,
         minLength: 0,
         autoSelect: true

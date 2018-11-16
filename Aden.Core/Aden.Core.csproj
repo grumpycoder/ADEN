@@ -22,11 +22,13 @@
     <AssemblyInfoVersionType>SemVer1</AssemblyInfoVersionType>
     <InheritWinAppVersionFrom>None</InheritWinAppVersionFrom>
     <PrimaryVersionType>AssemblyInfoVersionAttribute</PrimaryVersionType>
-    <AssemblyVersionSettings>YearStamp.MonthStamp.DayStamp.DeltaDayStamp</AssemblyVersionSettings>
-    <AssemblyFileVersionSettings>YearStamp.MonthStamp.DayStamp.DeltaDayStamp</AssemblyFileVersionSettings>
+    <AssemblyVersionSettings>ShortYearStamp.MonthStamp.DayStamp.DeltaDayStamp</AssemblyVersionSettings>
+    <AssemblyFileVersionSettings>ShortYearStamp.MonthStamp.DayStamp.DeltaDayStamp</AssemblyFileVersionSettings>
     <AssemblyInfoVersionSettings>
     </AssemblyInfoVersionSettings>
     <AssemblyInfoVersionSemVerSettings>AssemblyVersion.IncrementWithAutoReset.None</AssemblyInfoVersionSemVerSettings>
+    <AssemblyInfoFilePath>
+    </AssemblyInfoFilePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,8 +52,8 @@
     <Reference Include="ALSDE.Core.4, Version=2018.5.21.6716, Culture=neutral, PublicKeyToken=9c039b0383290564, processorArchitecture=MSIL">
       <HintPath>..\packages\ALSDE.Core.4.2018.5.21.6716\lib\net40\ALSDE.Core.4.dll</HintPath>
     </Reference>
-    <Reference Include="ALSDE.IdemLib, Version=2018.10.29.6877, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ALSDE.IdemLib.2018.10.1-beta\lib\net40\ALSDE.IdemLib.dll</HintPath>
+    <Reference Include="ALSDE.IdemLib, Version=2018.11.16.6895, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ALSDE.IdemLib.2018.11.0-beta\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
@@ -190,5 +192,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
