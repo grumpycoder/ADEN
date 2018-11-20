@@ -142,10 +142,16 @@ namespace Aden.Web.Controllers
             var collections = new List<SelectListItem>()
             {
                 new SelectListItem(){ Value = "Accumulator", Text = "Accumulator"},
+                new SelectListItem(){ Value = "Assessment", Text = "Assessment"},
+                new SelectListItem(){ Value = "AnnualDataReport", Text = "Annual Data Report"},
                 new SelectListItem(){ Value = "Application", Text = "Application"},
+                new SelectListItem(){ Value = "ChildCount", Text = "Child Count"},
+                new SelectListItem(){ Value = "Financials", Text = "Financials"},
                 new SelectListItem(){ Value = "EOY-9thMonth", Text = "EOY - 9th Month"},
                 new SelectListItem(){ Value = "Fall-20Day", Text = "Fall-20 Day"},
-                new SelectListItem(){ Value = "Manual", Text = "Manual"}
+                new SelectListItem(){ Value = "Manual", Text = "Manual"},
+                new SelectListItem(){ Value = "SIR", Text = "SIR"},
+                new SelectListItem(){ Value = "Schedules", Text = "Schedules"}
             };
 
             ViewBag.GenerationGroupMemberCount = GroupHelper.GetGroupMembers(spec.GenerationUserGroup)?.Count ?? 0;
