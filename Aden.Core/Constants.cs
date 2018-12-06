@@ -22,6 +22,7 @@ namespace Aden.Core
             }
         }
 
+        public static int CommandTimeout => AppSettings.Get<int>("CommandTimeout");
     }
 
 

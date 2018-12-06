@@ -67,6 +67,7 @@ namespace Aden.Core.Repositories
             {
                 using (var cmd = new SqlCommand(report.Submission.FileSpecification.ReportAction, connection))
                 {
+                    cmd.CommandTimeout = Constants.CommandTimeout;
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@DataYear", report.Submission.DataYear);
                     cmd.Parameters.AddWithValue("@ReportLevel", reportLevel.GetDisplayName());
