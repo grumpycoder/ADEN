@@ -69,7 +69,7 @@ namespace Aden.Core.Repositories
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@DataYear", report.Submission.DataYear);
-                    cmd.Parameters.AddWithValue("@ReportLevel", reportLevel);
+                    cmd.Parameters.AddWithValue("@ReportLevel", reportLevel.GetDisplayName());
                     var adapter = new SqlDataAdapter(cmd);
                     adapter.Fill(dataTable);
                     adapter.Fill(ds);

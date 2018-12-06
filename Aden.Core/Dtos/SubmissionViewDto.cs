@@ -50,9 +50,9 @@ namespace Aden.Core.Dtos
 
         public bool CanReopen => (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && HasAdmin;
 
-        public bool StartDisabled => CanStart && (string.IsNullOrWhiteSpace(ReportAction) || (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
+        public bool StartDisabled => CanStart && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
                                                                                               string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
-                                                                                              string.IsNullOrWhiteSpace(SubmissionUserGroup)));
+                                                                                              string.IsNullOrWhiteSpace(SubmissionUserGroup));
 
         public bool ReopenDisabled => CanReopen && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
                                                     string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
