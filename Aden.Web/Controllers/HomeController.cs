@@ -18,6 +18,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -57,14 +58,41 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public async Task<ActionResult> Reports(int datayear, string filenumber)
         {
-            var reports = await _context.Reports
-                .Include(f => f.Submission.FileSpecification)
-                .Include(r => r.Documents)
+            var r = await _context.Reports
                 .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(filenumber))
-                .OrderByDescending(x => x.Id)
+                .Select(m => new ReportViewDto
+                {
+                    Id = m.Id, 
+                    FileName = m.Submission.FileSpecification.FileName, 
+                    FileNumber = m.Submission.FileSpecification.FileNumber, 
+                    DataYear = m.Submission.FileSpecification.DataYear, 
+                    ReportState = m.ReportState, 
+                    ApprovedDate = m.ApprovedDate, 
+                    GeneratedDate = m.GeneratedDate, 
+                    SubmittedDate = m.SubmittedDate,
+                    Documents = m.Documents.Select(d => new ReportDocumentViewDto()
+                    {
+                        Id = d.Id,
+                        Filename = d.Filename,
+                        Version = d.Version
+                    }).ToList()
+                })
                 .ToListAsync();
-            var dto = Mapper.Map<List<ReportViewDto>>(reports);
-            return View(dto);
+
+            var reportId = r.FirstOrDefault().Id; 
+           
+
+            
+            return View(r);
+
+            //var reports = await _context.Reports
+            //    .Include(f => f.Submission.FileSpecification)
+            //    .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(filenumber))
+            //    .Include(r => r.Documents)
+            //    .OrderByDescending(x => x.Id)
+            //    .ToListAsync();
+            //var dto = Mapper.Map<List<ReportViewDto>>(reports);
+            //return View(dto);
         }
 
         [TrackViewName]
@@ -115,9 +143,21 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> Document(int id)
         {
-            var document = await _uow.Documents.GetByIdAsync(id);
+            //var document = await _uow.Documents.GetByIdAsync(id);
+            var dto = await _context.ReportDocuments.Where(d => d.Id == id).Select(r => new ReportDocumentDto()
+            {
+                Filename = r.Filename,
+                Version = r.Version,
+                Id = r.Id, 
+                FileData = r.FileData
 
-            var dto = Mapper.Map<ReportDocumentDto>(document);
+            }).FirstOrDefaultAsync();
+
+            dto.Content = Encoding.UTF8.GetString(dto.FileData).ToString();
+
+            //var dto = Mapper.Map<ReportDocumentDto>(document);
+
+            //var dto = new ReportDocumentDto();
 
             return PartialView(dto);
         }

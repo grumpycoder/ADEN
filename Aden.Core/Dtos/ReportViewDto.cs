@@ -22,6 +22,6 @@ namespace Aden.Core.Dtos
         public DateTime? ApprovedDate { get; set; }
         public DateTime? SubmittedDate { get; set; }
 
-        public List<ReportDocumentDto> Documents { get; set; }
+        public List<ReportDocumentViewDto> Documents { get; set; }
     }
 }

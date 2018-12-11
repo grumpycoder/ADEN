@@ -15,6 +15,8 @@ namespace Aden.Core.Dtos
 
         public string Content { get; set; }
 
+        public byte[] FileData { get; set; }
+
         public string Html => ConvertToHtml();
 
         private string ConvertToHtml()
@@ -59,6 +61,16 @@ namespace Aden.Core.Dtos
             return sb.ToString();
         }
 
+
+    }
+
+    public class ReportDocumentViewDto
+    {
+        public int Id { get; set; }
+
+        public string Filename { get; set; }
+
+        public int Version { get; set; }
 
     }
 }
