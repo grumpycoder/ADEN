@@ -113,7 +113,35 @@
                                                 @foreach (var doc in report.Documents.Where(d => d.Version == mostRecentVersion).OrderByDescending(d => d.Version))
                                                 {
                                                     <tr>
-                                                        <td><a href="#" data-document-viewer data-doc-id=@doc.Id data-url="/document/@doc.Id" data-title="@doc.Filename" title="@doc.Filename" data-placement="right" data-original-title="@doc.Filename">@doc.Filename</a></td>
+                                                        <td>
+                                                            @if (doc.FileSizeMb > 0)
+                                                            {
+                                                                <a href="#" class="btn btn-sm btn-default"
+                                                                   data-document-viewer
+                                                                   data-doc-id=@doc.Id
+                                                                   data-url="/document/@doc.Id"
+                                                                   data-title="File must be downloaded"
+                                                                   title="File must be downloaded"
+                                                                   data-placement="right"
+                                                                   data-toggle="tooltip"
+                                                                   data-original-title="@doc.Filename" disabled aria-disabled="True">View</a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a href="#" class="btn btn-sm btn-default"
+                                                                   data-document-viewer
+                                                                   data-doc-id=@doc.Id
+                                                                   data-url="/document/@doc.Id"
+                                                                   data-title="@doc.Filename"
+                                                                   title="@doc.Filename"
+                                                                   data-placement="right"
+                                                                   data-original-title="@doc.Filename">View</a>
+                                                            }
+                                                            <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
+                                                            <span>
+                                                                @doc.Filename<span> - </span><span class="small">(@doc.FileSizeInMb)</span>
+                                                            </span>
+                                                        </td>
                                                         <td>@doc.Version</td>
                                                     </tr>
                                                 }
@@ -141,20 +169,47 @@
                                                 <table class="table table-responsive">
 
                                                     <thead>
-                                                    <tr>
-                                                        <th>Name</th>
-                                                        <th>Version</th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Version</th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
 
-                                                    @foreach (var doc in report.Documents.Where(d => d.Version < mostRecentVersion).OrderByDescending(d => d.Version))
-                                                    {
-                                                        <tr>
-                                                            <td><a href="#" data-document-viewer data-doc-id=@doc.Id data-url="/document/@doc.Id" data-title="@doc.Filename" title="@doc.Filename" data-placement="right" data-original-title="@doc.Filename">@doc.Filename</a></td>
-                                                            <td>@doc.Version</td>
-                                                        </tr>
-                                                    }
+                                                        @foreach (var doc in report.Documents.Where(d => d.Version < mostRecentVersion).OrderByDescending(d => d.Version))
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    @if (doc.FileSizeMb > 0)
+                                                                    {
+                                                                        <a href="#" class="btn btn-sm btn-default"
+                                                                           data-document-viewer
+                                                                           data-doc-id=@doc.Id
+                                                                           data-url="/document/@doc.Id"
+                                                                           data-title="@doc.Filename"
+                                                                           title="@doc.Filename"
+                                                                           data-placement="right"
+                                                                           data-original-title="@doc.Filename" disabled aria-disabled="True">View</a>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <a href="#" class="btn btn-sm btn-default"
+                                                                           data-document-viewer
+                                                                           data-doc-id=@doc.Id
+                                                                           data-url="/document/@doc.Id"
+                                                                           data-title="@doc.Filename"
+                                                                           title="@doc.Filename"
+                                                                           data-placement="right"
+                                                                           data-original-title="@doc.Filename">View</a>
+                                                                    }
+                                                                    <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
+                                                                    <span>
+                                                                        @doc.Filename<span> - </span><span class="small">(@doc.FileSizeInMb)</span>
+                                                                    </span>
+                                                                </td>
+                                                                <td>@doc.Version</td>
+                                                            </tr>
+                                                        }
                                                     </tbody>
                                                 </table>
                                             }
@@ -163,7 +218,7 @@
                                                 <h5>No earlier revisions</h5>
                                             }
                                         }
-                           
+
                                     </div>
                                 </div>
 
@@ -184,5 +239,5 @@
 @section scripts
 {
     <script src="~/js/app/app.module.min.js"></script>
-    <script src="~/js/app/reports.module.min.js"></script>
+    <script src="~/js/app/reports.module.js"></script>
 }

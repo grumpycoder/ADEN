@@ -1,10 +1,19 @@
 ﻿
 @model ReportDocumentDto
+<script>
+
+    window.$showModalWorking();
+
+    $.get('/api/report/document/' + @Model.Id, function (response, data) {
+        window.$hideModalWorking();
+        $('#reportDocument').html(response.html);
+    });
+
+</script>
 
 <div class="row">
     <div class="col-md-12">
-        <div style="overflow: auto; max-height: 600px;">
-            @Html.Raw(Model.Html)
+        <div style="max-height: 600px; overflow: auto;" id="reportDocument" name="reportDocument">
         </div>
     </div>
 </div>

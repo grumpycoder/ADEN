@@ -10,6 +10,7 @@
         public int ReportId { get; set; }
         public Report Report { get; set; }
 
+        public long FileSize { get; set; }
 
         private ReportDocument()
         {
@@ -23,7 +24,8 @@
                 FileData = file,
                 ReportLevel = reportLevel,
                 Version = version,
-                Filename = filename
+                Filename = filename,
+                FileSize = file.Length
             };
             return doc;
         }

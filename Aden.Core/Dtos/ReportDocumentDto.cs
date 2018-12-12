@@ -13,7 +13,7 @@ namespace Aden.Core.Dtos
 
         public int Version { get; set; }
 
-        public string Content { get; set; }
+        public string Content => Encoding.UTF8.GetString(FileData);
 
         public byte[] FileData { get; set; }
 
@@ -61,6 +61,7 @@ namespace Aden.Core.Dtos
             return sb.ToString();
         }
 
+        public long FileSize { get; set; }
 
     }
 
@@ -72,5 +73,9 @@ namespace Aden.Core.Dtos
 
         public int Version { get; set; }
 
+        public long FileSize { get; set; }
+        public long FileSizeMb { get; set; }
+
+        public string FileSizeInMb { get; set; }  //=> ByteSize.FromBytes(FileSize);
     }
 }

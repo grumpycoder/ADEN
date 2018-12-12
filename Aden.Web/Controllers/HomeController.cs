@@ -12,13 +12,15 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EAGetMail;
 using Humanizer;
+using System;
 //using Independentsoft.Email.Mime;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Hosting;
 using System.Web.Mvc;
@@ -58,41 +60,42 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public async Task<ActionResult> Reports(int datayear, string filenumber)
         {
-            var r = await _context.Reports
+
+            var dto = await _context.Reports
                 .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(filenumber))
-                .Select(m => new ReportViewDto
-                {
-                    Id = m.Id, 
-                    FileName = m.Submission.FileSpecification.FileName, 
-                    FileNumber = m.Submission.FileSpecification.FileNumber, 
-                    DataYear = m.Submission.FileSpecification.DataYear, 
-                    ReportState = m.ReportState, 
-                    ApprovedDate = m.ApprovedDate, 
-                    GeneratedDate = m.GeneratedDate, 
-                    SubmittedDate = m.SubmittedDate,
-                    Documents = m.Documents.Select(d => new ReportDocumentViewDto()
+                .Select(m =>
+                    new ReportViewDto
                     {
-                        Id = d.Id,
-                        Filename = d.Filename,
-                        Version = d.Version
-                    }).ToList()
-                })
+                        Id = m.Id,
+                        FileName = m.Submission.FileSpecification.FileName,
+                        FileNumber = m.Submission.FileSpecification.FileNumber,
+                        DataYear = m.Submission.FileSpecification.DataYear,
+                        ReportState = m.ReportState,
+                        ApprovedDate = m.ApprovedDate,
+                        GeneratedDate = m.GeneratedDate,
+                        SubmittedDate = m.SubmittedDate,
+                        Documents = m.Documents.Select(d => new ReportDocumentViewDto()
+                        {
+                            Id = d.Id,
+                            Filename = d.Filename,
+                            Version = d.Version,
+                            FileSize = d.FileSize,
+                        }).ToList()
+                    }
+                )
                 .ToListAsync();
 
-            var reportId = r.FirstOrDefault().Id; 
-           
+            foreach (ReportViewDto item in dto)
+            {
+                item.Documents.ForEach(x =>
+                {
+                    x.FileSizeInMb = x.FileSize.ToFileSize();
+                    x.FileSizeMb = x.FileSize / 1024;
+                    x.FileSizeMb = x.FileSize.ConvertBytesToMega();
+                });
+            }
 
-            
-            return View(r);
-
-            //var reports = await _context.Reports
-            //    .Include(f => f.Submission.FileSpecification)
-            //    .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber && f.Submission.DataYear == datayear) || string.IsNullOrEmpty(filenumber))
-            //    .Include(r => r.Documents)
-            //    .OrderByDescending(x => x.Id)
-            //    .ToListAsync();
-            //var dto = Mapper.Map<List<ReportViewDto>>(reports);
-            //return View(dto);
+            return View(dto);
         }
 
         [TrackViewName]
@@ -143,21 +146,111 @@ namespace Aden.Web.Controllers
 
         public async Task<ActionResult> Document(int id)
         {
+            //var connectionString =
+            //ConfigurationManager.ConnectionStrings["AdenContext"].ConnectionString;
+
+            //var selectStatement = "SELECT [id], [filedata] FROM [Aden].[ReportDocuments] WHERE Id = " + id;
+
+            //using (var con = new SqlConnection(connectionString))
+            //{
+            //    await con.OpenAsync();
+            //    return await con.QueryAsync<ReportDocumentDto>(selectStatement, commandType: CommandType.Text);
+            //}
+
+            //var connectionString =
+            //ConfigurationManager.ConnectionStrings["AdenContext"].ConnectionString;
+
+            //var selectStatement = "SELECT [id], [filedata] FROM [Aden].[ReportDocuments] WHERE Id = " + id; 
+
+            //var asyncConnectionString = new SqlConnectionStringBuilder(connectionString)
+            //{
+            //    AsynchronousProcessing = true
+            //}.ToString();
+
+            //using (var conn = new SqlConnection(asyncConnectionString))
+            //{
+            //    using (var cmd = new SqlCommand())
+            //    {
+
+            //        cmd.Connection = conn;
+            //        cmd.CommandText = selectStatement;
+            //        cmd.CommandType = CommandType.Text;
+
+            //        conn.Open();
+
+            //        using (var reader = await cmd.ExecuteReaderAsync())
+            //        {
+
+            //            return reader.Select(r => new ReportDocumentDto()
+            //            {
+            //                FileData = r["FileData"].ToString()
+            //            }
+            //            ); 
+            //        }
+            //    }
+            //}
+
+            //using (SqlConnection connection = new SqlConnection(_context.Database.Connection.ConnectionString))
+            //{
+            //    await connection.OpenAsync();
+            //    using (SqlCommand command = new SqlCommand("SELECT [id], [filedata] FROM [Aden].[ReportDocuments] WHERE Id = " + id, connection))
+            //    {
+
+            //        // The reader needs to be executed with the SequentialAccess behavior to enable network streaming  
+            //        // Otherwise ReadAsync will buffer the entire text document into memory which can cause scalability issues or even OutOfMemoryExceptions  
+            //        using (SqlDataReader reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess))
+            //        {
+            //            while (await reader.ReadAsync())
+            //            {
+            //                Console.Write("{0}: ", reader.GetInt32(0));
+
+            //                if (await reader.IsDBNullAsync(1))
+            //                {
+            //                    Console.Write("(NULL)");
+            //                }
+            //                else
+            //                {
+            //                    char[] buffer = new char[4096];
+            //                    int charsRead = 0;
+            //                    using (TextReader data = reader.GetTextReader(1))
+            //                    {
+            //                        do
+            //                        {
+            //                            // Grab each chunk of text and write it to the console  
+            //                            // If you are writing to a TextWriter you should use WriteAsync or WriteLineAsync  
+            //                            charsRead = await data.ReadAsync(buffer, 0, buffer.Length);
+            //                            Console.Write(buffer, 0, charsRead);
+            //                        } while (charsRead > 0);
+            //                    }
+            //                }
+
+            //                Console.WriteLine();
+            //            }
+            //        }
+            //    }
+            //}
+
+
             //var document = await _uow.Documents.GetByIdAsync(id);
-            var dto = await _context.ReportDocuments.Where(d => d.Id == id).Select(r => new ReportDocumentDto()
-            {
-                Filename = r.Filename,
-                Version = r.Version,
-                Id = r.Id, 
-                FileData = r.FileData
 
-            }).FirstOrDefaultAsync();
 
-            dto.Content = Encoding.UTF8.GetString(dto.FileData).ToString();
 
-            //var dto = Mapper.Map<ReportDocumentDto>(document);
 
-            //var dto = new ReportDocumentDto();
+
+            //var dto = await _context.ReportDocuments.Where(d => d.Id == id).Select(r => new ReportDocumentDto()
+            //{
+            //    Filename = r.Filename,
+            //    Version = r.Version,
+            //    Id = r.Id, 
+            //    FileData = r.FileData
+
+            //}).FirstOrDefaultAsync();
+
+            //dto.Content = Encoding.UTF8.GetString(dto.FileData).ToString();
+
+            ////var dto = Mapper.Map<ReportDocumentDto>(document);
+
+            var dto = new ReportDocumentDto() { Id = id };
 
             return PartialView(dto);
         }
@@ -291,4 +384,59 @@ namespace Aden.Web.Controllers
         }
 
     }
+
+
+    public static class Extensions
+    {
+        public static string ToFileSize(this int source)
+        {
+            return ToFileSize(Convert.ToInt64(source));
+        }
+
+        public static string ToFileSize(this long source)
+        {
+            const int byteConversion = 1024;
+            double bytes = Convert.ToDouble(source);
+
+            if (bytes >= Math.Pow(byteConversion, 3)) //GB Range
+            {
+                return string.Concat(Math.Round(bytes / Math.Pow(byteConversion, 3), 2), " GB");
+            }
+            else if (bytes >= Math.Pow(byteConversion, 2)) //MB Range
+            {
+                return string.Concat(Math.Round(bytes / Math.Pow(byteConversion, 2), 2), " MB");
+            }
+            else if (bytes >= byteConversion) //KB Range
+            {
+                return string.Concat(Math.Round(bytes / byteConversion, 2), " KB");
+            }
+            else //Bytes
+            {
+                return string.Concat(bytes, " Bytes");
+            }
+        }
+
+
+
+        public static double ConvertBytesToMegabytes(this long bytes)
+        {
+            return (bytes / 1024f) / 1024f;
+        }
+
+        public static long ConvertBytesToMega(this long bytes)
+        {
+            return Convert.ToInt64((bytes / 1024f) / 1024f);
+        }
+
+        public static IEnumerable<T> Select<T>(
+            this SqlDataReader reader, Func<SqlDataReader, T> projection)
+        {
+
+            while (reader.Read())
+            {
+                yield return projection(reader);
+            }
+        }
+    }
+
 }

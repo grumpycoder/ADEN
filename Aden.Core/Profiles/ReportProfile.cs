@@ -12,7 +12,8 @@ namespace Aden.Core.Profiles
         public ReportProfile()
         {
             CreateMap<ReportDocument, ReportDocumentDto>()
-                .ForMember(d => d.Content, opt => opt.MapFrom(s => Encoding.UTF8.GetString(s.FileData).ToString()));
+                .ForMember(d => d.Content, opt => opt.MapFrom(s => Encoding.UTF8.GetString(s.FileData).ToString()))
+                ;
 
             CreateMap<Report, ReportDto>()
                 .ForMember(d => d.FileName, opt => opt.MapFrom(s => $"{s.Submission.FileSpecification.FileName} ({s.Submission.FileSpecification.FileNumber})"))
