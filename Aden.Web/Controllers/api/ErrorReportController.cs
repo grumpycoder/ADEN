@@ -48,10 +48,14 @@ namespace Aden.Web.Controllers.api
             report.Submission.SetState(nextWorkItem.WorkItemAction);
 
             List<byte[]> files = new List<byte[]>();
-            foreach (var f in model.Files)
+            //TODO: Should not need to check for null
+            if (model.Files != null)
             {
-                files.Add(f.ConvertToByte());
-                //files.Add(ConvertToByte(f));
+                foreach (var f in model.Files)
+                {
+                    files.Add(f.ConvertToByte());
+                    //files.Add(ConvertToByte(f));
+                }
             }
 
             nextWorkItem.Description = model.Description;
