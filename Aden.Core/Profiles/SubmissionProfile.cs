@@ -45,6 +45,7 @@ namespace Aden.Core.Profiles
                 //    opt => opt.MapFrom(s => s.Reports.OrderByDescending(r => r.Id).FirstOrDefault().Id))
                 //.ForMember(d => d.SubmissionStateId, opt => opt.MapFrom(s => s.SubmissionState))
                 .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState))
+                .ForMember(d => d.CurrentAssignee, opt => opt.MapFrom(s => s.CurrentAssignee))
                 //.ForMember(d => d.SubmissionStateKey, opt => opt.MapFrom(s => s.SubmissionState.GetShortName()))
                 ;
         }

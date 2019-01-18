@@ -28,6 +28,7 @@ namespace Aden.Core.Models
 
         public int FileSpecificationId { get; set; }
         public FileSpecification FileSpecification { get; set; }
+        public string CurrentAssignee { get; set; }
 
         private Submission()
         {
