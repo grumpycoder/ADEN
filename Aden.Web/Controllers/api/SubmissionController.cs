@@ -82,7 +82,7 @@ namespace Aden.Web.Controllers.api
             var assignee = _uow.WorkItems.GetUserWithLeastAssignments(members.Value);
 
             var wi = report.CreateTask(assignee);
-
+            submission.SetCurrentAssignee(assignee);
             _context.SaveChanges();
 
             _notificationService.SendWorkNotification(wi);
@@ -138,6 +138,8 @@ namespace Aden.Web.Controllers.api
             submission.Reopen(model.Message, User.Identity.Name);
 
             submission.NextDueDate = model.NextSubmissionDate;
+
+            submission.SetCurrentAssignee(assignee);
 
             _context.SaveChanges();
 

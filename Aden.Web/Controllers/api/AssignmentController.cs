@@ -103,7 +103,7 @@ namespace Aden.Web.Controllers.api
 
             report.SetState(next);
             report.Submission.SetState(next);
-
+            report.Submission.SetCurrentAssignee(assignee);
             report.AddWorkItem(nextWorkItem);
 
             await _uow.CompleteAsync();
@@ -157,6 +157,7 @@ namespace Aden.Web.Controllers.api
 
             report.SetState(next);
             report.Submission.SetState(next);
+            report.Submission.SetCurrentAssignee(assignee);
 
             report.AddWorkItem(nextWorkItem);
 
@@ -204,7 +205,7 @@ namespace Aden.Web.Controllers.api
             report.AddWorkItem(newWorkItem);
             report.SetState(newWorkItem.WorkItemAction);
             report.Submission.SetState(newWorkItem.WorkItemAction);
-
+            report.Submission.SetCurrentAssignee(assignee);
             //report.AddWorkItem(newWorkItem);
             //report.SetState(newWorkItem.WorkItemAction);
             //report.Submission.SetState(newWorkItem.WorkItemAction);
@@ -238,6 +239,7 @@ namespace Aden.Web.Controllers.api
             model.Reason = $"Reassigned from {workItem.AssignedUser} to {model.AssignedUser} : {model.Reason}";
             submission.Reassign(model.Reason, User.Identity.Name);
 
+            submission.SetCurrentAssignee(model.AssignedUser);
             await _uow.CompleteAsync();
 
             //Send work notification
@@ -315,6 +317,8 @@ namespace Aden.Web.Controllers.api
 
             report.SetState(next);
             report.Submission.SetState(next);
+
+            report.Submission.SetCurrentAssignee(assignee);
 
             report.AddWorkItem(nextWorkItem);
 

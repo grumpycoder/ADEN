@@ -151,5 +151,10 @@ namespace Aden.Core.Models
             var audit = new SubmissionAudit(Id, message);
             Log(audit);
         }
+
+        public void SetCurrentAssignee(string assignee)
+        {
+            CurrentAssignee = assignee;
+        }
     }
 }
