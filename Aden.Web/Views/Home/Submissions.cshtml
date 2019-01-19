@@ -17,7 +17,9 @@
                 </div>
 
                 <div class="panel-body">
-                    @(Html.DevExtreme().DataGrid().WordWrapEnabled(true).StateStoring(s => s.Enabled(true).StorageKey("submissions"))
+                    <div id="grid"></div>
+
+                    @*@(Html.DevExtreme().DataGrid().WordWrapEnabled(true).StateStoring(s => s.Enabled(true).StorageKey("submissions"))
                                                    .ColumnAutoWidth(true).ID("grid")
                                                    .OnEditorPrepared("editorPrepared").OnContentReady("gridContentReady").OnRowPrepared("rowPrepared")
                                                    .ShowRowLines(true).ShowBorders(true)
@@ -61,7 +63,7 @@
                               items.Add().SummaryType(SummaryType.Count).DisplayFormat("{0} Submissions"); 
                           }))
                        .DataSource(d => d.StaticJson().Url("/api/submission").Key("id"))
-                    )
+                    )*@
 
                 </div>
 
@@ -74,6 +76,6 @@
 @section scripts
 {
     <script src="~/js/app/app.module.min.js"></script>
-    <script src="~/js/app/submission.module.min.js"></script>
+    <script src="~/js/app/submission.module.js"></script>
 
 }
